@@ -1,0 +1,1380 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Alice — дизайн игры и история</title>
+  <style>
+    :root { --bg:#f2f0eb; --paper:#fffefb; --ink:#292a2c; --muted:#70706c; --line:#e1ddd5; --accent:#9b3545; --wash:#f5e9e8; --code:#efede8; --side:#202127; --side-ink:#f0ece6; --side-muted:#a7a7ad; --shadow:0 14px 50px #30281a08; color-scheme:light; }
+    [data-theme="dark"] { --bg:#191a1f; --paper:#23242b; --ink:#e9e5de; --muted:#b1ada8; --line:#3a3a42; --accent:#f09aa6; --wash:#382b33; --code:#2e3039; --shadow:none; color-scheme:dark; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; scroll-padding-top:100px; }
+    body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.78 "Segoe UI",Arial,sans-serif; }
+    button,input { font:inherit; }
+    button,a,input { -webkit-tap-highlight-color:transparent; }
+    a { color:var(--accent); text-underline-offset:4px; }
+    a:hover { text-decoration-thickness:2px; }
+    button { cursor:pointer; }
+    :focus-visible { outline:3px solid #d79b65; outline-offset:4px; }
+    [hidden] { display:none!important; }
+    .skip { position:fixed; top:-80px; left:24px; z-index:30; padding:10px 16px; background:var(--paper); }
+    .skip:focus { top:12px; }
+    .sidebar { position:fixed; inset:0 auto 0 0; width:292px; display:flex; flex-direction:column; background:var(--side); color:var(--side-ink); z-index:20; }
+    .brand { padding:30px 28px 24px; border-bottom:1px solid #ffffff16; }
+    .brand-line { display:flex; align-items:center; gap:11px; }
+    .heart { color:#d47c88; font-size:23px; }
+    .brand strong { font-size:24px; letter-spacing:5px; font-weight:600; }
+    .brand p { margin:8px 0 0; color:var(--side-muted); font-size:12px; letter-spacing:1.5px; text-transform:uppercase; }
+    .search-wrap { padding:20px 20px 10px; }
+    .search-wrap label { display:block; color:var(--side-muted); font-size:12px; margin:0 0 7px 5px; }
+    #search { width:100%; border:1px solid #ffffff28; border-radius:7px; padding:10px 12px; color:var(--side-ink); background:#ffffff08; font-size:14px; }
+    #search::placeholder { color:#929298; }
+    .nav-scroll { flex:1; min-height:0; overflow:auto; padding:7px 16px 28px; scrollbar-width:thin; }
+    .nav-label { margin:18px 12px 8px; color:var(--side-muted); font-size:10px; text-transform:uppercase; letter-spacing:1.8px; }
+    .doc-link { display:flex; gap:12px; align-items:center; width:100%; text-align:left; border:0; background:transparent; color:#d7d4d2; padding:10px 12px; border-radius:6px; font-size:14px; line-height:1.4; }
+    .doc-link span { font:11px/1.4 Consolas,monospace; color:#999aa1; }
+    .doc-link:hover { background:#ffffff08; }
+    .doc-link[aria-current="page"] { background:#ffffff12; color:white; box-shadow:inset 2px 0 #d47c88; }
+    .doc-link[aria-current="page"] span { color:#e4a8b1; }
+    #toc { list-style:none; padding:0; margin:0; }
+    #toc a { display:block; text-decoration:none; color:#b9b8bd; font-size:12px; line-height:1.6; padding:6px 12px; border-left:1px solid #ffffff18; margin-left:12px; }
+    #toc .sub a { padding-left:22px; color:#98989f; font-size:11px; }
+    #toc a:hover,#toc a.active { color:white; border-color:#d47c88; background:#ffffff04; }
+    .side-footer { padding:13px 28px; border-top:1px solid #ffffff16; color:var(--side-muted); font-size:11px; display:flex; justify-content:space-between; }
+    .status-dot { display:inline-block; width:6px; height:6px; margin-right:7px; background:#d47c88; border-radius:50%; }
+    .search-result { display:block; width:100%; text-align:left; border:1px solid #ffffff15; background:#ffffff05; color:#f0ece6; border-radius:6px; padding:11px; margin:9px 0; font-size:13px; }
+    .search-result small { display:block; color:#d79ba6; font-size:10px; margin-bottom:4px; }
+    .search-result p { margin:5px 0 0; font-size:11px; color:#aeabb0; line-height:1.6; }
+    #search-status { color:#b9b8bd; font-size:12px; padding:10px 12px; }
+    .shell { margin-left:292px; }
+    .toolbar { position:sticky; top:0; z-index:10; height:64px; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:0 38px; border-bottom:1px solid var(--line); background:var(--bg); }
+    .breadcrumb { min-width:0; display:flex; align-items:center; gap:13px; color:var(--muted); font-size:12px; }
+    .breadcrumb strong { color:var(--ink); font-weight:500; }
+    .tools { display:flex; gap:8px; flex-shrink:0; }
+    .tool { border:1px solid var(--line); background:var(--paper); color:var(--ink); border-radius:6px; padding:5px 11px; font-size:12px; }
+    #menu-toggle { display:none; }
+    .progress-track { position:fixed; top:64px; left:292px; right:0; height:2px; z-index:15; background:transparent; }
+    #progress { display:block; height:100%; width:0; background:var(--accent); }
+    main { max-width:1140px; margin:0 auto; padding:38px 38px 70px; }
+    .edition { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:22px; color:var(--muted); font-size:11px; letter-spacing:1.3px; text-transform:uppercase; }
+    .edition span:last-child { border:1px solid var(--line); padding:4px 9px; border-radius:4px; letter-spacing:.5px; }
+    .document { background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:44px 54px; box-shadow:var(--shadow); }
+    .document h1 { margin:0 0 22px; font-family:Georgia,"Times New Roman",serif; font-size:clamp(29px,3vw,43px); line-height:1.2; letter-spacing:-1.3px; font-weight:400; }
+    .document h1::before { content:attr(data-kicker); display:block; margin-bottom:17px; font:600 10px/1.5 "Segoe UI",sans-serif; letter-spacing:2px; color:var(--accent); text-transform:uppercase; }
+    .document h1 + p { font-size:13px; color:var(--muted); padding-bottom:25px; border-bottom:1px solid var(--line); }
+    .document h2 { margin:52px 0 20px; padding-top:22px; border-top:1px solid var(--line); font:400 28px/1.3 Georgia,"Times New Roman",serif; letter-spacing:-.4px; }
+    .document h3 { font-size:18px; line-height:1.45; margin:32px 0 13px; font-weight:600; }
+    .document p { margin:0 0 18px; }
+    .document strong { font-weight:650; }
+    .document ul,.document ol { margin:16px 0 22px; padding-left:24px; }
+    .document li { padding-left:3px; margin-bottom:8px; }
+    .document li::marker { color:var(--accent); }
+    .document code { background:var(--code); padding:2px 5px; border-radius:4px; font:12px/1.7 Consolas,monospace; overflow-wrap:anywhere; }
+    .document pre { padding:20px; overflow:auto; background:var(--code); border:1px solid var(--line); border-radius:7px; }
+    .document pre code { padding:0; overflow-wrap:normal; }
+    .document blockquote { margin:24px 0; border-left:3px solid var(--accent); padding:12px 22px; background:var(--wash); }
+    .table-scroll { overflow-x:auto; margin:24px 0 30px; border:1px solid var(--line); border-radius:7px; }
+    table { border-collapse:collapse; width:100%; text-align:left; font-size:12px; line-height:1.65; }
+    th { background:var(--code); font-weight:600; color:var(--ink); }
+    th,td { padding:12px 14px; border-bottom:1px solid var(--line); vertical-align:top; min-width:100px; }
+    td:first-child { font-weight:500; }
+    tr:last-child td { border-bottom:0; }
+    tbody tr:hover { background:var(--wash); }
+    .route-map { margin:26px 0; border:1px solid var(--line); border-radius:8px; padding:20px; background:var(--bg); }
+    .route-map figcaption { font-size:14px; font-weight:600; margin-bottom:17px; }
+    .route-map figcaption span { display:block; font-size:11px; color:var(--muted); font-weight:400; }
+    .route-map ol { list-style:none; margin:0; padding:0; }
+    .route-map li { display:grid; grid-template-columns:1fr minmax(88px,.5fr) 1fr; align-items:center; gap:10px; padding:0; margin:0 0 8px; }
+    .route-place { background:var(--paper); border:1px solid var(--line); padding:10px 12px; border-radius:5px; font-size:12px; line-height:1.5; }
+    .route-arrow { text-align:center; color:var(--accent); font-size:21px; line-height:1.2; }
+    .route-arrow small { display:block; font-size:9px; line-height:1.4; color:var(--muted); }
+    .document-footer { margin-top:55px; padding-top:20px; border-top:1px solid var(--line); display:flex; gap:15px; justify-content:space-between; font-size:11px; color:var(--muted); }
+    #backdrop { display:none; }
+    .target-flash { animation:flash 1.8s ease-out; }
+    @keyframes flash { from { background:var(--wash); } to { background:transparent; } }
+    @media(min-width:1600px) { .document { padding:55px 72px; } }
+    @media(max-width:1100px) { .sidebar { width:254px; } .shell { margin-left:254px; } .progress-track { left:254px; } main { padding:28px 24px 50px; } .document { padding:35px; } .toolbar { padding:0 24px; } }
+    @media(max-width:800px) { .sidebar { transform:translateX(-100%); width:292px; transition:transform .2s; } body.menu-open .sidebar { transform:translateX(0); } .shell { margin-left:0; } .progress-track { left:0; } #menu-toggle { display:inline-block; } .breadcrumb > span { display:none; } .toolbar { height:58px; padding:0 16px; } .progress-track { top:58px; } main { padding:20px 14px 40px; } .document { padding:27px 22px; border-radius:7px; } .document h2 { font-size:25px; } body.menu-open #backdrop { display:block; position:fixed; inset:0; z-index:19; background:#0008; border:0; } .edition { font-size:9px; letter-spacing:.7px; } .tools { gap:5px; } .tool { padding:5px 8px; } body.menu-open { overflow:hidden; } .route-map { padding:12px; } .route-map li { gap:5px; grid-template-columns:1fr 70px 1fr; } .route-place { padding:8px; font-size:10px; } }
+    @media(max-width:520px) { .breadcrumb strong { display:none; } }
+    @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } *,*::before,*::after { animation:none!important; transition:none!important; } }
+    @media print { :root,[data-theme="dark"] { --bg:white; --paper:white; --ink:black; --muted:#555; --line:#ccc; --code:#f5f5f5; --wash:#fafafa; } .sidebar,.toolbar,.progress-track,.edition,.document-footer,.skip,#backdrop { display:none!important; } .shell { margin:0; } main { max-width:none; margin:0; padding:0; } .document { border:0; padding:0; box-shadow:none; } .document[hidden] { display:none!important; } h2,h3 { break-after:avoid; } tr,figure { break-inside:avoid; } a { color:inherit; text-decoration:none; } body { font-size:11pt; } .table-scroll { overflow:visible; } .document h2 { margin-top:30px; } @page { margin:18mm; } }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#content">Перейти к документу</a>
+  <button id="backdrop" aria-label="Закрыть оглавление" tabindex="-1"></button>
+  <aside class="sidebar" aria-label="Навигация по документации">
+    <div class="brand"><div class="brand-line"><span class="heart" aria-hidden="true">♥</span><strong>ALICE</strong></div><p>Дизайн игры · рабочая версия</p></div>
+    <div class="search-wrap"><label for="search">Поиск по всем документам</label><input id="search" type="search" placeholder="Персонаж, глава, механика…" autocomplete="off"></div>
+    <div class="nav-scroll">
+      <nav id="document-nav" aria-label="Документы"><p class="nav-label">Библиотека</p>
+        <button class="doc-link" data-doc="gdd"><span>01</span>Дизайн игры</button>
+        <button class="doc-link" data-doc="story"><span>02</span>Основная история</button>
+        <button class="doc-link" data-doc="roadmap"><span>03</span>План разработки</button>
+        <button class="doc-link" data-doc="sources"><span>04</span>Источники и права</button>
+        <button class="doc-link" data-doc="technical"><span>05</span>Техническая основа</button>
+      </nav>
+      <nav id="chapter-nav" aria-label="Главы текущего документа"><p class="nav-label">Оглавление</p><ol id="toc"></ol></nav>
+      <div id="search-results" hidden><div id="search-status" role="status" aria-live="polite"></div><div id="result-list"></div></div>
+    </div>
+    <div class="side-footer"><span><i class="status-dot"></i>Проработка сюжета</span><span>v0.3</span></div>
+  </aside>
+  <div class="shell">
+    <header class="toolbar"><div class="breadcrumb"><button id="menu-toggle" class="tool" aria-expanded="false" aria-controls="document-nav">Оглавление</button><span>Документация</span><span aria-hidden="true">/</span><strong id="current-title">Дизайн игры</strong></div><div class="tools"><button class="tool" id="theme-toggle" aria-pressed="false">Тёмная тема</button><button class="tool" id="print">Печать</button></div></header>
+    <div class="progress-track" aria-hidden="true"><span id="progress"></span></div>
+    <main id="content" tabindex="-1"><div class="edition"><span>Алиса в Стране чудес · 2D метроидвания</span><span>Документ v0.3</span></div>
+      <noscript><p>JavaScript выключен: все документы показаны последовательно. Для поиска используйте поиск браузера.</p></noscript>
+      <article class='document' id='gdd' data-title='Дизайн игры' data-icon='01'><h1 id='gdd-alice-game-design-document'>Alice — Game Design Document</h1>
+<p>Версия: <strong>0.3</strong>, 31 октября 2026. Язык проекта: русский; идентификаторы в коде: английские.</p>
+<h2 id='gdd-1-статус-документа'>1. Статус документа</h2>
+<p>Это исходный дизайн игры, а не отчёт о реализованных функциях. Подробный сюжет и характеры ведём в <a href="#story">Story.md</a>; системные и технические предложения — здесь. Крупные решения фиксируем в журнале в конце документа. Текущий этап — история на бумаге, техническая разработка приостановлена по решению владельца.</p>
+<p><strong>Утверждено владельцем:</strong> Unity, 2D, платформер-метроидвания с элементами soulslike; жестокая интерпретация «Алисы в Стране чудес»; основная сюжетная ветка близка к первой книге; пять биомов и пять основных боссов; финальный босс — Королева Червей; 4–5 предметов для открытия путей; бэктрекинг; направляющие персонажи; позднее — 5–6 сквозных побочных заданий.</p>
+<p><strong>Уточнения истории:</strong> насилие Алисы вынужденное; мир испорчен Королевой — сознательной тираншей; победа освобождает всю страну; Алиса просыпается у сестры, реальность пережитого остаётся загадкой; неизбежная смерть Голубки нужна как тяжёлый эмоциональный эпизод.</p>
+<p><strong>Уточнения тона:</strong> безопасный, зелёный, солнечный берег резко сменяется мрачным и кровавым кошмаром. Обитатели внешне безобидны и узнаваемы по книге; их жестокость проявляется в поступках. Обычные карточные солдаты могут буднично проводить кровавую казнь. Чудовищные мутации не являются общим художественным направлением.</p>
+<p><strong>Рабочий вариант для проверки:</strong> конкретные четыре способности, Додо / Голубка / Кухарка / Шляпник как первые боссы, устройство мира и суда, оружие, экономика смерти, расположение комнат и параметры боя. Они предложены в этом документе и могут меняться после прототипа.</p>
+<p><strong>Пока не решено:</strong> окончательное название, художественная техника, команда и бюджет, длительность кампании, финальная модель защиты/парирования, коммерческие платформы кроме первоначальной PC-цели.</p>
+<h2 id='gdd-2-концепция'>2. Концепция</h2>
+<p>Алиса следует за Белым Кроликом и оказывается в Стране чудес, испорченной властью Королевы. Чтобы найти выход, она проходит через затопленные покои, разросшийся лес, владения Герцогини, застывшее чаепитие и королевский сад. Познакомившись с обитателями, она решается защитить их. В финале Алиса отвергает неправый суд и побеждает Королеву, освобождая мир.</p>
+<p>Тема: <strong>сначала понять правила, затем использовать их, наконец — решиться их отвергнуть</strong>.</p>
+<p>Алиса впервые попадает в этот мир. Её биография и причина происходящего не заимствуются из современных игр об Алисе. У жителей есть собственная жизнь. Насилие связано с властью, страхом, телесными превращениями и бессмысленными процедурами. Пробуждение в финале сохраняет возможность сна, не отменяя ценность пережитого.</p>
+<h3 id='gdd-опоры-дизайна'>Опоры дизайна</h3>
+<ol>
+<li><strong>Читаемое действие.</strong> Поражение объясняется поведением противника и решением игрока. Анимации и эффекты сохраняют ясность даже в мрачном окружении.</li>
+<li><strong>Способность меняет маршрут.</strong> Каждый предмет открывает обязательный путь и минимум два дополнительных применения в ранее посещённых местах.</li>
+<li><strong>Книга узнаётся в событиях.</strong> Дом Кролика, Гусеница, младенец-поросёнок, чаепитие, крокет и суд сохраняют сюжетное значение.</li>
+<li><strong>Возвращение показывает последствия.</strong> Остановленная гонка, остывшая кухня и закончившееся чаепитие меняют население и доступные пути.</li>
+<li><strong>Жестокость имеет причину.</strong> Окружение показывает, кто вводит правила, кто их выполняет и кто платит за их исполнение.</li>
+</ol>
+<p>Первоначальная платформа: Windows PC, клавиатура/мышь и геймпад. Полная переназначаемость и поддержка других платформ планируются после проверки основного управления. Цель производительности — стабильные 60 FPS на будущей согласованной минимальной конфигурации; это пока не измеренное обещание.</p>
+<h2 id='gdd-3-игровой-цикл'>3. Игровой цикл</h2>
+<p>Исследование комнаты → столкновение или платформенное препятствие → находка/разговор/короткий путь → точка отдыха → освоение новой возможности → босс или сюжетная перемена → возвращение к замеченному ранее проходу.</p>
+<p>На коротком отрезке игрок принимает решения о дистанции, атаке и восстановлении. На уровне биома — выбирает маршрут и момент возвращения к отдыху. На уровне кампании — замечает закрытые проходы и связывает их с новыми предметами.</p>
+<p>Первая небольшая версия должна доказать качество движения и боя до производства всех биомов. Пять биомов — рамка кампании, а не требование сразу создавать пять больших уровней.</p>
+<h2 id='gdd-4-алиса-и-управление'>4. Алиса и управление</h2>
+<h3 id='gdd-базовые-действия'>Базовые действия</h3>
+<ul>
+<li>Бег с контролируемым ускорением и торможением.</li>
+<li>Прыжок с переменной высотой, буфером ввода и небольшим допуском после схода с края.</li>
+<li>Падение со сквозных платформ по отдельной комбинации; не со всех поверхностей.</li>
+<li>Базовая атака на земле и в воздухе; короткое комбо без обязательного сложного ввода.</li>
+<li>Наземное уклонение с настраиваемыми кадрами неуязвимости.</li>
+<li>Взаимодействие, лечение, просмотр карты, выбор и применение предмета.</li>
+</ul>
+<p>Воздушный рывок не доступен до веера. Двойного прыжка в базовом наборе нет. Карабканье и захват края не входят в первую итерацию: решение зависит от геометрии прототипа.</p>
+<h3 id='gdd-бой-рабочая-модель'>Бой — рабочая модель</h3>
+<p>Предлагаемое основное оружие — длинная швейная игла с собственной формой и анимацией. Это предмет самообороны и точного укола; окончательный дизайн ещё не утверждён. Не переносим узнаваемое оружие из существующих Alice-игр.</p>
+<p>Первая проверяемая модель: атака, уклонение, небольшая шкала выносливости на боевые действия. Бег и обычные прыжки не расходуют её, чтобы исследование не превращалось в ожидание. Воздушный рывок ограничен одним зарядом до приземления.</p>
+<p>Парирование проверяется отдельным экспериментом. Если оно становится главным действием, пересматриваем выносливость и телеграфы, а не добавляем вторую полноценную защитную систему автоматически.</p>
+<p>У каждого врага: читаемая подготовка, активный удар, восстановление; ясная реакция на попадание; заранее выбранные правила прерывания и неуязвимости. Контактный урон применяется только там, где визуально обоснован, а не ко всем телам по умолчанию.</p>
+<h3 id='gdd-здоровье-отдых-и-смерть'>Здоровье, отдых и смерть</h3>
+<p>Рабочий вариант: ограниченное число зарядов лечебного флакона; восстановление на точке отдыха. Точка сохраняет прогресс и возрождает обычных врагов. Боссы, предметы, открытые проходы и завершённые сюжетные события сохраняются.</p>
+<p>После смерти Алиса возвращается к последней активированной точке. Потеря переносимой валюты с одной попыткой возврата — гипотеза для прототипа, не утверждённое правило. Сюжетные предметы и способности не теряются. Платформенная ошибка сначала проверяется в более мягкой модели: возврат на безопасную поверхность с ограниченным уроном.</p>
+<p>Перед каждым боссом доступна точка отдыха и короткий повторный подход без обязательного повторения длинной платформенной секции. Бесконечные попытки, без расходуемого входного билета.</p>
+<h2 id='gdd-5-предметы-и-пространственная-прогрессия'>5. Предметы и пространственная прогрессия</h2>
+<p>Четыре постоянных предмета удовлетворяют требованию 4–5. Пятый добавляем только если он открывает отдельный интересный тип маршрута.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Таблица с горизонтальной прокруткой"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Предмет</th>
+<th>Получение</th>
+<th>Возможность</th>
+<th>Основной затвор</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A01</td>
+<td>Веер Кролика</td>
+<td>После Додо, биом 1</td>
+<td>Короткий горизонтальный рывок в воздухе</td>
+<td>Разрыв над Залом дверей к дому Кролика</td>
+</tr>
+<tr>
+<td>A02</td>
+<td>Кусочек гриба</td>
+<td>Гусеница, середина биома 2</td>
+<td>Управляемое уменьшение в отмеченных переходах</td>
+<td>Маленькая дверь к служебному входу Герцогини</td>
+</tr>
+<tr>
+<td>A03</td>
+<td>Чеширский шаг</td>
+<td>Кот, после Кухарки, биом 3</td>
+<td>Временно проявлять и пересекать специальные исчезнувшие поверхности</td>
+<td>Исчезнувший мост к чаепитию в биоме 2</td>
+</tr>
+<tr>
+<td>A04</td>
+<td>Часы отсрочки</td>
+<td>После Шляпника, биом 4</td>
+<td>Задерживать обозначенные движущиеся механизмы</td>
+<td>Ножницы у старого входа в королевский сад, биом 1</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id='gdd-правила-предметов'>Правила предметов</h3>
+<p><strong>Веер:</strong> один рывок до устойчивого приземления; не полёт. Базовое уклонение существует отдельно. Дистанцию фиксируем по результатам тестовой полосы препятствий.</p>
+<p><strong>Гриб:</strong> уменьшение в специально отмеченных местах, отдельные малые маршруты; пока без второго масштаба всей игры и полноценного боя в нём. Возврат только при свободном объёме. На каждом обязательном малом маршруте предусмотрен выход; смерть и перезагрузка восстанавливают корректный размер и позицию. Постановочные превращения пролога не выдаются за постоянную способность.</p>
+<p><strong>Чеширский шаг:</strong> работает с авторскими поверхностями, отмеченными когтями и улыбками. Не позволяет проходить через произвольные стены. При завершении эффекта персонаж возвращается на безопасную опору либо получает достаточно времени на выход; исчезновение пола под игроком без предупреждения запрещено.</p>
+<p><strong>Часы:</strong> действуют на заранее отмеченные механизмы. Не меняют глобальное время игры, интерфейс и сохранения. Обязательный переход всегда допускает повторное применение после восстановления ресурса. Применение к обычным врагам рассматривается отдельно от перемещения.</p>
+<h3 id='gdd-дополнительные-применения-при-возвращении'>Дополнительные применения при возвращении</h3>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Таблица с горизонтальной прокруткой"><table>
+<thead>
+<tr>
+<th>Предмет</th>
+<th>Раннее место, которое замечает игрок</th>
+<th>Награда/результат</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Веер</td>
+<td>Верхние балки Зала дверей; дальний берег Моря слёз</td>
+<td>Основной выход; необязательный запас ресурса</td>
+</tr>
+<tr>
+<td>Гриб</td>
+<td>Решётка Мыши в биоме 1; подвал дома Кролика в биоме 2</td>
+<td>Разговор/будущий квест; короткая дорога</td>
+</tr>
+<tr>
+<td>Шаг</td>
+<td>Разорванная галерея Герцогини; исчезнувшая лестница Зала дверей</td>
+<td>Тайник и история дома; выход к верхним дверям</td>
+</tr>
+<tr>
+<td>Часы</td>
+<td>Сушильные валы в биоме 1; пресс на кухне в биоме 3</td>
+<td>Старый маршрут с новыми ответвлениями; улучшение</td>
+</tr>
+</tbody>
+</table></div>
+<p>Ни один дополнительный проход не обязателен для возврата потерянной валюты до получения нужной способности.</p>
+<h2 id='gdd-6-карта-кампании-и-затворы'>6. Карта кампании и затворы</h2>
+<p>Основная цепочка:</p>
+<p><code>Пролог → Нижние покои → Додо / A01 → Дом Кролика → Гусеница / A02 → Голубка → Зал дверей → Герцогиня → Кухарка / A03 → возврат в Чащу → Чаепитие → Шляпник / A04 → возврат в Нижние покои → Червонный сад → Суд → Королева → Эпилог</code>.</p>
+<p>Зал дверей — центральный географический узел. Сначала доступен нижний ярус, затем верхние балки, малые проходы и служебная галерея. Открытые изнутри двери остаются открытыми.</p>
+<figure class='route-map'><figcaption>Связи областей <span>Переходы и условия открытия</span></figcaption><ol><li><span class='route-place'>Берег и нора</span><span class='route-arrow'><small></small><span aria-label='ведёт в'>→</span></span><span class='route-place'>Зал дверей</span></li>
+<li><span class='route-place'>Зал дверей</span><span class='route-arrow'><small></small><span aria-label='ведёт в'>→</span></span><span class='route-place'>Нижние покои / Додо</span></li>
+<li><span class='route-place'>Нижние покои / Додо</span><span class='route-arrow'><small>Веер</small><span aria-label='ведёт в'>→</span></span><span class='route-place'>Дом Кролика и Чаща / Голубка</span></li>
+<li><span class='route-place'>Дом Кролика и Чаща / Голубка</span><span class='route-arrow'><small>Гриб + открытый спуск</small><span aria-label='ведёт в'>→</span></span><span class='route-place'>Зал дверей</span></li>
+<li><span class='route-place'>Зал дверей</span><span class='route-arrow'><small>Маленькая дверь</small><span aria-label='ведёт в'>→</span></span><span class='route-place'>Герцогиня / Кухарка</span></li>
+<li><span class='route-place'>Герцогиня / Кухарка</span><span class='route-arrow'><small>Чеширский шаг</small><span aria-label='ведёт в'>→</span></span><span class='route-place'>Дом Кролика и Чаща / Голубка</span></li>
+<li><span class='route-place'>Дом Кролика и Чаща / Голубка</span><span class='route-arrow'><small>Исчезнувший мост</small><span aria-label='ведёт в'>→</span></span><span class='route-place'>Чаепитие / Шляпник</span></li>
+<li><span class='route-place'>Чаепитие / Шляпник</span><span class='route-arrow'><small>Часы + служебная галерея</small><span aria-label='ведёт в'>→</span></span><span class='route-place'>Зал дверей</span></li>
+<li><span class='route-place'>Зал дверей</span><span class='route-arrow'><small>Остановленные ножницы</small><span aria-label='ведёт в'>→</span></span><span class='route-place'>Сад и Суд / Королева</span></li>
+<li><span class='route-place'>Сад и Суд / Королева</span><span class='route-arrow'><small></small><span aria-label='ведёт в'>→</span></span><span class='route-place'>Пробуждение</span></li></ol></figure>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Таблица с горизонтальной прокруткой"><table>
+<thead>
+<tr>
+<th>Переход</th>
+<th>Условие</th>
+<th>Защита от обхода основной цепочки</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Биом 1 → 2</td>
+<td>Веер</td>
+<td>Разрыв за пределом обычного прыжка; награда Додо находится за ареной</td>
+</tr>
+<tr>
+<td>Биом 2 → 3</td>
+<td>Гриб и завершение встречи с Голубкой</td>
+<td>Спуск из верхнего леса закрыт гнездом; после боя открывается постоянный короткий путь к узлу</td>
+</tr>
+<tr>
+<td>Биом 3 → 4</td>
+<td>Чеширский шаг</td>
+<td>Мост в Чаще существует только на специальных поверхностях</td>
+</tr>
+<tr>
+<td>Биом 4 → 5</td>
+<td>Часы и план служебной галереи Шляпника</td>
+<td>Механический проход в биоме 1; приглашение объясняет прежний путь к Герцогине, но не является универсальным ключом</td>
+</tr>
+<tr>
+<td>Сад → Суд</td>
+<td>Эпизод крокета, встреча с Грифоном и Квази</td>
+<td>Кролик объявляет заседание, открывается проход в зал</td>
+</tr>
+</tbody>
+</table></div>
+<p>Получение гриба до Голубки намеренно: игрок тренирует способность перед боссом. Арена не требует боя в малом размере. Победа открывает физический спуск, поэтому ранний гриб сам по себе не позволяет пропустить босса.</p>
+<p>Приглашение Герцогини именное. Служебный путь обходит внешнюю стражу; в саду Алиса встречает садовников и процессию, затем Королева сама велит ей присоединиться к игре. Приглашение не даёт права на свободный проход и не делает Алису сопровождающей арестованной хозяйки.</p>
+<p>Обязательное возвращение ведёт к новому участку старого биома. После босса открывается петля или лифт; повторять весь пройденный уровень не требуется. Быстрое перемещение между точками отдыха рассматриваем после биома 3; обязательный маршрут сначала проектируется проходимым пешком.</p>
+<h2 id='gdd-7-основной-сюжет'>7. Основной сюжет</h2>
+<p>Подробная актуальная история вынесена в <a href="#story">Story.md</a>, версия 0.3. Это источник событий и характеров; настоящая краткая сводка не заменяет синопсис. Предыдущая версия с заранее выписанной повесткой и раной после пробуждения снята с рассмотрения.</p>
+<p>Королева Червей сознательно испортила страну ради власти. Скреплённые волшебной печатью приказы удерживают места и жителей в бесконечных занятиях. Алиса сначала ищет дорогу домой, затем понимает связь между местными бедами и решается защитить тех, с кем познакомилась.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Таблица с горизонтальной прокруткой"><table>
+<thead>
+<tr>
+<th>Часть</th>
+<th>Событие и цель</th>
+<th>Столкновение и последствие</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Пролог</td>
+<td>Сестра, Кролик, падение, маленькая дверь в сад</td>
+<td>Неконтролируемые превращения и Море слёз</td>
+</tr>
+<tr>
+<td>B01. Нижние покои</td>
+<td>Мышь; Бег по кругу; попытка вывести участников из машины</td>
+<td>Додо выживает, гонка остановлена; найден веер</td>
+</tr>
+<tr>
+<td>B02. Разросшаяся чаща</td>
+<td>Дом Кролика, Билль, Щенок, Гусеница и гриб; дорога через гнездо</td>
+<td>Голубка неизбежно погибает, защищаясь и не давая уйти Алисе; открывается спуск</td>
+</tr>
+<tr>
+<td>B03. Владения Герцогини</td>
+<td>Приглашение, ребёнок-поросёнок, арест; клетки и поставки для кухни</td>
+<td>Кухарка погибает при нападении на Алису; кухня остановлена, Кот обучает Шагу</td>
+</tr>
+<tr>
+<td>B04. Чаепитие</td>
+<td>Закольцованный стол; Шляпник покупает отсрочку чужим временем</td>
+<td>Шляпник выживает, петля прекращается; часы открывают служебный путь в сад</td>
+</tr>
+<tr>
+<td>B05. Сад и Суд</td>
+<td>Садовники, крокет, голова Кота, Грифон и Квази; суд над Валетом</td>
+<td>Алиса отказывается от лжесвидетельства; Королева пытается казнить её, погибает в бою; исходная печать разбита</td>
+</tr>
+<tr>
+<td>Развязка и эпилог</td>
+<td>Показано освобождение всей страны; последствия не отменяются</td>
+<td>Алиса просыпается у сестры; был ли это только сон, остаётся неясным</td>
+</tr>
+</tbody>
+</table></div>
+<p>Вынужденное насилие определяет все обязательные бои. Алиса прекращает нападение, когда угроза закончилась. Смерть Голубки как тяжёлый эмоциональный эпизод согласована с владельцем. Остальные конкретные исходы и волшебная печать — рабочие решения подробной истории; окончательная постановка ещё обсуждается.</p>
+<p>Поведение персонажей не исправляется автоматически после победы: снимается королевское принуждение. Погибшие не воскресают. Побочные линии не требуются для основного освобождения мира.</p>
+<p>Альтернативные концовки, тайный шестой обязательный босс и моральная шкала сейчас не предусмотрены. Продолжение исследования после финала возможно из явно обозначенного сохранения перед судом.</p>
+<h2 id='gdd-8-направляющие-персонажи'>8. Направляющие персонажи</h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Таблица с горизонтальной прокруткой"><table>
+<thead>
+<tr>
+<th>Персонаж</th>
+<th>Функция</th>
+<th>Что сообщает</th>
+<th>Повторная встреча</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Белый Кролик</td>
+<td>Сквозная цель и проводник к суду</td>
+<td>Срочность, двор, приглашения</td>
+<td>Дом, служебные переходы, объявление суда</td>
+</tr>
+<tr>
+<td>Мышь</td>
+<td>Первая ориентация и недоверие</td>
+<td>Берег, опасности воды</td>
+<td>Убежище в Нижних покоях</td>
+</tr>
+<tr>
+<td>Додо</td>
+<td>Олицетворение процедуры</td>
+<td>Условия прохода через берег</td>
+<td>После остановки гонки</td>
+</tr>
+<tr>
+<td>Гусеница</td>
+<td>Учитель способности и вопрос идентичности</td>
+<td>Гриб и малые проходы</td>
+<td>Доступна после открытия спуска</td>
+</tr>
+<tr>
+<td>Чеширский Кот</td>
+<td>Подсказки о связях мира</td>
+<td>Герцогиня, Шаг, Шляпник</td>
+<td>Чаща, особняк, крокет</td>
+</tr>
+<tr>
+<td>Герцогиня</td>
+<td>Вход в придворный конфликт</td>
+<td>Приглашение, положение Королевы</td>
+<td>Сад под надзором</td>
+</tr>
+<tr>
+<td>Соня</td>
+<td>Косвенная подсказка</td>
+<td>Скрытый механизм времени</td>
+<td>После завершения чаепития</td>
+</tr>
+<tr>
+<td>Грифон и Квази</td>
+<td>Передышка и память о стране</td>
+<td>Путь к суду, школьное прошлое</td>
+<td>Зверинец до финала</td>
+</tr>
+</tbody>
+</table></div>
+<p>Подсказки имеют три слоя: образная первая реплика, более конкретное повторное уточнение, запись в журнале. Журнал фиксирует намерение Алисы и ориентир, не раскрывая всю карту. Обязательная информация не теряется после одного разговора.</p>
+<h2 id='gdd-9-обычные-враги'>9. Обычные враги</h2>
+<p>Стартовый бюджет кампании: <strong>10 базовых архетипов</strong>, вариации сначала делаем через параметры и композицию встреч. Это оценка объёма, а не уже созданный контент.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Таблица с горизонтальной прокруткой"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Архетип</th>
+<th>Биом</th>
+<th>Поведение и назначение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EN01</td>
+<td>Промокший лакей</td>
+<td>1</td>
+<td>Медленный выпад, обучает окну после удара</td>
+</tr>
+<tr>
+<td>EN02</td>
+<td>Сборщик на трассе</td>
+<td>1</td>
+<td>Толчок и короткая погоня; учит сохранять пространство</td>
+</tr>
+<tr>
+<td>EN03</td>
+<td>Садовый паразит</td>
+<td>2</td>
+<td>Низкий прыжок по видимой дуге, учит работать с вертикалью</td>
+</tr>
+<tr>
+<td>EN04</td>
+<td>Сторожевая птица</td>
+<td>2</td>
+<td>Подготовленное пикирование с посадкой и уязвимостью</td>
+</tr>
+<tr>
+<td>EN05</td>
+<td>Корневая ловушка</td>
+<td>2</td>
+<td>Стационарная хватка, заранее видимая зона срабатывания</td>
+</tr>
+<tr>
+<td>EN06</td>
+<td>Перечный слуга</td>
+<td>3</td>
+<td>Ближний бой и ограниченное облако, учит выходить из зоны</td>
+</tr>
+<tr>
+<td>EN07</td>
+<td>Кухонный метатель</td>
+<td>3</td>
+<td>Снаряд по прямой, уязвимость во время подготовки</td>
+</tr>
+<tr>
+<td>EN08</td>
+<td>Заводной официант</td>
+<td>4</td>
+<td>Повторяемая серия с паузой; изменяется механизмом комнаты</td>
+</tr>
+<tr>
+<td>EN09</td>
+<td>Карточный страж</td>
+<td>3, 5</td>
+<td>Щит и тяжёлый выпад, обход после промаха</td>
+</tr>
+<tr>
+<td>EN10</td>
+<td>Карточный глашатай</td>
+<td>5</td>
+<td>Усиливает строй; приоритетная цель, эффект явно показан</td>
+</tr>
+</tbody>
+</table></div>
+<p>Мухи, вода, пар, лезвия, ожившая утварь и часы в первой реализации — опасности окружения или варианты этих архетипов, а не скрытое расширение списка полноценных врагов.</p>
+<p>Новые враги сначала представляются по одному на безопасной геометрии. Смешанные группы появляются после освоения поведения. В узком проходе не совмещаем обязательный точный прыжок с невидимой дальней атакой.</p>
+<h2 id='gdd-10-улучшения-карта-и-сохранения'>10. Улучшения, карта и сохранения</h2>
+<p>Рабочая экономика: одна валюта обычных боёв и отдельные уникальные находки. Постоянные улучшения здоровья, лечения и оружия ограничены; числа определяем после первого босса. Новые пространственные способности не покупаются за фарм.</p>
+<p>Карта открывается по комнатам, показывает соединения, точки отдыха, замеченные затворы и отметки игрока. Тип затвора обозначен формой и символом, не только цветом. Секретная комната не раскрывается до обнаружения.</p>
+<p>Минимальное состояние сохранения: версия схемы; ID точки отдыха; здоровье/заряды при восстановлении; полученные A01–A04; флаги боссов; постоянные двери и лифты; уникальные находки; состояния NPC/диалогов; раскрытая карта; будущие квестовые флаги. Используем устойчивые ID, не имена объектов или их позиции в списке.</p>
+<p>Запись атомарная через временный файл и замену, с резервной копией. Ошибка загрузки не перезаписывает исходное сохранение. Хранение через <code>Application.persistentDataPath</code>, вне репозитория. Точки автосохранения: отдых, получение способности, победа над боссом, важный постоянный затвор. Смерть не должна отменять уже записанную способность.</p>
+<h2 id='gdd-11-побочные-задания-зарезервированный-объём'>11. Побочные задания — зарезервированный объём</h2>
+<p>План: 5–6 сквозных линий, разработка после фиксации основной цепочки. Их полный сюжет сейчас не утверждён. Возможные участники: Мышь, Билль, освобождённые участники гонки, поросёнок, Соня, карточные садовники.</p>
+<p>Каждая линия должна соединять минимум два биома, изменять встречу или окружение и иметь понятную запись текущего состояния. Побочные задания не дают обязательные A01–A04 и не блокируют основную концовку. Не вводим необратимый провал за незаметное пересечение границы комнаты. Точки невозврата обозначаем заранее.</p>
+<h2 id='gdd-12-визуальное-и-звуковое-направление'>12. Визуальное и звуковое направление</h2>
+<p>2D вид сбоку, ортографическая камера, многослойные планы и свет URP 2D. Выбор между рисованной анимацией, скелетной 2D-анимацией и пиксель-артом остаётся открытым. Pixel Perfect и единицы спрайтов фиксируем только после выбора техники.</p>
+<p>Обитатели сохраняют безобидные книжные силуэты. Карта остаётся обычной картой с руками и ногами, Кролик — белым кроликом в жилете, Шляпник — человеком в шляпе. Монструозная анатомия и превращение босса в огромного мутанта не используются как стандартное повышение угрозы. Конкретные дизайны создаём самостоятельно по первоисточнику.</p>
+<p>Окружение мрачно; кровь, тела и следы казней показаны прямо. Жестокость часто выполняется буднично, при неизменной внешности и спокойном разговоре. Важна реакция Алисы на то, что остальные считают нормальным. Повествовательный ориентир: обычные карточные солдаты казнят пленного и продолжают обсуждать службу. Солнечное зелёное спокойствие полноценно принадлежит сценам у сестры; передышки внутри страны сохраняют тревогу.</p>
+<p>Алиса, враги и интерактивные поверхности читаются на фоне. Кровь, пыль и постобработка не скрывают края платформ. Визуальная логика биомов связана с их занятиями: сушить, выращивать, готовить, обслуживать, судить.</p>
+<p>Музыка и звуки собственные или с проверенной лицензией. Повторяющиеся мотивы меняются после победы над боссом. Звуковые сигналы механик дублируются визуально. Важные реплики имеют субтитры.</p>
+<p>Доступность: размер текста, переназначение ввода, настройка тряски и вспышек, раздельная громкость, возможность удержания вместо частых нажатий. Сложность и помощь в таймингах обсуждаются после прототипа; отсутствие таких функций не объявляем частью художественной идеи заранее.</p>
+<h2 id='gdd-13-технические-принципы'>13. Технические принципы</h2>
+<p>Unity 6000.6.6f1, URP 2D, Input System. <code>Assets/_Alice</code> — собственный контент. Сцены создаются через Editor API; GUID и <code>.meta</code> хранятся в Git. Технические детали описаны в <a href="#technical">TechnicalSetup.md</a>.</p>
+<p>Первоначально: одна сцена проверки движения, затем отдельный малый вертикальный срез. Потоковую загрузку всей карты, сложную архитектуру сервисов и собственные инструменты диалогов не строим до необходимости. Параметры действий и врагов выносим в данные по мере появления второго реального использования.</p>
+<p>В коде разделяем движение, боевую реакцию, постоянные способности, состояние мира, диалоги и сохранения. Предметы открываются по ID, а не наличию конкретного объекта в сцене. Время отсрочки применяется к интерфейсу механизма, а не через глобальный <code>Time.timeScale</code>.</p>
+<h2 id='gdd-14-риски-и-решения-до-полного-производства'>14. Риски и решения до полного производства</h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Таблица с горизонтальной прокруткой"><table>
+<thead>
+<tr>
+<th>Риск</th>
+<th>Что проверяем</th>
+<th>Ограничение первой версии</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Размер Алисы умножает объём уровней</td>
+<td>Камера, коллизии, выход из малых проходов</td>
+<td>Малые маршруты только в отмеченных переходах</td>
+</tr>
+<tr>
+<td>Четыре способности перегружают ввод</td>
+<td>Геймпад и переключение в опасности</td>
+<td>Веер на отдельном контекстном действии; сложные комбинации не требуются</td>
+</tr>
+<tr>
+<td>Книга линейна, карта требует петель</td>
+<td>Понятность целей после каждого босса</td>
+<td>Центральный узел и четыре проверяемых затвора</td>
+</tr>
+<tr>
+<td>Пять уникальных боссов дороги</td>
+<td>Полноценный Додо до других четырёх</td>
+<td>2 фазы обычно, 3 только у Королевы</td>
+</tr>
+<tr>
+<td>Мрачные эффекты мешают платформеру</td>
+<td>Читаемость без звука и на тёмном экране</td>
+<td>Отдельный проход визуальной проверки телеграфов</td>
+</tr>
+<tr>
+<td>Сходство с современной Alice-адаптацией</td>
+<td>Оружие, дизайн, история и материалы</td>
+<td>Собственные добавления и реестр источников</td>
+</tr>
+<tr>
+<td>Катсцены тормозят производство</td>
+<td>Ценность эпизода и время реализации</td>
+<td>Игровые сцены/иллюстрированные вставки вместо сложной кинопостановки</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id='gdd-15-критерии-готовности-дизайна-к-производству'>15. Критерии готовности дизайна к производству</h2>
+<ul>
+<li>Утверждены базовый бой, роль парирования и стоимость действий.</li>
+<li>На тестовом маршруте доказаны четыре разных типа пространственных затворов.</li>
+<li>Нет обязательного прыжка, зависящего от случайной частоты кадров.</li>
+<li>Смерть, загрузка и возврат не оставляют Алису за закрытым затвором или в неверном размере.</li>
+<li>Первый биом с Додо пройден от входа до возврата в узел.</li>
+<li>У каждой новой способности есть безопасное обучение и последующее применение.</li>
+<li>Есть оценка времени производства одного врага, комнаты и босса.</li>
+<li>Подтверждены визуальная техника, целевой объём кампании и минимальные системные требования.</li>
+</ul>
+<h2 id='gdd-16-журнал-решений'>16. Журнал решений</h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Таблица с горизонтальной прокруткой"><table>
+<thead>
+<tr>
+<th>Дата</th>
+<th>Решение</th>
+<th>Статус</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-10-31</td>
+<td>Unity, 2D; пять биомов/боссов; Королева — финал; сюжет близок к книге</td>
+<td>Утверждено владельцем</td>
+</tr>
+<tr>
+<td>2026-10-31</td>
+<td>Четыре предмета: веер, гриб, Шаг, часы</td>
+<td>Рабочая версия</td>
+</tr>
+<tr>
+<td>2026-10-31</td>
+<td>Додо, Голубка, Кухарка, Шляпник — первые четыре босса</td>
+<td>Рабочая версия</td>
+</tr>
+<tr>
+<td>2026-10-31</td>
+<td>Одна концовка и отложенные 5–6 сайдквестов</td>
+<td>Рамка первой версии</td>
+</tr>
+<tr>
+<td>2026-10-31</td>
+<td>PC-прототип, URP 2D, единый репозиторий</td>
+<td>Технический старт</td>
+</tr>
+<tr>
+<td>2026-10-31</td>
+<td>Техническую разработку приостановить; сначала цельная история</td>
+<td>Решение владельца</td>
+</tr>
+<tr>
+<td>2026-10-31</td>
+<td>Вынужденное насилие; Королева сознательно испортила мир; победа освобождает страну</td>
+<td>Утверждено владельцем</td>
+</tr>
+<tr>
+<td>2026-10-31</td>
+<td>Пробуждение у сестры; реальность мира остаётся загадкой</td>
+<td>Утверждено владельцем</td>
+</tr>
+<tr>
+<td>2026-10-31</td>
+<td>Неизбежная смерть Голубки как эмоционально тяжёлый эпизод</td>
+<td>Утверждено владельцем</td>
+</tr>
+<tr>
+<td>2026-10-31</td>
+<td>Подробный синопсис вести в Story.md; старую ветку с повесткой до падения убрать</td>
+<td>Редакция 0.2</td>
+</tr>
+<tr>
+<td>2026-10-31</td>
+<td>После солнечного берега — кровавый мрачный кошмар; безобидная внешность обитателей и ужасные поступки</td>
+<td>Утверждено владельцем, редакция 0.3</td>
+</tr>
+</tbody>
+</table></div>
+<footer class='document-footer'><span>Рабочий документ · Alice</span><a href='GameDesignDocument.md'>Открыть исходный текст ↗</a></footer></article>
+<article class='document' id='story' data-title='Основная история' data-icon='02'><h1 id='story-алиса-основная-история'>Алиса — основная история</h1>
+<p>Версия 0.3 · 31 октября 2026 · подробный сюжетный синопсис.</p>
+<p>Это история кампании для совместной редакции. Она определяет события, мотивы и последствия; покадровый сценарий, полные диалоги и постановка появятся после согласования. Реплики ниже — новые рабочие формулировки, кроме отдельно отмеченных книжных мотивов. Техническая разработка приостановлена до проработки сюжета.</p>
+<h2 id='story-принятые-решения'>Принятые решения</h2>
+<p>Алиса следует за Кроликом из любопытства, затем хочет вернуться домой. Насилие для неё вынужденное: она защищается, пытается вырваться или защитить другого от немедленной опасности. Побеждённого противника она не добивает, если угроза закончилась.</p>
+<p>Страна чудес испорчена Королевой Червей. Та сознательно подчинила мир ради власти. История заканчивается освобождением страны и пробуждением Алисы рядом с сестрой. Было ли путешествие только сном, остаётся неясным. Неизбежная смерть Голубки как тяжёлый эмоциональный эпизод согласована с владельцем; конкретная постановка остаётся рабочей.</p>
+<p>Основная последовательность первой книги сохраняется. Пять основных столкновений: Додо, Голубка, Кухарка, Шляпник, Королева. Королева как финальный босс и неизбежная смерть Голубки утверждены владельцем; кандидатуры остальных трёх боссов и конкретная постановка остаются рабочим предложением.</p>
+<h2 id='story-тон-солнечный-берег-и-кровавый-кошмар'>Тон: солнечный берег и кровавый кошмар</h2>
+<p>Мир рядом с сестрой тёплый, зелёный и безопасный. Падение резко обрывает это ощущение. Нижний мир встречает Алису темнотой, кровью, телами и следами попыток выбраться. Она сразу понимает, что здесь можно умереть. Дальнейший путь не возвращает её к полноценной безопасности; передышки дают только временное укрытие.</p>
+<p>Обитатели сохраняют безобидный, узнаваемый облик: белый кролик, птица, аккуратный человек в шляпе, обычные игральные карты с руками и ногами. Королевское искажение меняет жизнь страны и её порядки; обязательных чудовищных мутаций персонажей нет. Ранения и следы изнурения возможны, но не служат главным объяснением их поведения.</p>
+<p>Кровь и жестокость видны прямо. Ничем не примечательные карточные солдаты могут казнить пленного возле служебной двери, вытереть оружие и продолжить обсуждать караул. Их жертва живая, смерть настоящая. Внешность карт не превращает сцену в безвредный бумажный фокус. Для Алисы случившееся невыносимо; окружающим оно кажется обыденным.</p>
+<p>Вежливый разговор, чистая одежда и ласковый голос не обещают защиты. Страшнее всего тот, кто понимает чужую боль и спокойно продолжает начатое. Среди таких же внешне безобидных существ есть жертвы и возможные союзники: определить их по силуэту нельзя. Алиса учится судить по действиям.</p>
+<p>Книжные споры и нелепости сохраняются. Их используют и для тревоги: пока кто-то истекает кровью, исполнители могут выяснять, правильно ли оформлен приказ. Тёплые отношения возможны даже здесь, но не превращают окружение в уютную сказку. Полное ощущение защищённости возвращается рядом с сестрой.</p>
+<h2 id='story-что-случилось-со-страной-чудес'>Что случилось со Страной чудес</h2>
+<p>Прежде здесь тоже спорили по пустякам, путали слова, меняли рост и опаздывали на чаепития. Вода могла обидеться, а время — отказаться помогать. Местные правила были странными и иногда опасными, но не вечными: из игры можно было выйти, спор закончить, а неверно выбранное занятие оставить.</p>
+<p>Королева захотела, чтобы никто больше не мог уйти от её приказов. Она присвоила волшебство королевской печати и велела скреплять ею свои распоряжения. Запечатанный приказ стал удерживать место и его обитателей в предписанном состоянии. Приказы множились, противоречили друг другу, но не отменялись. В конце концов страна оказалась заперта в занятиях, которые давно должны были закончиться.</p>
+<p>Гонка продолжается без финиша. Кухня готовит для отсутствующих гостей. За столом нельзя закончить чай. Садовники исправляют цвет цветка, потому что вырастить другой уже не разрешено. Казни стали частью расписания. Кто-то пытается выжить внутри своего поручения, кто-то охотно использует его, чтобы мучить слабых; остальные привыкли проходить мимо.</p>
+<p>Печать — источник конкретного принуждения, а не способность Королевы сделать любое желание истиной. Приказу нужны исполнитель, предмет или механизм: солдат должен схватить, ножницы — сомкнуться, часы — удерживать очередную минуту. Королева может менять устройство подчинённых ей мест, но выкрик «голову с плеч» сам по себе не отделяет голову от тела. Поэтому Алиса способна сопротивляться и спасаться.</p>
+<p>Корона Королевы несёт исходную печать; от неё зависит сила остальных оттисков. Прекратить действие отдельного приказа можно, разрушив его местный механизм. Освободить всю страну — сломав источник власти в финале. Эту связь Алиса понимает постепенно, по последствиям собственных действий. Для победы не требуется собрать отдельные «осколки печати» или объяснить происхождение всего волшебства.</p>
+<p>Королева знает, что происходит с подданными. Их страх, зависимость и невозможность уйти её устраивают. Она не собирается исцелять страну и не нуждается в трагическом оправдании.</p>
+<h2 id='story-пролог-книга-без-картинок'>Пролог. Книга без картинок</h2>
+<p>Тёплый день. Алиса сидит с сестрой на берегу. Сестра читает, иногда переворачивает страницу; Алиса заглядывает в книгу и не понимает, зачем писать столько слов без картинок и разговоров. Рядом лежат собранные маргаритки. Она начинает плести венок, но отвлекается.</p>
+<p>В траве появляется Белый Кролик. Сам говорящий зверёк кажется ей почти естественным; поразительны жилет, карман и часы. Кролик торопится и повторяет, что его не станут слушать, если он опоздает. Замечая Алису, он на мгновение замирает, затем бежит дальше. Он не узнаёт её и не заманивает по заранее составленному плану: просто боится, что его опять остановят.</p>
+<p>Алиса следует за ним под изгородь и падает в нору.</p>
+<p>Падение долгое. Первые несколько секунд Алиса ещё пытается разговаривать сама с собой. В стенах стоят шкафы и книжные полки. Она берёт банку варенья и замечает под полкой кровавые следы пальцев. Банка выскальзывает. Ниже повсюду разбитая посуда, обрывки одежды и запертые дверцы. Дневной свет наверху исчезает, голос сестры уже не слышен. Любопытство сменяется паникой ещё до приземления.</p>
+<p>Ниже среди чашек и карт появляются опечатанные ящики и дверцы с красным знаком сердца. Некоторые полки продолжаются в темноту, как коридоры. Из одного закрытого шкафа слышится стук. Алиса не успевает понять, что внутри.</p>
+<p>Она падает на мокрые листья среди разбитых ящиков. В нескольких шагах лежит неподвижный зверёк; от него тянется тёмный след к стене. Кролик исчезает за поворотом. Алиса зовёт сестру, затем пытается вскарабкаться обратно, обдирает ладонь о камень и соскальзывает. Обратного пути не видно.</p>
+<h2 id='story-глава-i-те-кто-ещё-не-обсох'>Глава I. Те, кто ещё не обсох</h2>
+<h3 id='story-маленькая-дверь'>Маленькая дверь</h3>
+<p>Алиса попадает в длинный сырой зал. Все двери заперты; на некоторых изнутри выцарапаны борозды, у порогов засохла кровь. На стеклянном столике лежит золотой ключ. За занавеской находится маленькая дверца, а за ней далеко видны освещённые розы и фонтан. Узкая щель скрывает всё остальное.</p>
+<p>Алиса цепляется за этот свет как за обещание выхода. Ей нужно покинуть зал прежде, чем вернутся те, от кого пытались укрыться за дверями.</p>
+<p>Бутылочка с надписью «Выпей меня» уменьшает её. Ключ остаётся на столе. Пирожок с обещанием обратного действия делает её слишком большой. Изменения сопровождаются болью, головокружением и потерей контроля над телом. Алиса не помещается в комнате, упирается плечом в потолок и не понимает, как прекратить рост. Она остаётся собой; превращение страшно именно беспомощностью.</p>
+<p>Она зовёт сестру. Никто не отвечает. Слёзы поднимаются у плинтусов.</p>
+<p>Появляется Кролик с перчатками и веером. Алиса просит помощи; он пугается огромного лица, роняет вещи и убегает. Алиса подбирает веер и, обмахиваясь им, начинает уменьшаться. Когда понимает, что может исчезнуть совсем, отпускает его и падает в собственные слёзы. Вода уносит веер в нижний сток.</p>
+<p>Вода уносит Алису в нижние покои. Рядом проплывают перевёрнутые стулья, окровавленная ткань и тела тех, кто не выбрался раньше. Через открытую решётку она видит, как вода затапливает ещё населённые помещения. Её беда стала чужой бедой тоже.</p>
+<h3 id='story-берег'>Берег</h3>
+<p>Мышь помогает ей доплыть до сухой лестницы. Алиса благодарит её и рассказывает о Дине, совершенно не подумав, как рассказ о хорошей кошке прозвучит для мыши. Та обижается. Приходится извиняться и впервые всерьёз слушать собеседника, который смотрит на мир иначе.</p>
+<p>На берегу собираются промокшие звери. Выглядят они как обычные птицы и зверьки, только дрожат от холода. Мышь пробует обсушить их самой сухой историей, какую знает. Пока она говорит, двое участников молча оттаскивают тело от воды, чтобы освободить место слушателям. Остальные спорят о том, что считать сухим. Алиса не может понять, почему рассказ не прекращают.</p>
+<p>В выброшенной на берег швейной коробке Алиса находит длинную иглу. При её нынешнем росте ею можно пользоваться как короткой шпагой, но сначала она берёт её, чтобы подцепить заевший засов. На следующей лестнице промокший служитель гонки пытается силой вернуть Мышь в воду. На его одежде застыл красный оттиск; приветствие он повторяет тем же голосом, каким угрожает. Просьбы остановиться не помогают. Алиса отбивается иглой, ранит его и освобождает Мышь. После столкновения у неё дрожат руки.</p>
+<p>Затем приходит Додо и объявляет Бег по кругу.</p>
+<p>Когда-то так развлекались после дождя. Теперь на выходе стоит опечатанный затвор: участникам запрещено покидать берег до официального окончания сушки. На стене висит старый королевский приказ. По мокрому полу тянется его красный оттиск.</p>
+<p>Додо уверяет, что нужно лишь пробежать ещё один круг. Все получат призы, всех отпустят. Он говорит так, будто репетировал это очень долго.</p>
+<h3 id='story-бег-по-кругу'>Бег по кругу</h3>
+<p>Маршрут проходит через сушильные колёса, натянутые верёвки и узкие мостки. Между решётками застряли тела участников, под приводом собирается кровь. Обслуживающие трассу зверьки вытаскивают упавших баграми, не останавливая гонку. Сам Додо выглядит обычной важной птицей и тщательно следит, чтобы номер каждого погибшего сохранили для награждения. Мышь объясняет: он должен объявить победителями всех. Додо не признаёт, что некоторые уже не вернутся, а закончить гонку без них не решается.</p>
+<p>Алиса пытается вывести Мышь через боковую дверь. Додо закрывает её: за нарушение отвечать ему. Он запускает сушильную машину сильнее, чтобы наконец выполнить приказ.</p>
+<p>Вода после нового прилива достигает привода. Машина начинает захватывать мостки вместе с бегущими. Выход закрыт; Мышь оказывается у вращающегося барабана. Алиса не пытается занять место Додо или выиграть гонку. Она лезет к тормозу.</p>
+<p>До этого момента она отбивалась только от обезумевших сборщиков и существ в воде. Здесь ей впервые противостоит собеседник, который понимает её слова и всё равно не даёт уйти.</p>
+<h3 id='story-первый-босс-додо'>Первый босс: Додо</h3>
+<p>Додо принимает попытку остановить машину за нападение на всё, что ещё удерживает его жизнь в порядке. Он защищает привод, сбивает Алису с мостков и пытается вернуть её на трассу. Даже во время боя продолжает объявлять круги.</p>
+<p>Алиса разбивает тормозной узел. Машина срывает крепление, Додо падает вместе с ним. Получив возможность ударить лежащего, Алиса вместо этого останавливает последнее колесо: иначе оно раздавит и его, и тех, кто остался внизу.</p>
+<p>Машина замолкает. Красный оттиск на затворе трескается.</p>
+<p>Додо жив. Он долго перебирает намокшие призы, затем объявляет, что победили все. Алиса спрашивает, значит ли это, что теперь все могут уйти. Додо не отвечает, но больше не закрывает дверь.</p>
+<p>За машиной она находит веер Кролика. Здесь он использовался для раздувания сушильных печей; в руках Алисы позволяет поймать порыв и пересечь разрыв над залом.</p>
+<p>Уходя, она видит, как Мышь осторожно подходит к Додо. Мир не стал добрым, но одно мучительное занятие закончилось.</p>
+<p><strong>Следующая цель:</strong> найти Кролика. Он пришёл откуда-то снаружи и, возможно, знает дорогу назад. Сад остаётся видимым ориентиром.</p>
+<h2 id='story-глава-ii-какого-ты-роста'>Глава II. Какого ты роста</h2>
+<h3 id='story-дом-кролика'>Дом Кролика</h3>
+<p>На верхнем выходе Алиса снова сталкивается с Кроликом. Он принимает её за Мэри-Энн и отправляет за перчатками и другим веером. Алиса пытается объясниться, но он уже перечисляет следующие поручения. Она идёт в дом: там можно будет остановить его и расспросить.</p>
+<p>Дом аккуратен. Кролик выровнял чашки на полке и повесил перчатки попарно. На косяке остались кровавые отпечатки, но пол под ними вымыт. Алиса не садится: прислушивается к шагам и проверяет, открывается ли окно. Порядок вещей больше не успокаивает её.</p>
+<p>На столе находится бутылочка. Алиса надеется вернуть себе привычный рост. Тело начинает расти быстрее, чем она успевает отступить. Рука выходит в окно, нога упирается в дверь. Спасительное помещение становится ловушкой.</p>
+<p>Кролик, увидев разрушенную комнату, кричит о чудовище. Он не слышит голос Алисы за стеной и зовёт соседей. Билля отправляют в дымоход. Алиса предупреждает его; он всё равно спускается, потому что внизу сердится хозяин. Движение её ноги выбрасывает Билля обратно. Она слышит, как он стонет снаружи, и больше всего боится, что убила его.</p>
+<p>Кролик предлагает поджечь дом. Соседи вместо этого забрасывают окно камнями. Те превращаются в пирожки. Алиса съедает один и, уменьшившись, выбирается через подвал прежде, чем зажгут растопку.</p>
+<p>В зарослях она встречает Билля с перевязанной лапой. Он испуган ею, она — тем, что с ним произошло. Получается неловкий разговор без полного примирения. Билль всё же показывает, где искать того, кто понимает превращения.</p>
+<p>Алиса уже не считает, что взрослый, хозяин дома или человек при должности обязательно знает, как ей помочь.</p>
+<h3 id='story-гусеница'>Гусеница</h3>
+<p>Лес тёмен даже наверху. Под грибными шляпками стоит влажный полумрак, корни закрывают небо. Светляки освещают пустые качели и тела в королевских сетях. Рядом на ветках сидят живые птицы и чистят перья. В каплях на листьях отражается другое небо, но Алиса почти не поднимает глаз: ей приходится смотреть, куда наступить, чтобы не задеть очередную ловушку.</p>
+<p>Маленький Щенок гоняется за брошенной веткой. Он не злой, но при нынешнем росте Алисы игра может её раздавить. Она отвлекает его палкой и уходит. Это встреча, где можно выжить, никого не ранив.</p>
+<p>Гусеница спрашивает Алису, кто она. Та начинает обычный ответ, затем сбивается: сегодня она несколько раз была другой, а привычные слова и стихи путаются. Собеседник раздражает её, перебивает и не даёт готового утешения. В конце концов Алиса всё же формулирует просьбу: ей нужно уметь выбирать рост самой.</p>
+<p>Гусеница объясняет действие двух сторон гриба. Алиса ошибается, пробует снова и впервые меняет себя по собственному решению. Кусочек гриба остаётся с ней.</p>
+<p>О дороге домой Гусеница ничего не знает. О дороге в сад — знает: она начинается внизу, у маленькой двери, но спуск к ней проходит через верхние ветви. Раньше там летали свободно; теперь сеть разделила лес надвое.</p>
+<h3 id='story-гнездо'>Гнездо</h3>
+<p>Поднимаясь, Алиса замечает следы сборщиков яиц. Королевская кухня получает из леса припасы; брать столько, сколько нужно, давно перестали. Сети стоят даже над гнёздами, где уже нечего забирать.</p>
+<p>На верхушке дерева живёт Голубка. Её крыло повреждено сетью. Она охраняет последнюю кладку и нападает на всё, что появляется между ветвями.</p>
+<p>После неудачного кусочка гриба шея Алисы вытягивается над листьями. Голубка принимает её за змею. Алиса объясняет, что она девочка, но признаётся, что ела яйца. Для Голубки это подтверждение худших подозрений.</p>
+<p>Алиса отступает. Голубка обрушивает переход, а сеть не даёт уйти в сторону. Внизу пропасть. Остаются тесная площадка и птица, которая снова идёт на неё.</p>
+<h3 id='story-второй-босс-голубка'>Второй босс: Голубка</h3>
+<p>Алиса пытается прорваться мимо, но каждый раз оказывается отброшена к краю. Бой разрушает части гнезда. Голубка становится ещё яростнее. В последний момент она прижимает Алису к оборванной сети; защитный удар оказывается смертельным.</p>
+<p>После боя ничего не объявляется и никто не поздравляет Алису. Птица лежит неподвижно. Из-под веток слышится слабый стук уцелевшего яйца.</p>
+<p>Алиса долго не может приблизиться. Потом освобождает гнездо от натянутой сети и укладывает яйцо там, где оно не скатится. Она не умеет заменить ему мать и не получает обещания, что теперь всё будет хорошо.</p>
+<p>В дальнейшем это место может стать основой побочной линии, но её завершение не требуется для продолжения истории.</p>
+<p>За оборванной сетью открывается спуск. На ветке появляется Чеширский Кот. Он не оправдывает и не обвиняет Алису. Просто ждёт, пока она сможет говорить.</p>
+<p>Алиса спрашивает, был ли здесь лес без сетей. Кот отвечает, что был. На следующем вопросе — кто их развесил — он показывает хвостом на знак сердца.</p>
+<p>Он объясняет, что Кролик служит при дворе. Если Алиса хочет добраться до него, нужно попасть в королевский сад. Войти туда может приглашённый гость; приглашение есть у Герцогини.</p>
+<p><strong>Возвращение:</strong> гриб позволяет пройти через малую дверь Зала. За ней начинается сад, но ближайшая калитка опечатана, а проход к гостевым воротам уходит через владения Герцогини. На берегу больше не бегут по кругу: Алиса впервые видит долговременный результат своего сопротивления. Она понимает, что происходящее в разных местах связано.</p>
+<p><strong>Следующая цель:</strong> получить помощь Герцогини и попасть к Кролику при дворе. Страх перед собственным поступком остаётся с Алисой, но она продолжает путь.</p>
+<h2 id='story-глава-iii-кому-достанется-ребёнок'>Глава III. Кому достанется ребёнок</h2>
+<h3 id='story-приглашение'>Приглашение</h3>
+<p>У ворот особняка Рыба-лакей передаёт Лягушке-лакею приглашение Герцогине. Оба одеты безукоризненно, повторяют церемониальные фразы, путаются и начинают сначала. В нескольких шагах двое карточных солдат казнят задержанного слугу. Один придерживает его, другой наносит удар. Кровь попадает на нижнюю ступень. Лакеи отступают, чтобы не испачкать чулки, и заканчивают передачу приглашения. Солдаты вытирают оружие и спорят, кому нести тело. Алиса прижимается к стене; когда осмеливается заговорить, Лягушка объясняет, что открыть дверь снаружи невозможно: чтобы открыть изнутри, надо сперва войти, а войти ему никто не приказывал.</p>
+<p>Пока слуги выясняют, кто должен стоять ближе к двери, Алиса находит малый проход. Гриб помогает проникнуть внутрь. Приглашение заносят следом за ней.</p>
+<p>На кухне слишком жарко. Младенец плачет, Герцогиня поёт ему грубую песню и трясёт в такт. На разделочном столе лежит ещё живая лесная птица; Кухарка придерживает её и продолжает готовить, время от времени добавляя перец. На полу под столом кровь. Сама Кухарка выглядит как обычная женщина в чистом чепце. Посуда летит через всю комнату; хозяйка не отвлекается, словно так и принято готовить обед. Среди кастрюль сидит Кот.</p>
+<p>Герцогиня слышит просьбу Алисы и обещает взять её на крокет. Ей лестно, что маленькой незнакомке требуется её покровительство. В следующую минуту она уже сердится на ребёнка, на перец и на то, что Алиса задаёт слишком много вопросов.</p>
+<p>Из разговоров становится ясно, что Герцогиня поссорилась с Королевой. Она рассказывает об этом как о смешном светском эпизоде, но постоянно прислушивается к шагам у двери.</p>
+<p>Перед уходом переодеваться она передаёт Алисе младенца. Кухарка швыряет очередную кастрюлю. Алиса пригибается и выбегает во двор вместе с ребёнком.</p>
+<h3 id='story-поросёнок'>Поросёнок</h3>
+<p>Снаружи дышать легче. Ребёнок перестаёт кричать и начинает похрюкивать. Алиса пытается устроить его удобнее, поправляет чепчик и видит пятачок. Превращение заканчивается прямо у неё на руках.</p>
+<p>Сначала она думает, что опять сделала что-то не так. Но поросёнок вырывается, встаёт на ноги и начинает с явным удовольствием рыть мягкую землю. Ему гораздо лучше, чем в кухне. Алиса снимает с него остатки тесной одежды и отпускает.</p>
+<p>За решёткой двора видны клетки с лесными птицами и корзины с яйцами. В одной из корзин лежит перо, похожее на перья Голубки. Алиса понимает, откуда начался их бой.</p>
+<p>Она идёт обратно к Герцогине и слышит приказ о задержании. Карточный конвой выводит хозяйку через парадный вход. Королева решила, что приглашение на игру не отменяет наказания за дерзость. Лакеи кланяются арестованной так же усердно, как кланялись свободной.</p>
+<p>Герцогиня требует, чтобы Алиса пришла ко двору и подтвердила её невиновность. Девочка начинает объяснять, что не видела их ссоры, но конвой уже уводит хозяйку. Обещание помощи оборачивается новым требованием.</p>
+<h3 id='story-кухня-продолжает-работать'>Кухня продолжает работать</h3>
+<p>Кухарка запирает служебный двор. Она получила распоряжение закончить королевский заказ; отъезд хозяйки ничего не меняет. Поросёнка велено вернуть на кухню вместе с прочими припасами.</p>
+<p>Алиса замечает его у клеток и успевает вытолкнуть под решётку. Кухарка хватает её. Алиса вырывается, но выход уже закрыт печными заслонками. На вопрос, как выбраться, Кухарка отвечает, что до конца готовки отсюда никто не выходит.</p>
+<p>Алиса пытается остановить подачу жара. Это вызвано немедленной угрозой: в закрытом дворе невозможно дышать, а Кухарка идёт за ней с тяжёлым крюком. Заодно остановка откроет проход к комнате, где осталось приглашение.</p>
+<h3 id='story-третий-босс-кухарка'>Третий босс: Кухарка</h3>
+<p>В отличие от Голубки, Кухарка понимает, что перед ней ребёнок. Её это не останавливает. Работа и королевский приказ дают ей удобное право делать всё, что хочется.</p>
+<p>Алиса сражается среди печей и опрокинутых котлов. Когда Кухарка оказывается отделена потоком пара, девочка пытается уйти. Та открывает заслонку, обжигая собственную руку, лишь бы достать беглянку. В последнем сближении Алиса наносит смертельный удар: отступать ей уже некуда.</p>
+<p>Остановка кухни не сопровождается взрывом, уничтожающим дом. Одна за другой гаснут печи. Под шумом приготовления впервые слышны живые звуки: птица в клетке, дыхание спрятавшегося слуги, шаги за стеной.</p>
+<p>Алиса поднимается в покои и находит приглашение. Рядом лежат распоряжения о поставках: всё больше яиц, всё больше птиц, новые порции для гостей, которых давно не принимают. Приказы скреплены тем же сердцем, что было на сушильной машине. Герцогиня подписывала расходы и принимала доставленное; её страх перед Королевой не делает её невиновной во всём остальном.</p>
+<p>Алиса открывает клетки по пути к выходу. Она не исправляет ими случившееся в гнезде. Просто теперь может остановить следующую беду.</p>
+<h3 id='story-дорога-которую-не-видно'>Дорога, которую не видно</h3>
+<p>Кот появляется на остывающей плите. Алиса сердится: почему он всё это время сидел и улыбался? Он умеет уйти сам и привык считать это достаточным ответом на опасность. Её упрёк задевает его сильнее, чем он показывает.</p>
+<p>Кот не обещает спасать всех. Вместо этого впервые делает для Алисы что-то неудобное лично ему: показывает путь, которым обычно пользуется один, и учит наступать на его исчезнувшие участки. Чеширский шаг открывает дорогу за пределами запертых королевских маршрутов.</p>
+<p>Приглашение именное, без Герцогини Алису не пропустят. Кот предлагает найти Шляпника: тот работал при дворе и знает старые служебные входы. Заодно он должен знать, почему время в стране ведёт себя всё хуже.</p>
+<p><strong>Возвращение:</strong> через Чащу Алиса идёт к прежде отсутствовавшему мосту. Билль уже выбирается из развалин дома, на берегу открыта сушильня. Мир откликается на её поступки не только новыми опасностями. Исчезнувшая дорога проявляется под ногами и ведёт к накрытому столу.</p>
+<p><strong>Следующая цель:</strong> найти проход в сад. Теперь Алиса также хочет узнать, можно ли прекратить действие остальных приказов так же, как она остановила кухню и гонку.</p>
+<h2 id='story-глава-iv-ещё-одна-чашка'>Глава IV. Ещё одна чашка</h2>
+<h3 id='story-свободных-мест-нет'>Свободных мест нет</h3>
+<p>У чайного стола обычные стулья, фарфоровые чашки, свежий хлеб и варенье. Всё это расставлено над тёмной землёй, пропитанной кровью; под дальней скамьёй лежит неподвижный слуга. Заяц кричит, что мест нет, хотя стол уходит далеко между деревьями. Алиса садится, потому что почти не держится на ногах. Предложенную чашку она сначала не берёт. Шляпник с безупречной вежливостью спрашивает, что ей не нравится в сервировке.</p>
+<p>Шляпник задаёт загадку. Заяц предлагает то, чего на столе нет. Соня спит между ними. Все выглядят почти так, как могли бы выглядеть в детской иллюстрации. Собеседники спорят о словах, меняются местами и обижаются на замечания Алисы, но не реагируют на хрип из-под скамьи. Книжная нелепость разговора усиливает происходящее: они способны обсудить чужую смерть тем же тоном, каким обсуждают остывший чай.</p>
+<p>Алиса узнаёт знакомую королевскую печать на табличке с часами начала. Стрелки стоят на шести.</p>
+<p>Шляпник рассказывает о ссоре со Временем. Во время выступления при дворе Королева обвинила его в том, что он убивает время, и приказала казнить. Время рассердилось и перестало помогать; чаепитие застряло на одном часе. Позднее Королева скрепила распоряжение: гости не должны покидать стол до окончания чая. Теперь даже случайные посетители не могут уйти.</p>
+<p>Шляпник уверяет, что покажет Алисе дорогу, когда все закончат. Каждый раз, когда последняя чашка почти пуста, слуга доливает её.</p>
+<h3 id='story-куда-девается-время'>Куда девается время</h3>
+<p>Алиса замечает повторения. Один и тот же слуга роняет ложку. На костяшках другого становится больше морщин, хотя закат не меняется. За дальним концом стола стоят стулья с выцветшими подушками, из которых никто больше не встаёт.</p>
+<p>Соня рассказывает о трёх сёстрах в колодце. Рассказ путается со сном; среди нелепостей она упоминает человека, который прячет минуту в кармане и всё равно каждый день её крадёт.</p>
+<p>Алиса пытается уйти. Дорога возвращает её к другой стороне стола. Шаг позволяет обойти одну петлю, но на следующей она снова оказывается у чашек: местный приказ прикреплён к работающим часам, а не к одному мосту.</p>
+<p>Заяц объясняет, что у Шляпника есть мастерская. Ключ тот носит при себе, но Соня знает маленький проход для прислуги. Она говорит об этом во сне, затем открывает глаза и сознательно повторяет подсказку. Впервые за столом кто-то решается помочь без притворства.</p>
+<p>В мастерской Алиса находит часы, которые всё-таки идут. Шляпник удерживает ими последний промежуток до срока своей казни. Чтобы его хватало, механизм забирает по нескольку мгновений у каждого сидящего за столом. У некоторых взято уже всё.</p>
+<p>Часы были его способом спастись от Королевы. Потом стали способом удерживать рядом других. Он знает, что делает: лишний гость даёт ещё немного времени. Поэтому так обрадовался появлению Алисы, хотя за столом якобы нет места.</p>
+<h3 id='story-четвёртый-босс-шляпник'>Четвёртый босс: Шляпник</h3>
+<p>Шляпник застаёт Алису у механизма. Вначале уговаривает ничего не трогать. Затем обещает отпустить её одну, если она приведёт другого гостя. Алиса отказывается.</p>
+<p>Он запирает мастерскую и запускает извлечение времени из неё самой. Алиса видит, как её движения запаздывают, а пальцы бледнеют. Бой начинается, когда Шляпник мешает ей добраться до рычага, прекращающего работу.</p>
+<p>Он сражается отчаянно, перескакивая между отложенными ударами. В коротких паузах всё ещё предлагает чай и просит не торопиться. Чем сильнее повреждены часы, тем заметнее, как долго он жил в страхе. Это не отменяет того, что сейчас он убивает Алису.</p>
+<p>Она разбивает удерживающее устройство. Накопленные минуты возвращаются в поместье. Стол больше не замыкается сам на себя, печать на табличке блекнет. Шляпник падает и закрывает голову руками, ожидая появления палача.</p>
+<p>Никто не приходит. Королева далеко; истечение отсрочки не переносит её солдат через лес. Столько времени он мучил других ради ещё одного часа, хотя его казнь всё равно требовала бы живых исполнителей.</p>
+<p>Алиса убирает оружие. Она не прощает Шляпника от имени его жертв. Просто он больше не способен остановить её, а бой закончен.</p>
+<h3 id='story-после-шести'>После шести</h3>
+<p>Заяц впервые сам выбирает место и садится на другом конце стола. Соня просыпается, пьёт остывший чай и спрашивает, далеко ли до утра. Несколько освобождённых слуг уходят молча. Один остаётся помочь товарищу подняться. Шляпник слышит их и не находит подходящего замечания о манерах.</p>
+<p>В мастерской сохранилась переносная часть устройства. Освобождённое Время больше не питает большой механизм, но оставляет в этих часах возможность ненадолго задержать отдельное движение. Какой именно характер имеет этот жест — благодарность, насмешку или просто привычку, — никто не объясняет.</p>
+<p>Шляпник показывает старый план поставок во дворец. Есть служебная галерея, возвращающая к Залу дверей. После закрытия границ её перегородили постоянно движущимися ножницами; часы позволят пройти.</p>
+<p>Алиса спрашивает о печати. Шляпник делал футляры для королевских распоряжений и видел исходный знак на короне. Местные механизмы продолжают работать от его оттисков. Он предупреждает, что разрушить корону будет гораздо труднее, чем его часы.</p>
+<p>Она ещё не обещает, что пойдёт сражаться с Королевой. Но уже не отводит взгляд от этой возможности.</p>
+<p>У дерева с дверью Алиса замечает Кролика. В руках у него повестки. Он пришёл за свидетелями по делу о пирожках, а не специально за девочкой. Шляпник значится первым.</p>
+<p>Алиса требует остановиться. Кролик наконец выслушивает её и признаётся: пути за пределы страны закрыты королевским приказом. Он не знает дороги на тот берег, где она оставила сестру. Он только относит бумаги туда, куда ему говорят.</p>
+<p>Она спрашивает, видел ли он, что происходит с теми, кому относит приказы. Кролик не отвечает. Затем просит идти во дворец через служебный ход: так её хотя бы не схватят у ворот.</p>
+<p><strong>Возвращение:</strong> служебная галерея приводит в знакомый зал. Теперь Алиса без суеты берёт ключ, сама выбирает нужный рост и проходит туда, куда безуспешно пыталась попасть в начале. Движение ножниц замирает на несколько секунд. Впереди сад.</p>
+<p><strong>Следующая цель:</strong> найти выход за пределы страны и увидеть, что удерживает её жителей. Если Королева не позволит уйти, Алиса уже понимает, с чем придётся столкнуться.</p>
+<h2 id='story-глава-v-приговор-прежде-ответа'>Глава V. Приговор прежде ответа</h2>
+<h3 id='story-сад-за-маленькой-дверью'>Сад за маленькой дверью</h3>
+<p>В саду ровные изгороди, розы и холодные фонтаны. Цветы освещены фонарями так, чтобы из маленькой двери их было видно издалека. Теперь Алиса замечает то, чего оттуда не могла рассмотреть: кровавые стоки вдоль дорожек, пустые плахи у стены, служителей с вёдрами для мытья камня. Она добралась до сада, но надежды на безопасность здесь больше нет.</p>
+<p>Постепенно проявляется цена этой красоты. Вода подаётся с затопленного нижнего берега. Клетки из леса сложены у зверинца. Слуги продолжают сервировать дальние беседки, хотя вся свита уже ушла на крокет. Следы разных биомов сходятся в одном месте.</p>
+<p>Перед розовым кустом трое карточных садовников красят белые лепестки красным. Алиса спрашивает, почему нельзя оставить белые. Один отвечает, что так было бы красиво. Двое других торопливо заставляют его замолчать.</p>
+<p>Слышна процессия. Садовники падают лицом вниз. Королева замечает испорченный куст и приказывает казнить их. Она не пытается узнать, кто дал неверные семена. Стражники поднимают ножницы.</p>
+<p>Алиса прячет садовников в цветочных горшках, пока процессия поворачивает за изгородь. Солдаты не сразу замечают подмену, а потом предпочитают доложить, что приказ исполнен: признаться в ошибке опаснее. Алиса впервые сознательно использует против королевского порядка то, чему научилась в стране.</p>
+<p>Королева замечает девочку и спрашивает её имя. Алиса отвечает вежливо. Та интересуется, умеет ли она играть в крокет, и, не дожидаясь объяснения, велит присоединиться.</p>
+<h3 id='story-королевская-игра'>Королевская игра</h3>
+<p>Фламинго используют как молотки, ежей как мячи, солдат как ворота. Птицы и звери выглядят обычными, но часть уже ранена. После очередного удара за ежом остаётся кровавый след; ударивший придворный возмущён только тем, что мяч покатился неровно. Фламинго смотрит Алисе в лицо и пытается вырваться. Солдаты-ворота уходят поговорить с соседями, не переставая обсуждать счёт.</p>
+<p>Каждую случайность сопровождает наказание. Королева требует, чтобы всё живое вело себя как предметы. При приближении палача игроки освобождают ему место, как служителю поля. После казни слуги быстро смывают кровь, а партия продолжается. Никто не надевает страшную маску и не меняется в лице.</p>
+<p>Алиса не может ударить ежа. Она опускает фламинго, и тот уходит следом за мячом. Королева требует объяснений. Кролик поспешно говорит, что новая гостья ещё не знает местных правил. Это его первая заметная попытка защитить её, хотя звучит она как очередное служебное оправдание.</p>
+<p>Король временами тихо отменяет наказания, когда жена не смотрит. Алиса сперва принимает его за возможного союзника, но замечает: он помогает лишь там, где это не угрожает его собственному положению. Публично он подтверждает каждое решение Королевы.</p>
+<p>Приводят Герцогиню. Та тут же берёт Алису под руку, навязывает нравоучения и старается выглядеть близкой знакомой новой фаворитки. Когда Королева смотрит в их сторону, Герцогиня отступает от девочки. Обещанной защиты от неё не будет.</p>
+<h3 id='story-голова-без-тела'>Голова без тела</h3>
+<p>Над площадкой появляется улыбка, затем голова Кота. Алиса радуется ему гораздо сильнее, чем ожидала. В разговоре с ним почти признаётся, что боится остаться здесь навсегда.</p>
+<p>Король требует убрать непочтительного зверя. Королева приказывает отрубить голову. Палач пытается объяснить, что без тела выполнить приказ затруднительно. Король настаивает, что любую имеющуюся голову можно отрубить. Спор собирает вокруг себя половину свиты.</p>
+<p>Кот даёт Алисе время уйти с площадки. Он мог исчезнуть сразу, но остаётся ещё немного, отвлекая собравшихся. На этот раз помощь требует от него присутствия.</p>
+<p>За изгородью Кролик объясняет, что внешние ворота открывают только по разрешению двора. Сегодня он не может даже подать её просьбу: начинается суд. Если Алиса хочет, чтобы её услышали, придётся дождаться заседания.</p>
+<p>Она уже понимает, чего стоит такое обещание. Но вместо очередной попытки спрятаться спрашивает, где находится зал и что будет с теми, кого в нём осудят.</p>
+<h3 id='story-те-кто-помнит-другое'>Те, кто помнит другое</h3>
+<p>Королева отправляет Алису послушать историю Черепахи Квази: гостья пока развлекает её и не считается серьёзной угрозой. Грифон уводит девочку к морю за зверинцем.</p>
+<p>Здесь тише, но даже у воды видны решётки зверинца, а из сада доносятся приказы. Черепаха плачет, путает школьные предметы и жалуется на давно прошедшие уроки. Грифон спорит с ним о подробностях. Алиса впервые за долгое время слушает историю, которая ничего от неё не требует, и всё равно не выпускает из рук оружие.</p>
+<p>Они вспоминают школу, морские танцы, песни и товарищей. До Королевы здесь тоже было нелегко, а уроки никогда не отличались разумностью. Но после них можно было пойти купаться. Можно было отказаться танцевать. Кто-то уезжал и возвращался другим. Теперь последнее королевское распоряжение стоит между любым желанием и поступком.</p>
+<p>Грифон пытается показать Алисе кадриль с омарами. Черепаха поправляет его. На мгновение Алиса почти улыбается, но далёкий крик возвращает её к саду. Грифон сбивается с шага, Черепаха замолкает. Они не притворяются, будто ничего не услышали; этого простого сочувствия здесь уже достаточно, чтобы отличить их от двора. Алиса начинает плакать сама: от усталости, от воспоминания о Голубке, от того, что у этих существ могла быть жизнь за пределами страха.</p>
+<p>Она говорит, что хочет домой. Грифон отвечает, что знает. Он не требует, чтобы она осталась и спасла их.</p>
+<p>В этот момент раздаётся призыв в суд. Грифон показывает дорогу, и Алиса идёт сама.</p>
+<h3 id='story-пирожки'>Пирожки</h3>
+<p>На возвышении сидят Король и Королева. Перед ними лежат пирожки. Валет стоит под стражей по обвинению в их краже.</p>
+<p>Билль работает присяжным и пытается записывать всё подряд. Заметив Алису, он узнаёт её, касается перевязанной лапы и не отворачивается. На галерее видны другие знакомые лица. Дороги, открытые по ходу путешествия, позволили части жителей добраться до двора; некоторых привели повестки. Это не собрание всех персонажей игры и не отдельное условие финала.</p>
+<p>Суд сначала выглядит ещё одним бессмысленным разговором. Присяжные записывают собственные имена, чтобы не забыть. Король объясняет смысл найденных стихов так, как ему удобно. То, что пирожки лежат перед ним, считается подтверждением кражи: иначе как они могли оказаться среди доказательств?</p>
+<p>Шляпник приходит с чашкой и надкушенным хлебом. Его руки дрожат. Королева узнаёт участника старого концерта и снова угрожает казнью. Он пытается говорить, путается и всё чаще смотрит на Алису. Она уже видела, что его страх сделал с другими.</p>
+<p>Кухарку вызывают следующей. Она не появляется. Писарь зачитывает показания доставщика: кухня остановлена, клетки открыты, хозяйский заказ не выполнен. Королева требует найти виновного.</p>
+<p>Кролик вызывает Алису. Её имени не было в древнем пророчестве, а путешествие не устраивали ради этого суда. Просто теперь она оказалась самым неудобным свидетелем происходящего.</p>
+<h3 id='story-свидетель'>Свидетель</h3>
+<p>Алиса говорит, что ничего не знает о краже. Она видит пирожки на столе и не понимает, почему Валета держат связанным. Король выводит из её слов очередное обвинение. Алиса поправляет его. Чем спокойнее она отвечает, тем заметнее раздражение Королевы.</p>
+<p>В ходе расспросов выясняется, откуда пришла девочка. Красные оттиски на доставленных докладах связывают её с остановленной гонкой, вскрытыми сетями, кухней и чаепитием. Королева понимает, что перед ней та, кто уже несколько раз прервала действие приказов.</p>
+<p>Она велит Алисе назвать её поступки преступлениями и подтвердить вину Валета. Тогда девочку отпустят из дворца и рассмотрят просьбу о выходе из страны. От неё требуют всего нескольких согласных ответов.</p>
+<p>Алиса спрашивает, что будет с остальными.</p>
+<p>Королева отвечает, что остальные ей не принадлежат и заботиться о них ей не поручали. Затем распоряжается снова запустить сушильню, вернуть птиц в клетки и собрать гостей за столом. Всё, что Алиса успела остановить, должно продолжиться. Изменить это можно только сейчас: уйдя, она оставит знакомых существ на тех же местах.</p>
+<p>Алиса говорит, что не станет подтверждать неправду.</p>
+<p>Шляпник поднимает голову. Король спрашивает его, разрушила ли девочка часы. Он отвечает, что разрушила. Пауза. Затем добавляет, что этим она выпустила их из-за стола. Это первое правдивое свидетельство, которое он даёт, зная о возможном наказании.</p>
+<p>Королева велит сначала вынести приговор, а потом разбираться. Здесь заканчивается надежда Алисы убедить суд соблюдать хотя бы собственную процедуру.</p>
+<p>Она отказывается замолчать.</p>
+<h3 id='story-пятый-босс-королева-червей'>Пятый босс: Королева Червей</h3>
+<p>Королева приказывает казнить Алису. На этот раз солдаты двигаются. Двери суда закрываются. Девочка не бросается на трон из-за оскорбления: бой начинается, когда первый строй перекрывает выход и опускает оружие.</p>
+<p>Сначала Королева остаётся за спинами исполнителей. Она меняет приказы, переставляет солдат, поднимает из пола перегородки с красными оттисками. Алиса замечает, что каждый удар всё равно должен кто-то нанести. Она ускользает между построениями и разрушает опоры, которыми двор удерживает зал.</p>
+<p>Кролик получает приказ повторять команды глашатая. Он начинает читать, доходит до имени Алисы и останавливается. Это не снимает волшебство и не выигрывает бой, но лишает строй привычного сигнала. Билль перестаёт записывать навязанный ответ. Несколько зрителей оттаскивают раненых из-под падающих скамей. Каждый помогает в пределах своих возможностей.</p>
+<p>Когда солдат становится недостаточно, Королева сама сходит с возвышения. У неё тяжёлый церемониальный клинок, которым до этого пользовались исполнители. Она умеет причинять вред и не собирается отдавать власть из-за детского неповиновения.</p>
+<p>Вблизи Алиса видит печать в короне. Красные линии на полу сходятся к ней. Прежде рисунок скрывали мантия и строй стражи; теперь источник открыт, но до него ещё нужно добраться.</p>
+<p>В последней части боя Королева использует зал целиком. Стены поворачиваются, лестницы складываются, проходы превращаются в карточные рёбра. Она разрушает даже места, где стоят её подданные: сохранить себя для неё важнее, чем сохранить дворец.</p>
+<p>Знакомые предметы помогают Алисе выжить. Веер переносит через разрыв. Гриб позволяет уйти из смыкающейся решётки. Шаг проявляет исчезнувшую опору. Часы задерживают клинок над последним переходом. Это короткая последовательность уже понятных действий, а не новая сила, внезапно появившаяся в финале.</p>
+<p>Королева требует, чтобы Алиса встала на колени. Обещает вернуть ей прежний рост, выпустить из дворца, простить всё — если та признает её право распоряжаться остальными. Когда это не действует, снова пытается ударить.</p>
+<p>Алиса отбивает клинок и разбивает печать в короне последним ударом. Королева смертельно ранена. Приказ, которым она удерживала собственный двор, распадается вместе с его источником.</p>
+<p>Она ещё пытается построить солдат по местам. Они больше не могут или не хотят исполнить её слова. Алиса видит перед собой не закон природы, а проигравшую правительницу и разваливающиеся знаки её власти.</p>
+<p>Здесь звучит книжный мотив о колоде карт. Он означает, что корона и масть больше не делают приказ неоспоримым. Алиса знает, что карточные садовники живые и нуждаются в защите; их жизнь не обесценивается тем, что Королева тоже была картой.</p>
+<p>Карты поднимаются вокруг неё вихрем. За ними исчезают королевский трон и запечатанные стены; остаётся открытое пространство с обломками суда. В этом вихре Алиса теряет из виду остальных.</p>
+<h2 id='story-развязка-когда-можно-уйти'>Развязка. Когда можно уйти</h2>
+<p>Прежде чем Алиса просыпается, история даёт увидеть последствия победы.</p>
+<p>На нижнем берегу гаснет красный оттиск. Додо по привычке поднимает руку для очередного объявления, затем опускает её. Мышь открывает дверь тому, кто всё ещё ждёт разрешения выйти. У машины остаются погибшие. Теперь выжившие могут остановиться возле них, не опасаясь, что их погонят на новый круг.</p>
+<p>С Валета снимают путы. Пирожки рассыпаны возле опрокинутого стола; никто больше не требует приговора ради того, чтобы объяснить их наличие. Кролик помогает выбраться Биллю. Шляпник стоит среди обломков, впервые без часов в руках. Король пытается созвать свиту, но люди вокруг заняты ранеными и больше не спешат по его первому слову.</p>
+<p>В лесу ослабевают королевские сети. Жители разбирают старый затор между деревьями. В гнезде Голубки трескается уцелевшее яйцо. Птица не воскресает. Страна получает возможность жить дальше, но произошедшее остаётся частью её истории.</p>
+<p>Во дворе Герцогини из пустой клетки выбирается последняя птица. Поросёнок спит под кустом. Печи не загораются сами, потому что приказ больше не может заставить их работать.</p>
+<p>За чайным столом стрелки переходят через шесть. Соня дослушивает собственную фразу и уходит спать туда, где ей удобно. Заяц моет чашку. На пустом месте Шляпника остывает оставленный чай.</p>
+<p>В саду из горшков выбираются садовники. Один прекращает красить белую розу. Герцогиня остаётся Герцогиней, Король остаётся трусливым, а Кот — уклончивым. Падение Королевы не исправляет характеры мгновенно. Оно прекращает принуждение, которое не позволяло ничего менять.</p>
+<p>У воды Грифон и Черепаха Квази снова пробуют начать кадриль. На этот раз могут остановиться, когда устанут.</p>
+<p>Освобождение касается всего мира, а не только пяти пройденных мест: на дальних воротах гаснут такие же печати, за пределами сада открываются дороги. Королева погибла, новые приказы больше не исходят из единого источника.</p>
+<h2 id='story-эпилог-на-берегу'>Эпилог. На берегу</h2>
+<p>Алиса чувствует на лице сухие листья. Открывает глаза. Рядом сидит сестра с книгой. День почти не изменился.</p>
+<p>Она садится слишком резко, озирается и хватается за руку сестры. Потом пытается рассказать всё сразу: Кролика, воду, Мышь, кухню, птицу, чай и суд. В её речи страшное соседствует с нелепым, как это и было в путешествии.</p>
+<p>Сестра слушает, не перебивая. Когда Алиса доходит до Голубки, она замолкает. Сестра не объясняет ей, что раз это сон, то переживания не имеют значения. Просто остаётся рядом.</p>
+<p>Позже Алиса замечает недоплетённый венок. Некоторое время смотрит на него, затем спрашивает сестру, не пора ли домой. Теперь возвращение — собственное решение, а не бегство вслед за тем, кто обещает знать дорогу.</p>
+<p>Никакой волшебный предмет не остаётся у неё в кармане. На коже нет обязательного доказательства перехода между мирами. Рассказ допускает сон, но не закрывает вторую возможность.</p>
+<p>Когда Алиса поднимается к тропинке, сестра на минуту закрывает глаза. В шуме реки ей слышится плеск Моря слёз, в звоне далёкой посуды — чаепитие, в движении ветвей — карточная процессия. Это может быть всего лишь воображение человека, который только что услышал хороший рассказ.</p>
+<p>В траве у изгороди шевелятся длинные уши. Сестра поворачивает голову. Там обычный кролик; он прячется прежде, чем можно рассмотреть его как следует.</p>
+<p>Алиса зовёт её. Они уходят вместе.</p>
+<h2 id='story-редакторские-пояснения'>Редакторские пояснения</h2>
+<h3 id='story-путь-алисы'>Путь Алисы</h3>
+<p>В начале любопытство сильнее осторожности. После падения она ищет того, кто объяснит, как правильно поступить. В первых столкновениях выясняется, что правильное поведение не гарантирует безопасности. Смерть Голубки лишает её возможности считать каждый выигранный бой справедливым наказанием злодею.</p>
+<p>На кухне Алиса видит человека, который пользуется властью сознательно. В чаепитии — жертву, которая сама удерживает других. Она учится различать обстоятельства и поступки, не раздавая всем одинаковое оправдание.</p>
+<p>До сада Алиса в основном решает ближайшую задачу: выжить и найти выход. Разговор с Грифоном и Квази даёт ей почувствовать, что у мира есть ценность за пределами её собственного пути. В суде ей предлагают личную безопасность ценой чужого приговора. Отказ завершает её внутренний выбор. Бой после него — защита этого решения от немедленной расправы.</p>
+<p>Алиса становится решительнее, но не превращается в палача и не начинает любить насилие. К финалу ей всё ещё страшно, и она всё ещё хочет к сестре.</p>
+<h3 id='story-пять-боссов-угроза-и-последствия'>Пять боссов: угроза и последствия</h3>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Таблица с горизонтальной прокруткой"><table>
+<thead>
+<tr>
+<th>Босс</th>
+<th>Почему разговора или ухода недостаточно</th>
+<th>Исход основной версии</th>
+<th>Смысл для Алисы</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Додо</td>
+<td>Запирает выход и защищает машину, которая затягивает участников</td>
+<td>Выживает, машина остановлена</td>
+<td>Должность не гарантирует правоты; победа может закончиться спасением противника</td>
+</tr>
+<tr>
+<td>Голубка</td>
+<td>Прижимает к обрыву, не принимает объяснений, перекрывает отступление</td>
+<td>Погибает</td>
+<td>Защита своей жизни может причинить непоправимый вред тому, кто тоже боялся</td>
+</tr>
+<tr>
+<td>Кухарка</td>
+<td>Запирает двор, нападает, пытается вернуть живых существ в припасы</td>
+<td>Погибает</td>
+<td>Чужой приказ не отменяет сознательного выбора мучить</td>
+</tr>
+<tr>
+<td>Шляпник</td>
+<td>Не выпускает из петли и начинает забирать время Алисы</td>
+<td>Выживает, устройство разрушено</td>
+<td>Страх объясняет поступок, но не даёт права жертвовать другими</td>
+</tr>
+<tr>
+<td>Королева</td>
+<td>Требует лжесвидетельства, возвращает принуждение и приказывает казнить отказавшуюся Алису</td>
+<td>Погибает, печать разрушена</td>
+<td>Можно отказаться признавать право сильного распоряжаться чужой жизнью</td>
+</tr>
+</tbody>
+</table></div>
+<p>Эта таблица — рабочее решение конкретных судеб, а не новая обязательная механика выбора между убийством и пощадой. Моральная шкала и альтернативные маршруты для каждого босса в объём версии не входят.</p>
+<p>Обычные боевые встречи подчиняются тому же характеру Алисы. Опасные существа и исполнители приказов нападают, преследуют, удерживают людей или перекрывают путь к спасению. Мирных жителей не превращаем в источник ресурсов. Возможность пройти мимо допустима там, где это поддерживает устройство комнаты; отдельную полностью бескровную кампанию не обещаем. Сюжет не называет массовое убийство способом исправить нравы страны.</p>
+<h3 id='story-чем-связаны-возвращения'>Чем связаны возвращения</h3>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Таблица с горизонтальной прокруткой"><table>
+<thead>
+<tr>
+<th>Возвращение</th>
+<th>Причина в истории</th>
+<th>Что изменилось</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Из сушильни в Зал дверей</td>
+<td>Продолжить поиски Кролика</td>
+<td>Веер открывает верхний выход; гонка закончилась</td>
+</tr>
+<tr>
+<td>Из Чащи к маленькой двери</td>
+<td>Добраться до Герцогини и гостевого подхода к саду</td>
+<td>Алиса управляет ростом; спуск из гнезда открыт</td>
+</tr>
+<tr>
+<td>От Герцогини в Чащу</td>
+<td>Найти служебную дорогу Шляпника</td>
+<td>Клетки открыты, исчезнувший мост доступен Шагом</td>
+</tr>
+<tr>
+<td>От чаепития в Зал дверей</td>
+<td>Пройти через старую галерею поставок</td>
+<td>Часы задерживают ножницы; Алиса уверенно повторяет задачи начала</td>
+</tr>
+</tbody>
+</table></div>
+<p>Приглашение приводит Алису к Герцогине и объясняет её маршрут, но не превращается в универсальный ключ. В сад она попадает служебным путём; в процессии остаётся по личному распоряжению Королевы, как неожиданная участница игры.</p>
+<h3 id='story-роли-сквозных-персонажей'>Роли сквозных персонажей</h3>
+<ul>
+<li><strong>Кролик:</strong> торопливый исполнитель, сначала не слышащий чужую беду; к финалу делает небольшой, опасный для него отказ исполнить приказ. Он не тайный организатор похищения.</li>
+<li><strong>Кот:</strong> привык спасаться исчезновением; постепенно остаётся рядом достаточно долго, чтобы помочь другому. Он не всеведущий автор испытаний.</li>
+<li><strong>Мышь:</strong> первая встреча, где Алисе приходится учитывать чужую точку зрения; позже показывает изменение нижнего берега.</li>
+<li><strong>Билль:</strong> конкретный пострадавший от необдуманного действия Алисы; их неловкие повторные встречи не позволяют забыть последствия. В суде он присяжный, а не спаситель мира.</li>
+<li><strong>Гусеница:</strong> помогает овладеть собой, не выдавая судьбу и готовый жизненный ответ. Её странность не нуждается в разоблачении.</li>
+<li><strong>Герцогиня:</strong> способна бояться Королеву и одновременно пользоваться системой; не становится доброй наставницей после ареста.</li>
+<li><strong>Шляпник:</strong> его освобождение не равно прощению; на суде он впервые рискует собой ради правды.</li>
+<li><strong>Король:</strong> временами смягчает частные жестокости, но поддерживает власть, от которой зависит. Его трусость не подаётся как достаточное сопротивление.</li>
+<li><strong>Грифон и Квази:</strong> дают увидеть, ради чего стоит освобождать страну. Их разговор не содержит обязательного секретного ключа.</li>
+</ul>
+<h3 id='story-что-изменено-относительно-предыдущего-черновика'>Что изменено относительно предыдущего черновика</h3>
+<p>Убрана повестка Алисы, составленная до её падения: она делала путешествие заранее устроенным испытанием и отдаляла случайное приключение от книги. Убран обязательный след раны после пробуждения. Королева теперь сознательно испортила страну, её поражение освобождает мир. Причины пяти боёв прописаны через угрозу жизни, а не отказ выдать пропуск. Судьбы боссов различаются.</p>
+<p>В редакции 0.3 закреплён резкий контраст солнечного берега и мрачной, кровавой Страны чудес. Обитатели сохраняют внешне безобидный книжный облик. Ужас показан через реальные расправы и будничное отношение к ним. Переработаны падение, зал, гонка, лес, особняк, чаепитие и сад; полноценная безопасность больше не возвращается посреди путешествия. Предложение о чудовищных мутациях отменено владельцем до его внесения в сюжет.</p>
+<h3 id='story-где-заканчивается-книга-и-начинается-адаптация'>Где заканчивается книга и начинается адаптация</h3>
+<p>Последовательность встреч и многие ситуации происходят из первой книги. Королевская печать, испорченная страна, превращение гонки в опасную машину, устройство лесных поставок, воровство минут, причины боёв и освобождение страны — новые связи этой версии.</p>
+<p>Книга не утверждает, что Додо был тюремщиком, Голубку убили, Кухарка погибла или Шляпник крал жизнь гостей. Эти события добавлены для игры и не выдаются за содержание оригинала. Королева Червей не смешивается с Красной Королевой из «Зазеркалья».</p>
+<p>Текст первоисточника для сверки: <a href="https://www.gutenberg.org/files/11/11-h/11-h.htm">Lewis Carroll, Alice's Adventures in Wonderland, главы I–XII</a>. Все русские диалоги при сценарной разработке пишем самостоятельно, не копируя современный перевод.</p>
+<h3 id='story-следующая-редакция'>Следующая редакция</h3>
+<p>После чтения владельцем уточняем сцены, которые не совпадают с его видением, затем разворачиваем главы в сценарный план: место, участники, событие, реплики, состояние мира после сцены. Побочные линии разрабатываем отдельно, опираясь на эту основную ветку. До согласования истории техническая разработка не возобновляется.</p>
+<footer class='document-footer'><span>Рабочий документ · Alice</span><a href='Story.md'>Открыть исходный текст ↗</a></footer></article>
+<article class='document' id='roadmap' data-title='План разработки' data-icon='03'><h1 id='roadmap-план-разработки'>План разработки</h1>
+<p>Документ дополняет <a href="#gdd">GDD</a>. Сроки и бюджет пока не назначены: сначала измеряем скорость производства на небольшом срезе.</p>
+<h2 id='roadmap-текущий-этап-история-на-бумаге'>Текущий этап — история на бумаге</h2>
+<p>По решению владельца техническая разработка приостановлена. Сначала согласовываем <a href="#story">цельный сюжет</a>, мотивы персонажей, причины конфликтов и последствия, затем разворачиваем главы в сцены. Этапы M1–M7 ниже остаются будущим планом и не начинаются автоматически.</p>
+<h2 id='roadmap-m0-фундамент'>M0 — фундамент</h2>
+<ul>
+<li>Unity 6000.6.6f1, официальный 2D URP-шаблон.</li>
+<li>Git ignore/attributes, видимые <code>.meta</code>, текстовая сериализация.</li>
+<li>Собственная структура <code>Assets/_Alice</code>, стартовые сцены и Input System asset.</li>
+<li>Дизайн кампании, реестр источников и этот план.</li>
+</ul>
+<p>Готовность: проект импортируется, скрипты компилируются, сцены существуют, генерация фундамента повторяема и не заменяет собственные сцены.</p>
+<h2 id='roadmap-m1-ощущение-движения'>M1 — ощущение движения</h2>
+<p>Серая тестовая комната: бег, прыжок, буфер, допуск края, сквозные платформы, камера, безопасный возврат после падения. Клавиатура и геймпад. Затем один воздушный рывок.</p>
+<p>Готовность: разные высоты и ширины преодолеваются предсказуемо; геометрия будущих комнат измеряется в реальных дистанциях контроллера. Никакого финального арта.</p>
+<h2 id='roadmap-m2-боевой-эксперимент'>M2 — боевой эксперимент</h2>
+<p>Одна атака, одна защитная модель, здоровье, лечение, реакция на урон, один обычный враг. Отдельно сравнить уклонение и парирование, принять решение о выносливости.</p>
+<p>Готовность: причина попадания понятна; у врага читаются подготовка и восстановление; невозможно получать урон каждый кадр без разумной защиты после попадания.</p>
+<h2 id='roadmap-m3-петля-метроидвании'>M3 — петля метроидвании</h2>
+<p>Небольшая карта из 6–10 тестовых комнат: закрытый проход, предмет, новый маршрут и возвращение. Проверить уменьшение, Чеширский шаг и часы на специальных препятствиях. Сделать отдых, сохранение и постоянную дверь.</p>
+<p>Готовность: предмет не теряется после смерти; закрытая дверь остаётся открытой после перезапуска; загрузка в узком проходе безопасна; карту можно пройти без инструкции разработчика.</p>
+<h2 id='roadmap-m4-вертикальный-срез-нижних-покоев'>M4 — вертикальный срез Нижних покоев</h2>
+<p>Компактный законченный маршрут: вход → Мышь → 2–3 типа угроз → отдых → Додо → веер → возвращение в Зал дверей. Первый художественный набор, звук, краткие диалоги, меню и сборка Windows.</p>
+<p>Готовность: другой человек проходит срез без помощи, понимает следующую цель и узнаёт закрытый ранее путь. Измерены стоимость контента и основные проблемы управления. Только после этого оцениваем полный объём.</p>
+<h2 id='roadmap-m5-кампания-в-черновом-виде'>M5 — кампания в черновом виде</h2>
+<p>Пять соединённых биомов, пять боссов, четыре способности, сюжет от берега до пробуждения. Серый контент допустим; проходимость и сохранения обязательны. Проверить все затворы и последствия возвратов.</p>
+<p>Готовность: полное прохождение от нового сохранения до финала без команд разработчика и без временных телепортов.</p>
+<h2 id='roadmap-m6-наполнение-и-сайдквесты'>M6 — наполнение и сайдквесты</h2>
+<p>Довести врагов и окружение, разработать 5–6 побочных линий, внедрить карту и улучшения, заменить временные материалы, закончить тексты, звук и доступность.</p>
+<p>Готовность: каждый квест имеет проверяемые состояния, награду и понятные условия; нет обязательных способностей за необязательным заданием.</p>
+<h2 id='roadmap-m7-релизная-подготовка'>M7 — релизная подготовка</h2>
+<p>Баланс, производительность, настройки, переназначение, проверка сохранений, тестирование с игроками, лицензии и название, финальные сборки и материалы магазина. Юридическую проверку делаем по конкретным территориям и материалам до публикации.</p>
+<h2 id='roadmap-ближайшее-действие'>Ближайшее действие</h2>
+<p>Прочитать и отредактировать основной сюжет, согласовать его с владельцем, затем подготовить сценарный план сцен. Возвращение к M1 и Unity — только после завершения этого этапа и решения владельца продолжить разработку.</p>
+<footer class='document-footer'><span>Рабочий документ · Alice</span><a href='DevelopmentRoadmap.md'>Открыть исходный текст ↗</a></footer></article>
+<article class='document' id='sources' data-title='Источники и права' data-icon='04'><h1 id='sources-происхождение-контента-и-лицензии'>Происхождение контента и лицензии</h1>
+<p>Это рабочий реестр, не юридическое заключение. Статус прав проверяется для конкретного материала и стран распространения. Свободный первоисточник не делает свободными современные адаптации и переводы.</p>
+<h2 id='sources-первоисточник'>Первоисточник</h2>
+<p>Основная книга: Lewis Carroll, <em>Alice's Adventures in Wonderland</em> (1865), английский оригинал.</p>
+<ul>
+<li><a href="https://www.loc.gov/item/02020394/">Library of Congress: издание и отметка public domain</a>.</li>
+<li><a href="https://www.gutenberg.org/ebooks/11">Project Gutenberg: английский текст</a>.</li>
+<li><a href="https://www.gutenberg.org/ebooks/12">Through the Looking-Glass</a> — дополнительный возможный источник; основной сценарий версии 0.3 на него не опирается.</li>
+</ul>
+<p>Эти ссылки фиксируют исходные источники обсуждения. На этом этапе не проводилась проверка товарных знаков или всех территорий продаж.</p>
+<h2 id='sources-происхождение-сюжетных-элементов'>Происхождение сюжетных элементов</h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Таблица с горизонтальной прокруткой"><table>
+<thead>
+<tr>
+<th>Элемент</th>
+<th>Источник</th>
+<th>Что добавляем сами</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Сестра, Кролик, нора, зал дверей, слёзы</td>
+<td>Книга, главы 1–2</td>
+<td>Королевские оттиски на опечатанных предметах</td>
+</tr>
+<tr>
+<td>Мышь, Додо, Бег по кругу</td>
+<td>Книга, главы 2–3</td>
+<td>Сушильная машина, бесконечная процедура и бой</td>
+</tr>
+<tr>
+<td>Дом Кролика, Билль, пирожки</td>
+<td>Книга, глава 4</td>
+<td>Конкретный платформенный маршрут</td>
+</tr>
+<tr>
+<td>Гусеница, гриб, Голубка</td>
+<td>Книга, глава 5</td>
+<td>Постоянная способность, королевские сети и поставки яиц, неизбежная смерть Голубки</td>
+</tr>
+<tr>
+<td>Лакеи, Герцогиня, Кухарка, ребёнок-поросёнок, Кот</td>
+<td>Книга, глава 6</td>
+<td>Арест во время эпизода, бой, путь за приглашением</td>
+</tr>
+<tr>
+<td>Шляпник, Заяц, Соня, ссора со Временем</td>
+<td>Книга, глава 7</td>
+<td>Украденные минуты, часы отсрочки, бой</td>
+</tr>
+<tr>
+<td>Розы, крокет, спор о голове Кота</td>
+<td>Книга, глава 8</td>
+<td>Пространственный маршрут и последствия</td>
+</tr>
+<tr>
+<td>Герцогиня в саду, Грифон, Квази</td>
+<td>Книга, главы 9–10</td>
+<td>Их связь с переходом к финальной зоне</td>
+</tr>
+<tr>
+<td>Валет, пирожки, свидетели, приговор до решения, карты, пробуждение</td>
+<td>Книга, главы 11–12</td>
+<td>Суд связывает действия Алисы; предложение лжесвидетельства, бой с Королевой и освобождение страны</td>
+</tr>
+</tbody>
+</table></div>
+<p>Чеширский шаг, постоянная ветровая функция веера, механика часов, враги и предметы экипировки — собственные игровые дополнения. Королевская печать, сознательное искажение страны Королевой и прекращение её приказов после финального боя — новая связующая история. «Собственные» означает разработанные в рамках этой версии, а не гарантию отсутствия похожих идей где-либо ещё.</p>
+<p>Актуальное изложение — <a href="#story">Story.md</a>. Повестка до падения и обязательная рана после пробуждения из предыдущей версии убраны. Королева Червей из первой книги не смешивается с Красной Королевой из «Зазеркалья».</p>
+<p>Редакция 0.3 сохраняет безобидный книжный облик персонажей и добавляет реальные кровавые казни, жестокость кухни и крокета, тёмное окружение и будничное отношение к насилию. Эти сцены и тон — решения адаптации; они не выдаются за буквальное содержание книги. Узнаваемость книжных персонажей не означает копирование их дизайна из конкретного фильма или игры.</p>
+<h2 id='sources-современные-ориентиры'>Современные ориентиры</h2>
+<p>Blasphemous и Nine Sols — ориентиры жанра и требовательности. American McGee's Alice — ориентир желаемой мрачности из обсуждения. Их ассеты, реплики, музыка, конкретные дизайны, биографии и сюжетные добавления не являются источниками контента проекта.</p>
+<p>Русские реплики писать самостоятельно по английскому оригиналу. Существующий перевод, иллюстрацию, шрифт или аудиозапись добавлять только после отдельной проверки прав. Даже для старой иллюстрации фиксировать автора, издание и конкретный источник файла.</p>
+<h2 id='sources-реестр-ассетов'>Реестр ассетов</h2>
+<p>На данный момент оригинальные игровые изображения, музыка и сторонние коммерческие ассеты не добавлены. Есть ресурсы официального Unity-шаблона и сгенерированные Editor-ом технические сцены.</p>
+<p>Для каждого нового стороннего материала фиксировать:</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Таблица с горизонтальной прокруткой"><table>
+<thead>
+<tr>
+<th>Путь / ID</th>
+<th>Автор и источник</th>
+<th>Лицензия / подтверждение покупки</th>
+<th>Коммерческое использование</th>
+<th>Атрибуция</th>
+<th>Проверено</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Официальный Unity 2D template</td>
+<td>Установленный Editor 6000.6.6f1</td>
+<td>Условия Unity и лицензии соответствующих пакетов</td>
+<td>Проверить условия перед распространением материалов отдельно от игры</td>
+<td>По лицензиям пакетов</td>
+<td>Техническая основа</td>
+</tr>
+</tbody>
+</table></div>
+<p>Перед коммерческим релизом: проверка названия и логотипа, выбранных территорий, всех переводов и лицензий, затем юридическая оценка конкретных материалов.</p>
+<footer class='document-footer'><span>Рабочий документ · Alice</span><a href='ContentProvenance.md'>Открыть исходный текст ↗</a></footer></article>
+<article class='document' id='technical' data-title='Техническая основа' data-icon='05'><h1 id='technical-техническая-настройка'>Техническая настройка</h1>
+<h2 id='technical-основа'>Основа</h2>
+<ul>
+<li>Editor: <strong>Unity 6000.6.6f1</strong>, версия зафиксирована в <code>ProjectSettings/ProjectVersion.txt</code>.</li>
+<li>Основа — официальный установленный шаблон <code>com.unity.template.2d-cross-platform-2d</code> 7.0.0: сохранены штатные URP-настройки, сцены шаблона и GUID.</li>
+<li>URP 2D Renderer, ортографическая камера.</li>
+<li>Input System, активный новый ввод взят из шаблона.</li>
+<li>Версии зависимостей перечислены в <code>Packages/manifest.json</code>; разрешённые зависимости фиксирует Unity в <code>packages-lock.json</code>.</li>
+<li>Unity Version Control, Visual Scripting и обучающий framework убраны из прямых зависимостей: для этого Git-проекта они сейчас не нужны.</li>
+</ul>
+<p>Шаблон извлечён напрямую из установленного архива, поскольку первоначальная команда CLI создания проекта завершилась ошибкой чтения реестра Unity Hub. Дальнейшее создание сцен выполняется через настоящий Unity Editor API. Установка новых версий Editor и переключение проекта не происходили.</p>
+<h2 id='technical-структура'>Структура</h2>
+<pre><code class="language-text">Assets/
+  _Alice/
+    Animations/
+    Art/{Characters,Environments,UI}/
+    Audio/{Music,SFX}/
+    Data/{Abilities,Biomes,Dialogue,Enemies}/
+    Editor/AliceProjectSetup.cs
+    Materials/
+    Prefabs/{Characters,Enemies,World}/
+    Scenes/
+      Bootstrap.unity
+      Prototype_Traversal.unity
+      Biomes/
+      Tests/
+    Scripts/{Abilities,Combat,Core,Narrative,Player,Save,UI,World}/
+    Settings/AliceInput.inputactions
+  Scenes/                  # исходная сцена официального шаблона
+  Settings/                # штатные URP-ресурсы официального шаблона
+Docs/
+Packages/
+ProjectSettings/
+</code></pre>
+<p>Пустые папки созданы для навигации; Unity хранит их GUID в соседних <code>.meta</code>. Runtime-архитектура ещё не реализована. Пространство имён собственного кода: <code>Alice</code>.</p>
+<h2 id='technical-стартовые-сцены'>Стартовые сцены</h2>
+<p><code>Bootstrap</code>: камера URP 2D и пустой корень <code>Systems</code>. Будущее место запуска сохранений и загрузки мира. Сейчас она не загружает вторую сцену автоматически.</p>
+<p><code>Prototype_Traversal</code>: камера URP 2D, корни <code>World</code>, <code>Gameplay</code>, <code>UI</code> и точка <code>PlayerSpawn</code>. Это пустая основа для следующего этапа; контроллера, платформ, UI и врагов ещё нет.</p>
+<p>В списке сборки: сначала Bootstrap, затем Prototype_Traversal. Список заменяется генератором только если он пуст или содержит лишь штатную SampleScene. Собственный пользовательский список не затирается.</p>
+<p>Не изменять <code>.unity</code> и <code>.asset</code> вручную без необходимости. Использовать Editor API или инспектор, сохранять существующие GUID.</p>
+<h2 id='technical-ввод'>Ввод</h2>
+<p><code>AliceInput.inputactions</code> содержит карты <code>Gameplay</code> и <code>UI</code> и назначен общим Input Actions asset проекта. Генератор заменяет только пустую настройку или исходную настройку шаблона, сохраняя последующий пользовательский выбор. Пока это схема действий; компоненты для её использования будут добавлены вместе с игровым контроллером и интерфейсом.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Таблица с горизонтальной прокруткой"><table>
+<thead>
+<tr>
+<th>Действие</th>
+<th>Клавиатура / мышь</th>
+<th>Геймпад</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Move</td>
+<td>WASD</td>
+<td>Левый стик / крестовина</td>
+</tr>
+<tr>
+<td>Jump</td>
+<td>Space</td>
+<td>South / A</td>
+</tr>
+<tr>
+<td>Attack</td>
+<td>Левая кнопка мыши</td>
+<td>West / X</td>
+</tr>
+<tr>
+<td>Evade</td>
+<td>Left Shift</td>
+<td>East / B</td>
+</tr>
+<tr>
+<td>Interact</td>
+<td>E</td>
+<td>North / Y</td>
+</tr>
+<tr>
+<td>Heal</td>
+<td>Q</td>
+<td>LB</td>
+</tr>
+<tr>
+<td>UseAbility</td>
+<td>Правая кнопка мыши</td>
+<td>RB</td>
+</tr>
+<tr>
+<td>NextAbility</td>
+<td>Tab</td>
+<td>LT</td>
+</tr>
+<tr>
+<td>Map</td>
+<td>M</td>
+<td>Select</td>
+</tr>
+<tr>
+<td>Pause</td>
+<td>Escape</td>
+<td>Start</td>
+</tr>
+</tbody>
+</table></div>
+<p>Схема предварительная. Во время M1/M3 решаем, привязать ли веер к повторному Jump или Evade в воздухе. До этого отсутствует утверждённая комбинация для одновременного использования веера и выбранного другого предмета.</p>
+<h2 id='technical-повторная-настройка'>Повторная настройка</h2>
+<p>В Editor: <code>Alice → Project → Configure Foundation</code>. Перед ручным запуском Unity предложит сохранить изменённые сцены. Существующие сцены и Input Actions asset не заменяются. Настройки продукта, 2D и сериализации команда приводит к исходной конфигурации.</p>
+<p>CLI из корня проекта:</p>
+<pre><code class="language-powershell">unity run C:/Projects/alice --editor-version 6000.6.6f1 --timeout 600 --log-file C:/Projects/alice/Logs/setup.log --no-tail -- -nographics -executeMethod Alice.Editor.AliceProjectSetup.ConfigureBatch
+</code></pre>
+<p>CLI самостоятельно управляет batch-флагами и завершением; дополнительный <code>-quit</code> ему передавать не надо. Не запускать batch-Editor одновременно с обычным Editor для того же проекта.</p>
+<p><code>unity status --json</code> показывает только Editor с установленным Pipeline. Отсутствие такого подключения не означает, что CLI или Hub не установлены. Pipeline не добавлен в зависимости проекта автоматически.</p>
+<h2 id='technical-git-и-проверка'>Git и проверка</h2>
+<p>Коммитить <code>.meta</code>, текстовые сцены, настройки и lock-файл. Проверять <code>git status --short</code> перед коммитом. Не добавлять Library, Temp, Logs, сборки, локальные ключи и рабочую папку <code>work</code>.</p>
+<p>Git LFS пока не настроен. Когда появятся большие PSD, WAV и исходники анимации, отдельно выбрать лимиты и правила LFS до их первой фиксации.</p>
+<p>Проверка фундамента: импорт пакетов, отсутствие ошибок компиляции, успешный запуск ConfigureBatch и наличие созданных сцен/ввода. Это не проверка игрового поведения: игровых систем пока нет.</p>
+<h3 id='technical-результат-проверки-2026-10-31'>Результат проверки 2026-10-31</h3>
+<ul>
+<li>Unity CLI обновлён с разрешения владельца до 1.0.0-beta.15.</li>
+<li>Реальный Editor 6000.6.6f1 импортировал зависимости и скомпилировал setup-скрипт.</li>
+<li>Финальный запуск <code>ConfigureBatch</code> завершился с кодом 0 и маркером <code>ALICE_SETUP_COMPLETE</code>.</li>
+<li>Повторная настройка сохранила SHA-256 обеих сцен, Input Actions asset и их <code>.meta</code>.</li>
+<li>Собственная схема ввода назначена в общих настройках проекта; две сцены включены в список сборки.</li>
+<li>Проверены наличие <code>.meta</code>, относительные ссылки документов, JSON зависимостей и Git-исключения.</li>
+<li>Игровой запуск, управление персонажем и сборка Player пока не проверялись: игровые системы ещё не созданы.</li>
+</ul>
+<p>В этой среде batch-Editor запускался вне песочницы: ограниченный процесс не смог корректно использовать локальный сервис лицензирования и служебные сокеты. Первый импорт завершился после такого запуска. Локальные журналы находятся в игнорируемой папке <code>Logs</code>; не публиковать их без очистки служебных данных.</p>
+<footer class='document-footer'><span>Рабочий документ · Alice</span><a href='TechnicalSetup.md'>Открыть исходный текст ↗</a></footer></article>
+    </main>
+  </div>
+  <script>
+    (() => {
+      'use strict';
+      const docs = [...document.querySelectorAll('.document')];
+      const toc = document.getElementById('toc');
+      const search = document.getElementById('search');
+      const themeButton = document.getElementById('theme-toggle');
+      const menuButton = document.getElementById('menu-toggle');
+      let activeDoc = null;
+      let observer = null;
+      const searchIndex = [];
+
+      docs.forEach(doc => {
+        doc.querySelector('h1')?.setAttribute('data-kicker', doc.dataset.icon + ' / ' + doc.dataset.title);
+        let section = null;
+        [...doc.children].forEach(element => {
+          if (/^H[12]$/.test(element.tagName)) {
+            section = { doc: doc.id, target: element.id, title: element.textContent, text: '' };
+            searchIndex.push(section);
+          } else if (section && element.tagName !== 'FOOTER') {
+            section.text += ' ' + element.textContent;
+          }
+        });
+      });
+
+      function closeMenu() {
+        document.body.classList.remove('menu-open');
+        menuButton.setAttribute('aria-expanded', 'false');
+      }
+
+      function updateProgress() {
+        const available = document.documentElement.scrollHeight - window.innerHeight;
+        document.getElementById('progress').style.width = (available > 0 ? Math.min(100, Math.max(0, window.scrollY / available * 100)) : 100) + '%';
+      }
+
+      function showDocument(id) {
+        const selected = docs.find(doc => doc.id === id) || docs[0];
+        docs.forEach(doc => { doc.hidden = doc !== selected; });
+        activeDoc = selected;
+        document.getElementById('current-title').textContent = selected.dataset.title;
+        document.title = 'Alice — ' + selected.dataset.title;
+        document.querySelectorAll('.doc-link').forEach(button => {
+          if (button.dataset.doc === selected.id) button.setAttribute('aria-current', 'page');
+          else button.removeAttribute('aria-current');
+        });
+        toc.replaceChildren();
+        selected.querySelectorAll('h2,h3').forEach(heading => {
+          const li = document.createElement('li');
+          if (heading.tagName === 'H3') li.className = 'sub';
+          const a = document.createElement('a');
+          a.href = '#' + encodeURIComponent(heading.id);
+          a.textContent = heading.textContent;
+          li.append(a);
+          toc.append(li);
+        });
+        observer?.disconnect();
+        if ('IntersectionObserver' in window) {
+          observer = new IntersectionObserver(entries => {
+            const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+            if (!visible.length) return;
+            toc.querySelectorAll('a').forEach(a => a.classList.toggle('active', decodeURIComponent(a.hash.slice(1)) === visible[0].target.id));
+          }, { rootMargin: '-70px 0px -65% 0px' });
+          selected.querySelectorAll('h2,h3').forEach(heading => observer.observe(heading));
+        }
+        requestAnimationFrame(updateProgress);
+      }
+
+      function navigate(hash, push = true) {
+        let id;
+        try { id = decodeURIComponent(hash.replace(/^#/, '')); } catch { id = 'gdd'; }
+        const target = document.getElementById(id);
+        const owner = target?.matches('.document') ? target : target?.closest('.document');
+        showDocument(owner?.id || 'gdd');
+        if (push) history.pushState(null, '', '#' + encodeURIComponent(owner ? id : 'gdd'));
+        closeMenu();
+        if (owner && target !== owner) {
+          target.scrollIntoView({ block: 'start' });
+          target.classList.remove('target-flash');
+          void target.offsetWidth;
+          target.classList.add('target-flash');
+        } else window.scrollTo({ top: 0, behavior: 'instant' });
+      }
+
+      document.addEventListener('click', event => {
+        const button = event.target.closest('[data-doc]');
+        if (button) { navigate(button.dataset.doc); return; }
+        const anchor = event.target.closest('a[href^="#"]');
+        if (anchor && anchor.getAttribute('href') !== '#content') {
+          event.preventDefault();
+          navigate(anchor.getAttribute('href'));
+        }
+      });
+      window.addEventListener('popstate', () => navigate(location.hash, false));
+      window.addEventListener('hashchange', () => navigate(location.hash, false));
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      window.addEventListener('resize', updateProgress);
+      menuButton.addEventListener('click', () => {
+        const open = document.body.classList.toggle('menu-open');
+        menuButton.setAttribute('aria-expanded', String(open));
+      });
+      document.getElementById('backdrop').addEventListener('click', closeMenu);
+      document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
+      document.getElementById('print').addEventListener('click', () => window.print());
+
+      function setTheme(theme) {
+        document.documentElement.dataset.theme = theme;
+        themeButton.textContent = theme === 'dark' ? 'Светлая тема' : 'Тёмная тема';
+        themeButton.setAttribute('aria-pressed', String(theme === 'dark'));
+      }
+      try { setTheme(localStorage.getItem('alice-reader-theme') || 'light'); } catch { setTheme('light'); }
+      themeButton.addEventListener('click', () => {
+        const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        setTheme(theme);
+        try { localStorage.setItem('alice-reader-theme', theme); } catch { /* Local file storage may be disabled. */ }
+      });
+
+      search.addEventListener('input', () => {
+        const query = search.value.trim().toLocaleLowerCase('ru');
+        document.getElementById('chapter-nav').hidden = Boolean(query);
+        document.getElementById('search-results').hidden = !query;
+        const list = document.getElementById('result-list');
+        list.replaceChildren();
+        if (!query) return;
+        const results = searchIndex.filter(item => (item.title + item.text).toLocaleLowerCase('ru').includes(query));
+        document.getElementById('search-status').textContent = results.length ? 'Найдено разделов: ' + results.length + (results.length > 25 ? ' · показаны первые 25' : '') : 'Ничего не найдено. Попробуйте другое слово.';
+        results.slice(0, 25).forEach(item => {
+          const button = document.createElement('button');
+          button.className = 'search-result';
+          const label = document.createElement('small');
+          label.textContent = docs.find(doc => doc.id === item.doc).dataset.title;
+          const title = document.createElement('strong');
+          title.textContent = item.title;
+          const snippet = document.createElement('p');
+          const start = Math.max(0, item.text.toLocaleLowerCase('ru').indexOf(query) - 45);
+          snippet.textContent = (start ? '…' : '') + item.text.slice(start, start + 150).trim() + '…';
+          button.append(label, title, snippet);
+          button.addEventListener('click', () => navigate(item.target));
+          list.append(button);
+        });
+      });
+      navigate(location.hash || '#gdd', false);
+    })();
+  </script>
+</body>
+</html>
