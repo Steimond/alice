@@ -12,4 +12,6 @@ EditorBuildSettings:
     path: Assets/_Alice/Scenes/Prototype_Traversal.unity
     guid: e34dd31d16c2c274a904fac6e2ceae68
   m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 352f75b52c1c04942b54bd86a5592d1c, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 69bee57977d568f4ca3a82eb941c9d4d, type: 3}
+    com.unity.localization.settings: {fileID: 11400000, guid: cbf17664ff76d56459c893ea1e2a976c, type: 2}

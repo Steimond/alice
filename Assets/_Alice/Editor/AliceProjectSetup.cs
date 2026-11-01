@@ -84,6 +84,8 @@ namespace Alice.Editor
             PlayerSettings.runInBackground = false;
 
             CreateInputIfMissing();
+            AddMissingGameplayActions();
+            AliceLocalizationSetup.Configure();
             string currentInputPath = InputSystem.actions == null
                 ? string.Empty
                 : AssetDatabase.GetAssetPath(InputSystem.actions);
@@ -125,7 +127,7 @@ namespace Alice.Editor
             Debug.Log("Alice foundation configured. Gameplay implementation is the next milestone.");
         }
 
-        private static void EnsureFolder(string path)
+        internal static void EnsureFolder(string path)
         {
             if (AssetDatabase.IsValidFolder(path))
             {
@@ -205,6 +207,7 @@ namespace Alice.Editor
                 AddButton(gameplay, "Jump", "<Keyboard>/space", "<Gamepad>/buttonSouth");
                 AddButton(gameplay, "Attack", "<Mouse>/leftButton", "<Gamepad>/buttonWest");
                 AddButton(gameplay, "Evade", "<Keyboard>/leftShift", "<Gamepad>/buttonEast");
+                AddButton(gameplay, "Parry", "<Keyboard>/f", "<Gamepad>/rightTrigger");
                 AddButton(gameplay, "Interact", "<Keyboard>/e", "<Gamepad>/buttonNorth");
                 AddButton(gameplay, "Heal", "<Keyboard>/q", "<Gamepad>/leftShoulder");
                 AddButton(gameplay, "UseAbility", "<Mouse>/rightButton", "<Gamepad>/rightShoulder");
@@ -230,6 +233,29 @@ namespace Alice.Editor
             finally
             {
                 UnityEngine.Object.DestroyImmediate(asset);
+            }
+        }
+
+        // Adds actions introduced after the asset was first created; existing bindings stay untouched.
+        private static void AddMissingGameplayActions()
+        {
+            InputActionAsset asset = AssetDatabase.LoadAssetAtPath<InputActionAsset>(InputPath);
+            InputActionMap gameplay = asset == null ? null : asset.FindActionMap("Gameplay");
+            if (gameplay == null || gameplay.FindAction("Parry") != null)
+            {
+                return;
+            }
+
+            InputActionAsset copy = InputActionAsset.FromJson(asset.ToJson());
+            try
+            {
+                AddButton(copy.FindActionMap("Gameplay"), "Parry", "<Keyboard>/f", "<Gamepad>/rightTrigger");
+                File.WriteAllText(InputPath, copy.ToJson() + Environment.NewLine);
+                AssetDatabase.ImportAsset(InputPath);
+            }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(copy);
             }
         }
 

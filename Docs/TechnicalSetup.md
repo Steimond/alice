@@ -6,6 +6,7 @@
 - Основа — официальный установленный шаблон `com.unity.template.2d-cross-platform-2d` 7.0.0: сохранены штатные URP-настройки, сцены шаблона и GUID.
 - URP 2D Renderer, ортографическая камера.
 - Input System, активный новый ввод взят из шаблона.
+- Unity Localization 1.5.13 (вместе с Addressables): локали `ru` (исходный язык проекта) и `en`; язык системы без перевода откатывается на английский.
 - Версии зависимостей перечислены в `Packages/manifest.json`; разрешённые зависимости фиксирует Unity в `packages-lock.json`.
 - Unity Version Control, Visual Scripting и обучающий framework убраны из прямых зависимостей: для этого Git-проекта они сейчас не нужны.
 
@@ -20,7 +21,8 @@ Assets/
     Art/{Characters,Environments,UI}/
     Audio/{Music,SFX}/
     Data/{Abilities,Biomes,Dialogue,Enemies}/
-    Editor/AliceProjectSetup.cs
+    Data/Localization/       # таблицы строк (UI)
+    Editor/                  # Alice.Editor.asmdef, AliceProjectSetup, AliceLocalizationSetup
     Materials/
     Prefabs/{Characters,Enemies,World}/
     Scenes/
@@ -28,8 +30,11 @@ Assets/
       Prototype_Traversal.unity
       Biomes/
       Tests/
-    Scripts/{Abilities,Combat,Core,Narrative,Player,Save,UI,World}/
+    Scripts/                 # Alice.asmdef
+      {Abilities,Combat,Core,Narrative,Player,Save,UI,World}/
     Settings/AliceInput.inputactions
+    Settings/Localization/   # LocalizationSettings, локали ru и en
+  AddressableAssetsData/   # создано Localization; группы таблиц и локалей
   Scenes/                  # исходная сцена официального шаблона
   Settings/                # штатные URP-ресурсы официального шаблона
 Docs/
@@ -37,7 +42,7 @@ Packages/
 ProjectSettings/
 ```
 
-Пустые папки созданы для навигации; Unity хранит их GUID в соседних `.meta`. Runtime-архитектура ещё не реализована. Пространство имён собственного кода: `Alice`.
+Пустые папки созданы для навигации; Unity хранит их GUID в соседних `.meta`. Runtime-архитектура ещё не реализована. Сборки: `Alice` для игрового кода и `Alice.Editor` для инструментов редактора; пространства имён повторяют папки. Правила кода для агентов — в `AGENTS.md` в корне репозитория. Корневое пространство имён: `Alice`.
 
 ## Стартовые сцены
 
@@ -58,7 +63,8 @@ ProjectSettings/
 | Move | WASD | Левый стик / крестовина |
 | Jump | Space | South / A |
 | Attack | Левая кнопка мыши | West / X |
-| Evade | Left Shift | East / B |
+| Evade (подкат) | Left Shift | East / B |
+| Parry | F | RT |
 | Interact | E | North / Y |
 | Heal | Q | LB |
 | UseAbility | Правая кнопка мыши | RB |
@@ -66,7 +72,13 @@ ProjectSettings/
 | Map | M | Select |
 | Pause | Escape | Start |
 
-Схема предварительная. Во время M1/M3 решаем, привязать ли веер к повторному Jump или Evade в воздухе. До этого отсутствует утверждённая комбинация для одновременного использования веера и выбранного другого предмета.
+Схема предварительная. Evade — подкат. Parry добавлен генератором в существующий asset без изменения прежних привязок. Веер отдельной кнопки не получает: он срабатывает повторным нажатием Jump в воздухе (GDD 0.13). NextAbility, вероятно, не понадобится, поскольку способности контекстные; решаем в M1.
+
+## Локализация
+
+Настройки — `Assets/_Alice/Settings/Localization/LocalizationSettings.asset`, назначены активными в проекте. Исходная локаль проекта — `ru`, вторая — `en`. Порядок выбора языка при запуске: аргумент командной строки, язык системы, затем английский. Генератор создаёт настройки, локали и таблицу `UI` только при их отсутствии и не меняет выбранный позже язык проекта.
+
+Видимые игроку строки хранятся только в таблицах `Assets/_Alice/Data/Localization`; текстуры с надписями — локализуемые ассеты. Шрифты с кириллицей и латиницей ещё не выбраны: их подключаем вместе с первым интерфейсом, после проверки лицензии.
 
 ## Повторная настройка
 
@@ -86,9 +98,17 @@ CLI самостоятельно управляет batch-флагами и за
 
 Коммитить `.meta`, текстовые сцены, настройки и lock-файл. Проверять `git status --short` перед коммитом. Не добавлять Library, Temp, Logs, сборки, локальные ключи и рабочую папку `work`.
 
-Git LFS пока не настроен. Когда появятся большие PSD, WAV и исходники анимации, отдельно выбрать лимиты и правила LFS до их первой фиксации.
+Git LFS настроен в `.gitattributes`: PSD/PSB, KRA, TIFF/TGA/EXR, звук (WAV, AIFF, FLAC, OGG, MP3), видео, шрифты, FBX, Blend и архивы. PNG и Aseprite остаются в обычном Git: пиксель-арт мал, а квота LFS на GitHub ограничена. В клоне один раз выполнить `git lfs install --local`.
 
 Проверка фундамента: импорт пакетов, отсутствие ошибок компиляции, успешный запуск ConfigureBatch и наличие созданных сцен/ввода. Это не проверка игрового поведения: игровых систем пока нет.
+
+### Результат проверки 2026-11-01
+
+- Пакет Localization 1.5.13 импортирован; сборки `Alice` и `Alice.Editor` компилируются без ошибок и предупреждений.
+- `ConfigureBatch` создал настройки локализации, локали `ru`/`en`, таблицу `UI`, группы Addressables и действие Parry; маркер `ALICE_SETUP_COMPLETE`.
+- Повторный запуск не изменил ни одного файла в `Assets/_Alice`, `Assets/AddressableAssetsData`, `ProjectSettings` и `Packages` (сравнение SHA-1 171 файла).
+- Git LFS: локальные хуки установлены, шаблоны видны в `git lfs track`.
+- Переключение языка в игре не проверялось: интерфейса и строк ещё нет.
 
 ### Результат проверки 2026-10-31
 
