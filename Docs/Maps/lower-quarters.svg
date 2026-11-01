@@ -1,0 +1,253 @@
+<svg width="818pt" height="1072pt"
+ viewBox="0.00 0.00 818.00 1072.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="L-graph0" class="graph" transform="scale(1 1) rotate(0) translate(18 1053.64)">
+<title>Map</title>
+<polygon fill="#fffdf8" stroke="none" points="-18,18 -18,-1053.64 800.29,-1053.64 800.29,18 -18,18"/>
+<!-- L01 -->
+<g id="L-node1" class="node room">
+<title>L01</title>
+<g id="L-a_node1"><a xlink:title="E03">
+<path fill="#fffdf8" stroke="#aaa7a0" d="M647.24,-934.2C647.24,-934.2 479.87,-934.2 479.87,-934.2 473.87,-934.2 467.87,-928.2 467.87,-922.2 467.87,-922.2 467.87,-910.2 467.87,-910.2 467.87,-904.2 473.87,-898.2 479.87,-898.2 479.87,-898.2 647.24,-898.2 647.24,-898.2 653.24,-898.2 659.24,-904.2 659.24,-910.2 659.24,-910.2 659.24,-922.2 659.24,-922.2 659.24,-928.2 653.24,-934.2 647.24,-934.2"/>
+<text xml:space="preserve" text-anchor="middle" x="563.55" y="-912.3" font-family="Arial" font-size="13.00">L01 · Затопленный коридор</text>
+</a>
+</g>
+</g>
+<!-- L02 -->
+<g id="L-node2" class="node room">
+<title>L02</title>
+<g id="L-a_node2"><a xlink:title="Мышь · E03 · E04">
+<path fill="#fffdf8" stroke="#aaa7a0" d="M614.73,-857.2C614.73,-857.2 512.37,-857.2 512.37,-857.2 506.37,-857.2 500.37,-851.2 500.37,-845.2 500.37,-845.2 500.37,-822.16 500.37,-822.16 500.37,-816.16 506.37,-810.16 512.37,-810.16 512.37,-810.16 614.73,-810.16 614.73,-810.16 620.73,-810.16 626.73,-816.16 626.73,-822.16 626.73,-822.16 626.73,-845.2 626.73,-845.2 626.73,-851.2 620.73,-857.2 614.73,-857.2"/>
+<text xml:space="preserve" text-anchor="middle" x="563.55" y="-837.58" font-family="Arial" font-size="13.00">L02 · Берег Мыши</text>
+<text xml:space="preserve" text-anchor="middle" x="563.55" y="-821.98" font-family="Arial" font-size="13.00">NPC · Q01</text>
+</a>
+</g>
+</g>
+<!-- L01&#45;&gt;L02 -->
+<g id="L-edge2" class="edge main">
+<title>L01&#45;&gt;L02</title>
+<path fill="none" stroke="#767780" d="M563.55,-889.84C563.55,-882.1 563.55,-873.51 563.55,-865.45"/>
+<polygon fill="#767780" stroke="#767780" points="561.28,-889.72 563.55,-896.22 565.83,-889.72 561.28,-889.72"/>
+<polygon fill="#767780" stroke="#767780" points="565.83,-865.64 563.55,-859.14 561.28,-865.64 565.83,-865.64"/>
+</g>
+<!-- L03 -->
+<g id="L-node3" class="node room rest">
+<title>L03</title>
+<g id="L-a_node3"><a xlink:title="E04">
+<ellipse fill="#fffdf8" stroke="#aaa7a0" cx="442.55" cy="-711.47" rx="145.54" ry="44.29"/>
+<text xml:space="preserve" text-anchor="middle" x="442.55" y="-723.17" font-family="Arial" font-size="13.00">L03 · Лестница и первая ниша</text>
+<text xml:space="preserve" text-anchor="middle" x="442.55" y="-707.57" font-family="Arial" font-size="13.00">отдыха</text>
+<text xml:space="preserve" text-anchor="middle" x="442.55" y="-691.97" font-family="Arial" font-size="13.00">ОТДЫХ</text>
+</a>
+</g>
+</g>
+<!-- L02&#45;&gt;L03 -->
+<g id="L-edge3" class="edge main">
+<title>L02&#45;&gt;L03</title>
+<path fill="none" stroke="#767780" d="M535.14,-804.46C521.74,-791.14 505.38,-774.89 490.16,-759.77"/>
+<polygon fill="#767780" stroke="#767780" points="533.22,-805.75 539.43,-808.72 536.43,-802.53 533.22,-805.75"/>
+<polygon fill="#767780" stroke="#767780" points="491.9,-758.29 485.69,-755.32 488.7,-761.52 491.9,-758.29"/>
+</g>
+<!-- L10 -->
+<g id="L-node10" class="node room optional">
+<title>L10</title>
+<g id="L-a_node10"><a xlink:title="Запас для улучшения лечения">
+<path fill="#f6f3eb" stroke="#aaa7a0" stroke-dasharray="5,2" d="M746.57,-734.99C746.57,-734.99 622.54,-734.99 622.54,-734.99 616.54,-734.99 610.54,-728.99 610.54,-722.99 610.54,-722.99 610.54,-699.95 610.54,-699.95 610.54,-693.95 616.54,-687.95 622.54,-687.95 622.54,-687.95 746.57,-687.95 746.57,-687.95 752.57,-687.95 758.57,-693.95 758.57,-699.95 758.57,-699.95 758.57,-722.99 758.57,-722.99 758.57,-728.99 752.57,-734.99 746.57,-734.99"/>
+<text xml:space="preserve" text-anchor="middle" x="684.55" y="-715.37" font-family="Arial" font-size="13.00">L10 · Дальний берег</text>
+<text xml:space="preserve" text-anchor="middle" x="684.55" y="-699.77" font-family="Arial" font-size="13.00">ТАЙНИК</text>
+</a>
+</g>
+</g>
+<!-- L02&#45;&gt;L10 -->
+<g id="L-edge12" class="edge secret">
+<title>L02&#45;&gt;L10</title>
+<path fill="none" stroke="#767780" stroke-dasharray="5,2" d="M592.09,-804.33C611.48,-785.07 637,-759.71 656.32,-740.52"/>
+<polygon fill="#767780" stroke="#767780" points="590.68,-802.53 587.67,-808.72 593.88,-805.75 590.68,-802.53"/>
+<polygon fill="#767780" stroke="#767780" points="657.51,-742.54 660.52,-736.34 654.31,-739.31 657.51,-742.54"/>
+<text xml:space="preserve" text-anchor="middle" x="679.44" y="-779.36" font-family="Arial" font-size="12.00" fill="#65646a">A01 · дальний берег</text>
+</g>
+<!-- L04 -->
+<g id="L-node4" class="node room">
+<title>L04</title>
+<g id="L-a_node4"><a xlink:title="Додо до боя · E05">
+<path fill="#fffdf8" stroke="#aaa7a0" d="M410.76,-612.77C410.76,-612.77 290.34,-612.77 290.34,-612.77 284.34,-612.77 278.34,-606.77 278.34,-600.77 278.34,-600.77 278.34,-577.73 278.34,-577.73 278.34,-571.73 284.34,-565.73 290.34,-565.73 290.34,-565.73 410.76,-565.73 410.76,-565.73 416.76,-565.73 422.76,-571.73 422.76,-577.73 422.76,-577.73 422.76,-600.77 422.76,-600.77 422.76,-606.77 416.76,-612.77 410.76,-612.77"/>
+<text xml:space="preserve" text-anchor="middle" x="350.55" y="-593.15" font-family="Arial" font-size="13.00">L04 · Вход на гонку</text>
+<text xml:space="preserve" text-anchor="middle" x="350.55" y="-577.55" font-family="Arial" font-size="13.00">NPC</text>
+</a>
+</g>
+</g>
+<!-- L03&#45;&gt;L04 -->
+<g id="L-edge4" class="edge main">
+<title>L03&#45;&gt;L04</title>
+<path fill="none" stroke="#767780" d="M405.41,-661.93C394.3,-647.41 382.47,-631.96 372.66,-619.14"/>
+<polygon fill="#767780" stroke="#767780" points="403.44,-663.1 409.2,-666.88 407.05,-660.34 403.44,-663.1"/>
+<polygon fill="#767780" stroke="#767780" points="374.69,-618.05 368.93,-614.27 371.07,-620.81 374.69,-618.05"/>
+</g>
+<!-- L09 -->
+<g id="L-node9" class="node room optional">
+<title>L09</title>
+<g id="L-a_node9"><a xlink:title="Именные жетоны">
+<path fill="#f6f3eb" stroke="#aaa7a0" stroke-dasharray="5,2" d="M612.82,-612.77C612.82,-612.77 456.28,-612.77 456.28,-612.77 450.28,-612.77 444.28,-606.77 444.28,-600.77 444.28,-600.77 444.28,-577.73 444.28,-577.73 444.28,-571.73 450.28,-565.73 456.28,-565.73 456.28,-565.73 612.82,-565.73 612.82,-565.73 618.82,-565.73 624.82,-571.73 624.82,-577.73 624.82,-577.73 624.82,-600.77 624.82,-600.77 624.82,-606.77 618.82,-612.77 612.82,-612.77"/>
+<text xml:space="preserve" text-anchor="middle" x="534.55" y="-593.15" font-family="Arial" font-size="13.00">L09 · Щель под лестницей</text>
+<text xml:space="preserve" text-anchor="middle" x="534.55" y="-577.55" font-family="Arial" font-size="13.00">Q01 · ТАЙНИК</text>
+</a>
+</g>
+</g>
+<!-- L03&#45;&gt;L09 -->
+<g id="L-edge11" class="edge secret">
+<title>L03&#45;&gt;L09</title>
+<path fill="none" stroke="#767780" stroke-dasharray="5,2" d="M479.7,-661.93C490.81,-647.41 502.63,-631.96 512.45,-619.14"/>
+<polygon fill="#767780" stroke="#767780" points="478.05,-660.34 475.91,-666.88 481.67,-663.1 478.05,-660.34"/>
+<polygon fill="#767780" stroke="#767780" points="514.03,-620.81 516.18,-614.27 510.42,-618.05 514.03,-620.81"/>
+<text xml:space="preserve" text-anchor="middle" x="530.18" y="-636.37" font-family="Arial" font-size="12.00" fill="#65646a">A02 · щель</text>
+</g>
+<!-- L05 -->
+<g id="L-node5" class="node room">
+<title>L05</title>
+<g id="L-a_node5"><a xlink:title="E05">
+<path fill="#fffdf8" stroke="#aaa7a0" d="M318.4,-505.81C318.4,-505.81 172.7,-505.81 172.7,-505.81 166.7,-505.81 160.7,-499.81 160.7,-493.81 160.7,-493.81 160.7,-481.81 160.7,-481.81 160.7,-475.81 166.7,-469.81 172.7,-469.81 172.7,-469.81 318.4,-469.81 318.4,-469.81 324.4,-469.81 330.4,-475.81 330.4,-481.81 330.4,-481.81 330.4,-493.81 330.4,-493.81 330.4,-499.81 324.4,-505.81 318.4,-505.81"/>
+<text xml:space="preserve" text-anchor="middle" x="245.55" y="-483.91" font-family="Arial" font-size="13.00">L05 · Сушильная трасса</text>
+</a>
+</g>
+</g>
+<!-- L04&#45;&gt;L05 -->
+<g id="L-edge5" class="edge main">
+<title>L04&#45;&gt;L05</title>
+<path fill="none" stroke="#767780" d="M320.94,-560.21C304.78,-544.9 285.01,-526.18 269.77,-511.75"/>
+<polygon fill="#767780" stroke="#767780" points="319.08,-561.58 325.36,-564.4 322.21,-558.28 319.08,-561.58"/>
+<polygon fill="#767780" stroke="#767780" points="271.35,-510.11 265.06,-507.29 268.22,-513.41 271.35,-510.11"/>
+</g>
+<!-- L12 -->
+<g id="L-node12" class="node room optional">
+<title>L12</title>
+<g id="L-a_node12"><a xlink:title="Тайник снаряжения">
+<path fill="#f6f3eb" stroke="#aaa7a0" stroke-dasharray="5,2" d="M546.46,-511.33C546.46,-511.33 364.64,-511.33 364.64,-511.33 358.64,-511.33 352.64,-505.33 352.64,-499.33 352.64,-499.33 352.64,-476.29 352.64,-476.29 352.64,-470.29 358.64,-464.29 364.64,-464.29 364.64,-464.29 546.46,-464.29 546.46,-464.29 552.46,-464.29 558.46,-470.29 558.46,-476.29 558.46,-476.29 558.46,-499.33 558.46,-499.33 558.46,-505.33 552.46,-511.33 546.46,-511.33"/>
+<text xml:space="preserve" text-anchor="middle" x="455.55" y="-491.71" font-family="Arial" font-size="13.00">L12 · Пропавшая гардеробная</text>
+<text xml:space="preserve" text-anchor="middle" x="455.55" y="-476.11" font-family="Arial" font-size="13.00">ТАЙНИК</text>
+</a>
+</g>
+</g>
+<!-- L04&#45;&gt;L12 -->
+<g id="L-edge14" class="edge secret">
+<title>L04&#45;&gt;L12</title>
+<path fill="none" stroke="#767780" stroke-dasharray="5,2" d="M380.43,-559.95C394.74,-546.41 411.81,-530.24 426.06,-516.74"/>
+<polygon fill="#767780" stroke="#767780" points="378.9,-558.28 375.74,-564.4 382.02,-561.58 378.9,-558.28"/>
+<polygon fill="#767780" stroke="#767780" points="427.32,-518.68 430.48,-512.56 424.19,-515.38 427.32,-518.68"/>
+<text xml:space="preserve" text-anchor="middle" x="437.53" y="-534.93" font-family="Arial" font-size="12.00" fill="#65646a">A02 + A03</text>
+</g>
+<!-- L06 -->
+<g id="L-node6" class="node room rest">
+<title>L06</title>
+<g id="L-a_node6"><a xlink:title="E05">
+<ellipse fill="#fffdf8" stroke="#aaa7a0" cx="122.55" cy="-376.63" rx="122.55" ry="33.26"/>
+<text xml:space="preserve" text-anchor="middle" x="122.55" y="-380.53" font-family="Arial" font-size="13.00">L06 · Убежище у привода</text>
+<text xml:space="preserve" text-anchor="middle" x="122.55" y="-364.93" font-family="Arial" font-size="13.00">ОТДЫХ</text>
+</a>
+</g>
+</g>
+<!-- L05&#45;&gt;L06 -->
+<g id="L-edge6" class="edge main">
+<title>L05&#45;&gt;L06</title>
+<path fill="none" stroke="#767780" d="M220.21,-464.32C203.88,-449.82 182.26,-430.64 163.52,-414"/>
+<polygon fill="#767780" stroke="#767780" points="218.56,-465.9 224.93,-468.51 221.58,-462.49 218.56,-465.9"/>
+<polygon fill="#767780" stroke="#767780" points="165.31,-412.55 158.94,-409.93 162.29,-415.95 165.31,-412.55"/>
+</g>
+<!-- L11 -->
+<g id="L-node11" class="node room optional">
+<title>L11</title>
+<g id="L-a_node11"><a xlink:title="Улучшение и история наводнения">
+<path fill="#f6f3eb" stroke="#aaa7a0" stroke-dasharray="5,2" d="M424.4,-400.15C424.4,-400.15 278.7,-400.15 278.7,-400.15 272.7,-400.15 266.7,-394.15 266.7,-388.15 266.7,-388.15 266.7,-365.11 266.7,-365.11 266.7,-359.11 272.7,-353.11 278.7,-353.11 278.7,-353.11 424.4,-353.11 424.4,-353.11 430.4,-353.11 436.4,-359.11 436.4,-365.11 436.4,-365.11 436.4,-388.15 436.4,-388.15 436.4,-394.15 430.4,-400.15 424.4,-400.15"/>
+<text xml:space="preserve" text-anchor="middle" x="351.55" y="-380.53" font-family="Arial" font-size="13.00">L11 · Насосный колодец</text>
+<text xml:space="preserve" text-anchor="middle" x="351.55" y="-364.93" font-family="Arial" font-size="13.00">ТАЙНИК</text>
+</a>
+</g>
+</g>
+<!-- L05&#45;&gt;L11 -->
+<g id="L-edge13" class="edge secret">
+<title>L05&#45;&gt;L11</title>
+<path fill="none" stroke="#767780" stroke-dasharray="5,2" d="M267.5,-464.21C283.98,-447.24 306.65,-423.89 324.29,-405.72"/>
+<polygon fill="#767780" stroke="#767780" points="266.06,-462.42 263.17,-468.67 269.33,-465.59 266.06,-462.42"/>
+<polygon fill="#767780" stroke="#767780" points="325.64,-407.59 328.53,-401.34 322.37,-404.42 325.64,-407.59"/>
+<text xml:space="preserve" text-anchor="middle" x="367.57" y="-433.49" font-family="Arial" font-size="12.00" fill="#65646a">A04 · насосные лопасти</text>
+</g>
+<!-- L06&#45;&gt;L02 -->
+<g id="L-edge10" class="edge shortcut">
+<title>L06&#45;&gt;L02</title>
+<path fill="none" stroke="#367967" stroke-dasharray="1,5" d="M220.34,-401.35C240.41,-406.22 255.55,-409.89 255.55,-409.89 255.55,-409.89 441.55,-429.89 441.55,-429.89 441.55,-429.89 569.55,-464.29 569.55,-464.29 569.55,-464.29 769.55,-667.17 769.55,-667.17 769.55,-667.17 769.55,-755.76 769.55,-755.76 769.55,-755.76 743.55,-790.16 743.55,-790.16 743.55,-790.16 685,-803.99 634.69,-815.88"/>
+<polygon fill="#367967" stroke="#367967" points="221.06,-399.19 214.21,-399.87 219.99,-403.61 221.06,-399.19"/>
+<polygon fill="#367967" stroke="#367967" points="634.29,-813.63 628.49,-817.34 635.34,-818.06 634.29,-813.63"/>
+<text xml:space="preserve" text-anchor="middle" x="748.95" y="-585.65" font-family="Arial" font-size="12.00" fill="#65646a">Лифт из L06</text>
+</g>
+<!-- L07 -->
+<g id="L-node7" class="node room boss">
+<title>L07</title>
+<g id="L-a_node7"><a xlink:title="E06">
+<path fill="#f7e7e8" stroke="#9b3545" stroke-width="1.8" d="M230.32,-257.4C230.32,-257.4 230.32,-267.34 230.32,-267.34 230.32,-272.31 225.61,-278.86 220.89,-280.43 220.89,-280.43 176.62,-295.22 176.62,-295.22 171.91,-296.8 162.22,-298.37 157.25,-298.37 157.25,-298.37 87.85,-298.37 87.85,-298.37 82.88,-298.37 73.2,-296.8 68.48,-295.22 68.48,-295.22 24.21,-280.43 24.21,-280.43 19.5,-278.86 14.78,-272.31 14.78,-267.34 14.78,-267.34 14.78,-257.4 14.78,-257.4 14.78,-252.43 19.5,-245.88 24.21,-244.3 24.21,-244.3 68.48,-229.51 68.48,-229.51 73.2,-227.94 82.88,-226.36 87.85,-226.36 87.85,-226.36 157.25,-226.36 157.25,-226.36 162.22,-226.36 171.91,-227.94 176.62,-229.51 176.62,-229.51 220.89,-244.3 220.89,-244.3 225.61,-245.88 230.32,-252.43 230.32,-257.4"/>
+<path fill="none" stroke="#9b3545" stroke-width="1.8" d="M234.32,-256.44C234.32,-256.44 234.32,-268.3 234.32,-268.3 234.32,-274.23 228.7,-282.04 223.07,-283.92 223.07,-283.92 179.09,-298.61 179.09,-298.61 173.47,-300.49 161.91,-302.37 155.98,-302.37 155.98,-302.37 89.12,-302.37 89.12,-302.37 83.19,-302.37 71.64,-300.49 66.01,-298.61 66.01,-298.61 22.03,-283.92 22.03,-283.92 16.41,-282.04 10.78,-274.23 10.78,-268.3 10.78,-268.3 10.78,-256.44 10.78,-256.44 10.78,-250.5 16.41,-242.69 22.03,-240.81 22.03,-240.81 66.01,-226.12 66.01,-226.12 71.64,-224.24 83.19,-222.36 89.12,-222.36 89.12,-222.36 155.98,-222.36 155.98,-222.36 161.91,-222.36 173.47,-224.24 179.09,-226.12 179.09,-226.12 223.07,-240.81 223.07,-240.81 228.7,-242.69 234.32,-250.5 234.32,-256.44"/>
+<text xml:space="preserve" text-anchor="middle" x="122.55" y="-266.27" font-family="Arial" font-size="13.00">L07 · Привод гонки</text>
+<text xml:space="preserve" text-anchor="middle" x="122.55" y="-250.67" font-family="Arial" font-size="13.00">БОСС: Додо</text>
+</a>
+</g>
+</g>
+<!-- L06&#45;&gt;L07 -->
+<g id="L-edge7" class="edge main">
+<title>L06&#45;&gt;L07</title>
+<path fill="none" stroke="#767780" d="M122.55,-335.29C122.55,-327.4 122.55,-319.04 122.55,-310.94"/>
+<polygon fill="#767780" stroke="#767780" points="120.28,-335.15 122.55,-341.65 124.83,-335.15 120.28,-335.15"/>
+<polygon fill="#767780" stroke="#767780" points="124.83,-310.95 122.55,-304.45 120.28,-310.95 124.83,-310.95"/>
+</g>
+<!-- L08 -->
+<g id="L-node8" class="node room ability">
+<title>L08</title>
+<g id="L-a_node8"><a xlink:title="E07">
+<path fill="#fffdf8" stroke="#aaa7a0" d="M202.63,-167.96C202.63,-167.96 42.48,-167.96 42.48,-167.96 36.48,-167.96 30.48,-161.96 30.48,-155.96 30.48,-155.96 30.48,-132.92 30.48,-132.92 30.48,-126.92 36.48,-120.92 42.48,-120.92 42.48,-120.92 202.63,-120.92 202.63,-120.92 208.63,-120.92 214.63,-126.92 214.63,-132.92 214.63,-132.92 214.63,-155.96 214.63,-155.96 214.63,-161.96 208.63,-167.96 202.63,-167.96"/>
+<text xml:space="preserve" text-anchor="middle" x="122.55" y="-148.34" font-family="Arial" font-size="13.00">L08 · Веер и верхний сток</text>
+<text xml:space="preserve" text-anchor="middle" x="122.55" y="-132.74" font-family="Arial" font-size="13.00">A01</text>
+</a>
+</g>
+</g>
+<!-- L07&#45;&gt;L08 -->
+<g id="L-edge8" class="edge main">
+<title>L07&#45;&gt;L08</title>
+<path fill="none" stroke="#767780" d="M122.55,-213.83C122.55,-201 122.55,-187.47 122.55,-175.86"/>
+<polygon fill="#767780" stroke="#767780" points="120.28,-213.46 122.55,-219.96 124.83,-213.46 120.28,-213.46"/>
+<polygon fill="#767780" stroke="#767780" points="124.83,-176.17 122.55,-169.67 120.28,-176.17 124.83,-176.17"/>
+<text xml:space="preserve" text-anchor="middle" x="169.23" y="-191.56" font-family="Arial" font-size="12.00" fill="#65646a">Ключ после Додо</text>
+</g>
+<!-- H01 -->
+<g id="L-node14" class="node room portal rest">
+<title>H01</title>
+<g id="L-a_node14"><a xlink:title="E07">
+<ellipse fill="#eeeae3" stroke="#aaa7a0" cx="122.55" cy="-33.26" rx="106.2" ry="33.26"/>
+<text xml:space="preserve" text-anchor="middle" x="122.55" y="-37.16" font-family="Arial" font-size="13.00">H01 · Верхние балки</text>
+<text xml:space="preserve" text-anchor="middle" x="122.55" y="-21.56" font-family="Arial" font-size="13.00">ОТДЫХ</text>
+</a>
+</g>
+</g>
+<!-- L08&#45;&gt;H01 -->
+<g id="L-edge9" class="edge return">
+<title>L08&#45;&gt;H01</title>
+<path fill="none" stroke="#9b3545" d="M122.55,-112.87C122.55,-100.94 122.55,-87.1 122.55,-74.39"/>
+<polygon fill="#9b3545" stroke="#9b3545" points="120.28,-112.54 122.55,-119.04 124.83,-112.54 120.28,-112.54"/>
+<polygon fill="#9b3545" stroke="#9b3545" points="124.83,-74.66 122.55,-68.16 120.28,-74.66 124.83,-74.66"/>
+<text xml:space="preserve" text-anchor="middle" x="178.24" y="-90.12" font-family="Arial" font-size="12.00" fill="#65646a">A01 · верхний сток</text>
+</g>
+<!-- H00 -->
+<g id="L-node13" class="node room portal">
+<title>H00</title>
+<g id="L-a_node13"><a xlink:title="Обзор L02 из окна на площадке выхода лифта W09; не проход · E01 · E02 · E07 · R01 · R03">
+<path fill="#eeeae3" stroke="#aaa7a0" d="M615.81,-1035.64C615.81,-1035.64 511.29,-1035.64 511.29,-1035.64 505.29,-1035.64 499.29,-1029.64 499.29,-1023.64 499.29,-1023.64 499.29,-1000.6 499.29,-1000.6 499.29,-994.6 505.29,-988.6 511.29,-988.6 511.29,-988.6 615.81,-988.6 615.81,-988.6 621.81,-988.6 627.81,-994.6 627.81,-1000.6 627.81,-1000.6 627.81,-1023.64 627.81,-1023.64 627.81,-1029.64 621.81,-1035.64 615.81,-1035.64"/>
+<text xml:space="preserve" text-anchor="middle" x="563.55" y="-1016.02" font-family="Arial" font-size="13.00">H00 · Зал дверей</text>
+<text xml:space="preserve" text-anchor="middle" x="563.55" y="-1000.42" font-family="Arial" font-size="13.00">ОБЗОР L02</text>
+</a>
+</g>
+</g>
+<!-- H00&#45;&gt;L01 -->
+<g id="L-edge1" class="edge main">
+<title>H00&#45;&gt;L01</title>
+<path fill="none" stroke="#767780" d="M563.55,-988.39C563.55,-974.5 563.55,-956.72 563.55,-942.4"/>
+<polygon fill="#767780" stroke="#767780" points="565.83,-942.44 563.55,-935.94 561.28,-942.44 565.83,-942.44"/>
+<text xml:space="preserve" text-anchor="middle" x="610.23" y="-957.8" font-family="Arial" font-size="12.00" fill="#65646a">Падение в слёзы</text>
+</g>
+</g>
+</svg>
+

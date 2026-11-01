@@ -8,9 +8,10 @@ $documents = @(
     @{ Id = 'foundation'; Name = 'Сюжетная основа'; File = 'NarrativeFoundation.md'; Icon = '02' },
     @{ Id = 'story'; Name = 'Основная история'; File = 'Story.md'; Icon = '03' },
     @{ Id = 'episodes'; Name = 'Кампания по эпизодам'; File = 'CampaignEpisodes.md'; Icon = '04' },
-    @{ Id = 'roadmap'; Name = 'План разработки'; File = 'DevelopmentRoadmap.md'; Icon = '05' },
-    @{ Id = 'sources'; Name = 'Источники и права'; File = 'ContentProvenance.md'; Icon = '06' },
-    @{ Id = 'technical'; Name = 'Техническая основа'; File = 'TechnicalSetup.md'; Icon = '07' }
+    @{ Id = 'worldmap'; Name = 'Карта мира'; File = 'WorldMap.md'; Icon = '05' },
+    @{ Id = 'roadmap'; Name = 'План разработки'; File = 'DevelopmentRoadmap.md'; Icon = '06' },
+    @{ Id = 'sources'; Name = 'Источники и права'; File = 'ContentProvenance.md'; Icon = '07' },
+    @{ Id = 'technical'; Name = 'Техническая основа'; File = 'TechnicalSetup.md'; Icon = '08' }
 )
 
 function Escape-Html([string]$Text) {
@@ -43,6 +44,20 @@ $rendered = foreach ($document in $documents) {
     $markdown = [regex]::Replace($markdown, '(?s)```mermaid\s*\r?\n(.*?)```',
         [System.Text.RegularExpressions.MatchEvaluator]{ param($match) Convert-RouteDiagram $match.Groups[1].Value })
     $html = (ConvertFrom-Markdown -InputObject $markdown).Html
+
+    # Inline vector maps so the reading edition remains a single offline file.
+    $html = [regex]::Replace($html, '(?s)<p>\s*<img\b[^>]*src="(?<path>Maps/[^"/]+\.svg)"[^>]*>\s*</p>',
+        [System.Text.RegularExpressions.MatchEvaluator]{
+            param($match)
+            $mapPath = $match.Groups['path'].Value
+            $imageAlt = [regex]::Match($match.Value, 'alt="([^"]*)"').Groups[1].Value
+            $svg = Get-Content -LiteralPath (Join-Path $PSScriptRoot $mapPath) -Raw -Encoding utf8
+            $svg = $svg.Substring($svg.IndexOf('<svg'))
+            $viewBox = [regex]::Match($svg, 'viewBox="([^"]+)"').Groups[1].Value -split '\s+'
+            $nativeWidth = if ($mapPath -eq 'Maps/overview.svg') { 920 } else { [int][Math]::Ceiling([double]::Parse($viewBox[2], [System.Globalization.CultureInfo]::InvariantCulture)) }
+            $svg = $svg.Replace('<svg ', "<svg class=`"world-map-svg`" style=`"--map-native-width: $($nativeWidth)px`" aria-label=`"$imageAlt`" ")
+            "<figure class='world-map-figure'><div class='world-map-viewport' role='region' aria-label='$imageAlt' tabindex='0'>$svg</div><figcaption><span>$imageAlt</span><a href='$mapPath' target='_blank' rel='noopener'>Открыть крупно ↗</a></figcaption></figure>"
+        })
 
     # Prefix every heading with its document ID, including duplicate headings.
     $headingCounts = @{}

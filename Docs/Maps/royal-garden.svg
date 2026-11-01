@@ -1,0 +1,272 @@
+<svg width="922pt" height="961pt"
+ viewBox="0.00 0.00 922.00 961.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="G-graph0" class="graph" transform="scale(1 1) rotate(0) translate(18 943.38)">
+<title>Map</title>
+<polygon fill="#fffdf8" stroke="none" points="-18,18 -18,-943.38 903.63,-943.38 903.63,18 -18,18"/>
+<!-- G01 -->
+<g id="G-node1" class="node room rest">
+<title>G01</title>
+<g id="G-a_node1"><a xlink:title="R03 · E29">
+<ellipse fill="#fffdf8" stroke="#aaa7a0" cx="569.27" cy="-790.68" rx="132.25" ry="33.26"/>
+<text xml:space="preserve" text-anchor="middle" x="569.27" y="-794.58" font-family="Arial" font-size="13.00">G01 · Внутренняя калитка</text>
+<text xml:space="preserve" text-anchor="middle" x="569.27" y="-778.98" font-family="Arial" font-size="13.00">ОТДЫХ</text>
+</a>
+</g>
+</g>
+<!-- G02 -->
+<g id="G-node2" class="node room">
+<title>G02</title>
+<g id="G-a_node2"><a xlink:title="Карточные садовники · E29">
+<path fill="#fffdf8" stroke="#aaa7a0" d="M621.89,-716.41C621.89,-716.41 516.65,-716.41 516.65,-716.41 510.65,-716.41 504.65,-710.41 504.65,-704.41 504.65,-704.41 504.65,-681.37 504.65,-681.37 504.65,-675.37 510.65,-669.37 516.65,-669.37 516.65,-669.37 621.89,-669.37 621.89,-669.37 627.89,-669.37 633.89,-675.37 633.89,-681.37 633.89,-681.37 633.89,-704.41 633.89,-704.41 633.89,-710.41 627.89,-716.41 621.89,-716.41"/>
+<text xml:space="preserve" text-anchor="middle" x="569.27" y="-696.79" font-family="Arial" font-size="13.00">G02 · Белые розы</text>
+<text xml:space="preserve" text-anchor="middle" x="569.27" y="-681.19" font-family="Arial" font-size="13.00">NPC · Q05</text>
+</a>
+</g>
+</g>
+<!-- G01&#45;&gt;G02 -->
+<g id="G-edge3" class="edge main">
+<title>G01&#45;&gt;G02</title>
+<path fill="none" stroke="#767780" d="M569.27,-749.07C569.27,-740.79 569.27,-732.21 569.27,-724.36"/>
+<polygon fill="#767780" stroke="#767780" points="566.99,-748.97 569.27,-755.47 571.54,-748.97 566.99,-748.97"/>
+<polygon fill="#767780" stroke="#767780" points="571.54,-724.8 569.27,-718.3 566.99,-724.8 571.54,-724.8"/>
+</g>
+<!-- G03 -->
+<g id="G-node3" class="node room">
+<title>G03</title>
+<g id="G-a_node3"><a xlink:title="E30">
+<path fill="#fffdf8" stroke="#aaa7a0" d="M526.11,-609.45C526.11,-609.45 406.42,-609.45 406.42,-609.45 400.42,-609.45 394.42,-603.45 394.42,-597.45 394.42,-597.45 394.42,-585.45 394.42,-585.45 394.42,-579.45 400.42,-573.45 406.42,-573.45 406.42,-573.45 526.11,-573.45 526.11,-573.45 532.11,-573.45 538.11,-579.45 538.11,-585.45 538.11,-585.45 538.11,-597.45 538.11,-597.45 538.11,-603.45 532.11,-609.45 526.11,-609.45"/>
+<text xml:space="preserve" text-anchor="middle" x="466.27" y="-587.55" font-family="Arial" font-size="13.00">G03 · Поле крокета</text>
+</a>
+</g>
+</g>
+<!-- G02&#45;&gt;G03 -->
+<g id="G-edge4" class="edge main">
+<title>G02&#45;&gt;G03</title>
+<path fill="none" stroke="#767780" d="M540.22,-663.85C524.37,-648.54 504.98,-629.82 490.03,-615.39"/>
+<polygon fill="#767780" stroke="#767780" points="538.29,-665.15 544.55,-668.03 541.45,-661.88 538.29,-665.15"/>
+<polygon fill="#767780" stroke="#767780" points="491.68,-613.82 485.42,-610.94 488.52,-617.1 491.68,-613.82"/>
+</g>
+<!-- G11 -->
+<g id="G-node11" class="node room optional">
+<title>G11</title>
+<g id="G-a_node11"><a xlink:title="Место будущего восстановления · Белая теплица">
+<path fill="#f6f3eb" stroke="#aaa7a0" stroke-dasharray="5,2" d="M731.34,-614.97C731.34,-614.97 597.2,-614.97 597.2,-614.97 591.2,-614.97 585.2,-608.97 585.2,-602.97 585.2,-602.97 585.2,-579.93 585.2,-579.93 585.2,-573.93 591.2,-567.93 597.2,-567.93 597.2,-567.93 731.34,-567.93 731.34,-567.93 737.34,-567.93 743.34,-573.93 743.34,-579.93 743.34,-579.93 743.34,-602.97 743.34,-602.97 743.34,-608.97 737.34,-614.97 731.34,-614.97"/>
+<text xml:space="preserve" text-anchor="middle" x="664.27" y="-595.35" font-family="Arial" font-size="13.00">G11 · Старая теплица</text>
+<text xml:space="preserve" text-anchor="middle" x="664.27" y="-579.75" font-family="Arial" font-size="13.00">Q05 · ТАЙНИК</text>
+</a>
+</g>
+</g>
+<!-- G02&#45;&gt;G11 -->
+<g id="G-edge13" class="edge secret">
+<title>G02&#45;&gt;G11</title>
+<path fill="none" stroke="#767780" stroke-dasharray="5,2" d="M596.07,-663.84C608.9,-650.41 624.24,-634.36 637.11,-620.88"/>
+<polygon fill="#767780" stroke="#767780" points="594.72,-661.96 591.87,-668.24 598.01,-665.11 594.72,-661.96"/>
+<polygon fill="#767780" stroke="#767780" points="638.58,-622.64 641.42,-616.37 635.29,-619.5 638.58,-622.64"/>
+<text xml:space="preserve" text-anchor="middle" x="684.81" y="-638.57" font-family="Arial" font-size="12.00" fill="#65646a">A04 · старая теплица</text>
+</g>
+<!-- G04 -->
+<g id="G-node4" class="node room">
+<title>G04</title>
+<g id="G-a_node4"><a xlink:title="Кот; Герцогиня; Кролик · E31">
+<path fill="#fffdf8" stroke="#aaa7a0" d="M329.62,-505.73C329.62,-505.73 144.92,-505.73 144.92,-505.73 138.92,-505.73 132.92,-499.73 132.92,-493.73 132.92,-493.73 132.92,-470.69 132.92,-470.69 132.92,-464.69 138.92,-458.69 144.92,-458.69 144.92,-458.69 329.62,-458.69 329.62,-458.69 335.62,-458.69 341.62,-464.69 341.62,-470.69 341.62,-470.69 341.62,-493.73 341.62,-493.73 341.62,-499.73 335.62,-505.73 329.62,-505.73"/>
+<text xml:space="preserve" text-anchor="middle" x="237.27" y="-486.11" font-family="Arial" font-size="13.00">G04 · Изгородь и голова Кота</text>
+<text xml:space="preserve" text-anchor="middle" x="237.27" y="-470.51" font-family="Arial" font-size="13.00">NPC</text>
+</a>
+</g>
+</g>
+<!-- G03&#45;&gt;G04 -->
+<g id="G-edge5" class="edge main">
+<title>G03&#45;&gt;G04</title>
+<path fill="none" stroke="#767780" d="M421.91,-569.68C385.24,-552.51 332.95,-528.02 293.38,-509.49"/>
+<polygon fill="#767780" stroke="#767780" points="420.74,-571.65 427.6,-572.34 422.67,-567.53 420.74,-571.65"/>
+<polygon fill="#767780" stroke="#767780" points="294.36,-507.44 287.51,-506.74 292.43,-511.56 294.36,-507.44"/>
+</g>
+<!-- G09 -->
+<g id="G-node9" class="node room optional">
+<title>G09</title>
+<g id="G-a_node9"><a xlink:title="Смотритель после крокета · Тихая встреча и находка">
+<path fill="#f6f3eb" stroke="#aaa7a0" stroke-dasharray="5,2" d="M556.82,-505.73C556.82,-505.73 375.72,-505.73 375.72,-505.73 369.72,-505.73 363.72,-499.73 363.72,-493.73 363.72,-493.73 363.72,-470.69 363.72,-470.69 363.72,-464.69 369.72,-458.69 375.72,-458.69 375.72,-458.69 556.82,-458.69 556.82,-458.69 562.82,-458.69 568.82,-464.69 568.82,-470.69 568.82,-470.69 568.82,-493.73 568.82,-493.73 568.82,-499.73 562.82,-505.73 556.82,-505.73"/>
+<text xml:space="preserve" text-anchor="middle" x="466.27" y="-486.11" font-family="Arial" font-size="13.00">G09 · Домик смотрителя ежей</text>
+<text xml:space="preserve" text-anchor="middle" x="466.27" y="-470.51" font-family="Arial" font-size="13.00">NPC · ТАЙНИК</text>
+</a>
+</g>
+</g>
+<!-- G03&#45;&gt;G09 -->
+<g id="G-edge11" class="edge secret">
+<title>G03&#45;&gt;G09</title>
+<path fill="none" stroke="#767780" stroke-dasharray="5,2" d="M466.27,-565.44C466.27,-550 466.27,-530.09 466.27,-513.72"/>
+<polygon fill="#767780" stroke="#767780" points="463.99,-565.21 466.27,-571.71 468.54,-565.21 463.99,-565.21"/>
+<polygon fill="#767780" stroke="#767780" points="468.54,-514.02 466.27,-507.52 463.99,-514.02 468.54,-514.02"/>
+<text xml:space="preserve" text-anchor="middle" x="500.28" y="-537.13" font-family="Arial" font-size="12.00" fill="#65646a">A02 · домик</text>
+</g>
+<!-- G05 -->
+<g id="G-node5" class="node room rest">
+<title>G05</title>
+<g id="G-a_node5"><a xlink:title="Грифон; Черепаха Квази · E32">
+<ellipse fill="#fffdf8" stroke="#aaa7a0" cx="237.27" cy="-376.63" rx="96.5" ry="33.26"/>
+<text xml:space="preserve" text-anchor="middle" x="237.27" y="-380.53" font-family="Arial" font-size="13.00">G05 · Берег Квази</text>
+<text xml:space="preserve" text-anchor="middle" x="237.27" y="-364.93" font-family="Arial" font-size="13.00">ОТДЫХ · NPC</text>
+</a>
+</g>
+</g>
+<!-- G04&#45;&gt;G05 -->
+<g id="G-edge6" class="edge main">
+<title>G04&#45;&gt;G05</title>
+<path fill="none" stroke="#767780" d="M237.27,-450.28C237.27,-440.25 237.27,-428.97 237.27,-418.35"/>
+<polygon fill="#767780" stroke="#767780" points="234.99,-450.21 237.27,-456.71 239.54,-450.21 234.99,-450.21"/>
+<polygon fill="#767780" stroke="#767780" points="239.54,-418.39 237.27,-411.89 234.99,-418.39 239.54,-418.39"/>
+</g>
+<!-- G06 -->
+<g id="G-node6" class="node room rest">
+<title>G06</title>
+<g id="G-a_node6"><a xlink:title="Билль; свидетели · E33">
+<ellipse fill="#fffdf8" stroke="#aaa7a0" cx="237.27" cy="-269.11" rx="116.93" ry="33.26"/>
+<text xml:space="preserve" text-anchor="middle" x="237.27" y="-273.01" font-family="Arial" font-size="13.00">G06 · Преддверие суда</text>
+<text xml:space="preserve" text-anchor="middle" x="237.27" y="-257.41" font-family="Arial" font-size="13.00">ОТДЫХ · NPC · Q02</text>
+</a>
+</g>
+</g>
+<!-- G05&#45;&gt;G06 -->
+<g id="G-edge7" class="edge main">
+<title>G05&#45;&gt;G06</title>
+<path fill="none" stroke="#767780" d="M237.27,-335.4C237.27,-327.29 237.27,-318.77 237.27,-310.65"/>
+<polygon fill="#767780" stroke="#767780" points="234.99,-335.1 237.27,-341.6 239.54,-335.1 234.99,-335.1"/>
+<polygon fill="#767780" stroke="#767780" points="239.54,-310.72 237.27,-304.22 234.99,-310.72 239.54,-310.72"/>
+</g>
+<!-- G06&#45;&gt;G02 -->
+<g id="G-edge10" class="edge shortcut">
+<title>G06&#45;&gt;G02</title>
+<path fill="none" stroke="#367967" stroke-dasharray="1,5" d="M320.83,-297.13C476.73,-347.55 796.27,-450.89 796.27,-450.89 796.27,-450.89 796.27,-513.53 796.27,-513.53 796.27,-513.53 791.27,-547.93 791.27,-547.93 791.27,-547.93 752.27,-649.37 752.27,-649.37 752.27,-649.37 693.13,-663.12 642.09,-674.97"/>
+<polygon fill="#367967" stroke="#367967" points="321.86,-295.07 314.97,-295.24 320.46,-299.4 321.86,-295.07"/>
+<polygon fill="#367967" stroke="#367967" points="641.59,-672.75 635.78,-676.44 642.62,-677.19 641.59,-672.75"/>
+<text xml:space="preserve" text-anchor="middle" x="840.95" y="-478.61" font-family="Arial" font-size="12.00" fill="#65646a">Калитка из G06</text>
+</g>
+<!-- G07 -->
+<g id="G-node7" class="node room boss">
+<title>G07</title>
+<g id="G-a_node7"><a xlink:title="E33 · E34 · E35 · E36">
+<path fill="#f7e7e8" stroke="#9b3545" stroke-width="1.8" d="M240.54,-136.47C240.54,-136.47 240.54,-146.41 240.54,-146.41 240.54,-151.38 235.78,-157.8 231.03,-159.25 231.03,-159.25 180.77,-174.55 180.77,-174.55 176.01,-176 166.29,-177.45 161.32,-177.45 161.32,-177.45 83.22,-177.45 83.22,-177.45 78.25,-177.45 68.53,-176 63.77,-174.55 63.77,-174.55 13.51,-159.25 13.51,-159.25 8.76,-157.8 4,-151.38 4,-146.41 4,-146.41 4,-136.47 4,-136.47 4,-131.5 8.76,-125.08 13.51,-123.63 13.51,-123.63 63.77,-108.34 63.77,-108.34 68.53,-106.89 78.25,-105.44 83.22,-105.44 83.22,-105.44 161.32,-105.44 161.32,-105.44 166.29,-105.44 176.01,-106.89 180.77,-108.34 180.77,-108.34 231.03,-123.63 231.03,-123.63 235.78,-125.08 240.54,-131.5 240.54,-136.47"/>
+<path fill="none" stroke="#9b3545" stroke-width="1.8" d="M244.54,-135.48C244.54,-135.48 244.54,-147.4 244.54,-147.4 244.54,-153.36 238.84,-161.05 233.14,-162.79 233.14,-162.79 183.25,-177.98 183.25,-177.98 177.55,-179.71 165.89,-181.45 159.94,-181.45 159.94,-181.45 84.6,-181.45 84.6,-181.45 78.64,-181.45 66.98,-179.71 61.28,-177.98 61.28,-177.98 11.4,-162.79 11.4,-162.79 5.7,-161.05 0,-153.36 0,-147.4 0,-147.4 0,-135.48 0,-135.48 0,-129.53 5.7,-121.83 11.4,-120.1 11.4,-120.1 61.28,-104.91 61.28,-104.91 66.98,-103.18 78.64,-101.44 84.6,-101.44 84.6,-101.44 159.94,-101.44 159.94,-101.44 165.89,-101.44 177.55,-103.18 183.25,-104.91 183.25,-104.91 233.14,-120.1 233.14,-120.1 238.84,-121.83 244.54,-129.53 244.54,-135.48"/>
+<text xml:space="preserve" text-anchor="middle" x="122.27" y="-145.34" font-family="Arial" font-size="13.00">G07 · Суд и Королева</text>
+<text xml:space="preserve" text-anchor="middle" x="122.27" y="-129.74" font-family="Arial" font-size="13.00">БОСС: Королева</text>
+</a>
+</g>
+</g>
+<!-- G06&#45;&gt;G07 -->
+<g id="G-edge8" class="edge main">
+<title>G06&#45;&gt;G07</title>
+<path fill="none" stroke="#767780" d="M203.2,-230.88C190.83,-217.37 176.72,-201.95 163.79,-187.81"/>
+<polygon fill="#767780" stroke="#767780" points="201.16,-232.02 207.23,-235.28 204.52,-228.95 201.16,-232.02"/>
+<polygon fill="#767780" stroke="#767780" points="165.79,-186.63 159.73,-183.37 162.44,-189.71 165.79,-186.63"/>
+</g>
+<!-- G10 -->
+<g id="G-node10" class="node room optional">
+<title>G10</title>
+<g id="G-a_node10"><a xlink:title="Имена и распоряжения">
+<path fill="#f6f3eb" stroke="#aaa7a0" stroke-dasharray="5,2" d="M427.56,-172.76C427.56,-172.76 278.98,-172.76 278.98,-172.76 272.98,-172.76 266.98,-166.76 266.98,-160.76 266.98,-160.76 266.98,-122.12 266.98,-122.12 266.98,-116.12 272.98,-110.12 278.98,-110.12 278.98,-110.12 427.56,-110.12 427.56,-110.12 433.56,-110.12 439.56,-116.12 439.56,-122.12 439.56,-122.12 439.56,-160.76 439.56,-160.76 439.56,-166.76 433.56,-172.76 427.56,-172.76"/>
+<text xml:space="preserve" text-anchor="middle" x="353.27" y="-153.14" font-family="Arial" font-size="13.00">G10 · Комната судебных</text>
+<text xml:space="preserve" text-anchor="middle" x="353.27" y="-137.54" font-family="Arial" font-size="13.00">записей</text>
+<text xml:space="preserve" text-anchor="middle" x="353.27" y="-121.94" font-family="Arial" font-size="13.00">Q01 · ТАЙНИК</text>
+</a>
+</g>
+</g>
+<!-- G06&#45;&gt;G10 -->
+<g id="G-edge12" class="edge secret">
+<title>G06&#45;&gt;G10</title>
+<path fill="none" stroke="#767780" stroke-dasharray="5,2" d="M271.42,-231.11C286.76,-214.49 304.79,-194.96 320.02,-178.47"/>
+<polygon fill="#767780" stroke="#767780" points="270.01,-229.29 267.27,-235.61 273.35,-232.38 270.01,-229.29"/>
+<polygon fill="#767780" stroke="#767780" points="321.3,-180.43 324.04,-174.11 317.96,-177.34 321.3,-180.43"/>
+<text xml:space="preserve" text-anchor="middle" x="364.43" y="-205.05" font-family="Arial" font-size="12.00" fill="#65646a">A03 · комната записей</text>
+</g>
+<!-- G08 -->
+<g id="G-node8" class="node room">
+<title>G08</title>
+<g id="G-a_node8"><a xlink:title="E37 · E38">
+<path fill="#fffdf8" stroke="#aaa7a0" d="M214.62,-41.52C214.62,-41.52 29.92,-41.52 29.92,-41.52 23.92,-41.52 17.92,-35.52 17.92,-29.52 17.92,-29.52 17.92,-17.52 17.92,-17.52 17.92,-11.52 23.92,-5.52 29.92,-5.52 29.92,-5.52 214.62,-5.52 214.62,-5.52 220.62,-5.52 226.62,-11.52 226.62,-17.52 226.62,-17.52 226.62,-29.52 226.62,-29.52 226.62,-35.52 220.62,-41.52 214.62,-41.52"/>
+<text xml:space="preserve" text-anchor="middle" x="122.27" y="-19.62" font-family="Arial" font-size="13.00">G08 · Открытый зал после боя</text>
+</a>
+</g>
+</g>
+<!-- G07&#45;&gt;G08 -->
+<g id="G-edge9" class="edge main">
+<title>G07&#45;&gt;G08</title>
+<path fill="none" stroke="#767780" d="M122.27,-92.9C122.27,-78.07 122.27,-62.29 122.27,-49.63"/>
+<polygon fill="#767780" stroke="#767780" points="119.99,-92.54 122.27,-99.04 124.54,-92.54 119.99,-92.54"/>
+<polygon fill="#767780" stroke="#767780" points="124.54,-49.82 122.27,-43.32 119.99,-49.82 124.54,-49.82"/>
+<text xml:space="preserve" text-anchor="middle" x="185.61" y="-70.64" font-family="Arial" font-size="12.00" fill="#65646a">После последнего боя</text>
+</g>
+<!-- G13 -->
+<g id="G-node13" class="node room optional">
+<title>G13</title>
+<g id="G-a_node13"><a xlink:title="Завершение истории Сони">
+<path fill="#f6f3eb" stroke="#aaa7a0" stroke-dasharray="5,2" d="M443.82,-47.04C443.82,-47.04 262.72,-47.04 262.72,-47.04 256.72,-47.04 250.72,-41.04 250.72,-35.04 250.72,-35.04 250.72,-12 250.72,-12 250.72,-6 256.72,0 262.72,0 262.72,0 443.82,0 443.82,0 449.82,0 455.82,-6 455.82,-12 455.82,-12 455.82,-35.04 455.82,-35.04 455.82,-41.04 449.82,-47.04 443.82,-47.04"/>
+<text xml:space="preserve" text-anchor="middle" x="353.27" y="-27.42" font-family="Arial" font-size="13.00">G13 · Закрытый архив уроков</text>
+<text xml:space="preserve" text-anchor="middle" x="353.27" y="-11.82" font-family="Arial" font-size="13.00">Q04 · ТАЙНИК</text>
+</a>
+</g>
+</g>
+<!-- G10&#45;&gt;G13 -->
+<g id="G-edge15" class="edge secret">
+<title>G10&#45;&gt;G13</title>
+<path fill="none" stroke="#767780" stroke-dasharray="5,2" d="M353.27,-102.11C353.27,-86.81 353.27,-69.43 353.27,-55.01"/>
+<polygon fill="#767780" stroke="#767780" points="350.99,-101.67 353.27,-108.17 355.54,-101.67 350.99,-101.67"/>
+<polygon fill="#767780" stroke="#767780" points="355.54,-55.34 353.27,-48.84 350.99,-55.34 355.54,-55.34"/>
+<text xml:space="preserve" text-anchor="middle" x="425.62" y="-70.64" font-family="Arial" font-size="12.00" fill="#65646a">A04 · архивный механизм</text>
+</g>
+<!-- G12 -->
+<g id="G-node12" class="node room optional">
+<title>G12</title>
+<g id="G-a_node12"><a xlink:title="Редкое улучшение · Белая теплица">
+<path fill="#f6f3eb" stroke="#aaa7a0" stroke-dasharray="5,2" d="M773.4,-513.53C773.4,-513.53 603.14,-513.53 603.14,-513.53 597.14,-513.53 591.14,-507.53 591.14,-501.53 591.14,-501.53 591.14,-462.89 591.14,-462.89 591.14,-456.89 597.14,-450.89 603.14,-450.89 603.14,-450.89 773.4,-450.89 773.4,-450.89 779.4,-450.89 785.4,-456.89 785.4,-462.89 785.4,-462.89 785.4,-501.53 785.4,-501.53 785.4,-507.53 779.4,-513.53 773.4,-513.53"/>
+<text xml:space="preserve" text-anchor="middle" x="688.27" y="-493.91" font-family="Arial" font-size="13.00">G12 · Засыпанный семенной</text>
+<text xml:space="preserve" text-anchor="middle" x="688.27" y="-478.31" font-family="Arial" font-size="13.00">погреб</text>
+<text xml:space="preserve" text-anchor="middle" x="688.27" y="-462.71" font-family="Arial" font-size="13.00">ТАЙНИК</text>
+</a>
+</g>
+</g>
+<!-- G11&#45;&gt;G12 -->
+<g id="G-edge14" class="edge secret">
+<title>G11&#45;&gt;G12</title>
+<path fill="none" stroke="#767780" stroke-dasharray="5,2" d="M671.14,-559.77C673.8,-547.87 676.88,-534.1 679.69,-521.55"/>
+<polygon fill="#767780" stroke="#767780" points="668.95,-559.13 669.75,-565.97 673.39,-560.13 668.95,-559.13"/>
+<polygon fill="#767780" stroke="#767780" points="681.87,-522.23 681.07,-515.39 677.43,-521.24 681.87,-522.23"/>
+<text xml:space="preserve" text-anchor="middle" x="731.85" y="-537.13" font-family="Arial" font-size="12.00" fill="#65646a">A02 + A03 · погреб</text>
+</g>
+<!-- H03 -->
+<g id="G-node14" class="node room portal">
+<title>H03</title>
+<g id="G-a_node14"><a xlink:title="R01 · R03">
+<path fill="#eeeae3" stroke="#aaa7a0" d="M542.59,-925.38C542.59,-925.38 401.95,-925.38 401.95,-925.38 395.95,-925.38 389.95,-919.38 389.95,-913.38 389.95,-913.38 389.95,-890.34 389.95,-890.34 389.95,-884.34 395.95,-878.34 401.95,-878.34 401.95,-878.34 542.59,-878.34 542.59,-878.34 548.59,-878.34 554.59,-884.34 554.59,-890.34 554.59,-890.34 554.59,-913.38 554.59,-913.38 554.59,-919.38 548.59,-925.38 542.59,-925.38"/>
+<text xml:space="preserve" text-anchor="middle" x="472.27" y="-905.76" font-family="Arial" font-size="13.00">H03 · Лицевая сторона</text>
+<text xml:space="preserve" text-anchor="middle" x="472.27" y="-890.16" font-family="Arial" font-size="13.00">калитки</text>
+</a>
+</g>
+</g>
+<!-- H03&#45;&gt;G01 -->
+<g id="G-edge1" class="edge main">
+<title>H03&#45;&gt;G01</title>
+<path fill="none" stroke="#767780" d="M497.71,-872.22C509.31,-859.17 523.19,-843.54 535.64,-829.54"/>
+<polygon fill="#767780" stroke="#767780" points="496.23,-870.47 493.61,-876.84 499.63,-873.49 496.23,-870.47"/>
+<polygon fill="#767780" stroke="#767780" points="537.25,-831.15 539.86,-824.78 533.85,-828.12 537.25,-831.15"/>
+<text xml:space="preserve" text-anchor="middle" x="558.45" y="-847.54" font-family="Arial" font-size="12.00" fill="#65646a">Рычаг из H04</text>
+</g>
+<!-- H04 -->
+<g id="G-node15" class="node room portal">
+<title>H04</title>
+<g id="G-a_node15"><a xlink:title="R03">
+<path fill="#eeeae3" stroke="#aaa7a0" d="M743.81,-925.38C743.81,-925.38 588.73,-925.38 588.73,-925.38 582.73,-925.38 576.73,-919.38 576.73,-913.38 576.73,-913.38 576.73,-890.34 576.73,-890.34 576.73,-884.34 582.73,-878.34 588.73,-878.34 588.73,-878.34 743.81,-878.34 743.81,-878.34 749.81,-878.34 755.81,-884.34 755.81,-890.34 755.81,-890.34 755.81,-913.38 755.81,-913.38 755.81,-919.38 749.81,-925.38 743.81,-925.38"/>
+<text xml:space="preserve" text-anchor="middle" x="666.27" y="-905.76" font-family="Arial" font-size="13.00">H04 · Служебная сторона</text>
+<text xml:space="preserve" text-anchor="middle" x="666.27" y="-890.16" font-family="Arial" font-size="13.00">ножниц</text>
+</a>
+</g>
+</g>
+<!-- H04&#45;&gt;G01 -->
+<g id="G-edge2" class="edge main">
+<title>H04&#45;&gt;G01</title>
+<path fill="none" stroke="#767780" d="M640.83,-872.22C629.23,-859.17 615.35,-843.54 602.9,-829.54"/>
+<polygon fill="#767780" stroke="#767780" points="638.91,-873.49 644.93,-876.84 642.31,-870.47 638.91,-873.49"/>
+<polygon fill="#767780" stroke="#767780" points="604.69,-828.12 598.68,-824.78 601.29,-831.15 604.69,-828.12"/>
+</g>
+</g>
+</svg>
+

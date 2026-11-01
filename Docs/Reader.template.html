@@ -90,6 +90,26 @@
     .route-arrow { text-align:center; color:var(--accent); font-size:21px; line-height:1.2; }
     .route-arrow small { display:block; font-size:9px; line-height:1.4; color:var(--muted); }
     .document-footer { margin-top:55px; padding-top:20px; border-top:1px solid var(--line); display:flex; gap:15px; justify-content:space-between; font-size:11px; color:var(--muted); }
+    .world-map-figure { margin:24px 0 30px; }
+    .world-map-viewport { overflow:auto; background:var(--paper); border:1px solid var(--line); border-radius:7px; }
+    .world-map-viewport svg { display:block; width:100%; min-width:var(--map-native-width,920px); height:auto; }
+    .world-map-figure figcaption { display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px 20px; margin-top:9px; font-size:11px; color:var(--muted); }
+    .world-map-viewport svg text { fill:var(--ink); }
+    .world-map-viewport .graph > polygon,.world-map-viewport svg > rect { fill:var(--paper); }
+    .world-map-viewport .node polygon,.world-map-viewport .node path,.world-map-viewport .node ellipse { fill:var(--paper); stroke:var(--muted); }
+    .world-map-viewport .node.optional polygon,.world-map-viewport .node.optional path { fill:var(--bg); }
+    .world-map-viewport .node.portal polygon,.world-map-viewport .node.portal path,.world-map-viewport .node.portal ellipse { fill:var(--code); }
+    .world-map-viewport .node.boss polygon,.world-map-viewport .node.boss path { fill:var(--wash); stroke:var(--accent); }
+    .world-map-viewport .edge path { stroke:var(--muted); }
+    .world-map-viewport .edge polygon { stroke:var(--muted); fill:var(--muted); }
+    .world-map-viewport .edge.return path { stroke:var(--accent); }
+    .world-map-viewport .edge.return polygon { stroke:var(--accent); fill:var(--accent); }
+    .world-map-viewport .edge.shortcut path { stroke:#367967; }
+    [data-theme="dark"] .world-map-viewport .edge.shortcut path { stroke:#79bea7; }
+    .world-map-viewport .overview-node rect { fill:var(--paper); stroke:var(--muted); }
+    .world-map-viewport .overview-edge path { stroke:var(--muted); }
+    .world-map-viewport .overview-edge.return path { stroke:var(--accent); }
+    .world-map-viewport .overview-edge text { paint-order:stroke; stroke:var(--paper); stroke-width:5px; stroke-linejoin:round; }
     #backdrop { display:none; }
     .target-flash { animation:flash 1.8s ease-out; }
     @keyframes flash { from { background:var(--wash); } to { background:transparent; } }
@@ -99,6 +119,7 @@
     @media(max-width:520px) { .breadcrumb strong { display:none; } }
     @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } *,*::before,*::after { animation:none!important; transition:none!important; } }
     @media print { :root,[data-theme="dark"] { --bg:white; --paper:white; --ink:black; --muted:#555; --line:#ccc; --code:#f5f5f5; --wash:#fafafa; } .sidebar,.toolbar,.progress-track,.edition,.document-footer,.skip,#backdrop { display:none!important; } .shell { margin:0; } main { max-width:none; margin:0; padding:0; } .document { border:0; padding:0; box-shadow:none; } .document[hidden] { display:none!important; } h2,h3 { break-after:avoid; } tr,figure { break-inside:avoid; } a { color:inherit; text-decoration:none; } body { font-size:11pt; } .table-scroll { overflow:visible; } .document h2 { margin-top:30px; } @page { margin:18mm; } }
+    @media print { .world-map-viewport { overflow:visible; border:0; } .world-map-viewport svg { min-width:0; width:100%; } .world-map-figure figcaption a { display:none; } }
   </style>
 </head>
 <body>
@@ -113,9 +134,10 @@
         <button class="doc-link" data-doc="foundation"><span>02</span>Сюжетная основа</button>
         <button class="doc-link" data-doc="story"><span>03</span>Основная история</button>
         <button class="doc-link" data-doc="episodes"><span>04</span>Кампания по эпизодам</button>
-        <button class="doc-link" data-doc="roadmap"><span>05</span>План разработки</button>
-        <button class="doc-link" data-doc="sources"><span>06</span>Источники и права</button>
-        <button class="doc-link" data-doc="technical"><span>07</span>Техническая основа</button>
+        <button class="doc-link" data-doc="worldmap"><span>05</span>Карта мира</button>
+        <button class="doc-link" data-doc="roadmap"><span>06</span>План разработки</button>
+        <button class="doc-link" data-doc="sources"><span>07</span>Источники и права</button>
+        <button class="doc-link" data-doc="technical"><span>08</span>Техническая основа</button>
       </nav>
       <nav id="chapter-nav" aria-label="Главы текущего документа"><p class="nav-label">Оглавление</p><ol id="toc"></ol></nav>
       <div id="search-results" hidden><div id="search-status" role="status" aria-live="polite"></div><div id="result-list"></div></div>

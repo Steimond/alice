@@ -1,0 +1,259 @@
+<svg width="1080pt" height="517pt"
+ viewBox="0.00 0.00 1080.00 517.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="H-graph0" class="graph" transform="scale(1 1) rotate(0) translate(18 498.73)">
+<title>Map</title>
+<polygon fill="#fffdf8" stroke="none" points="-18,18 -18,-498.73 1061.89,-498.73 1061.89,18 -18,18"/>
+<!-- H00 -->
+<g id="H-node1" class="node room">
+<title>H00</title>
+<g id="H-a_node1"><a xlink:title="Обзор L02 из окна на площадке выхода лифта W09; не проход · E01 · E02 · E07 · R01 · R03">
+<path fill="#fffdf8" stroke="#aaa7a0" d="M603.46,-390.33C603.46,-390.33 498.94,-390.33 498.94,-390.33 492.94,-390.33 486.94,-384.33 486.94,-378.33 486.94,-378.33 486.94,-355.29 486.94,-355.29 486.94,-349.29 492.94,-343.29 498.94,-343.29 498.94,-343.29 603.46,-343.29 603.46,-343.29 609.46,-343.29 615.46,-349.29 615.46,-355.29 615.46,-355.29 615.46,-378.33 615.46,-378.33 615.46,-384.33 609.46,-390.33 603.46,-390.33"/>
+<text xml:space="preserve" text-anchor="middle" x="551.2" y="-370.71" font-family="Arial" font-size="13.00">H00 · Зал дверей</text>
+<text xml:space="preserve" text-anchor="middle" x="551.2" y="-355.11" font-family="Arial" font-size="13.00">ОБЗОР L02</text>
+</a>
+</g>
+</g>
+<!-- H01 -->
+<g id="H-node2" class="node room rest">
+<title>H01</title>
+<g id="H-a_node2"><a xlink:title="E07">
+<ellipse fill="#fffdf8" stroke="#aaa7a0" cx="106.2" cy="-255.63" rx="106.2" ry="33.26"/>
+<text xml:space="preserve" text-anchor="middle" x="106.2" y="-259.53" font-family="Arial" font-size="13.00">H01 · Верхние балки</text>
+<text xml:space="preserve" text-anchor="middle" x="106.2" y="-243.93" font-family="Arial" font-size="13.00">ОТДЫХ</text>
+</a>
+</g>
+</g>
+<!-- H00&#45;&gt;H01 -->
+<g id="H-edge3" class="edge main">
+<title>H00&#45;&gt;H01</title>
+<path fill="none" stroke="#767780" d="M486.68,-356.37C401.04,-343.85 260.5,-323.29 260.5,-323.29 260.5,-323.29 215.96,-304.05 174.74,-286.24"/>
+<polygon fill="#767780" stroke="#767780" points="175.88,-284.26 169.02,-283.77 174.08,-288.43 175.88,-284.26"/>
+<text xml:space="preserve" text-anchor="middle" x="322.85" y="-312.49" font-family="Arial" font-size="12.00" fill="#65646a">A01 · верхний разрыв</text>
+</g>
+<!-- H02 -->
+<g id="H-node3" class="node room">
+<title>H02</title>
+<g id="H-a_node3"><a xlink:title="R01 · R03">
+<path fill="#fffdf8" stroke="#aaa7a0" d="M621.52,-273.63C621.52,-273.63 480.88,-273.63 480.88,-273.63 474.88,-273.63 468.88,-267.63 468.88,-261.63 468.88,-261.63 468.88,-249.63 468.88,-249.63 468.88,-243.63 474.88,-237.63 480.88,-237.63 480.88,-237.63 621.52,-237.63 621.52,-237.63 627.52,-237.63 633.52,-243.63 633.52,-249.63 633.52,-249.63 633.52,-261.63 633.52,-261.63 633.52,-267.63 627.52,-273.63 621.52,-273.63"/>
+<text xml:space="preserve" text-anchor="middle" x="551.2" y="-251.73" font-family="Arial" font-size="13.00">H02 · Малый вестибюль</text>
+</a>
+</g>
+</g>
+<!-- H00&#45;&gt;H02 -->
+<g id="H-edge4" class="edge main">
+<title>H00&#45;&gt;H02</title>
+<path fill="none" stroke="#767780" d="M551.2,-335.1C551.2,-318.32 551.2,-297.78 551.2,-281.92"/>
+<polygon fill="#767780" stroke="#767780" points="548.93,-334.91 551.2,-341.41 553.48,-334.91 548.93,-334.91"/>
+<polygon fill="#767780" stroke="#767780" points="553.48,-282.12 551.2,-275.62 548.93,-282.12 553.48,-282.12"/>
+<text xml:space="preserve" text-anchor="middle" x="616.89" y="-312.49" font-family="Arial" font-size="12.00" fill="#65646a">A02 · маленькая дверь</text>
+</g>
+<!-- H05 -->
+<g id="H-node6" class="node room optional">
+<title>H05</title>
+<g id="H-a_node6"><a xlink:title="Следы прежней школы · Забытая школа">
+<path fill="#f6f3eb" stroke="#aaa7a0" stroke-dasharray="5,2" d="M818.94,-279.15C818.94,-279.15 667.46,-279.15 667.46,-279.15 661.46,-279.15 655.46,-273.15 655.46,-267.15 655.46,-267.15 655.46,-244.11 655.46,-244.11 655.46,-238.11 661.46,-232.11 667.46,-232.11 667.46,-232.11 818.94,-232.11 818.94,-232.11 824.94,-232.11 830.94,-238.11 830.94,-244.11 830.94,-244.11 830.94,-267.15 830.94,-267.15 830.94,-273.15 824.94,-279.15 818.94,-279.15"/>
+<text xml:space="preserve" text-anchor="middle" x="743.2" y="-259.53" font-family="Arial" font-size="13.00">H05 · Дверь без прохода</text>
+<text xml:space="preserve" text-anchor="middle" x="743.2" y="-243.93" font-family="Arial" font-size="13.00">ТАЙНИК</text>
+</a>
+</g>
+</g>
+<!-- H00&#45;&gt;H05 -->
+<g id="H-edge9" class="edge secret">
+<title>H00&#45;&gt;H05</title>
+<path fill="none" stroke="#767780" stroke-dasharray="5,2" d="M623.04,-343.35C655.71,-333.13 687.2,-323.29 687.2,-323.29 687.2,-323.29 703.77,-303.56 718.89,-285.57"/>
+<polygon fill="#767780" stroke="#767780" points="622.59,-341.11 617.06,-345.22 623.94,-345.45 622.59,-341.11"/>
+<polygon fill="#767780" stroke="#767780" points="720.52,-287.17 722.96,-280.73 717.03,-284.24 720.52,-287.17"/>
+<text xml:space="preserve" text-anchor="middle" x="771.65" y="-312.49" font-family="Arial" font-size="12.00" fill="#65646a">A03 · исчезнувшая дверь</text>
+</g>
+<!-- L01 -->
+<g id="H-node8" class="node room portal">
+<title>L01</title>
+<g id="H-a_node8"><a xlink:title="E03">
+<path fill="#eeeae3" stroke="#aaa7a0" d="M1031.89,-273.63C1031.89,-273.63 864.51,-273.63 864.51,-273.63 858.51,-273.63 852.51,-267.63 852.51,-261.63 852.51,-261.63 852.51,-249.63 852.51,-249.63 852.51,-243.63 858.51,-237.63 864.51,-237.63 864.51,-237.63 1031.89,-237.63 1031.89,-237.63 1037.89,-237.63 1043.89,-243.63 1043.89,-249.63 1043.89,-249.63 1043.89,-261.63 1043.89,-261.63 1043.89,-267.63 1037.89,-273.63 1031.89,-273.63"/>
+<text xml:space="preserve" text-anchor="middle" x="948.2" y="-251.73" font-family="Arial" font-size="13.00">L01 · Затопленный коридор</text>
+</a>
+</g>
+</g>
+<!-- H00&#45;&gt;L01 -->
+<g id="H-edge1" class="edge main">
+<title>H00&#45;&gt;L01</title>
+<path fill="none" stroke="#767780" d="M615.86,-356.58C703.51,-344.08 849.2,-323.29 849.2,-323.29 849.2,-323.29 887.16,-297.73 916.06,-278.27"/>
+<polygon fill="#767780" stroke="#767780" points="917.07,-280.33 921.19,-274.81 914.53,-276.56 917.07,-280.33"/>
+<text xml:space="preserve" text-anchor="middle" x="917.26" y="-312.49" font-family="Arial" font-size="12.00" fill="#65646a">Падение в слёзы</text>
+</g>
+<!-- H01&#45;&gt;H00 -->
+<g id="H-edge2" class="edge main">
+<title>H01&#45;&gt;H00</title>
+<path fill="none" stroke="#767780" d="M184.89,-278.33C206.06,-284.16 223.2,-288.89 223.2,-288.89 223.2,-288.89 390.2,-308.89 390.2,-308.89 390.2,-308.89 436.36,-325.21 479.24,-340.37"/>
+<polygon fill="#767780" stroke="#767780" points="478.33,-342.46 485.22,-342.48 479.85,-338.17 478.33,-342.46"/>
+<text xml:space="preserve" text-anchor="middle" x="462.45" y="-312.49" font-family="Arial" font-size="12.00" fill="#65646a">Спуск в зал</text>
+</g>
+<!-- W01 -->
+<g id="H-node11" class="node room portal">
+<title>W01</title>
+<g id="H-a_node11"><a xlink:title="Белый Кролик · E08">
+<path fill="#eeeae3" stroke="#aaa7a0" d="M131.51,-167.96C131.51,-167.96 16.89,-167.96 16.89,-167.96 10.89,-167.96 4.89,-161.96 4.89,-155.96 4.89,-155.96 4.89,-132.92 4.89,-132.92 4.89,-126.92 10.89,-120.92 16.89,-120.92 16.89,-120.92 131.51,-120.92 131.51,-120.92 137.51,-120.92 143.51,-126.92 143.51,-132.92 143.51,-132.92 143.51,-155.96 143.51,-155.96 143.51,-161.96 137.51,-167.96 131.51,-167.96"/>
+<text xml:space="preserve" text-anchor="middle" x="74.2" y="-148.34" font-family="Arial" font-size="13.00">W01 · Сад Кролика</text>
+<text xml:space="preserve" text-anchor="middle" x="74.2" y="-132.74" font-family="Arial" font-size="13.00">NPC</text>
+</a>
+</g>
+</g>
+<!-- H01&#45;&gt;W01 -->
+<g id="H-edge12" class="edge main">
+<title>H01&#45;&gt;W01</title>
+<path fill="none" stroke="#767780" d="M94.49,-214.66C90.73,-201.84 86.63,-187.86 83.11,-175.84"/>
+<polygon fill="#767780" stroke="#767780" points="92.25,-215.11 96.26,-220.71 96.62,-213.83 92.25,-215.11"/>
+<polygon fill="#767780" stroke="#767780" points="85.32,-175.31 81.31,-169.71 80.96,-176.59 85.32,-175.31"/>
+</g>
+<!-- H03 -->
+<g id="H-node4" class="node room">
+<title>H03</title>
+<g id="H-a_node4"><a xlink:title="R01 · R03">
+<path fill="#fffdf8" stroke="#aaa7a0" d="M621.52,-167.96C621.52,-167.96 480.88,-167.96 480.88,-167.96 474.88,-167.96 468.88,-161.96 468.88,-155.96 468.88,-155.96 468.88,-132.92 468.88,-132.92 468.88,-126.92 474.88,-120.92 480.88,-120.92 480.88,-120.92 621.52,-120.92 621.52,-120.92 627.52,-120.92 633.52,-126.92 633.52,-132.92 633.52,-132.92 633.52,-155.96 633.52,-155.96 633.52,-161.96 627.52,-167.96 621.52,-167.96"/>
+<text xml:space="preserve" text-anchor="middle" x="551.2" y="-148.34" font-family="Arial" font-size="13.00">H03 · Лицевая сторона</text>
+<text xml:space="preserve" text-anchor="middle" x="551.2" y="-132.74" font-family="Arial" font-size="13.00">калитки</text>
+</a>
+</g>
+</g>
+<!-- H02&#45;&gt;H03 -->
+<g id="H-edge5" class="edge main">
+<title>H02&#45;&gt;H03</title>
+<path fill="none" stroke="#767780" d="M551.2,-229.56C551.2,-213.63 551.2,-192.9 551.2,-176.01"/>
+<polygon fill="#767780" stroke="#767780" points="548.93,-229.55 551.2,-236.05 553.48,-229.55 548.93,-229.55"/>
+<polygon fill="#767780" stroke="#767780" points="553.48,-176.08 551.2,-169.58 548.93,-176.08 553.48,-176.08"/>
+</g>
+<!-- K01 -->
+<g id="H-node13" class="node room portal">
+<title>K01</title>
+<g id="H-a_node13"><a xlink:title="Рыба&#45;лакей; Лягушка&#45;лакей · E15">
+<path fill="#eeeae3" stroke="#aaa7a0" d="M796.74,-167.96C796.74,-167.96 667.66,-167.96 667.66,-167.96 661.66,-167.96 655.66,-161.96 655.66,-155.96 655.66,-155.96 655.66,-132.92 655.66,-132.92 655.66,-126.92 661.66,-120.92 667.66,-120.92 667.66,-120.92 796.74,-120.92 796.74,-120.92 802.74,-120.92 808.74,-126.92 808.74,-132.92 808.74,-132.92 808.74,-155.96 808.74,-155.96 808.74,-161.96 802.74,-167.96 796.74,-167.96"/>
+<text xml:space="preserve" text-anchor="middle" x="732.2" y="-148.34" font-family="Arial" font-size="13.00">K01 · Ворота и лакеи</text>
+<text xml:space="preserve" text-anchor="middle" x="732.2" y="-132.74" font-family="Arial" font-size="13.00">NPC</text>
+</a>
+</g>
+</g>
+<!-- H02&#45;&gt;K01 -->
+<g id="H-edge14" class="edge main">
+<title>H02&#45;&gt;K01</title>
+<path fill="none" stroke="#767780" d="M586.66,-233.24C615.59,-215.79 656.6,-191.05 687.73,-172.27"/>
+<polygon fill="#767780" stroke="#767780" points="585.57,-231.24 581.18,-236.54 587.92,-235.14 585.57,-231.24"/>
+<polygon fill="#767780" stroke="#767780" points="688.52,-174.45 692.91,-169.14 686.17,-170.55 688.52,-174.45"/>
+</g>
+<!-- G01 -->
+<g id="H-node9" class="node room portal rest">
+<title>G01</title>
+<g id="H-a_node9"><a xlink:title="R03 · E29">
+<ellipse fill="#eeeae3" stroke="#aaa7a0" cx="402.2" cy="-33.26" rx="132.25" ry="33.26"/>
+<text xml:space="preserve" text-anchor="middle" x="402.2" y="-37.16" font-family="Arial" font-size="13.00">G01 · Внутренняя калитка</text>
+<text xml:space="preserve" text-anchor="middle" x="402.2" y="-21.56" font-family="Arial" font-size="13.00">ОТДЫХ</text>
+</a>
+</g>
+</g>
+<!-- H03&#45;&gt;G01 -->
+<g id="H-edge6" class="edge main">
+<title>H03&#45;&gt;G01</title>
+<path fill="none" stroke="#767780" d="M513.61,-115.9C494.51,-101.9 471.09,-84.74 450.66,-69.77"/>
+<polygon fill="#767780" stroke="#767780" points="512.16,-117.65 518.74,-119.66 514.85,-113.98 512.16,-117.65"/>
+<polygon fill="#767780" stroke="#767780" points="452.23,-68.1 445.64,-66.09 449.54,-71.77 452.23,-68.1"/>
+<text xml:space="preserve" text-anchor="middle" x="527.73" y="-90.12" font-family="Arial" font-size="12.00" fill="#65646a">Рычаг из H04</text>
+</g>
+<!-- H04 -->
+<g id="H-node5" class="node room">
+<title>H04</title>
+<g id="H-a_node5"><a xlink:title="R03">
+<path fill="#fffdf8" stroke="#aaa7a0" d="M332.74,-167.96C332.74,-167.96 177.66,-167.96 177.66,-167.96 171.66,-167.96 165.66,-161.96 165.66,-155.96 165.66,-155.96 165.66,-132.92 165.66,-132.92 165.66,-126.92 171.66,-120.92 177.66,-120.92 177.66,-120.92 332.74,-120.92 332.74,-120.92 338.74,-120.92 344.74,-126.92 344.74,-132.92 344.74,-132.92 344.74,-155.96 344.74,-155.96 344.74,-161.96 338.74,-167.96 332.74,-167.96"/>
+<text xml:space="preserve" text-anchor="middle" x="255.2" y="-148.34" font-family="Arial" font-size="13.00">H04 · Служебная сторона</text>
+<text xml:space="preserve" text-anchor="middle" x="255.2" y="-132.74" font-family="Arial" font-size="13.00">ножниц</text>
+</a>
+</g>
+</g>
+<!-- H04&#45;&gt;H03 -->
+<g id="H-edge7" class="edge shortcut">
+<title>H04&#45;&gt;H03</title>
+<path fill="none" stroke="#367967" stroke-dasharray="1,5" d="M353.13,-144.44C387.92,-144.44 426.9,-144.44 461.02,-144.44"/>
+<polygon fill="#367967" stroke="#367967" points="353.23,-142.17 346.73,-144.44 353.23,-146.72 353.23,-142.17"/>
+<polygon fill="#367967" stroke="#367967" points="460.66,-146.72 467.16,-144.44 460.66,-142.17 460.66,-146.72"/>
+<text xml:space="preserve" text-anchor="middle" x="406.81" y="-151.04" font-family="Arial" font-size="12.00" fill="#65646a">Открытая калитка</text>
+</g>
+<!-- H04&#45;&gt;G01 -->
+<g id="H-edge8" class="edge main">
+<title>H04&#45;&gt;G01</title>
+<path fill="none" stroke="#767780" d="M292.29,-115.9C311.05,-101.96 334.04,-84.89 354.14,-69.96"/>
+<polygon fill="#767780" stroke="#767780" points="291.09,-113.95 287.23,-119.65 293.81,-117.6 291.09,-113.95"/>
+<polygon fill="#767780" stroke="#767780" points="355.47,-71.8 359.34,-66.1 352.76,-68.15 355.47,-71.8"/>
+</g>
+<!-- H06 -->
+<g id="H-node7" class="node room optional">
+<title>H06</title>
+<g id="H-a_node7"><a xlink:title="Место для нового персонажа · Фрагмент учебной истории · Забытая школа">
+<path fill="#f6f3eb" stroke="#aaa7a0" stroke-dasharray="5,2" d="M990.13,-167.96C990.13,-167.96 842.27,-167.96 842.27,-167.96 836.27,-167.96 830.27,-161.96 830.27,-155.96 830.27,-155.96 830.27,-132.92 830.27,-132.92 830.27,-126.92 836.27,-120.92 842.27,-120.92 842.27,-120.92 990.13,-120.92 990.13,-120.92 996.13,-120.92 1002.13,-126.92 1002.13,-132.92 1002.13,-132.92 1002.13,-155.96 1002.13,-155.96 1002.13,-161.96 996.13,-167.96 990.13,-167.96"/>
+<text xml:space="preserve" text-anchor="middle" x="916.2" y="-148.34" font-family="Arial" font-size="13.00">H06 · Забытая классная</text>
+<text xml:space="preserve" text-anchor="middle" x="916.2" y="-132.74" font-family="Arial" font-size="13.00">NPC · Q04 · ТАЙНИК</text>
+</a>
+</g>
+</g>
+<!-- H05&#45;&gt;H06 -->
+<g id="H-edge10" class="edge secret">
+<title>H05&#45;&gt;H06</title>
+<path fill="none" stroke="#767780" stroke-dasharray="5,2" d="M786.23,-227.47C812.83,-210.68 846.84,-189.22 873.4,-172.46"/>
+<polygon fill="#767780" stroke="#767780" points="785.03,-225.54 780.75,-230.93 787.46,-229.39 785.03,-225.54"/>
+<polygon fill="#767780" stroke="#767780" points="874.42,-174.5 878.7,-169.11 871.99,-170.66 874.42,-174.5"/>
+<text xml:space="preserve" text-anchor="middle" x="903.39" y="-191.56" font-family="Arial" font-size="12.00" fill="#65646a">A02 + A04 · маятник</text>
+</g>
+<!-- L08 -->
+<g id="H-node10" class="node room portal ability">
+<title>L08</title>
+<g id="H-a_node10"><a xlink:title="E07">
+<path fill="#eeeae3" stroke="#aaa7a0" d="M186.28,-390.33C186.28,-390.33 26.13,-390.33 26.13,-390.33 20.13,-390.33 14.13,-384.33 14.13,-378.33 14.13,-378.33 14.13,-355.29 14.13,-355.29 14.13,-349.29 20.13,-343.29 26.13,-343.29 26.13,-343.29 186.28,-343.29 186.28,-343.29 192.28,-343.29 198.28,-349.29 198.28,-355.29 198.28,-355.29 198.28,-378.33 198.28,-378.33 198.28,-384.33 192.28,-390.33 186.28,-390.33"/>
+<text xml:space="preserve" text-anchor="middle" x="106.2" y="-370.71" font-family="Arial" font-size="13.00">L08 · Веер и верхний сток</text>
+<text xml:space="preserve" text-anchor="middle" x="106.2" y="-355.11" font-family="Arial" font-size="13.00">A01</text>
+</a>
+</g>
+</g>
+<!-- L08&#45;&gt;H01 -->
+<g id="H-edge11" class="edge return">
+<title>L08&#45;&gt;H01</title>
+<path fill="none" stroke="#9b3545" d="M106.2,-335.24C106.2,-323.31 106.2,-309.47 106.2,-296.75"/>
+<polygon fill="#9b3545" stroke="#9b3545" points="103.93,-334.91 106.2,-341.41 108.48,-334.91 103.93,-334.91"/>
+<polygon fill="#9b3545" stroke="#9b3545" points="108.48,-297.02 106.2,-290.52 103.93,-297.02 108.48,-297.02"/>
+<text xml:space="preserve" text-anchor="middle" x="161.89" y="-312.49" font-family="Arial" font-size="12.00" fill="#65646a">A01 · верхний сток</text>
+</g>
+<!-- W09 -->
+<g id="H-node12" class="node room portal">
+<title>W09</title>
+<g id="H-a_node12"><a xlink:title="R01">
+<path fill="#eeeae3" stroke="#aaa7a0" d="M637.41,-480.73C637.41,-480.73 464.99,-480.73 464.99,-480.73 458.99,-480.73 452.99,-474.73 452.99,-468.73 452.99,-468.73 452.99,-456.73 452.99,-456.73 452.99,-450.73 458.99,-444.73 464.99,-444.73 464.99,-444.73 637.41,-444.73 637.41,-444.73 643.41,-444.73 649.41,-450.73 649.41,-456.73 649.41,-456.73 649.41,-468.73 649.41,-468.73 649.41,-474.73 643.41,-480.73 637.41,-480.73"/>
+<text xml:space="preserve" text-anchor="middle" x="551.2" y="-458.83" font-family="Arial" font-size="13.00">W09 · Спуск к старому залу</text>
+</a>
+</g>
+</g>
+<!-- W09&#45;&gt;H00 -->
+<g id="H-edge13" class="edge return">
+<title>W09&#45;&gt;H00</title>
+<path fill="none" stroke="#9b3545" d="M551.2,-436.54C551.2,-424.81 551.2,-410.75 551.2,-398.41"/>
+<polygon fill="#9b3545" stroke="#9b3545" points="548.93,-436.49 551.2,-442.99 553.48,-436.49 548.93,-436.49"/>
+<polygon fill="#9b3545" stroke="#9b3545" points="553.48,-398.61 551.2,-392.11 548.93,-398.61 553.48,-398.61"/>
+<text xml:space="preserve" text-anchor="middle" x="604.55" y="-413.93" font-family="Arial" font-size="12.00" fill="#65646a">R01 · лифт из W09</text>
+</g>
+<!-- T08 -->
+<g id="H-node14" class="node room portal">
+<title>T08</title>
+<g id="H-a_node14"><a xlink:title="Кролик с повестками · E28 · R03">
+<path fill="#eeeae3" stroke="#aaa7a0" d="M403.83,-286.95C403.83,-286.95 246.58,-286.95 246.58,-286.95 240.58,-286.95 234.58,-280.95 234.58,-274.95 234.58,-274.95 234.58,-236.31 234.58,-236.31 234.58,-230.31 240.58,-224.31 246.58,-224.31 246.58,-224.31 403.83,-224.31 403.83,-224.31 409.83,-224.31 415.83,-230.31 415.83,-236.31 415.83,-236.31 415.83,-274.95 415.83,-274.95 415.83,-280.95 409.83,-286.95 403.83,-286.95"/>
+<text xml:space="preserve" text-anchor="middle" x="325.2" y="-267.33" font-family="Arial" font-size="13.00">T08 · Дерево и служебная</text>
+<text xml:space="preserve" text-anchor="middle" x="325.2" y="-251.73" font-family="Arial" font-size="13.00">галерея</text>
+<text xml:space="preserve" text-anchor="middle" x="325.2" y="-236.13" font-family="Arial" font-size="13.00">NPC</text>
+</a>
+</g>
+</g>
+<!-- T08&#45;&gt;H04 -->
+<g id="H-edge15" class="edge return">
+<title>T08&#45;&gt;H04</title>
+<path fill="none" stroke="#9b3545" d="M301.44,-217.56C292.52,-203.65 282.51,-188.05 274.1,-174.92"/>
+<polygon fill="#9b3545" stroke="#9b3545" points="299.28,-218.4 304.7,-222.65 303.11,-215.95 299.28,-218.4"/>
+<polygon fill="#9b3545" stroke="#9b3545" points="276.1,-173.82 270.67,-169.58 272.27,-176.28 276.1,-173.82"/>
+<text xml:space="preserve" text-anchor="middle" x="348.56" y="-191.56" font-family="Arial" font-size="12.00" fill="#65646a">R03 · A04 · ножницы</text>
+</g>
+</g>
+</svg>
+
