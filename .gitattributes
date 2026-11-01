@@ -4,6 +4,8 @@
 *.json text eol=lf
 *.inputactions text eol=lf
 *.md text eol=lf
+*.html text eol=lf
+*.ps1 text eol=lf
 *.yml text eol=lf
 *.yaml text eol=lf
 *.unity text eol=lf
