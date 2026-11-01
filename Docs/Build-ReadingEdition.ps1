@@ -5,10 +5,12 @@ param()
 $ErrorActionPreference = 'Stop'
 $documents = @(
     @{ Id = 'gdd'; Name = 'Дизайн игры'; File = 'GameDesignDocument.md'; Icon = '01' },
-    @{ Id = 'story'; Name = 'Основная история'; File = 'Story.md'; Icon = '02' },
-    @{ Id = 'roadmap'; Name = 'План разработки'; File = 'DevelopmentRoadmap.md'; Icon = '03' },
-    @{ Id = 'sources'; Name = 'Источники и права'; File = 'ContentProvenance.md'; Icon = '04' },
-    @{ Id = 'technical'; Name = 'Техническая основа'; File = 'TechnicalSetup.md'; Icon = '05' }
+    @{ Id = 'foundation'; Name = 'Сюжетная основа'; File = 'NarrativeFoundation.md'; Icon = '02' },
+    @{ Id = 'story'; Name = 'Основная история'; File = 'Story.md'; Icon = '03' },
+    @{ Id = 'episodes'; Name = 'Кампания по эпизодам'; File = 'CampaignEpisodes.md'; Icon = '04' },
+    @{ Id = 'roadmap'; Name = 'План разработки'; File = 'DevelopmentRoadmap.md'; Icon = '05' },
+    @{ Id = 'sources'; Name = 'Источники и права'; File = 'ContentProvenance.md'; Icon = '06' },
+    @{ Id = 'technical'; Name = 'Техническая основа'; File = 'TechnicalSetup.md'; Icon = '07' }
 )
 
 function Escape-Html([string]$Text) {
