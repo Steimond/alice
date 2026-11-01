@@ -1,0 +1,11 @@
+Генерация: редактирование встроенным image_gen, 1 ноября 2026.
+Основа: alice-concept-v01.png.
+По просьбе владельца: более естественная красивая внешность, меньше аниме-стилизации.
+Статус: выбран владельцем как визуальный ориентир; не готовый игровой спрайт.
+Решение записано в GDD 0.15. В Unity не импортировано. Первая версия сохранена.
+
+Промпт генерации:
+Edit the referenced Alice character concept sheet. User feedback: she looks too anime; make her a little more natural, while still beautiful. Make a clear visible correction in ALL depictions, especially the large portrait and left full-body figure.
+Preserve the same character identity (honey-blonde hair, charcoal hair ribbon, teenage age about 15), same modest blue Victorian calf-length dress, ivory apron, stockings, brown practical boots, sewing needle, palette, sheet layout, views and pixel art medium.
+CHANGE facial construction from anime doll to believable observational human anatomy rendered as detailed pixel art: noticeably smaller naturally sized eyes and irises, normal spacing and realistic eyelids, no giant shiny pupils or exaggerated catchlights; natural understated brows, anatomically credible bridge and length of nose, natural cheek planes and jaw, subtly asymmetric human features, softly closed relaxed lips rather than tiny open doll mouth. Beautiful through harmonious believable features and a thoughtful attentive expression. Reduce oversized head slightly in the standing figures to natural teenage body proportions, while maintaining age-appropriate 14–16 appearance. No makeup, glamour retouch, pout, adult fashion-model features, sexualization, or aging into an adult. Hair should have natural weight and irregular soft waves, less anime clumps. Expression: quiet resolve and alert curiosity with restrained concern, not constant pleading sadness. Large portrait must feel like a real individual, not anime, manga, Disney or porcelain doll.
+Keep crisp authored pixel clusters, restrained dithering, dark-fantasy 2D game concept art, not a photo, not smooth digital painting. Preserve costume and background. Keep large frontal three-quarter standing view left, side and rear views center, portrait upper right, small action studies bottom right and palette swatches. Heading "АЛИСА"; change subtitle to "ПОИСК ОБРАЗА · 02". No other new text.
