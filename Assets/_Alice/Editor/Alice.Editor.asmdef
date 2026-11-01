@@ -2,8 +2,10 @@
     "name": "Alice.Editor",
     "rootNamespace": "Alice.Editor",
     "references": [
+        "Alice",
         "Unity.InputSystem",
         "Unity.RenderPipelines.Universal.Runtime",
+        "Unity.RenderPipelines.Universal.2D.Runtime",
         "Unity.Localization",
         "Unity.Localization.Editor"
     ],
