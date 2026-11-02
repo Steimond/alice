@@ -4,7 +4,7 @@
 
 ## Проект
 
-Alice — жестокая 2D soulslike-метроидвания по «Алисе в Стране чудес», рейтинг 18+. Unity 6000.6.6f1, URP 2D, Input System, Unity Localization. Детальный пиксель-арт уровня Blasphemous.
+Alice — жестокая 2D soulslike-метроидвания по «Алисе в Стране чудес», рейтинг 18+. Unity 6000.6.6f1, URP 2D, Input System, Unity Localization. Детальный пиксель-арт; Blasphemous — образец идеала, а не обязательная планка (GDD 0.17). Владелец не рисует: графика не должна требовать его ручной дорисовки.
 
 Источник истины по дизайну — [GDD](Docs/GameDesignDocument.md), по технике — [TechnicalSetup](Docs/TechnicalSetup.md), по этапам — [план разработки](Docs/DevelopmentRoadmap.md). Не реализовывать то, что противоречит GDD; при расхождении спросить владельца.
 
