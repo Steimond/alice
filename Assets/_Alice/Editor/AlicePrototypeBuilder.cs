@@ -85,6 +85,7 @@ namespace Alice.Editor
             Sprite tile = EnsureTileSprite();
             PlayerMovementSettings settings = EnsureSettings();
             GameObject prefab = EnsureAlicePrefab(tile, settings);
+            AlicePlayerSpritesSetup.Ensure();
 
             Scene scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
             GameObject world = FindRoot(scene, "World");
