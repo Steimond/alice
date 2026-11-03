@@ -92,7 +92,24 @@ unity run C:/Projects/alice --editor-version 6000.6.6f1 --timeout 600 --log-file
 
 CLI самостоятельно управляет batch-флагами и завершением; дополнительный `-quit` ему передавать не надо. Не запускать batch-Editor одновременно с обычным Editor для того же проекта.
 
-`unity status --json` показывает только Editor с установленным Pipeline. Отсутствие такого подключения не означает, что CLI или Hub не установлены. Pipeline не добавлен в зависимости проекта автоматически.
+## Управление открытым Editor
+
+С 3 ноября 2026 в проект добавлен пакет Unity Pipeline (`com.unity.pipeline` 0.9.1-exp.1, экспериментальный). Через него CLI работает с уже открытым Editor, закрывать его ради batch-режима не нужно. `unity status --json` показывает Editor с состоянием `ready`. Пока идёт перезагрузка домена, команды отвечают `EDITOR_NOT_RUNNING`; через несколько секунд их можно повторить.
+
+Основные команды (`unity command --project-path C:/Projects/alice …`):
+
+| Задача | Команда |
+| --- | --- |
+| Перекомпиляция | `script recompile`, затем `script recompile_status` до `completed` |
+| Ошибки и исключения | `console status`, `console get`, `console clear` |
+| Пункт меню, например `Alice/Prototype/Attach Alice Sprites` | `editor invoke_menu` |
+| Тесты | `test run`, `test status` |
+| Вход и выход из Play | `editor.playmode start`, `editor.playmode stop` |
+| Снимок игры | `capture game_view` |
+
+`capture game_view` без `save_path` возвращает PNG в ответе в base64. С `save_path` файл ложится внутрь `Assets/` даже при пути от корня проекта, поэтому снимки сохраняются вне проекта.
+
+Порядок: сначала Pipeline при открытом Editor, batch — только когда Editor закрыт.
 
 ## Прототип M1
 

@@ -9,7 +9,7 @@ namespace Alice.Editor
 {
     /// <summary>
     /// Puts Alice's trial sprites on the prefab: a sprite set asset and a <see cref="PlayerSpriteView"/>
-    /// over the grey-box body. Adds only what is missing and never replaces sprites someone assigned.
+    /// over the grey-box body. Fills only empty slots and never replaces sprites someone assigned.
     /// </summary>
     public static class AlicePlayerSpritesSetup
     {
@@ -17,6 +17,12 @@ namespace Alice.Editor
         private const string FramesFolder = Root + "/Art/Characters/Alice/Trial";
         private const string IdlePath = FramesFolder + "/alice_trial_idle_00.png";
         private const string RunPrefix = "alice_trial_run_";
+        private const string JumpPrefix = "alice_trial_jump_";
+        private const string FallPrefix = "alice_trial_fall_";
+        private const string LandPrefix = "alice_trial_land_";
+        private const string StepOffPrefix = "alice_trial_stepoff_";
+        // Jump frames from the generation: takeoff, three rise frames, apex tuck, apex opening, fall start.
+        private const int JumpFrameCount = 7;
         private const string SpriteSetPath = Root + "/Data/Player/AliceSprites.asset";
         private const string PrefabPath = Root + "/Prefabs/Characters/Alice.prefab";
         private const string SpriteChildName = "Sprite";
@@ -69,28 +75,45 @@ namespace Alice.Editor
                 AssetDatabase.CreateAsset(sprites, SpriteSetPath);
             }
 
-            if (sprites.Idle != null || (sprites.Run != null && sprites.Run.Length > 0))
+            if (sprites.Idle == null && (sprites.Run == null || sprites.Run.Length == 0))
             {
-                return sprites;
+                Sprite idle = AssetDatabase.LoadAssetAtPath<Sprite>(IdlePath);
+                Sprite[] run = LoadFrames(RunPrefix);
+                if (idle == null || run.Length == 0)
+                {
+                    Debug.LogWarning($"Alice trial sprites not found in {FramesFolder}; the sprite set stays empty.");
+                    return null;
+                }
+
+                sprites.Assign(idle, run);
+                EditorUtility.SetDirty(sprites);
             }
 
-            Sprite idle = AssetDatabase.LoadAssetAtPath<Sprite>(IdlePath);
-            Sprite[] run = AssetDatabase.FindAssets("t:Sprite " + RunPrefix, new[] { FramesFolder })
+            if ((sprites.JumpRise == null || sprites.JumpRise.Length == 0)
+                && (sprites.JumpApex == null || sprites.JumpApex.Length == 0))
+            {
+                Sprite[] jump = LoadFrames(JumpPrefix);
+                Sprite[] fall = LoadFrames(FallPrefix);
+                if (jump.Length == JumpFrameCount && fall.Length > 0)
+                {
+                    sprites.AssignJump(jump.Take(4).ToArray(), new[] { jump[4], jump[5] }, jump[6], fall,
+                        LoadFrames(LandPrefix), LoadFrames(StepOffPrefix));
+                    EditorUtility.SetDirty(sprites);
+                }
+            }
+
+            return sprites;
+        }
+
+        private static Sprite[] LoadFrames(string prefix)
+        {
+            return AssetDatabase.FindAssets("t:Sprite " + prefix, new[] { FramesFolder })
                 .Select(AssetDatabase.GUIDToAssetPath)
-                .Where(path => Path.GetFileName(path).StartsWith(RunPrefix, StringComparison.Ordinal))
+                .Where(path => Path.GetFileName(path).StartsWith(prefix, StringComparison.Ordinal))
                 .OrderBy(path => path, StringComparer.Ordinal)
                 .Select(AssetDatabase.LoadAssetAtPath<Sprite>)
                 .Where(sprite => sprite != null)
                 .ToArray();
-            if (idle == null || run.Length == 0)
-            {
-                Debug.LogWarning($"Alice trial sprites not found in {FramesFolder}; the sprite set stays empty.");
-                return null;
-            }
-
-            sprites.Assign(idle, run);
-            EditorUtility.SetDirty(sprites);
-            return sprites;
         }
 
         /// <summary>Returns true when the prefab changed.</summary>

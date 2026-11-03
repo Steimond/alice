@@ -17,7 +17,7 @@ Alice — жестокая 2D soulslike-метроидвания по «Алис
 
 ## Unity
 
-- Сначала Unity CLI (`C:/Users/user/AppData/Local/Unity/bin/unity.exe`), затем Unity MCP, затем batch mode и правка файлов.
+- Сначала Unity CLI (`C:/Users/user/AppData/Local/Unity/bin/unity.exe`), затем Unity MCP, затем batch mode и правка файлов. В проекте стоит пакет Pipeline: при открытом Editor работать через `unity command` (компиляция, консоль, меню, тесты, Play, снимки игры — см. [TechnicalSetup](Docs/TechnicalSetup.md)), не прося закрыть Editor.
 - Сцены, префабы и `.asset` создавать через Editor API, не вручную. Сохранять GUID и существующие `.meta`; новые `.meta` создаёт Unity и они коммитятся.
 - Не запускать batch-Editor, пока проект открыт в обычном Editor.
 - Повторяемая настройка проекта — `Alice.Editor.AliceProjectSetup.ConfigureBatch`. Она должна оставаться идемпотентной и не затирать пользовательские изменения.

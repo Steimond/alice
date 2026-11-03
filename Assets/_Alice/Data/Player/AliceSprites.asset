@@ -25,3 +25,35 @@ MonoBehaviour:
   _runFrameDistance: 0.4375
   _runMinSpeed: 0.5
   _airRunFrame: 3
+  _jumpRise:
+  - {fileID: 21300000, guid: 5423bc0f257724a4da757d0b962b9c55, type: 3}
+  - {fileID: 21300000, guid: 8347501c2daaa924987b13aff7f50cc4, type: 3}
+  - {fileID: 21300000, guid: 98da7633a238a2b4686e9dec3679fd3c, type: 3}
+  - {fileID: 21300000, guid: 64791ccb2c5f38642bda91a8fc6a2ce4, type: 3}
+  _jumpApex:
+  - {fileID: 21300000, guid: 6943232c868b51a4fae212c179d9fa39, type: 3}
+  - {fileID: 21300000, guid: ac34cc3ecda3c584b8dddda7e3ba650b, type: 3}
+  _fallStart: {fileID: 21300000, guid: 69f97218d7d6153459e6c5c5c6b4ffe3, type: 3}
+  _fallLoop:
+  - {fileID: 21300000, guid: a67dbb35e4bed084b90ef0fe01652e75, type: 3}
+  - {fileID: 21300000, guid: a747e31cc1fa5094daf37f9252f2c8b9, type: 3}
+  - {fileID: 21300000, guid: 755c47e9191c3734c96ea700c1fd2cf4, type: 3}
+  - {fileID: 21300000, guid: 270f59e462eb91948881eac691705fc7, type: 3}
+  - {fileID: 21300000, guid: 986971db7b28d4a4f8c13cfcf6217156, type: 3}
+  - {fileID: 21300000, guid: 4b2d8731b0efa084185b29f4a79892c2, type: 3}
+  - {fileID: 21300000, guid: 8e5ed1dbed951384a93f5439fdb3405e, type: 3}
+  - {fileID: 21300000, guid: dcc350ed9116a4a4c93191246e74c32b, type: 3}
+  _landing:
+  - {fileID: 21300000, guid: 8cd1246d65a49e84cab23bdb6feb2240, type: 3}
+  - {fileID: 21300000, guid: 1d4ab7b203332c54abfd337d11d5aa6c, type: 3}
+  _stepOff:
+  - {fileID: 21300000, guid: 5a6a7bcd806f2e543931d48d5d212e9a, type: 3}
+  - {fileID: 21300000, guid: 9b2439eb2ebd37243bb5f1229b185290, type: 3}
+  _riseTopSpeed: 22
+  _apexSpeed: 4
+  _fallStartTime: 0.1
+  _fallFrameTime: 0.12
+  _landFrameTime: 0.06
+  _stepOffFrameTime: 0.08
+  _stepOffDelay: 0.06
+  _landMinAirTime: 0.2

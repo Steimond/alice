@@ -1,0 +1,8 @@
+[
+  { "pose": "rise_a", "x": 39, "y": 13, "deg": 345 },
+  { "pose": "rise_b", "x": 37, "y": 12, "deg": 345 },
+  { "pose": "apex", "x": 41, "y": 22, "deg": 340 },
+  { "pose": "fall_a", "x": 31, "y": 40, "deg": 214 },
+  { "pose": "fall_b", "x": 31, "y": 39, "deg": 214 },
+  { "pose": "land", "x": 41, "y": 34, "deg": 320 }
+]

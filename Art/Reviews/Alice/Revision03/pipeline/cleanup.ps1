@@ -5,6 +5,9 @@ param(
     [string]$OutDir,
     [int[]]$Airborne = @(3, 7),
     [int]$AirLift = 2,           # pixels the airborne frames rise above the contact frames
+    [int[]]$AlignTop = @(),      # frames placed by the top of the head instead of the feet (tucked jump poses)
+    [int]$TopRow = 6,            # stance head-top row in the 64x64 source
+    [string]$NeedleOverrides,    # JSON: per frame {x, y, deg} in source pixels, for poses the generator did not follow
     [double]$NeedleAngle = 205,  # degrees, 0 = +x; 205 = trailing back and slightly down
     [double]$NeedleSwing = 0.6,  # share of the upper-arm swing passed on to the needle
     [int]$NeedleLength = 32
@@ -50,20 +53,24 @@ function Nearest($c)
 }
 
 $kp = Get-Content $Keypoints -Raw | ConvertFrom-Json
+$overrides = if ($NeedleOverrides) { Get-Content $NeedleOverrides -Raw | ConvertFrom-Json } else { $null }
 $files = Get-ChildItem $FramesDir -Filter *.png | Sort-Object Name
 
 # Ground: contact frames get their lowest pixel on the stance ground row (59); airborne frames keep the average shift.
-$bottoms = @()
+$bottoms = @(); $tops = @()
 foreach ($f in $files)
 {
-    $b = [System.Drawing.Bitmap]::FromFile($f.FullName); $low = -1
-    for ($y = 0; $y -lt $b.Height; $y++) { for ($x = 0; $x -lt $b.Width; $x++) { if ($b.GetPixel($x, $y).A -ge 128) { $low = $y } } }
-    $bottoms += $low; $b.Dispose()
+    $b = [System.Drawing.Bitmap]::FromFile($f.FullName); $low = -1; $high = -1
+    for ($y = 0; $y -lt $b.Height; $y++) { for ($x = 0; $x -lt $b.Width; $x++) { if ($b.GetPixel($x, $y).A -ge 128) { $low = $y; if ($high -lt 0) { $high = $y } } } }
+    $bottoms += $low; $tops += $high; $b.Dispose()
 }
 $shifts = @()
-for ($i = 0; $i -lt $files.Count; $i++) { $shifts += if ($Airborne -contains $i) { $null } else { 59 - $bottoms[$i] } }
-$contact = @($shifts | Where-Object { $_ -ne $null })
-$avg = [math]::Round(($contact | Measure-Object -Average).Average)
+for ($i = 0; $i -lt $files.Count; $i++)
+{
+    $shifts += if ($AlignTop -contains $i) { $TopRow - $tops[$i] } elseif ($Airborne -contains $i) { $null } else { 59 - $bottoms[$i] }
+}
+$contact = @(for ($i = 0; $i -lt $files.Count; $i++) { if (-not ($Airborne -contains $i) -and -not ($AlignTop -contains $i)) { $shifts[$i] } })
+$avg = if ($contact.Count -gt 0) { [math]::Round(($contact | Measure-Object -Average).Average) } else { 0 }
 
 # 128x80 canvas, pivot bottom centre: stance ground row 59 -> row 79, hip centre -> column 64.
 $hipX = 0.44 * 64
@@ -100,10 +107,16 @@ for ($i = 0; $i -lt $files.Count; $i++)
     # The fist turns with the arm: a forward swing tips the trailing point down, a back swing lifts it.
     $sh = $kp[$i] | Where-Object { $_.label -eq 'RIGHT SHOULDER' }
     $el = $kp[$i] | Where-Object { $_.label -eq 'RIGHT ELBOW' }
-    $swing = [math]::Atan2(($el.x - $sh.x), ($el.y - $sh.y)) * 180 / [math]::PI
+    # Raised arms would swing the needle past vertical; the fist only turns so far.
+    $swing = [math]::Max(-60, [math]::Min(60, [math]::Atan2(($el.x - $sh.x), ($el.y - $sh.y)) * 180 / [math]::PI))
     $deg = $NeedleAngle + $NeedleSwing * $swing
     # Keep the point above the ground row.
     while ($hy - ($NeedleLength - 4) * [math]::Sin($deg * [math]::PI / 180) -gt 78 -and $deg -gt 180) { $deg -= 2 }
+    if ($overrides)
+    {
+        $o = $overrides[$i]
+        $hx = $o.x + $ox; $hy = $o.y + $dy + $oy; $deg = $o.deg
+    }
     $a = $deg * [math]::PI / 180
     $ux = [math]::Cos($a); $uy = - [math]::Sin($a)
     $sx = $hx - 4 * $ux; $sy = $hy - 4 * $uy

@@ -3,8 +3,9 @@ using UnityEngine;
 namespace Alice.Player
 {
     /// <summary>
-    /// Draws Alice from <see cref="PlayerSpriteSet"/>: standing, running and, until jump frames exist,
-    /// a run frame in the air. Sliding has no frames yet, so the grey-box body takes over for it.
+    /// Draws Alice from <see cref="PlayerSpriteSet"/>: standing, running, the jump by vertical speed, the
+    /// step off a ledge, the fall loop and the landing crouch. Sliding has no frames yet, so the grey-box
+    /// body takes over for it.
     /// </summary>
     public sealed class PlayerSpriteView : MonoBehaviour
     {
@@ -15,6 +16,12 @@ namespace Alice.Player
         [SerializeField] private SpriteRenderer _placeholderMarker;
 
         private float _runDistance;
+        private bool _wasAirborne;
+        private bool _jumped;
+        private float _airTime;
+        private float _fallTime;
+        private bool _landing;
+        private float _landElapsed;
 
         public void Bind(PlayerMotor motor, PlayerSpriteSet sprites, SpriteRenderer renderer,
             SpriteRenderer placeholderBody, SpriteRenderer placeholderMarker)
@@ -65,19 +72,119 @@ namespace Alice.Player
 
             if (!_motor.IsGrounded)
             {
-                return run[Mathf.Clamp(_sprites.AirRunFrame, 0, run.Length - 1)];
+                if (!_wasAirborne)
+                {
+                    _wasAirborne = true;
+                    _airTime = 0f;
+                    _fallTime = 0f;
+                    _jumped = false;
+                }
+
+                _airTime += Time.deltaTime;
+                if (_motor.Velocity.y > _sprites.ApexSpeed)
+                {
+                    _jumped = true;
+                }
+
+                return _sprites.HasJump ? SelectAirSprite(run) : run[Mathf.Clamp(_sprites.AirRunFrame, 0, run.Length - 1)];
+            }
+
+            if (_wasAirborne)
+            {
+                _wasAirborne = false;
+                // A short hop off a step or a seam in the floor would read as a stumble with the crouch.
+                _landing = _airTime >= _sprites.LandMinAirTime;
+                _landElapsed = 0f;
             }
 
             float speed = Mathf.Abs(_motor.Velocity.x);
             if (speed < _sprites.RunMinSpeed)
             {
                 _runDistance = 0f;
+                Sprite[] landing = _sprites.Landing;
+                if (_landing && landing != null && landing.Length > 0)
+                {
+                    int frame = Mathf.FloorToInt(_landElapsed / _sprites.LandFrameTime);
+                    if (frame < landing.Length)
+                    {
+                        _landElapsed += Time.deltaTime;
+                        return landing[frame];
+                    }
+
+                    _landing = false;
+                }
+
                 return _sprites.Idle;
             }
 
+            // Running on after touchdown skips the crouch: it would read as a stumble.
+            _landing = false;
+
             _runDistance += speed * Time.deltaTime;
-            int frame = Mathf.FloorToInt(_runDistance / _sprites.RunFrameDistance) % run.Length;
-            return run[frame];
+            return RunFrame(run);
+        }
+
+        private Sprite SelectAirSprite(Sprite[] run)
+        {
+            float vertical = _motor.Velocity.y;
+            if (!_jumped)
+            {
+                // Walked off an edge: the stride holds for a moment, then the step down leads into the fall.
+                if (_airTime < _sprites.StepOffDelay)
+                {
+                    return RunFrame(run);
+                }
+
+                Sprite[] stepOff = _sprites.StepOff;
+                int step = Mathf.FloorToInt((_airTime - _sprites.StepOffDelay) / _sprites.StepOffFrameTime);
+                if (stepOff != null && step < stepOff.Length)
+                {
+                    return stepOff[step];
+                }
+
+                // The step already led into the fall, so the fall-start frame is skipped.
+                return SelectFallSprite(skipStart: stepOff != null && stepOff.Length > 0);
+            }
+
+            if (vertical > _sprites.ApexSpeed)
+            {
+                _fallTime = 0f;
+                Sprite[] rise = _sprites.JumpRise;
+                float climb = Mathf.InverseLerp(_sprites.RiseTopSpeed, _sprites.ApexSpeed, vertical);
+                return rise[Mathf.Min(Mathf.FloorToInt(climb * rise.Length), rise.Length - 1)];
+            }
+
+            if (vertical >= -_sprites.ApexSpeed)
+            {
+                _fallTime = 0f;
+                Sprite[] apex = _sprites.JumpApex;
+                return vertical >= 0f ? apex[0] : apex[apex.Length - 1];
+            }
+
+            return SelectFallSprite(skipStart: false);
+        }
+
+        private Sprite SelectFallSprite(bool skipStart)
+        {
+            _fallTime += Time.deltaTime;
+            float loopTime = _fallTime;
+            if (!skipStart && _sprites.FallStart != null)
+            {
+                if (_fallTime < _sprites.FallStartTime)
+                {
+                    return _sprites.FallStart;
+                }
+
+                loopTime -= _sprites.FallStartTime;
+            }
+
+            Sprite[] loop = _sprites.FallLoop;
+            return loop[Mathf.FloorToInt(loopTime / _sprites.FallFrameTime) % loop.Length];
+        }
+
+        private Sprite RunFrame(Sprite[] run)
+        {
+            return run[Mathf.FloorToInt(_runDistance / _sprites.RunFrameDistance) % run.Length];
         }
     }
 }

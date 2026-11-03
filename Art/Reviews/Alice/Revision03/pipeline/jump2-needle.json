@@ -1,0 +1,116 @@
+[
+    {
+        "pose":  "takeoff",
+        "x":  39,
+        "y":  11,
+        "deg":  345
+    },
+    {
+        "pose":  "rise_fast",
+        "x":  40,
+        "y":  11,
+        "deg":  345
+    },
+    {
+        "pose":  "rise_mid",
+        "x":  40,
+        "y":  12,
+        "deg":  345
+    },
+    {
+        "pose":  "rise_slow",
+        "x":  42,
+        "y":  13,
+        "deg":  340
+    },
+    {
+        "pose":  "apex",
+        "x":  44,
+        "y":  22,
+        "deg":  330
+    },
+    {
+        "pose":  "apex_open",
+        "x":  42,
+        "y":  18,
+        "deg":  325
+    },
+    {
+        "pose":  "fall_start",
+        "x":  41,
+        "y":  14,
+        "deg":  340
+    },
+    {
+        "pose":  "fall_loop_1",
+        "x":  31,
+        "y":  39,
+        "deg":  214
+    },
+    {
+        "pose":  "fall_loop_2",
+        "x":  31,
+        "y":  39,
+        "deg":  214
+    },
+    {
+        "pose":  "fall_loop_3",
+        "x":  31,
+        "y":  39,
+        "deg":  214
+    },
+    {
+        "pose":  "fall_loop_4",
+        "x":  31,
+        "y":  39,
+        "deg":  214
+    },
+    {
+        "pose":  "fall_loop_5",
+        "x":  31,
+        "y":  39,
+        "deg":  214
+    },
+    {
+        "pose":  "fall_loop_6",
+        "x":  31,
+        "y":  39,
+        "deg":  214
+    },
+    {
+        "pose":  "fall_loop_7",
+        "x":  31,
+        "y":  39,
+        "deg":  214
+    },
+    {
+        "pose":  "fall_loop_8",
+        "x":  31,
+        "y":  39,
+        "deg":  214
+    },
+    {
+        "pose":  "land_impact",
+        "x":  45,
+        "y":  42,
+        "deg":  320
+    },
+    {
+        "pose":  "land_recover",
+        "x":  38,
+        "y":  38,
+        "deg":  305
+    },
+    {
+        "pose":  "step_off",
+        "x":  43,
+        "y":  28,
+        "deg":  340
+    },
+    {
+        "pose":  "step_drop",
+        "x":  41,
+        "y":  25,
+        "deg":  340
+    }
+]
