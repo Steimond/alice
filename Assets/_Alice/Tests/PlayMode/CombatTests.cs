@@ -88,6 +88,42 @@ namespace Alice.Tests
             Assert.That(_motor.Position.x, Is.LessThan(-0.5f), "Knockback pushes Alice away from the blow.");
         }
 
+        [UnityTest]
+        public IEnumerator Thrust_DrawsFramesOfEachPhase()
+        {
+            Texture2D texture = Track(new Texture2D(4, 4));
+            Sprite Frame(string name)
+            {
+                Sprite sprite = Track(Sprite.Create(texture, new Rect(0f, 0f, 4f, 4f), Vector2.zero));
+                sprite.name = name;
+                return sprite;
+            }
+
+            Sprite idle = Frame("idle");
+            Sprite windup = Frame("windup");
+            Sprite active = Frame("active");
+            Sprite recovery = Frame("recovery");
+            PlayerSpriteSet sprites = Track(ScriptableObject.CreateInstance<PlayerSpriteSet>());
+            sprites.Assign(idle, new[] { idle });
+            sprites.AssignThrust(new[] { windup }, new[] { active }, new[] { recovery });
+
+            SpriteRenderer renderer = Track(new GameObject("TestAliceSprite")).AddComponent<SpriteRenderer>();
+            _motor.gameObject.AddComponent<PlayerSpriteView>().Bind(_motor, sprites, renderer, null, null);
+            PlayerAttack attack = _motor.GetComponent<PlayerAttack>();
+
+            _commands.AttackPressedAt = Time.time;
+            var seen = new HashSet<Sprite>();
+            float timeout = Time.time + 1f;
+            while (Time.time < timeout && (seen.Count < 3 || attack.IsAttacking))
+            {
+                yield return null;
+                seen.Add(renderer.sprite);
+            }
+
+            Assert.That(seen, Is.SupersetOf(new[] { windup, active, recovery }));
+            Assert.That(renderer.sprite, Is.EqualTo(idle), "Alice returns to standing after the thrust.");
+        }
+
         private MeleeEnemy CreateSoldier(float x, int facing)
         {
             GameObject body = Track(new GameObject("TestSoldier"));

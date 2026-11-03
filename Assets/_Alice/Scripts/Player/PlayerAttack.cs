@@ -28,6 +28,12 @@ namespace Alice.Player
 
         public AttackPhase Phase => IsAttacking ? _settings.Thrust.PhaseAt(Time.time - _startedAt) : AttackPhase.None;
 
+        /// <summary>0 at the start of the current phase, approaching 1 at its end.</summary>
+        public float PhaseProgress => IsAttacking ? _settings.Thrust.PhaseProgress(Time.time - _startedAt) : 0f;
+
+        /// <summary>The side the thrust goes to; Alice cannot turn while it lasts.</summary>
+        public int Facing => _facing;
+
         public void Bind(PlayerCombatSettings settings, SpriteRenderer thrustMarker)
         {
             _settings = settings;

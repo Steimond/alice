@@ -1,5 +1,5 @@
-﻿param([string]$Skeleton, [string]$OutJson, [string]$OutPng, [ValidateSet('basic', 'detailed')][string]$Set = 'basic')
-# Jump poses for animate_with_skeleton_v3, built from the stance skeleton's bone lengths.
+﻿param([string]$Skeleton, [string]$OutJson, [string]$OutPng, [ValidateSet('basic', 'detailed', 'thrust')][string]$Set = 'basic')
+# Jump and attack poses for animate_with_skeleton_v3, built from the stance skeleton's bone lengths.
 # Angles are degrees from straight down, positive toward +x (forward when facing east).
 # RIGHT limbs are the near ones. Air frames keep the hips at stance height so the legs tuck up;
 # the landing frame drops the body until the lower ankle reaches the stance ground line.
@@ -48,6 +48,19 @@ if ($Set -eq 'detailed')
         @('land_recover', 35, 60, 25, 60, 15, 40, -10, 20, 10, $true),
         @('step_off', 30, 15, -25, 30, 60, 90, -40, -10, 3, $false),
         @('step_drop', 20, 30, -10, 30, 100, 130, 60, 100, 0, $false)
+    )
+}
+# Needle thrust as a short fencing lunge: the near fist draws back to the hip, then the near arm shoots
+# straight forward at shoulder height while the front shin stays upright and the back leg straightens.
+# The needle itself is drawn later by cleanup.ps1, so the hands stay empty here.
+if ($Set -eq 'thrust')
+{
+    $poses = @(
+        @('wind', 15, 20, -15, 10, -55, 40, -15, 25, -6, $true),
+        @('thrust', 45, 45, -35, 0, 88, 90, -55, -80, 14, $true),
+        @('thrust_hold', 48, 48, -38, 0, 90, 92, -60, -85, 17, $true),
+        @('recover_a', 30, 30, -25, 5, 55, 75, -35, -40, 8, $true),
+        @('recover_b', 15, 15, -10, 10, 15, 35, -10, 10, 2, $true)
     )
 }
 

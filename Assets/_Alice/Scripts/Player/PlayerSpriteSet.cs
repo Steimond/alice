@@ -49,6 +49,11 @@ namespace Alice.Player
         [Tooltip("Shorter air time lands without the crouch.")]
         [SerializeField, Min(0f)] private float _landMinAirTime = 0.2f;
 
+        [Header("Needle thrust, spread over each attack phase")]
+        [SerializeField] private Sprite[] _thrustWindup = new Sprite[0];
+        [SerializeField] private Sprite[] _thrustActive = new Sprite[0];
+        [SerializeField] private Sprite[] _thrustRecovery = new Sprite[0];
+
         public Sprite Idle => _idle;
         public Sprite[] Run => _run;
         public float RunFrameDistance => _runFrameDistance;
@@ -68,6 +73,11 @@ namespace Alice.Player
         public float StepOffFrameTime => _stepOffFrameTime;
         public float StepOffDelay => _stepOffDelay;
         public float LandMinAirTime => _landMinAirTime;
+        public Sprite[] ThrustWindup => _thrustWindup;
+        public Sprite[] ThrustActive => _thrustActive;
+        public Sprite[] ThrustRecovery => _thrustRecovery;
+
+        public bool HasThrust => _thrustActive != null && _thrustActive.Length > 0;
 
         public bool HasJump => _jumpRise != null && _jumpRise.Length > 0
             && _jumpApex != null && _jumpApex.Length > 0
@@ -88,6 +98,13 @@ namespace Alice.Player
             _fallLoop = fallLoop;
             _landing = landing;
             _stepOff = stepOff;
+        }
+
+        public void AssignThrust(Sprite[] windup, Sprite[] active, Sprite[] recovery)
+        {
+            _thrustWindup = windup;
+            _thrustActive = active;
+            _thrustRecovery = recovery;
         }
     }
 }

@@ -1,10 +1,12 @@
+using Alice.Combat;
 using UnityEngine;
 
 namespace Alice.Player
 {
     /// <summary>
     /// Draws Alice from <see cref="PlayerSpriteSet"/>: standing, running, the jump by vertical speed, the
-    /// step off a ledge, the fall loop and the landing crouch. Sliding has no frames yet, so the grey-box
+    /// step off a ledge, the fall loop, the landing crouch and the needle thrust by attack phase, which
+    /// overrides the rest while it lasts. Sliding has no frames yet, so the grey-box
     /// body takes over for it.
     /// </summary>
     public sealed class PlayerSpriteView : MonoBehaviour
@@ -22,6 +24,7 @@ namespace Alice.Player
         private float _fallTime;
         private bool _landing;
         private float _landElapsed;
+        private PlayerAttack _attack;
 
         public void Bind(PlayerMotor motor, PlayerSpriteSet sprites, SpriteRenderer renderer,
             SpriteRenderer placeholderBody, SpriteRenderer placeholderMarker)
@@ -31,6 +34,13 @@ namespace Alice.Player
             _renderer = renderer;
             _placeholderBody = placeholderBody;
             _placeholderMarker = placeholderMarker;
+        }
+
+        public bool HasThrustFrames => _sprites != null && _sprites.HasThrust;
+
+        private void Awake()
+        {
+            _attack = GetComponent<PlayerAttack>();
         }
 
         private void LateUpdate()
@@ -58,8 +68,40 @@ namespace Alice.Player
                 return;
             }
 
+            Sprite thrust = SelectThrustSprite();
+            if (thrust != null)
+            {
+                _renderer.flipX = _attack.Facing < 0;
+                _renderer.sprite = thrust;
+                return;
+            }
+
             _renderer.flipX = _motor.Facing < 0;
             _renderer.sprite = SelectSprite();
+        }
+
+        private Sprite SelectThrustSprite()
+        {
+            if (_attack == null || !_attack.IsAttacking || !_sprites.HasThrust)
+            {
+                return null;
+            }
+
+            Sprite[] frames = _attack.Phase switch
+            {
+                AttackPhase.Windup => _sprites.ThrustWindup,
+                AttackPhase.Active => _sprites.ThrustActive,
+                AttackPhase.Recovery => _sprites.ThrustRecovery,
+                _ => null
+            };
+
+            if (frames == null || frames.Length == 0)
+            {
+                return null;
+            }
+
+            int frame = Mathf.FloorToInt(_attack.PhaseProgress * frames.Length);
+            return frames[Mathf.Min(frame, frames.Length - 1)];
         }
 
         private Sprite SelectSprite()

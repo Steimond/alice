@@ -118,6 +118,15 @@ namespace Alice.Editor
                     changed = true;
                 }
 
+                // The grey-box needle only stood in for missing thrust frames.
+                Transform marker = root.transform.Find(ThrustMarkerName);
+                if (marker != null && root.TryGetComponent(out PlayerSpriteView view) && view.HasThrustFrames)
+                {
+                    root.GetComponent<PlayerAttack>().Bind(settings, null);
+                    UnityEngine.Object.DestroyImmediate(marker.gameObject);
+                    changed = true;
+                }
+
                 Transform sprite = root.transform.Find(SpriteChildName);
                 if (!root.TryGetComponent(out DamageFlash _) && sprite != null)
                 {

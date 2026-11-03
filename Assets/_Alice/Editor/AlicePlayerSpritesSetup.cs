@@ -21,6 +21,9 @@ namespace Alice.Editor
         private const string FallPrefix = "alice_trial_fall_";
         private const string LandPrefix = "alice_trial_land_";
         private const string StepOffPrefix = "alice_trial_stepoff_";
+        private const string ThrustPrefix = "alice_trial_thrust_";
+        // Thrust frames from the generation: wind-up, two of the extended arm, two of the return.
+        private const int ThrustFrameCount = 5;
         // Jump frames from the generation: takeoff, three rise frames, apex tuck, apex opening, fall start.
         private const int JumpFrameCount = 7;
         private const string SpriteSetPath = Root + "/Data/Player/AliceSprites.asset";
@@ -98,6 +101,16 @@ namespace Alice.Editor
                 {
                     sprites.AssignJump(jump.Take(4).ToArray(), new[] { jump[4], jump[5] }, jump[6], fall,
                         LoadFrames(LandPrefix), LoadFrames(StepOffPrefix));
+                    EditorUtility.SetDirty(sprites);
+                }
+            }
+
+            if (!sprites.HasThrust)
+            {
+                Sprite[] thrust = LoadFrames(ThrustPrefix);
+                if (thrust.Length == ThrustFrameCount)
+                {
+                    sprites.AssignThrust(new[] { thrust[0] }, new[] { thrust[1], thrust[2] }, new[] { thrust[3], thrust[4] });
                     EditorUtility.SetDirty(sprites);
                 }
             }

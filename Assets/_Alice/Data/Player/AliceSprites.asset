@@ -57,3 +57,11 @@ MonoBehaviour:
   _stepOffFrameTime: 0.08
   _stepOffDelay: 0.06
   _landMinAirTime: 0.2
+  _thrustWindup:
+  - {fileID: 21300000, guid: 2c623dd7deacbef4bb31cca322fff4ad, type: 3}
+  _thrustActive:
+  - {fileID: 21300000, guid: 12bdac0953ebb8c4888b062a2bc3165d, type: 3}
+  - {fileID: 21300000, guid: 8f601cbc86212d3478ec8bf53a23060d, type: 3}
+  _thrustRecovery:
+  - {fileID: 21300000, guid: 706a4d80bc611094bb9423b07aa4ff8a, type: 3}
+  - {fileID: 21300000, guid: 212259becca080049b68cc3a69f2a93b, type: 3}
