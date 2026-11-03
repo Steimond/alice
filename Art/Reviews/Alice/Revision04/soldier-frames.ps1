@@ -5,7 +5,9 @@
 # drawing by the two pixels between the feet and the canvas bottom.
 param(
     [string]$Review = $PSScriptRoot,
-    [string]$OutDir = (Join-Path $PSScriptRoot '..\..\..\..\Assets\_Alice\Art\Characters\Enemies\CardSoldier')
+    [string]$OutDir = (Join-Path $PSScriptRoot '..\..\..\..\Assets\_Alice\Art\Characters\Enemies\CardSoldier'),
+    # Death variant folder; the game frames keep their names, so swapping keeps the sprite GUIDs.
+    [string]$Death = 'enemy-death3-blood'
 )
 Add-Type -AssemblyName System.Drawing
 $ErrorActionPreference = 'Stop'
@@ -39,5 +41,5 @@ for ($i = 1; $i -le 8; $i++) {
     $n = '{0:D2}' -f ($i - 1)
     Copy-Frame (Join-Path $Review "enemy-walk\$i.png") "card_soldier_walk_$n"
     Copy-Frame (Join-Path $Review "enemy-attack\$i.png") "card_soldier_attack_$n"
-    Copy-Frame (Join-Path $Review "enemy-death6-blood\$i.png") "card_soldier_death_$n"
+    Copy-Frame (Join-Path $Review "$Death\$i.png") "card_soldier_death_$n"
 }
