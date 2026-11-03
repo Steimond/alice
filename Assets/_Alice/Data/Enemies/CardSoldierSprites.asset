@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbbe79b0b8c7c1048a81930f592898cd, type: 3}
+  m_Name: CardSoldierSprites
+  m_EditorClassIdentifier: Alice::Alice.Combat.EnemySpriteSet
+  _idle: {fileID: 21300000, guid: efffcc9eb01724548bdf519207458074, type: 3}
+  _walk:
+  - {fileID: 21300000, guid: 05ce6e0ed5010a044851a5d02b04a24c, type: 3}
+  - {fileID: 21300000, guid: 0678b0ff8447106478d806570ca84fde, type: 3}
+  - {fileID: 21300000, guid: 0bcf4970205dc9a4183f14c31cda7c51, type: 3}
+  - {fileID: 21300000, guid: 664a7b2a330eb944fa68d8c6e77b41f3, type: 3}
+  - {fileID: 21300000, guid: 96fb3ba081f9daf4abac6fefa38c5628, type: 3}
+  - {fileID: 21300000, guid: 872aa2582ae8d58459f5fed03eb68347, type: 3}
+  - {fileID: 21300000, guid: 42fa9a84082554346a9c9e0103077e1a, type: 3}
+  - {fileID: 21300000, guid: a23bea6925509b644b7a79b7ffb338ca, type: 3}
+  _walkFrameDistance: 0.2
+  _attackWindup:
+  - {fileID: 21300000, guid: 8c78b6d3900c37c46b686a277be9e80f, type: 3}
+  - {fileID: 21300000, guid: 8524f3c6a38b43b41b70ed06c730b3a8, type: 3}
+  _attackActive:
+  - {fileID: 21300000, guid: b55bd2ad0875fca48835c42e1cf14194, type: 3}
+  - {fileID: 21300000, guid: 8a45bc173b6bc8e4893cd0888ee56890, type: 3}
+  - {fileID: 21300000, guid: f3178c06777114e4c84a9d1731939ed6, type: 3}
+  - {fileID: 21300000, guid: 1651c714aaad26f45844202f1501b1fe, type: 3}
+  _attackRecovery:
+  - {fileID: 21300000, guid: 5110f58323e8f4e44af38128a184e164, type: 3}
+  - {fileID: 21300000, guid: 1f8102b0f837cc04587dfd528a62909c, type: 3}
+  _death:
+  - {fileID: 21300000, guid: d49f84e7aff817f4c91c6318749b7f88, type: 3}
+  - {fileID: 21300000, guid: f5ed0af2f6dae4c46bcf137cd56f8888, type: 3}
+  - {fileID: 21300000, guid: 190efcd6e386d7949aeb5801237c0502, type: 3}
+  - {fileID: 21300000, guid: 402993f498993ad48b8cb95f3a8dd1f2, type: 3}
+  - {fileID: 21300000, guid: a68abca753166be4a8777f962bffe450, type: 3}
+  - {fileID: 21300000, guid: b80d5423a2c8d5b4e8c460a94f038e5f, type: 3}
+  - {fileID: 21300000, guid: f12cc181e5183524a8a04addc2e01c16, type: 3}
+  - {fileID: 21300000, guid: 09f93427a99db5a4283702c7948c2b44, type: 3}
+  _deathFrameTime: 0.09
+  _groundOffsetPixels: 2

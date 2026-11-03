@@ -15,6 +15,7 @@ namespace Alice.Editor
     /// <summary>
     /// Builds the M1 grey traversal room: Alice prefab, movement settings, pixel-perfect camera
     /// and a measured obstacle course. One tile is one unit; the grid lines on blocks are a ruler.
+    /// M2 adds Alice's combat components and a card soldier after the fan gap.
     /// </summary>
     public static class AlicePrototypeBuilder
     {
@@ -86,6 +87,7 @@ namespace Alice.Editor
             PlayerMovementSettings settings = EnsureSettings();
             GameObject prefab = EnsureAlicePrefab(tile, settings);
             AlicePlayerSpritesSetup.Ensure();
+            AliceCombatSetup.EnsureAssets();
 
             Scene scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
             GameObject world = FindRoot(scene, "World");
@@ -120,6 +122,7 @@ namespace Alice.Editor
             }
 
             ConfigureCamera(camera, player.transform);
+            AliceCombatSetup.EnsureSoldierInScene(scene, gameplay.transform);
 
             EditorSceneManager.MarkSceneDirty(scene);
             if (!EditorSceneManager.SaveScene(scene))

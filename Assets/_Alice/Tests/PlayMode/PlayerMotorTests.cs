@@ -207,6 +207,7 @@ namespace Alice.Tests
             public bool JumpHeld { get; set; }
             public float JumpPressedAt { get; set; } = float.NegativeInfinity;
             public float EvadePressedAt { get; set; } = float.NegativeInfinity;
+            public float AttackPressedAt { get; set; } = float.NegativeInfinity;
 
             public void PressJump()
             {

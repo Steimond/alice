@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bed913486b5d41f4f8b13aa9b776ab04, type: 3}
+  m_Name: CardSoldier
+  m_EditorClassIdentifier: Alice::Alice.Combat.MeleeEnemySettings
+  _archetypeId: EN09
+  _bodySize: {x: 1.2, y: 3.2}
+  _maxHealth: 3
+  _hitInvulnerability: 0.12
+  _staggerTime: 0.3
+  _walkSpeed: 1.6
+  _sightRange: 9
+  _sightHeight: 3
+  _leashDistance: 7
+  _attackStartRange: 2.6
+  _windup: 0.5
+  _active: 0.18
+  _recovery: 0.7
+  _cooldown: 0.5
+  _lungeDistance: 0.75
+  _reachStart: 0.3
+  _reach: 2.4
+  _hitHeight: 0.5
+  _hitCenterHeight: 2.25
+  _damage: 1

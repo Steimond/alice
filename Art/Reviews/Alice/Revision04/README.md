@@ -49,6 +49,28 @@
 
 Листы собраны скриптом System.Drawing без изменения пикселей (увеличение ближайшим соседом).
 
+### Сочная кровь в смерти солдата
+
+Первый вариант смерти даёт одноцветную буро-красную кровь (`8C3027` и пара соседних тонов), заметно беднее казни. Ещё два прогона (`animate_image_pixminimax`, 8 кадров, по 1 генерации, seed 1 и 2), описание точно: «is slashed deep across the body; thick glossy blood bursts out in heavy spurts, many shades from black-red shadows to dark crimson to bright red highlights, droplets and clots fly and splatter; blood runs down the card, it drops the spear, staggers and collapses, lying still as a shaded dark pool of blood spreads under it».
+
+- `enemy-death2/` — job `4dc12a44-68fc-4bf7-b626-c0d43dd11f61`, `enemy-death3/` — job `6dacc107-5d75-41f7-9156-03c2520eb8e3`. Кровь стала объёмной, с бликами, каплями и сгустками, но чистого неонового красного (`FE0402`, `EF0200`).
+- `blood-palette.ps1` переводит такие пиксели (R ≥ 0x60, G и B ≤ 0x22) по яркости в шесть тонов крови из `gore-execution-flash.png` (`A01511` … `570201`), а белые блики внутри брызг — в `CC6351`. Собственные красные солдата (капюшон, черва, конечности) содержат заметные G и B и не меняются.
+- Результат: `enemy-death2-blood/`, `enemy-death3-blood/` и полосы `-strip-x4.png`. Лучший — `death3`: дуга брызг, разворот при падении, лужа под телом.
+
+Владелец оценил тона `death3`, но крови оказалось слишком много — по количеству лучше первый вариант. Поэтому ещё три прогона (seed 3, 4, 5, по 1 генерации) с умеренным описанием, точно: «is slashed across the body, a short spurt of glossy blood sprays from a deep cut through the card, shaded from black-red to crimson with small bright highlights, a few drops fall; it drops the spear, staggers back and collapses onto the ground, lying still in a small pool of blood». Затем `blood-palette.ps1`.
+
+- `enemy-death4/` — job `6e0c729b-bb8b-4109-b4e0-a976420a569e`: падает вперёд, копьё остаётся в руке.
+- `enemy-death5/` — job `54f3b3c4-e5b0-42bf-8208-d53db74b5b1f`: короткий выплеск, падение назад.
+- `enemy-death6/` — job `801c730e-2c51-41c6-8a57-79afa4c5001b`: густой выплеск из разреза, капли, копьё падает отдельно, тело ложится назад в небольшую лужу. Ближе всего к первому варианту по количеству. **Выбран владельцем 3 ноября 2026** как смерть карточного солдата: кадры `enemy-death6-blood/1..8.png` (0 — входной кадр стойки).
+
+Вывод: насыщенность и тона крови в анимациях держит скрипт, поэтому запрос описывает объём и брызги, а цвет приводится к единой палитре крови.
+
+### Солдат в прототипе M2
+
+Шаг солдата: `animate_image_pixminimax`, 8 кадров, 1 генерация, job `61b33f74-ef4e-4d3b-b1f7-7499a6d0b7bd`, последний кадр закреплён на стойке, чтобы цикл замыкался. Описание точно: «marching forward in place with stiff steps, the spear held upright beside the body, a seamless walk cycle». Кадры — `enemy-walk/`, полоса — `enemy-walk-strip-x4.png`.
+
+`soldier-frames.ps1` переносит в `Assets/_Alice/Art/Characters/Enemies/CardSoldier/` стойку (`enemy-attack/0`), шаг (`enemy-walk/1..8`), выпад (`enemy-attack/1..8`) и смерть (`enemy-death6-blood/1..8`). В исходниках 64×64 тело стоит не по центру (около x 24), ноги на строке 60, а копьё и труп доходят до правого края. Скрипт сдвигает всё на (+16, +1) на холст 80×64: тело оказывается на опорной точке спрайта, а под ногами остаются две строки для лужи крови, на которые набор кадров опускает рисунок. Полупрозрачные пиксели отбрасываются. Подключение в игре описано в `Docs/TechnicalSetup.md`, раздел «Боевой прототип M2».
+
 ## Итог проверки
 
 1. Враги, их атаки и кровавые смерти — сильная сторона: 5 генераций на облик и по 1 на каждую анимацию из 8 кадров. Смерть с кровью дешевле и проще получается текстовой анимацией, чем по скелету.

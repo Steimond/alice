@@ -10,7 +10,7 @@ namespace Alice.Player
     /// so distances do not depend on the rendering frame rate.
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
-    public sealed class PlayerMotor : MonoBehaviour
+    public sealed class PlayerMotor : MonoBehaviour, IHitImmunity
     {
         private const float GroundProbeDistance = 0.05f;
         private const float GroundProbeInset = 0.05f;
@@ -41,6 +41,8 @@ namespace Alice.Player
         private float _slideStartTime;
         private float _slideReadyAt;
         private float _frozenUntil;
+        private float _lockedUntil;
+        private float _knockbackUntil;
         private Collider2D _ignoredPlatform;
         private float _ignoreUntil;
 
@@ -68,6 +70,18 @@ namespace Alice.Player
 
                 float elapsed = Time.time - _slideStartTime;
                 return elapsed >= _settings.SlideInvulnerabilityStart && elapsed <= _settings.SlideInvulnerabilityEnd;
+            }
+        }
+
+        bool IHitImmunity.IsImmune => IsInvulnerable;
+
+        /// <summary>True while an action, a knockback or a freeze owns Alice and input does not move her.</summary>
+        public bool IsLocked
+        {
+            get
+            {
+                float now = Time.time;
+                return now < _lockedUntil || now < _knockbackUntil || now < _frozenUntil;
             }
         }
 
@@ -101,6 +115,39 @@ namespace Alice.Player
             ApplyBodySize(TraversalMetrics.StandingSize);
         }
 
+        private void OnEnable()
+        {
+            PlayerPresence.Register(transform);
+        }
+
+        private void OnDisable()
+        {
+            PlayerPresence.Unregister(transform);
+        }
+
+        /// <summary>
+        /// Ignores movement input for an action such as an attack: on the ground Alice stops, in the air
+        /// she keeps falling. Jump and slide presses stay buffered.
+        /// </summary>
+        public void Lock(float duration)
+        {
+            _lockedUntil = Mathf.Max(_lockedUntil, Time.time + duration);
+        }
+
+        /// <summary>Throws Alice with a fixed velocity; gravity still applies, input does not.</summary>
+        public void Knockback(Vector2 velocity, float duration)
+        {
+            if (IsSliding && CanStand())
+            {
+                EndSlide();
+            }
+
+            _knockbackUntil = Time.time + duration;
+            _lockedUntil = 0f;
+            _jumpRising = false;
+            _body.linearVelocity = velocity;
+        }
+
         /// <summary>Holds Alice in place, e.g. after a hazard return.</summary>
         public void Freeze(float duration)
         {
@@ -119,6 +166,8 @@ namespace Alice.Player
             transform.position = position;
             _body.linearVelocity = Vector2.zero;
             _jumpRising = false;
+            _knockbackUntil = 0f;
+            _lockedUntil = 0f;
         }
 
         private void FixedUpdate()
@@ -142,14 +191,26 @@ namespace Alice.Player
                 return;
             }
 
-            Vector2 move = _commands != null ? _commands.Move : Vector2.zero;
-            velocity.x = IsSliding ? UpdateSlide(move, now) : Run(velocity.x, move, deltaTime, now);
-            velocity.y = HandleJump(velocity.y, move, now);
+            if (now < _knockbackUntil)
+            {
+                velocity.y = ApplyGravity(velocity.y, deltaTime);
+                _body.linearVelocity = velocity;
+                return;
+            }
+
+            bool locked = now < _lockedUntil;
+            Vector2 move = _commands != null && !locked ? _commands.Move : Vector2.zero;
+            velocity.x = IsSliding ? UpdateSlide(move, now) : Run(velocity.x, move, deltaTime, now, !locked);
+            if (!locked)
+            {
+                velocity.y = HandleJump(velocity.y, move, now);
+            }
+
             velocity.y = ApplyGravity(velocity.y, deltaTime);
             _body.linearVelocity = velocity;
         }
 
-        private float Run(float velocityX, Vector2 move, float deltaTime, float now)
+        private float Run(float velocityX, Vector2 move, float deltaTime, float now, bool canEvade)
         {
             float target = 0f;
             if (Mathf.Abs(move.x) > RunInputThreshold)
@@ -163,7 +224,7 @@ namespace Alice.Player
                 : _settings.GroundDeceleration;
             velocityX = Mathf.MoveTowards(velocityX, target, rate * deltaTime);
 
-            bool evadePressed = _commands != null && InputBuffer.IsFresh(
+            bool evadePressed = canEvade && _commands != null && InputBuffer.IsFresh(
                 _commands.EvadePressedAt, _consumedEvadeAt, now, _settings.EvadeBufferTime);
             if (evadePressed && IsGrounded && now >= _slideReadyAt)
             {

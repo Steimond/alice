@@ -13,5 +13,8 @@ namespace Alice.Player
 
         /// <summary>Time.time of the last Evade press, or negative infinity.</summary>
         float EvadePressedAt { get; }
+
+        /// <summary>Time.time of the last Attack press, or negative infinity.</summary>
+        float AttackPressedAt { get; }
     }
 }

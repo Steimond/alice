@@ -9,11 +9,13 @@ namespace Alice.Player
         private InputAction _move;
         private InputAction _jump;
         private InputAction _evade;
+        private InputAction _attack;
 
         public Vector2 Move { get; private set; }
         public bool JumpHeld { get; private set; }
         public float JumpPressedAt { get; private set; } = float.NegativeInfinity;
         public float EvadePressedAt { get; private set; } = float.NegativeInfinity;
+        public float AttackPressedAt { get; private set; } = float.NegativeInfinity;
 
         private void Awake()
         {
@@ -28,6 +30,7 @@ namespace Alice.Player
             _move = actions.FindAction("Gameplay/Move", true);
             _jump = actions.FindAction("Gameplay/Jump", true);
             _evade = actions.FindAction("Gameplay/Evade", true);
+            _attack = actions.FindAction("Gameplay/Attack", true);
         }
 
         private void OnEnable()
@@ -47,6 +50,11 @@ namespace Alice.Player
             if (_evade.WasPressedThisFrame())
             {
                 EvadePressedAt = Time.time;
+            }
+
+            if (_attack.WasPressedThisFrame())
+            {
+                AttackPressedAt = Time.time;
             }
         }
     }

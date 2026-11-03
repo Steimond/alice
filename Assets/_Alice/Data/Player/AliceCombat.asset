@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f73b8fd41325244e8d5224bf6ce46a0, type: 3}
+  m_Name: AliceCombat
+  m_EditorClassIdentifier: Alice::Alice.Player.PlayerCombatSettings
+  _maxHealth: 5
+  _hitInvulnerability: 0.9
+  _knockbackVelocity: {x: 6, y: 5}
+  _knockbackTime: 0.22
+  _defeatFreezeTime: 0.6
+  _thrustWindup: 0.07
+  _thrustActive: 0.1
+  _thrustRecovery: 0.2
+  _thrustReachStart: 0.2
+  _thrustReach: 2.75
+  _thrustHeight: 0.5
+  _thrustCenterHeight: 1.6
+  _thrustDamage: 1
+  _attackBufferTime: 0.12
