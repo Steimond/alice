@@ -25,17 +25,27 @@ MonoBehaviour:
   _sightRange: 9
   _sightHeight: 3
   _leashDistance: 7
-  _attackStartRange: 2.6
-  _windup: 0.5
+  _attackStartRange: 3.2
+  _windup: 0.7
   _active: 0.18
   _recovery: 0.7
   _cooldown: 0.5
-  _lungeDistance: 0.75
+  _lungeDistance: 0.5
   _reachStart: 0.3
-  _reach: 2.4
+  _reach: 3.3
   _hitHeight: 0.5
   _hitCenterHeight: 2.25
   _damage: 20
   _parryWindow: 0.12
+  _knockback:
+    _velocity: {x: 6, y: 5}
+    _duration: 0.22
+  _contactDamage: 10
+  _contactMargin: 0.1
+  _contactInterval: 0.5
+  _contactKnockback:
+    _velocity: {x: 6, y: 5}
+    _duration: 0.22
+  _hitStop: 0.08
   _decreeReward: 15
   _confidenceReward: 5

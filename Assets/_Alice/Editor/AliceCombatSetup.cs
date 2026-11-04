@@ -33,8 +33,11 @@ namespace Alice.Editor
         // Frames are copied from Art/Reviews/Alice/Revision04 by soldier-frames.ps1 onto an 80x64 canvas
         // whose feet stand two pixels above the bottom edge, leaving room for the blood pool.
         private const int SoldierGroundOffsetPixels = 2;
-        private const int SoldierWindupFrames = 2;
-        private const int SoldierActiveFrames = 4;
+        // The weighted thrust (4 Nov 2026): lower the spear, draw it back to the chest and hold the cocked
+        // pose, then the launch; the blow itself is the extended spear; then the spear comes back upright.
+        // Its frames are 144 px wide so the drawn-back shaft and the full thrust both fit.
+        private const int SoldierWindupFrames = 7;
+        private const int SoldierActiveFrames = 2;
         private const float SoldierStabFrameTime = 0.13f;
         private const float SoldierBeheadFrameTime = 0.09f;
         private const float SoldierExecutionFrameTime = 0.1f;
@@ -242,6 +245,7 @@ namespace Alice.Editor
             EnsureSoldierReactions(sprites);
             if (sprites.Idle != null)
             {
+                EnsureSoldierAttack(sprites);
                 return sprites;
             }
 
@@ -255,7 +259,7 @@ namespace Alice.Editor
                 return null;
             }
 
-            // Generated thrust: draw back, four frames of the extended spear, return to guard.
+            // Generated thrust: draw back and hold, the extended spear, return to guard.
             sprites.Assign(idle, walk,
                 attack.Take(SoldierWindupFrames).ToArray(),
                 attack.Skip(SoldierWindupFrames).Take(SoldierActiveFrames).ToArray(),
@@ -263,6 +267,28 @@ namespace Alice.Editor
                 death, SoldierGroundOffsetPixels);
             EditorUtility.SetDirty(sprites);
             return sprites;
+        }
+
+        /// <summary>Re-splits the thrust when the frames on disk changed in number (a redrawn attack).</summary>
+        private static void EnsureSoldierAttack(EnemySpriteSet sprites)
+        {
+            Sprite[] attack = LoadFrames("card_soldier_attack_");
+            int assigned = Count(sprites.AttackWindup) + Count(sprites.AttackActive) + Count(sprites.AttackRecovery);
+            bool sameSplit = Count(sprites.AttackWindup) == SoldierWindupFrames && Count(sprites.AttackActive) == SoldierActiveFrames;
+            if (attack.Length <= SoldierWindupFrames + SoldierActiveFrames || (assigned == attack.Length && sameSplit))
+            {
+                return;
+            }
+
+            sprites.AssignAttack(attack.Take(SoldierWindupFrames).ToArray(),
+                attack.Skip(SoldierWindupFrames).Take(SoldierActiveFrames).ToArray(),
+                attack.Skip(SoldierWindupFrames + SoldierActiveFrames).ToArray());
+            EditorUtility.SetDirty(sprites);
+        }
+
+        private static int Count(Sprite[] frames)
+        {
+            return frames == null ? 0 : frames.Length;
         }
 
         /// <summary>

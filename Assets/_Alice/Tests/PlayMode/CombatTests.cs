@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Alice.Combat;
+using Alice.Core;
 using Alice.Player;
 using NUnit.Framework;
 using UnityEngine;
@@ -401,6 +402,66 @@ namespace Alice.Tests
             yield return Steps(2);
 
             Assert.That(_motor.GetComponent<PlayerAttack>().Strike, Is.EqualTo(PlayerStrike.AirSlash));
+        }
+
+        [UnityTest]
+        public IEnumerator WalkingIntoSoldier_StopsAtHisBodyAndTheTouchHurts()
+        {
+            MeleeEnemy soldier = CreateSoldier(4f, -1);
+            float aliceHalf = _motor.GetComponent<BoxCollider2D>().bounds.extents.x;
+            float farthest = soldier.transform.position.x - _enemySettings.BodySize.x * 0.5f - aliceHalf;
+            HitKind firstHit = HitKind.Execution;
+            void Record(HitInfo hit)
+            {
+                if (firstHit == HitKind.Execution)
+                {
+                    firstHit = hit.Kind;
+                }
+            }
+
+            _aliceHealth.Damaged += Record;
+            _commands.Move = Vector2.right;
+            float maxX = float.NegativeInfinity;
+            float until = Time.time + 2f;
+            while (Time.time < until)
+            {
+                maxX = Mathf.Max(maxX, _motor.Position.x);
+                yield return new WaitForFixedUpdate();
+            }
+
+            _aliceHealth.Damaged -= Record;
+            _commands.Move = Vector2.zero;
+            Assert.That(maxX, Is.LessThanOrEqualTo(farthest + 0.05f), "A living soldier is a wall on foot.");
+            Assert.That(firstHit, Is.EqualTo(HitKind.Other), "Walking into him, the touch hurts before the spear lands.");
+        }
+
+        [UnityTest]
+        public IEnumerator Knockback_IsSetByTheBlow()
+        {
+            float start = _motor.Position.x;
+            _aliceHealth.ReceiveHit(new HitInfo(1, -1, null));
+            yield return Steps(30);
+            float byDefault = start - _motor.Position.x;
+
+            yield return new WaitForSeconds(1f);
+            start = _motor.Position.x;
+            _aliceHealth.ReceiveHit(new HitInfo(1, -1, null, knockback: new Knockback(new Vector2(14f, 2f), 0.3f)));
+            yield return Steps(30);
+            float heavy = start - _motor.Position.x;
+
+            Assert.That(byDefault, Is.GreaterThan(0.3f), "A hit without its own knockback still throws Alice.");
+            Assert.That(heavy, Is.GreaterThan(byDefault * 1.5f), "A heavier blow throws her farther.");
+        }
+
+        [UnityTest]
+        public IEnumerator Slide_PassesThroughSoldierUnhurt()
+        {
+            MeleeEnemy soldier = CreateSoldier(2f, -1);
+            _commands.EvadePressedAt = Time.time;
+            yield return Steps(Mathf.CeilToInt(TraversalMetrics.SlideDuration / Time.fixedDeltaTime) + 2);
+
+            Assert.That(_motor.Position.x, Is.GreaterThan(soldier.transform.position.x + 1f), "The slide goes under the body.");
+            Assert.That(_aliceHealth.Current, Is.EqualTo(_aliceHealth.Max), "Sliding through does not count as a touch.");
         }
 
         private MeleeEnemy CreateSoldier(float x, int facing)

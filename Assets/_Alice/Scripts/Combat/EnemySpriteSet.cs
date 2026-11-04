@@ -97,6 +97,13 @@ namespace Alice.Combat
             _groundOffsetPixels = groundOffsetPixels;
         }
 
+        public void AssignAttack(Sprite[] windup, Sprite[] active, Sprite[] recovery)
+        {
+            _attackWindup = windup;
+            _attackActive = active;
+            _attackRecovery = recovery;
+        }
+
         public void AssignReactions(Sprite[] hurt, Sprite[] opened, DeathVariant[] deathVariants)
         {
             _hurt = hurt;

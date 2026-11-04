@@ -26,14 +26,17 @@ MonoBehaviour:
   _attackWindup:
   - {fileID: 21300000, guid: 8c78b6d3900c37c46b686a277be9e80f, type: 3}
   - {fileID: 21300000, guid: 8524f3c6a38b43b41b70ed06c730b3a8, type: 3}
-  _attackActive:
   - {fileID: 21300000, guid: b55bd2ad0875fca48835c42e1cf14194, type: 3}
   - {fileID: 21300000, guid: 8a45bc173b6bc8e4893cd0888ee56890, type: 3}
   - {fileID: 21300000, guid: f3178c06777114e4c84a9d1731939ed6, type: 3}
   - {fileID: 21300000, guid: 1651c714aaad26f45844202f1501b1fe, type: 3}
-  _attackRecovery:
   - {fileID: 21300000, guid: 5110f58323e8f4e44af38128a184e164, type: 3}
+  _attackActive:
   - {fileID: 21300000, guid: 1f8102b0f837cc04587dfd528a62909c, type: 3}
+  - {fileID: 21300000, guid: 6c86d64004db4bd43a6ed9a0942e4e14, type: 3}
+  _attackRecovery:
+  - {fileID: 21300000, guid: f780d5daf1f22e744a7222e3eb2b8b49, type: 3}
+  - {fileID: 21300000, guid: 50c2c62b1a3d7c3499970df30be21487, type: 3}
   _hurt:
   - {fileID: 21300000, guid: 5585638ae8da1754486ce6e62a1e219b, type: 3}
   - {fileID: 21300000, guid: 7b1ab02eed25cbd49bf76d0890f2244a, type: 3}

@@ -10,7 +10,7 @@ namespace Alice.Player
     /// so distances do not depend on the rendering frame rate.
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
-    public sealed class PlayerMotor : MonoBehaviour, IHitImmunity
+    public sealed class PlayerMotor : MonoBehaviour, IHitImmunity, IBodyPasser
     {
         private const float GroundProbeDistance = 0.05f;
         private const float GroundProbeInset = 0.05f;
@@ -19,6 +19,7 @@ namespace Alice.Player
         private const float RunInputThreshold = 0.2f;
         private const float DropInputThreshold = -0.5f;
         private const float StandClearance = 0.05f;
+        private const float BodySkin = 0.02f;
 
         [SerializeField] private PlayerMovementSettings _settings;
 
@@ -31,6 +32,7 @@ namespace Alice.Player
         private AbilityInventory _abilities;
         private ContactFilter2D _groundFilter;
         private ContactFilter2D _solidFilter;
+        private ContactFilter2D _bodyFilter;
 
         private float _lastGroundedTime = float.NegativeInfinity;
         private float _consumedJumpAt = float.NegativeInfinity;
@@ -55,6 +57,7 @@ namespace Alice.Player
         public bool IsGrounded { get; private set; }
         public Collider2D GroundCollider { get; private set; }
         public bool IsSliding { get; private set; }
+        public bool PassesBodies => IsSliding;
         public int Facing { get; private set; } = 1;
         public Vector2 Position => _body.position;
         public Vector2 Velocity => _body.linearVelocity;
@@ -104,6 +107,8 @@ namespace Alice.Player
             _groundFilter = new ContactFilter2D { useTriggers = false };
             _groundFilter.SetNormalAngle(45f, 135f);
             _solidFilter = new ContactFilter2D { useTriggers = false };
+            // Enemy bodies are triggers; only the ones that say they block are walls for Alice on foot.
+            _bodyFilter = new ContactFilter2D { useTriggers = true };
 
             if (_settings == null)
             {
@@ -213,6 +218,11 @@ namespace Alice.Player
             bool locked = now < _lockedUntil;
             Vector2 move = _commands != null && !locked ? _commands.Move : Vector2.zero;
             velocity.x = IsSliding ? UpdateSlide(move, now) : Run(velocity.x, move, deltaTime, now, !locked);
+            if (!IsSliding)
+            {
+                velocity.x = KeepOutOfBodies(velocity.x, deltaTime);
+            }
+
             if (!locked)
             {
                 velocity.y = HandleJump(velocity.y, move, now);
@@ -220,6 +230,61 @@ namespace Alice.Player
 
             velocity.y = ApplyGravity(velocity.y, deltaTime);
             _body.linearVelocity = velocity;
+        }
+
+        /// <summary>
+        /// Living enemies are obstacles (GDD section 4): on foot or in the air Alice stops at their body and
+        /// can only get past by jumping over or sliding through. If she is already inside one (she landed on
+        /// it or a slide ended under it) she is pushed out to the nearer side instead of standing on it.
+        /// </summary>
+        private float KeepOutOfBodies(float velocityX, float deltaTime)
+        {
+            Vector2 center = (Vector2)_collider.bounds.center;
+            Vector2 size = _collider.bounds.size;
+            int inside = Physics2D.OverlapBox(center, size, 0f, _bodyFilter, _overlaps);
+            for (int index = 0; index < inside; index++)
+            {
+                Collider2D other = _overlaps[index];
+                if (other != _collider && Blocks(other))
+                {
+                    float away = Mathf.Sign(center.x - other.bounds.center.x);
+                    if (Mathf.Approximately(center.x, other.bounds.center.x))
+                    {
+                        away = -Facing;
+                    }
+
+                    float push = away * _settings.BodyPushOutSpeed;
+                    return Mathf.Abs(velocityX) > Mathf.Abs(push) && Mathf.Sign(velocityX) == away ? velocityX : push;
+                }
+            }
+
+            if (Mathf.Approximately(velocityX, 0f))
+            {
+                return velocityX;
+            }
+
+            float direction = Mathf.Sign(velocityX);
+            float travel = Mathf.Abs(velocityX) * deltaTime;
+            // A hair shorter than the body, so a floor or ceiling contact does not count as a hit from the side.
+            Vector2 castSize = new Vector2(size.x, size.y - BodySkin * 2f);
+            int count = Physics2D.BoxCast(center, castSize, 0f, new Vector2(direction, 0f), _bodyFilter, _hits,
+                travel + BodySkin);
+            float allowed = travel;
+            for (int index = 0; index < count; index++)
+            {
+                if (_hits[index].collider != _collider && Blocks(_hits[index].collider))
+                {
+                    allowed = Mathf.Min(allowed, Mathf.Max(0f, _hits[index].distance - BodySkin));
+                }
+            }
+
+            return direction * allowed / deltaTime;
+        }
+
+        private static bool Blocks(Collider2D other)
+        {
+            IBodyBlocker blocker = other.GetComponentInParent<IBodyBlocker>();
+            return blocker != null && blocker.BlocksBodies;
         }
 
         private float Run(float velocityX, Vector2 move, float deltaTime, float now, bool canEvade)

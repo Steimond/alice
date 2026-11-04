@@ -20,14 +20,22 @@ namespace Alice.Core
     /// <summary>One landed blow: how much it hurts, which way it pushes and what kind of strike it was.</summary>
     public readonly struct HitInfo
     {
-        public HitInfo(int damage, int directionX, GameObject source, HitKind kind = HitKind.Other, float parryWindow = 0f)
+        public HitInfo(int damage, int directionX, GameObject source, HitKind kind = HitKind.Other, float parryWindow = 0f,
+            Knockback knockback = default)
         {
             Damage = damage;
             DirectionX = directionX;
             Source = source;
             Kind = kind;
             ParryWindow = parryWindow;
+            Knockback = knockback;
         }
+
+        /// <summary>
+        /// How hard this blow throws the one it hits; set by the attacker, so a heavy enemy throws Alice
+        /// farther than a light one. Empty means the target's own default.
+        /// </summary>
+        public Knockback Knockback { get; }
 
         public int Damage { get; }
 

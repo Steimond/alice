@@ -8,12 +8,13 @@ namespace Alice.Combat
     /// Archetype for a foot soldier with a telegraphed melee lunge (first used by the card soldier, EN09
     /// without the shield). Stands guard, approaches Alice inside its leash, winds up, steps into the blow
     /// and stays open while recovering. Hits stagger it except during the blow itself, so trading is a
-    /// timing decision. The body is a kinematic trigger: Alice and her slide pass through it, weapons
-    /// still find it. A parry throws it open for Alice's counter; a blow that leaves it nearly beaten stuns
-    /// it once, and only a stunned enemy can be executed.
+    /// timing decision. The body is a kinematic trigger, so the slide and weapons pass it, but while alive
+    /// it is an obstacle Alice can only jump over or slide through, and touching it hurts. A parry throws
+    /// it open for Alice's counter; a blow that leaves it nearly beaten stuns it once, and only a stunned
+    /// enemy can be executed.
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D), typeof(Health))]
-    public sealed class MeleeEnemy : MonoBehaviour, IParryable, IExecutable
+    public sealed class MeleeEnemy : MonoBehaviour, IParryable, IExecutable, IBodyBlocker
     {
         public enum State
         {
@@ -49,6 +50,7 @@ namespace Alice.Combat
         private float _lungeMoved;
         private bool _wasStunned;
         private float _frozenUntil;
+        private float _nextContactAt;
 
         public MeleeEnemySettings Settings
         {
@@ -70,6 +72,8 @@ namespace Alice.Combat
         /// <summary>The blow that killed it; the view picks the matching death.</summary>
         public HitKind KillingBlow { get; private set; }
         public float WalkDistance { get; private set; }
+
+        public bool BlocksBodies => CurrentState != State.Dead;
 
         private void Awake()
         {
@@ -170,6 +174,44 @@ namespace Alice.Combat
 
                     break;
             }
+
+            TouchAlice();
+        }
+
+        /// <summary>
+        /// Body contact hurts while it fights. Alice has no grace period after a hit, so the touch is spaced
+        /// by its own interval, and her knockback carries her off the body.
+        /// </summary>
+        private void TouchAlice()
+        {
+            bool fighting = CurrentState == State.Guard || CurrentState == State.Chase || CurrentState == State.Attack;
+            Transform alice = PlayerPresence.Current;
+            if (!fighting || alice == null || _settings.ContactDamage <= 0)
+            {
+                return;
+            }
+
+            // Only Alice: two soldiers shoulder to shoulder must not wear each other down.
+            if (!alice.TryGetComponent(out Collider2D aliceBody) || !alice.TryGetComponent(out IDamageable target)
+                || (alice.TryGetComponent(out IBodyPasser passer) && passer.PassesBodies))
+            {
+                return;
+            }
+
+            float halfWidth = _settings.BodySize.x * 0.5f + _settings.ContactMargin;
+            Vector2 position = _body.position;
+            Bounds other = aliceBody.bounds;
+            bool touching = other.max.x >= position.x - halfWidth && other.min.x <= position.x + halfWidth
+                && other.max.y >= position.y && other.min.y <= position.y + _settings.BodySize.y;
+            if (touching && Time.time >= _nextContactAt)
+            {
+                int away = other.center.x >= position.x ? 1 : -1;
+                if (target.ReceiveHit(new HitInfo(_settings.ContactDamage, away, gameObject,
+                    knockback: _settings.ContactKnockback)))
+                {
+                    _nextContactAt = Time.time + _settings.ContactInterval;
+                }
+            }
         }
 
         private void UpdateGuard()
@@ -247,7 +289,8 @@ namespace Alice.Combat
             float length = _settings.Reach - _settings.ReachStart;
             Vector2 center = _body.position + new Vector2(Facing * (_settings.ReachStart + length * 0.5f),
                 _settings.HitCenterHeight);
-            HitInfo hit = new HitInfo(_settings.Damage, Facing, gameObject, HitKind.Thrust, _settings.ParryWindow);
+            HitInfo hit = new HitInfo(_settings.Damage, Facing, gameObject, HitKind.Thrust, _settings.ParryWindow,
+                _settings.Knockback);
             MeleeHitbox.Strike(center, new Vector2(length, _settings.HitHeight), hit, gameObject, _struck, _overlaps);
         }
 

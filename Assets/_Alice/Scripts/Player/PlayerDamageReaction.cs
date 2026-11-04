@@ -79,7 +79,9 @@ namespace Alice.Player
                 return;
             }
 
-            _health.Initialize(_settings.MaxHealth, _settings.HitInvulnerability);
+            // No grace period after a hit (owner, GDD 0.21): with a clarity scale every blow that lands
+            // counts. A swing hits once and the knockback carries her off; enemies space their body contact.
+            _health.Initialize(_settings.MaxHealth, 0f);
         }
 
         private void OnEnable()
@@ -136,8 +138,10 @@ namespace Alice.Player
             }
 
             HurtAt = Time.time;
-            Vector2 push = _settings.KnockbackVelocity;
-            _motor.Knockback(new Vector2(hit.DirectionX * push.x, push.y), _settings.KnockbackTime);
+            // The attacker decides how hard it throws; Alice's own numbers only cover hits that carry none.
+            Vector2 push = hit.Knockback.IsSet ? hit.Knockback.Velocity : _settings.KnockbackVelocity;
+            float time = hit.Knockback.IsSet ? hit.Knockback.Duration : _settings.KnockbackTime;
+            _motor.Knockback(new Vector2(hit.DirectionX * push.x, push.y), time);
         }
 
         private void OnDied(HitInfo hit)

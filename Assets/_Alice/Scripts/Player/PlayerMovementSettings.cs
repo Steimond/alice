@@ -26,6 +26,10 @@ namespace Alice.Player
         [SerializeField, Min(0f)] private float _slideInvulnerabilityEnd = 0.26f;
         [SerializeField, Min(0f)] private float _evadeBufferTime = 0.1f;
 
+        [Header("Enemy bodies")]
+        [Tooltip("How fast Alice is pushed out sideways when she ends up inside a living enemy (landing on it, a slide ending under it). Tiles per second.")]
+        [SerializeField, Min(0f)] private float _bodyPushOutSpeed = 6f;
+
         [Header("Safe return")]
         [SerializeField, Min(0f)] private float _hazardFreezeTime = 0.35f;
 
@@ -41,5 +45,6 @@ namespace Alice.Player
         public float SlideInvulnerabilityEnd => _slideInvulnerabilityEnd;
         public float EvadeBufferTime => _evadeBufferTime;
         public float HazardFreezeTime => _hazardFreezeTime;
+        public float BodyPushOutSpeed => _bodyPushOutSpeed;
     }
 }

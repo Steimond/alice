@@ -62,7 +62,7 @@ namespace Alice.Player
     {
         [Header("Clarity (Alice's health, GDD section 4)")]
         [SerializeField, Min(1)] private int _maxHealth = 100;
-        [SerializeField, Min(0f)] private float _hitInvulnerability = 0.9f;
+        [Tooltip("Only for hits that carry no knockback of their own; each enemy sets how far its blows throw Alice.")]
         [SerializeField] private Vector2 _knockbackVelocity = new Vector2(6f, 5f);
         [SerializeField, Min(0f)] private float _knockbackTime = 0.22f;
         [Tooltip("How long the hurt frames show after a hit that does not kill.")]
@@ -136,7 +136,6 @@ namespace Alice.Player
         [SerializeField] private ExecutionSpec[] _executions = { new ExecutionSpec("card_tear", 0.3f, 0.35f, 0.65f, 2.4f) };
 
         public int MaxHealth => _maxHealth;
-        public float HitInvulnerability => _hitInvulnerability;
         public Vector2 KnockbackVelocity => _knockbackVelocity;
         public float KnockbackTime => _knockbackTime;
         public float HurtShakePixels => _hurtShakePixels;

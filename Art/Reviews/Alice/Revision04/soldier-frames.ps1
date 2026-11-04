@@ -7,7 +7,9 @@ param(
     [string]$Review = $PSScriptRoot,
     [string]$OutDir = (Join-Path $PSScriptRoot '..\..\..\..\Assets\_Alice\Art\Characters\Enemies\CardSoldier'),
     # Death variant folder; the game frames keep their names, so swapping keeps the sprite GUIDs.
-    [string]$Death = 'enemy-death3-blood'
+    [string]$Death = 'enemy-death3-blood',
+    # Only rewrite the thrust frames.
+    [switch]$AttackOnly
 )
 Add-Type -AssemblyName System.Drawing
 $ErrorActionPreference = 'Stop'
@@ -17,15 +19,15 @@ $Height = 64
 $OffsetX = 16
 $OffsetY = 1
 
-function Copy-Frame([string]$Source, [string]$Name) {
+function Copy-Frame([string]$Source, [string]$Name, [int]$CanvasWidth = $Width, [int]$ShiftX = $OffsetX) {
     $src = [System.Drawing.Bitmap]::FromFile($Source)
-    $dst = [System.Drawing.Bitmap]::new($Width, $Height, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
+    $dst = [System.Drawing.Bitmap]::new($CanvasWidth, $Height, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
     for ($y = 0; $y -lt $src.Height; $y++) {
         for ($x = 0; $x -lt $src.Width; $x++) {
             $c = $src.GetPixel($x, $y)
-            $tx = $x + $OffsetX; $ty = $y + $OffsetY
+            $tx = $x + $ShiftX; $ty = $y + $OffsetY
             # Hard alpha: the import keeps pixel art crisp only without half-transparent edges.
-            if ($c.A -ge 128 -and $tx -lt $Width -and $ty -lt $Height) {
+            if ($c.A -ge 128 -and $tx -ge 0 -and $tx -lt $CanvasWidth -and $ty -lt $Height) {
                 $dst.SetPixel($tx, $ty, [System.Drawing.Color]::FromArgb(255, $c.R, $c.G, $c.B))
             }
         }
@@ -35,12 +37,21 @@ function Copy-Frame([string]$Source, [string]$Name) {
 }
 
 New-Item -ItemType Directory -Force $OutDir | Out-Null
+
+# The weighted thrust (4 Nov 2026, enemy-attack4): generated on a 128x64 canvas with the stance moved
+# 48 px right, so the drawn-back shaft and the full thrust both fit. In the game it sits on a 144x64 canvas
+# with the card centred like every other frame. The generator stepped the body 28 px back while cocking the
+# spear; the windup frames are pulled forward so the card leaves its collider by only about half a tile.
+$attackShift = @{ 1 = 0; 2 = 16; 3 = 20; 4 = 20; 5 = 20; 6 = 20; 7 = 10; 8 = 0; 9 = 0; 10 = 0; 11 = 0 }
+for ($i = 1; $i -le 11; $i++) {
+    Copy-Frame (Join-Path $Review ("enemy-attack4\{0:D2}.png" -f $i)) ('card_soldier_attack_{0:D2}' -f ($i - 1)) 144 $attackShift[$i]
+}
+if ($AttackOnly) { return }
 Copy-Frame (Join-Path $Review 'enemy-attack\0.png') 'card_soldier_idle_00'
 # Index 0 of a PixMiniMax result is the input stand; the walk's last frame was pinned to it, so 1..8 loop.
 for ($i = 1; $i -le 8; $i++) {
     $n = '{0:D2}' -f ($i - 1)
     Copy-Frame (Join-Path $Review "enemy-walk\$i.png") "card_soldier_walk_$n"
-    Copy-Frame (Join-Path $Review "enemy-attack\$i.png") "card_soldier_attack_$n"
     Copy-Frame (Join-Path $Review "$Death\$i.png") "card_soldier_death_$n"
 }
 
