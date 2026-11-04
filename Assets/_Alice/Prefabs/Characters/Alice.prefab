@@ -21,6 +21,11 @@ GameObject:
   - component: {fileID: 8126227806401076535}
   - component: {fileID: 8573202765493706899}
   - component: {fileID: 5902130713520878131}
+  - component: {fileID: 7862744058747280512}
+  - component: {fileID: 4990098000559937997}
+  - component: {fileID: 204809514914667600}
+  - component: {fileID: 3884842841104110453}
+  - component: {fileID: 1142773703752504919}
   m_Layer: 0
   m_Name: Alice
   m_TagString: Untagged
@@ -228,7 +233,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Alice::Alice.Player.PlayerAttack
   _settings: {fileID: 11400000, guid: 78b679617ed005b479dd5e1b00ddc1fd, type: 2}
-  _thrustMarker: {fileID: 0}
 --- !u!114 &8573202765493706899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,6 +264,70 @@ MonoBehaviour:
   _flashTime: 0.08
   _blinkWhileRecovering: 1
   _blinkPeriod: 0.1
+--- !u!114 &7862744058747280512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3149202531935547728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 064ecf2dcbc00d543bb000e909131b46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Alice::Alice.Player.PlayerParry
+  _settings: {fileID: 11400000, guid: 78b679617ed005b479dd5e1b00ddc1fd, type: 2}
+--- !u!114 &4990098000559937997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3149202531935547728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 449457eec80f01440aefdbcfdb2cd8dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Alice::Alice.UI.ScreenFade
+--- !u!114 &204809514914667600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3149202531935547728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0a9b25787606444c83b1aa17a637b14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Alice::Alice.Player.PlayerSalts
+  _settings: {fileID: 11400000, guid: 78b679617ed005b479dd5e1b00ddc1fd, type: 2}
+--- !u!114 &3884842841104110453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3149202531935547728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 769b8cd7b682a8240b459f7978c2accd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Alice::Alice.Player.PlayerSpoils
+  _settings: {fileID: 11400000, guid: 78b679617ed005b479dd5e1b00ddc1fd, type: 2}
+--- !u!114 &1142773703752504919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3149202531935547728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08653f5a9d8e34143b42fa847618e9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Alice::Alice.UI.Hud
+  _skin: {fileID: 11400000, guid: d8b293231129bff4aa1baa083857db40, type: 2}
 --- !u!1 &4379791829432753759
 GameObject:
   m_ObjectHideFlags: 0

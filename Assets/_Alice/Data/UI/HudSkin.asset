@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 748f467d3d8130e48a9fc3b5a9b1fe5b, type: 3}
+  m_Name: HudSkin
+  m_EditorClassIdentifier: Alice::Alice.UI.HudSkin
+  _saltFull: {fileID: 21300000, guid: ff441e346cf6bc64a9e5f6c90ce4a848, type: 3}
+  _saltEmpty: {fileID: 21300000, guid: d5c6cefd8b3cc254a9be1110336612be, type: 3}
+  _decree: {fileID: 21300000, guid: e3e1094d31676ed4cb02ea89982e4829, type: 3}
+  _clarityPixelsPerPoint: 1
+  _clarityHeight: 6
+  _clarityFill: {r: 0.82, g: 0.88, b: 0.93, a: 1}
+  _clarityLost: {r: 0.75, g: 0.16, b: 0.16, a: 1}
+  _confidencePixelsPerPoint: 0.8
+  _confidenceHeight: 4
+  _confidenceFill: {r: 0.88, g: 0.69, b: 0.29, a: 1}
+  _frame: {r: 0.06, g: 0.05, b: 0.07, a: 1}
+  _empty: {r: 0.18, g: 0.16, b: 0.2, a: 1}
+  _digits: {r: 0.92, g: 0.88, b: 0.8, a: 1}
+  _margin: 8
+  _lostDelay: 0.35
+  _lostShrinkSpeed: 60

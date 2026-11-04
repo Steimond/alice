@@ -12,6 +12,7 @@ namespace Alice.Combat
     public sealed class Health : MonoBehaviour, IDamageable
     {
         private readonly List<IHitImmunity> _immunities = new List<IHitImmunity>();
+        private readonly List<IHitInterceptor> _interceptors = new List<IHitInterceptor>();
 
         private HealthPool _pool;
         private float _hitInvulnerability;
@@ -30,6 +31,7 @@ namespace Alice.Combat
         private void Awake()
         {
             GetComponents(_immunities);
+            GetComponents(_interceptors);
         }
 
         public void Initialize(int max, float hitInvulnerability)
@@ -37,6 +39,11 @@ namespace Alice.Combat
             _pool = new HealthPool(max);
             _hitInvulnerability = hitInvulnerability;
             _invulnerableUntil = float.NegativeInfinity;
+        }
+
+        public int Restore(int amount)
+        {
+            return _pool?.Restore(amount) ?? 0;
         }
 
         public void Refill()
@@ -47,7 +54,7 @@ namespace Alice.Combat
 
         public bool ReceiveHit(HitInfo hit)
         {
-            if (_pool == null || _pool.IsDead || IsRecovering || IsImmune())
+            if (_pool == null || _pool.IsDead || IsRecovering || IsImmune() || IsIntercepted(hit))
             {
                 return false;
             }
@@ -65,6 +72,31 @@ namespace Alice.Combat
             }
 
             return true;
+        }
+
+        /// <summary>Ends the body at once, past protection and parries, e.g. for an execution.</summary>
+        public void Kill(HitInfo hit)
+        {
+            if (_pool == null || _pool.IsDead)
+            {
+                return;
+            }
+
+            _pool.Damage(_pool.Current);
+            Died?.Invoke(hit);
+        }
+
+        private bool IsIntercepted(HitInfo hit)
+        {
+            foreach (IHitInterceptor interceptor in _interceptors)
+            {
+                if (interceptor.TryIntercept(hit))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private bool IsImmune()

@@ -45,14 +45,20 @@ namespace Alice.Combat
                 case MeleeEnemy.State.Attack:
                     return SelectAttackSprite();
                 case MeleeEnemy.State.Dead:
-                    Sprite[] death = _sprites.Death;
+                    Sprite[] death = _sprites.DeathFor(_enemy.KillingBlow, out float frameTime);
                     if (death == null || death.Length == 0)
                     {
                         return null;
                     }
 
-                    int frame = Mathf.FloorToInt(_enemy.StateTime / _sprites.DeathFrameTime);
+                    int frame = Mathf.FloorToInt(_enemy.StateTime / frameTime);
                     return death[Mathf.Min(frame, death.Length - 1)];
+                case MeleeEnemy.State.Stagger:
+                    return Spread(_sprites.Hurt, _enemy.StateTime / _enemy.Settings.StaggerTime);
+                case MeleeEnemy.State.Opened:
+                    return Spread(_sprites.Opened, _enemy.StateTime / _enemy.Settings.OpenedTime);
+                case MeleeEnemy.State.Stunned:
+                    return Spread(_sprites.Opened, _enemy.StateTime / _enemy.Settings.StunnedTime);
                 default:
                     Sprite[] walk = _sprites.Walk;
                     if (_enemy.IsWalking && walk != null && walk.Length > 0)
@@ -62,6 +68,18 @@ namespace Alice.Combat
 
                     return _sprites.Idle;
             }
+        }
+
+        /// <summary>Frames spread over a reaction; the idle pose when the type has none.</summary>
+        private Sprite Spread(Sprite[] frames, float progress)
+        {
+            if (frames == null || frames.Length == 0)
+            {
+                return _sprites.Idle;
+            }
+
+            int frame = Mathf.FloorToInt(Mathf.Clamp01(progress) * frames.Length);
+            return frames[Mathf.Min(frame, frames.Length - 1)];
         }
 
         private Sprite SelectAttackSprite()

@@ -9,10 +9,11 @@ namespace Alice.Combat
     /// without the shield). Stands guard, approaches Alice inside its leash, winds up, steps into the blow
     /// and stays open while recovering. Hits stagger it except during the blow itself, so trading is a
     /// timing decision. The body is a kinematic trigger: Alice and her slide pass through it, weapons
-    /// still find it.
+    /// still find it. A parry throws it open for Alice's counter; a blow that leaves it nearly beaten stuns
+    /// it once, and only a stunned enemy can be executed.
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D), typeof(Health))]
-    public sealed class MeleeEnemy : MonoBehaviour
+    public sealed class MeleeEnemy : MonoBehaviour, IParryable, IExecutable
     {
         public enum State
         {
@@ -20,6 +21,8 @@ namespace Alice.Combat
             Chase,
             Attack,
             Stagger,
+            Opened,
+            Stunned,
             Dead
         }
 
@@ -44,6 +47,7 @@ namespace Alice.Combat
         private float _stateStartedAt;
         private float _cooldownUntil;
         private float _lungeMoved;
+        private bool _wasStunned;
 
         public MeleeEnemySettings Settings
         {
@@ -61,6 +65,9 @@ namespace Alice.Combat
         public int Facing { get; private set; }
         public float StateTime => Time.time - _stateStartedAt;
         public bool IsWalking { get; private set; }
+
+        /// <summary>The blow that killed it; the view picks the matching death.</summary>
+        public HitKind KillingBlow { get; private set; }
         public float WalkDistance { get; private set; }
 
         private void Awake()
@@ -93,12 +100,14 @@ namespace Alice.Combat
         {
             _health.Damaged += OnDamaged;
             _health.Died += OnDied;
+            WorldReset.Happened += ResetToHome;
         }
 
         private void OnDisable()
         {
             _health.Damaged -= OnDamaged;
             _health.Died -= OnDied;
+            WorldReset.Happened -= ResetToHome;
         }
 
         /// <summary>Back to the post with full health, as after Alice rests (GDD section 4).</summary>
@@ -108,6 +117,8 @@ namespace Alice.Combat
             transform.position = _home;
             _health.Refill();
             _collider.enabled = true;
+            KillingBlow = HitKind.Other;
+            _wasStunned = false;
             Facing = _initialFacing >= 0 ? 1 : -1;
             _cooldownUntil = 0f;
             Enter(State.Guard);
@@ -130,6 +141,22 @@ namespace Alice.Combat
                 case State.Stagger:
                     if (StateTime >= _settings.StaggerTime)
                     {
+                        Enter(State.Chase);
+                    }
+
+                    break;
+                case State.Opened:
+                    if (StateTime >= _settings.OpenedTime)
+                    {
+                        _cooldownUntil = Time.time + _settings.Cooldown;
+                        Enter(State.Chase);
+                    }
+
+                    break;
+                case State.Stunned:
+                    if (StateTime >= _settings.StunnedTime)
+                    {
+                        _cooldownUntil = Time.time + _settings.Cooldown;
                         Enter(State.Chase);
                     }
 
@@ -212,7 +239,7 @@ namespace Alice.Combat
             float length = _settings.Reach - _settings.ReachStart;
             Vector2 center = _body.position + new Vector2(Facing * (_settings.ReachStart + length * 0.5f),
                 _settings.HitCenterHeight);
-            HitInfo hit = new HitInfo(_settings.Damage, Facing, gameObject);
+            HitInfo hit = new HitInfo(_settings.Damage, Facing, gameObject, HitKind.Thrust, _settings.ParryWindow);
             MeleeHitbox.Strike(center, new Vector2(length, _settings.HitHeight), hit, gameObject, _struck, _overlaps);
         }
 
@@ -223,20 +250,58 @@ namespace Alice.Combat
                 return;
             }
 
-            // Committed to the blow: hits land but do not interrupt it.
+            // Nearly beaten, it reels once per life, even out of its own blow. The execution is offered, never
+            // forced: any further blow still finishes it.
+            if (!_wasStunned && CurrentState != State.Stunned && _health.Current <= _settings.StunAtHealth
+                && !string.IsNullOrEmpty(_settings.ExecutionId))
+            {
+                _wasStunned = true;
+                Facing = -hit.DirectionX;
+                Enter(State.Stunned);
+                return;
+            }
+
+            // Committed to the blow: hits land but do not interrupt it. Thrown open or stunned, it stays so.
             bool inBlow = CurrentState == State.Attack && _settings.Timeline.PhaseAt(StateTime) == AttackPhase.Active;
-            if (!inBlow)
+            if (!inBlow && CurrentState != State.Opened && CurrentState != State.Stunned)
             {
                 Facing = -hit.DirectionX;
                 Enter(State.Stagger);
             }
         }
 
+        public bool CanBeExecuted => CurrentState == State.Stunned &&!string.IsNullOrEmpty(_settings.ExecutionId);
+        public string ExecutionId => _settings.ExecutionId;
+        public Vector2 Position => _body.position;
+
+        public void BeginExecution(GameObject by, int fromSide)
+        {
+            if (!CanBeExecuted)
+            {
+                return;
+            }
+
+            // Facing the executioner; the death frames are this type's execution and start now, in sync with Alice.
+            _health.Kill(new HitInfo(_health.Current, -fromSide, by, HitKind.Execution));
+        }
+
+        public void OnParried(GameObject by)
+        {
+            if (CurrentState == State.Dead)
+            {
+                return;
+            }
+
+            Enter(State.Opened);
+        }
+
         private void OnDied(HitInfo hit)
         {
             Facing = -hit.DirectionX;
+            KillingBlow = hit.Kind;
             _collider.enabled = false;
             Enter(State.Dead);
+            EnemyDefeats.Raise(new EnemyDefeat(gameObject, hit, _settings.DecreeReward, _settings.ConfidenceReward));
         }
 
         private bool TryGetTarget(out Vector2 target)

@@ -4,7 +4,8 @@
     "references": [
         "Unity.InputSystem",
         "Unity.RenderPipelines.Universal.Runtime",
-        "Unity.Localization"
+        "Unity.Localization",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

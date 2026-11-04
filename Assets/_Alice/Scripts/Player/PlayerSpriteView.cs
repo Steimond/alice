@@ -25,6 +25,9 @@ namespace Alice.Player
         private bool _landing;
         private float _landElapsed;
         private PlayerAttack _attack;
+        private PlayerParry _parryAction;
+        private PlayerDamageReaction _damage;
+        private PlayerSalts _salts;
 
         public void Bind(PlayerMotor motor, PlayerSpriteSet sprites, SpriteRenderer renderer,
             SpriteRenderer placeholderBody, SpriteRenderer placeholderMarker)
@@ -36,11 +39,12 @@ namespace Alice.Player
             _placeholderMarker = placeholderMarker;
         }
 
-        public bool HasThrustFrames => _sprites != null && _sprites.HasThrust;
-
         private void Awake()
         {
             _attack = GetComponent<PlayerAttack>();
+            _parryAction = GetComponent<PlayerParry>();
+            _damage = GetComponent<PlayerDamageReaction>();
+            _salts = GetComponent<PlayerSalts>();
         }
 
         private void LateUpdate()
@@ -68,11 +72,27 @@ namespace Alice.Player
                 return;
             }
 
-            Sprite thrust = SelectThrustSprite();
-            if (thrust != null)
+            Sprite reaction = SelectReactionSprite();
+            if (reaction != null)
+            {
+                _renderer.flipX = _motor.Facing < 0;
+                _renderer.sprite = reaction;
+                return;
+            }
+
+            Sprite strike = SelectStrikeSprite();
+            if (strike != null)
             {
                 _renderer.flipX = _attack.Facing < 0;
-                _renderer.sprite = thrust;
+                _renderer.sprite = strike;
+                return;
+            }
+
+            Sprite parry = SelectParrySprite();
+            if (parry != null)
+            {
+                _renderer.flipX = _parryAction.Facing < 0;
+                _renderer.sprite = parry;
                 return;
             }
 
@@ -80,21 +100,53 @@ namespace Alice.Player
             _renderer.sprite = SelectSprite();
         }
 
-        private Sprite SelectThrustSprite()
+        /// <summary>Defeat and waking override everything; the flinch overrides all but them.</summary>
+        private Sprite SelectReactionSprite()
         {
-            if (_attack == null || !_attack.IsAttacking || !_sprites.HasThrust)
+            if (_damage == null)
             {
                 return null;
             }
 
-            Sprite[] frames = _attack.Phase switch
+            PlayerCombatSettings settings = _damage.Settings;
+            switch (_damage.Stage)
             {
-                AttackPhase.Windup => _sprites.ThrustWindup,
-                AttackPhase.Active => _sprites.ThrustActive,
-                AttackPhase.Recovery => _sprites.ThrustRecovery,
-                _ => null
-            };
+                case PlayerDamageReaction.DefeatStage.Falling:
+                    return Spread(_sprites.Defeat, _damage.StageTime / settings.DefeatFallTime);
+                case PlayerDamageReaction.DefeatStage.Dark:
+                    return Spread(_sprites.Wake, 0f);
+                case PlayerDamageReaction.DefeatStage.Waking:
+                    return Spread(_sprites.Wake, _damage.StageTime / settings.WakeTime);
+            }
 
+            if (_damage.IsHurt)
+            {
+                return Spread(_sprites.Hurt, (Time.time - _damage.HurtAt) / settings.HurtTime);
+            }
+
+            return _salts != null && _salts.IsUsing ? Spread(_sprites.Salts, _salts.Progress) : null;
+        }
+
+        private static Sprite Spread(Sprite[] frames, float progress)
+        {
+            if (frames == null || frames.Length == 0)
+            {
+                return null;
+            }
+
+            return frames[Mathf.Clamp(Mathf.FloorToInt(progress * frames.Length), 0, frames.Length - 1)];
+        }
+
+        private Sprite SelectStrikeSprite()
+        {
+            if (_attack == null || !_attack.IsAttacking)
+            {
+                return null;
+            }
+
+            Sprite[] frames = _attack.Strike == PlayerStrike.Execution
+                ? _sprites.ExecutionPhases(_attack.ExecutionId).Phase(_attack.Phase)
+                : _sprites.StrikePhase(_attack.Strike, _attack.Phase);
             if (frames == null || frames.Length == 0)
             {
                 return null;
@@ -102,6 +154,34 @@ namespace Alice.Player
 
             int frame = Mathf.FloorToInt(_attack.PhaseProgress * frames.Length);
             return frames[Mathf.Min(frame, frames.Length - 1)];
+        }
+
+        /// <summary>
+        /// Guard at first; a caught blow flashes the deflect frame, then the hold; a parry
+        /// that caught nothing holds high and lowers over the rest of its time.
+        /// </summary>
+        private Sprite SelectParrySprite()
+        {
+            if (_parryAction == null || !_parryAction.IsParrying || !_sprites.HasParry)
+            {
+                return null;
+            }
+
+            Sprite[] frames = _sprites.Parry;
+            PlayerCombatSettings settings = _parryAction.Settings;
+            if (_parryAction.Succeeded)
+            {
+                return Time.time - _parryAction.SucceededAt < _sprites.ParryDeflectTime ? frames[1] : frames[2];
+            }
+
+            float elapsed = _parryAction.Elapsed;
+            if (elapsed <= _sprites.ParryGuardTime)
+            {
+                return frames[0];
+            }
+
+            float rest = Mathf.Max(0.01f, settings.ParryDuration - _sprites.ParryGuardTime);
+            return (elapsed - _sprites.ParryGuardTime) / rest < 0.5f ? frames[2] : frames[3];
         }
 
         private Sprite SelectSprite()

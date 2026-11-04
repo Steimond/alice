@@ -65,3 +65,63 @@ MonoBehaviour:
   _thrustRecovery:
   - {fileID: 21300000, guid: 706a4d80bc611094bb9423b07aa4ff8a, type: 3}
   - {fileID: 21300000, guid: 212259becca080049b68cc3a69f2a93b, type: 3}
+  _slash:
+    _windup:
+    - {fileID: 21300000, guid: afc1a5d595fb257499fa33d65ae70cba, type: 3}
+    _active:
+    - {fileID: 21300000, guid: ea444e94ea8c0b941bfe7916dae4e936, type: 3}
+    - {fileID: 21300000, guid: 0aa667ec700b1ef41b5bad32d2ba9a69, type: 3}
+    _recovery:
+    - {fileID: 21300000, guid: e793dd52bc7545346850148dd39e7633, type: 3}
+    - {fileID: 21300000, guid: 8755842477ef47a49b896912eccc16eb, type: 3}
+  _airSlash:
+    _windup:
+    - {fileID: 21300000, guid: 6153257d8a6b1ba458ccd16452003deb, type: 3}
+    _active:
+    - {fileID: 21300000, guid: 26ab56b9b86e68c4d8f761577f539fda, type: 3}
+    - {fileID: 21300000, guid: dd19f8229eb62f547a126e9546e9e060, type: 3}
+    _recovery:
+    - {fileID: 21300000, guid: d579b1c3d4eade44bbf1c4a542e042a6, type: 3}
+    - {fileID: 21300000, guid: 41c0e616452a8b845b5216780e482d43, type: 3}
+  _executions:
+  - _id: card_tear
+    _frames:
+      _windup:
+      - {fileID: 21300000, guid: c55f3a4ffdb2fde4b83be057c3b2a155, type: 3}
+      - {fileID: 21300000, guid: 354aee831e7149144ac78ddbadfb083d, type: 3}
+      _active:
+      - {fileID: 21300000, guid: 6001d6559c08ac447ad9e899cad85d4f, type: 3}
+      - {fileID: 21300000, guid: 314cbf92e47443e47b425aa7af86ebca, type: 3}
+      _recovery:
+      - {fileID: 21300000, guid: fc81ad1c8e4b4ee4c8292f016dc5a891, type: 3}
+      - {fileID: 21300000, guid: 1f0921ce59f32f24583b32ca1246ffa0, type: 3}
+      - {fileID: 21300000, guid: a42150e401cda3c458b199c1f6f6d0e0, type: 3}
+      - {fileID: 21300000, guid: 8de3c01717963bc419c5bd4539a76a7b, type: 3}
+  _parry:
+  - {fileID: 21300000, guid: 4ce4fda1b1491534a96ad78f0bb87f9f, type: 3}
+  - {fileID: 21300000, guid: ab622735e8b5d9746aa48839124d9a58, type: 3}
+  - {fileID: 21300000, guid: 82c0c53da37e83141a52a1c228e29d7f, type: 3}
+  - {fileID: 21300000, guid: 31ebca5797341e940a018ca04142e8a7, type: 3}
+  _parryDeflectTime: 0.1
+  _parryGuardTime: 0.15
+  _hurt:
+  - {fileID: 21300000, guid: ef1ec8252dc544a4e9064f0f77188e56, type: 3}
+  - {fileID: 21300000, guid: 7f4bfdbad16f5ed4caa27faa10564dcb, type: 3}
+  - {fileID: 21300000, guid: 27eb674ed90a16e4c987ac1ce0903fb1, type: 3}
+  _defeat:
+  - {fileID: 21300000, guid: d5e0d8b56428e3b4fa3ce75c79de236f, type: 3}
+  - {fileID: 21300000, guid: 18dce4d9bf6152c4ea3c928ebdb743b0, type: 3}
+  - {fileID: 21300000, guid: 8056bd17a4e518c40bbb201b98c52ae8, type: 3}
+  - {fileID: 21300000, guid: be523b40a9d745a49aa01900e95f9d9a, type: 3}
+  - {fileID: 21300000, guid: f903e49353e3cbe4497fb2acd05a808b, type: 3}
+  - {fileID: 21300000, guid: f14edcdeb817a5b45a918eccca0dd0dd, type: 3}
+  _wake:
+  - {fileID: 21300000, guid: 7e85f26d85db0f845ab5d9638f72d013, type: 3}
+  - {fileID: 21300000, guid: f45ac8c2aff37a1418d47d92ec65e40c, type: 3}
+  - {fileID: 21300000, guid: 3fc78192cbcc10f429f84759e78c2718, type: 3}
+  _salts:
+  - {fileID: 21300000, guid: f644b9c891a0941428a537de8a5de63c, type: 3}
+  - {fileID: 21300000, guid: bd619cf2ecb883345b0ebbe13bc1adcb, type: 3}
+  - {fileID: 21300000, guid: 797f2f4d658b52049977caa612a87e77, type: 3}
+  - {fileID: 21300000, guid: 31e092fa561af254e9e4cf54a9fcc9c9, type: 3}
+  - {fileID: 21300000, guid: 1bf376a545d7af64d95196c2153cf8dd, type: 3}

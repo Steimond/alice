@@ -13,10 +13,14 @@ MonoBehaviour:
   m_Name: CardSoldier
   m_EditorClassIdentifier: Alice::Alice.Combat.MeleeEnemySettings
   _archetypeId: EN09
+  _executionId: card_tear
   _bodySize: {x: 1.2, y: 3.2}
   _maxHealth: 3
   _hitInvulnerability: 0.12
   _staggerTime: 0.3
+  _openedTime: 1.2
+  _stunAtHealth: 1
+  _stunnedTime: 2.5
   _walkSpeed: 1.6
   _sightRange: 9
   _sightHeight: 3
@@ -31,4 +35,7 @@ MonoBehaviour:
   _reach: 2.4
   _hitHeight: 0.5
   _hitCenterHeight: 2.25
-  _damage: 1
+  _damage: 20
+  _parryWindow: 0.12
+  _decreeReward: 15
+  _confidenceReward: 5

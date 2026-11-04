@@ -12,17 +12,72 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f73b8fd41325244e8d5224bf6ce46a0, type: 3}
   m_Name: AliceCombat
   m_EditorClassIdentifier: Alice::Alice.Player.PlayerCombatSettings
-  _maxHealth: 5
+  _maxHealth: 100
   _hitInvulnerability: 0.9
   _knockbackVelocity: {x: 6, y: 5}
   _knockbackTime: 0.22
-  _defeatFreezeTime: 0.6
-  _thrustWindup: 0.07
-  _thrustActive: 0.1
-  _thrustRecovery: 0.2
-  _thrustReachStart: 0.2
-  _thrustReach: 2.75
-  _thrustHeight: 0.5
-  _thrustCenterHeight: 1.6
-  _thrustDamage: 1
+  _hurtTime: 0.3
+  _defeatFallTime: 1.3
+  _defeatFadeTime: 0.5
+  _defeatDarkTime: 0.5
+  _wakeTime: 1
+  _wakeFadeTime: 0.35
+  _saltCharges: 2
+  _saltRestoreShare: 0.4
+  _saltTime: 0.8
+  _saltTakesEffectAt: 0.55
+  _saltBufferTime: 0.1
+  _confidenceMax: 100
+  _executionConfidenceFactor: 3
+  _thrust:
+    _kind: 1
+    _windup: 0.07
+    _active: 0.1
+    _recovery: 0.2
+    _reachStart: 0.2
+    _reach: 2.75
+    _hitHeight: 0.5
+    _hitCenterHeight: 1.6
+    _damage: 1
+  _slash:
+    _kind: 2
+    _windup: 0.08
+    _active: 0.12
+    _recovery: 0.28
+    _reachStart: 0
+    _reach: 2
+    _hitHeight: 2.6
+    _hitCenterHeight: 1.5
+    _damage: 1
+  _airSlash:
+    _kind: 2
+    _windup: 0.06
+    _active: 0.12
+    _recovery: 0.2
+    _reachStart: 0
+    _reach: 2
+    _hitHeight: 2.6
+    _hitCenterHeight: 1.2
+    _damage: 1
   _attackBufferTime: 0.12
+  _parryDuration: 0.5
+  _parrySuccessHold: 0.12
+  _counterWindow: 0.9
+  _parryBufferTime: 0.08
+  _counter:
+    _kind: 5
+    _windup: 0.05
+    _active: 0.1
+    _recovery: 0.45
+    _reachStart: 0.2
+    _reach: 2.75
+    _hitHeight: 1
+    _hitCenterHeight: 1.6
+    _damage: 2
+  _executionReach: 3
+  _executions:
+  - _id: card_tear
+    _windup: 0.3
+    _active: 0.35
+    _recovery: 0.65
+    _distance: 1.8

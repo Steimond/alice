@@ -11,10 +11,12 @@ namespace Alice.Editor
     public sealed class AliceCharacterArtPostprocessor : AssetPostprocessor
     {
         private const string CharactersFolder = "Assets/_Alice/Art/Characters/";
+        // HUD icons are pixel art too and need the same crisp import; the UI ignores the pivot.
+        private const string UiFolder = "Assets/_Alice/Art/UI/";
 
         private void OnPreprocessTexture()
         {
-            if (!assetPath.StartsWith(CharactersFolder))
+            if (!assetPath.StartsWith(CharactersFolder) && !assetPath.StartsWith(UiFolder))
             {
                 return;
             }

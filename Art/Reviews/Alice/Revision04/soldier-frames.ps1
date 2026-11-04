@@ -43,3 +43,20 @@ for ($i = 1; $i -le 8; $i++) {
     Copy-Frame (Join-Path $Review "enemy-attack\$i.png") "card_soldier_attack_$n"
     Copy-Frame (Join-Path $Review "$Death\$i.png") "card_soldier_death_$n"
 }
+
+# Reactions by killing blow (GDD 0.18). The generator drew Alice's needle into the first two stab frames
+# and a white blade smear into the first beheading frame, so those are skipped.
+for ($i = 1; $i -le 4; $i++) { Copy-Frame (Join-Path $Review "enemy-hurt-blood\$i.png") ('card_soldier_hurt_{0:D2}' -f ($i - 1)) }
+for ($i = 3; $i -le 12; $i++) { Copy-Frame (Join-Path $Review "enemy-stab-death-blood\$i.png") ('card_soldier_stab_{0:D2}' -f ($i - 3)) }
+for ($i = 2; $i -le 8; $i++) { Copy-Frame (Join-Path $Review "enemy-behead-blood\$i.png") ('card_soldier_behead_{0:D2}' -f ($i - 2)) }
+
+# Parry and counter. The opening's first frame carries a white blade arc, and the execution's first two
+# show the needle still flying in, so they are skipped; from frame 3 the needle sits in the heart.
+for ($i = 2; $i -le 8; $i++) { Copy-Frame (Join-Path $Review "enemy-opened-blood\$i.png") ('card_soldier_opened_{0:D2}' -f ($i - 2)) }
+for ($i = 3; $i -le 12; $i++) { Copy-Frame (Join-Path $Review "enemy-execution-blood\$i.png") ('card_soldier_execution_{0:D2}' -f ($i - 3)) }
+
+# Execution by tearing the card (GDD 0.18), played in sync with Alice's 1.3 s execution: three held stance
+# frames cover her step and grab, so the needle reaches the heart as her blow lands and the card tears as
+# she pulls her hands apart.
+$tear = @(0, 0, 0) + (1..12)
+for ($k = 0; $k -lt $tear.Count; $k++) { Copy-Frame (Join-Path $Review ("enemy-tear-blood\{0}.png" -f $tear[$k])) ('card_soldier_tear_{0:D2}' -f $k) }

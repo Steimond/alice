@@ -70,15 +70,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "NextAbility",
-                    "type": "Button",
-                    "id": "a142de58-7502-4f9a-91d0-1ea05aea7e8b",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Map",
                     "type": "Button",
                     "id": "0c82e223-2943-4a4e-836b-208f80da1728",
@@ -313,28 +304,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "UseAbility",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e819aa71-3d24-4f28-a7d4-15ed60ec8c24",
-                    "path": "<Keyboard>/tab",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "NextAbility",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "7fb8f530-399e-4225-9534-416ebadd94c1",
-                    "path": "<Gamepad>/leftTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "NextAbility",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

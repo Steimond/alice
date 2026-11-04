@@ -27,6 +27,19 @@ namespace Alice.Combat
             return true;
         }
 
+        /// <summary>Adds up to the maximum; returns how much was actually restored. The dead stay dead.</summary>
+        public int Restore(int amount)
+        {
+            if (IsDead || amount <= 0)
+            {
+                return 0;
+            }
+
+            int before = Current;
+            Current = Mathf.Min(Max, Current + amount);
+            return Current - before;
+        }
+
         public void Refill()
         {
             Current = Max;

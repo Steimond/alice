@@ -134,6 +134,18 @@ namespace Alice.Player
             _lockedUntil = Mathf.Max(_lockedUntil, Time.time + duration);
         }
 
+        /// <summary>Turns Alice without moving her, e.g. after placing her in a scene; +1 faces right.</summary>
+        public void Face(int direction)
+        {
+            Facing = direction >= 0 ? 1 : -1;
+        }
+
+        /// <summary>Ends an action lock early, e.g. a parry that caught its blow.</summary>
+        public void ShortenLock(float remaining)
+        {
+            _lockedUntil = Mathf.Min(_lockedUntil, Time.time + remaining);
+        }
+
         /// <summary>Throws Alice with a fixed velocity; gravity still applies, input does not.</summary>
         public void Knockback(Vector2 velocity, float duration)
         {

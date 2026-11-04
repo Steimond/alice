@@ -1,4 +1,5 @@
 using Alice.Combat;
+using Alice.Core;
 using Alice.Player;
 using Alice.World;
 using UnityEditor;
@@ -22,22 +23,45 @@ namespace Alice.Editor
         private const double TapSeconds = 0.15;
         private const float CameraHeight = 2.5f;
 
+        private static int _captureIndex;
+
         [MenuItem("Alice/Automation/Route Input To Game View")]
         public static void RouteInputToGameView()
         {
-            // By default keyboard and mouse reach the game only while the Game view has focus,
-            // so simulated presses vanish when another app is in front.
+            RouteInput();
+            Debug.Log("ALICE_AUTOMATION input routed to the Game view for this Editor session.");
+        }
+
+        /// <summary>
+        /// By default keyboard and mouse reach the game only while the Game view has focus, devices are
+        /// reset while the Editor is in the background and Play only advances on Editor ticks there, so
+        /// presses vanish and frames go stale when another app is in front.
+        /// The settings live in memory and fall back to the defaults after a script reload.
+        /// </summary>
+        private static void RouteInput()
+        {
             InputSettings settings = InputSystem.settings;
             settings.editorInputBehaviorInPlayMode = InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
             settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
             Application.runInBackground = true;
-            Debug.Log("ALICE_AUTOMATION input routed to the Game view for this Editor session.");
         }
 
         [MenuItem("Alice/Automation/Press Attack")]
         public static void PressAttack()
         {
             TapButton(Mouse.current?.leftButton);
+        }
+
+        [MenuItem("Alice/Automation/Press Parry")]
+        public static void PressParry()
+        {
+            TapButton(Keyboard.current?.fKey);
+        }
+
+        [MenuItem("Alice/Automation/Press Interact")]
+        public static void PressInteract()
+        {
+            TapButton(Keyboard.current?.eKey);
         }
 
         [MenuItem("Alice/Automation/Press Jump")]
@@ -57,6 +81,8 @@ namespace Alice.Editor
                 Debug.LogWarning("ALICE_AUTOMATION presses work in Play mode on an existing device only.");
                 return;
             }
+
+            RouteInput();
 
             // Changed inside a game input update, so WasPressedThisFrame sees the press in that frame.
             double releaseAt = double.MaxValue;
@@ -100,6 +126,114 @@ namespace Alice.Editor
             }
         }
 
+        /// <summary>
+        /// Renders the main camera into a 640x360 image under Temp/AliceCaptures. Pipeline's capture copies
+        /// the Game view from the screen, which goes stale while that view is hidden or the Editor is in
+        /// the background; rendering the camera directly always shows the current frame.
+        /// </summary>
+        [MenuItem("Alice/Automation/Capture Camera")]
+        public static void CaptureCamera()
+        {
+            RouteInput();
+            Camera camera = Camera.main;
+            if (camera == null)
+            {
+                Debug.LogWarning("ALICE_AUTOMATION found no main camera.");
+                return;
+            }
+
+            string folder = System.IO.Path.GetFullPath("Temp/AliceCaptures");
+            System.IO.Directory.CreateDirectory(folder);
+            string path = System.IO.Path.Combine(folder, $"capture-{++_captureIndex:D3}.png");
+
+            RenderTexture target = RenderTexture.GetTemporary(WorldMetrics.ReferenceWidth, WorldMetrics.ReferenceHeight, 24);
+            RenderTexture previousTarget = camera.targetTexture;
+            RenderTexture previousActive = RenderTexture.active;
+            Texture2D image = new Texture2D(target.width, target.height, TextureFormat.RGB24, false);
+            try
+            {
+                camera.targetTexture = target;
+                camera.Render();
+                RenderTexture.active = target;
+                image.ReadPixels(new Rect(0f, 0f, target.width, target.height), 0, 0);
+                image.Apply();
+                System.IO.File.WriteAllBytes(path, image.EncodeToPNG());
+            }
+            finally
+            {
+                camera.targetTexture = previousTarget;
+                RenderTexture.active = previousActive;
+                RenderTexture.ReleaseTemporary(target);
+                Object.DestroyImmediate(image);
+            }
+
+            Debug.Log($"ALICE_AUTOMATION captured {path}");
+        }
+
+        /// <summary>
+        /// The camera with the overlay HUD, at the Game view's size. Overlay canvases are moved onto the camera
+        /// for this one render: Unity's own screenshot reads the Game view, which goes stale in the background.
+        /// </summary>
+        [MenuItem("Alice/Automation/Capture Screen")]
+        public static void CaptureScreen()
+        {
+            RouteInput();
+            Camera camera = Camera.main;
+            if (!EditorApplication.isPlaying || camera == null)
+            {
+                Debug.LogWarning("ALICE_AUTOMATION needs a main camera in Play mode.");
+                return;
+            }
+
+            string folder = System.IO.Path.GetFullPath("Temp/AliceCaptures");
+            System.IO.Directory.CreateDirectory(folder);
+            string path = System.IO.Path.Combine(folder, $"screen-{++_captureIndex:D3}.png");
+
+            Canvas[] overlays = System.Array.FindAll(Object.FindObjectsByType<Canvas>(),
+                canvas => canvas.isRootCanvas && canvas.renderMode == RenderMode.ScreenSpaceOverlay);
+            RenderTexture target = RenderTexture.GetTemporary(Screen.width, Screen.height, 24);
+            RenderTexture previousTarget = camera.targetTexture;
+            RenderTexture previousActive = RenderTexture.active;
+            Texture2D image = new Texture2D(target.width, target.height, TextureFormat.RGB24, false);
+            try
+            {
+                foreach (Canvas canvas in overlays)
+                {
+                    canvas.renderMode = RenderMode.ScreenSpaceCamera;
+                    canvas.worldCamera = camera;
+                    canvas.planeDistance = camera.nearClipPlane + 0.01f;
+                }
+
+                camera.targetTexture = target;
+                Canvas.ForceUpdateCanvases();
+                camera.Render();
+                RenderTexture.active = target;
+                image.ReadPixels(new Rect(0f, 0f, target.width, target.height), 0, 0);
+                image.Apply();
+                System.IO.File.WriteAllBytes(path, image.EncodeToPNG());
+            }
+            finally
+            {
+                foreach (Canvas canvas in overlays)
+                {
+                    canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+                }
+
+                camera.targetTexture = previousTarget;
+                RenderTexture.active = previousActive;
+                RenderTexture.ReleaseTemporary(target);
+                Object.DestroyImmediate(image);
+            }
+
+            Debug.Log($"ALICE_AUTOMATION captured {path}");
+        }
+
+        [MenuItem("Alice/Automation/Press Heal")]
+        public static void PressHeal()
+        {
+            TapButton(Keyboard.current?.qKey);
+        }
+
         [MenuItem("Alice/Automation/Log Input State")]
         public static void LogInputState()
         {
@@ -122,12 +256,108 @@ namespace Alice.Editor
                 report.Append("] ");
             }
 
+            PlayerMotor alice = Object.FindAnyObjectByType<PlayerMotor>();
+            if (alice != null && alice.TryGetComponent(out IPlayerCommandSource commands))
+            {
+                report.Append($"alice x={alice.Position.x:0.##} facing={alice.Facing} move={commands.Move} locked={alice.IsLocked}");
+            }
+
             Debug.Log(report.ToString());
+        }
+
+        [MenuItem("Alice/Automation/Reset Enemies")]
+        public static void ResetEnemies()
+        {
+            RouteInput();
+            if (!EditorApplication.isPlaying)
+            {
+                Debug.LogWarning("ALICE_AUTOMATION works in Play mode only, so the scene is never changed.");
+                return;
+            }
+
+            // What a rest will do in M3: everyone back at the post, alive and hostile.
+            MeleeEnemy[] enemies = Object.FindObjectsByType<MeleeEnemy>();
+            foreach (MeleeEnemy enemy in enemies)
+            {
+                enemy.ResetToHome();
+            }
+
+            Debug.Log($"ALICE_AUTOMATION reset {enemies.Length} enemies.");
+        }
+
+        /// <summary>Throws the nearest enemy open as a parry would; the narrow windows are hard to hit through menu calls.</summary>
+        [MenuItem("Alice/Automation/Open Nearest Enemy")]
+        public static void OpenNearestEnemy()
+        {
+            RouteInput();
+            PlayerMotor alice = Object.FindAnyObjectByType<PlayerMotor>();
+            MeleeEnemy nearest = EditorApplication.isPlaying && alice != null ? FindNearestEnemy(alice.Position.x) : null;
+            if (nearest == null)
+            {
+                Debug.LogWarning("ALICE_AUTOMATION found no living enemy in Play mode.");
+                return;
+            }
+
+            nearest.OnParried(alice.gameObject);
+            Debug.Log($"ALICE_AUTOMATION opened {nearest.name}.");
+        }
+
+        /// <summary>Wounds the nearest enemy down to its stun threshold, as Alice's blows would, so the execution is on offer.</summary>
+        [MenuItem("Alice/Automation/Stun Nearest Enemy")]
+        public static void StunNearestEnemy()
+        {
+            RouteInput();
+            PlayerMotor alice = Object.FindAnyObjectByType<PlayerMotor>();
+            MeleeEnemy nearest = EditorApplication.isPlaying && alice != null ? FindNearestEnemy(alice.Position.x) : null;
+            if (nearest == null)
+            {
+                Debug.LogWarning("ALICE_AUTOMATION found no living enemy in Play mode.");
+                return;
+            }
+
+            Health health = nearest.GetComponent<Health>();
+            int damage = Mathf.Max(1, health.Current - Mathf.Max(1, nearest.Settings.StunAtHealth));
+            int side = nearest.transform.position.x >= alice.Position.x ? 1 : -1;
+            health.ReceiveHit(new HitInfo(damage, side, alice.gameObject, HitKind.Thrust));
+            Debug.Log($"ALICE_AUTOMATION hit {nearest.name} for {damage}; state {nearest.CurrentState}.");
+        }
+
+        [MenuItem("Alice/Automation/Defeat Alice")]
+        public static void DefeatAlice()
+        {
+            RouteInput();
+            PlayerMotor alice = Object.FindAnyObjectByType<PlayerMotor>();
+            if (!EditorApplication.isPlaying || alice == null)
+            {
+                Debug.LogWarning("ALICE_AUTOMATION needs Alice in Play mode.");
+                return;
+            }
+
+            alice.GetComponent<Health>().Kill(new HitInfo(1, -alice.Facing, alice.gameObject));
+            Debug.Log("ALICE_AUTOMATION Alice defeated.");
+        }
+
+        private static MeleeEnemy FindNearestEnemy(float x)
+        {
+            MeleeEnemy nearest = null;
+            float best = float.MaxValue;
+            foreach (MeleeEnemy enemy in Object.FindObjectsByType<MeleeEnemy>())
+            {
+                float distance = Mathf.Abs(enemy.transform.position.x - x);
+                if (enemy.CurrentState != MeleeEnemy.State.Dead && distance < best)
+                {
+                    best = distance;
+                    nearest = enemy;
+                }
+            }
+
+            return nearest;
         }
 
         [MenuItem("Alice/Automation/Put Alice Beside Nearest Enemy")]
         public static void PutAliceBesideNearestEnemy()
         {
+            RouteInput();
             if (!EditorApplication.isPlaying)
             {
                 Debug.LogWarning("ALICE_AUTOMATION works in Play mode only, so the scene is never changed.");
@@ -162,6 +392,7 @@ namespace Alice.Editor
             // On the side the enemy faces, so it notices her at once and she faces it after one step.
             Vector2 target = (Vector2)nearest.transform.position + new Vector2(nearest.Facing * BesideEnemyDistance, 0.02f);
             alice.Teleport(target);
+            alice.Face(-nearest.Facing);
 
             // The follow camera eases over seconds, longer still under a slowed time scale; jump it there.
             Camera camera = Camera.main;
@@ -171,7 +402,7 @@ namespace Alice.Editor
                     target.y + CameraHeight, camera.transform.position.z);
             }
 
-            Debug.Log($"ALICE_AUTOMATION Alice placed at {target.x:0.##} beside {nearest.name}.");
+            Debug.Log($"ALICE_AUTOMATION Alice placed at {target.x:0.##} facing {alice.Facing} beside {nearest.name} facing {nearest.Facing}.");
         }
     }
 }

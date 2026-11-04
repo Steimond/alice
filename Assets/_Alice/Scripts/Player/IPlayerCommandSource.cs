@@ -16,5 +16,14 @@ namespace Alice.Player
 
         /// <summary>Time.time of the last Attack press, or negative infinity.</summary>
         float AttackPressedAt { get; }
+
+        /// <summary>Time.time of the last Parry press, or negative infinity.</summary>
+        float ParryPressedAt { get; }
+
+        /// <summary>Time.time of the last Heal press (smelling salts), or negative infinity.</summary>
+        float HealPressedAt { get; }
+
+        /// <summary>Time.time of the last Interact press (it also executes a stunned enemy), or negative infinity.</summary>
+        float InteractPressedAt { get; }
     }
 }

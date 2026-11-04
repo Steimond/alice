@@ -10,12 +10,18 @@ namespace Alice.Player
         private InputAction _jump;
         private InputAction _evade;
         private InputAction _attack;
+        private InputAction _parry;
+        private InputAction _interact;
+        private InputAction _heal;
 
         public Vector2 Move { get; private set; }
         public bool JumpHeld { get; private set; }
         public float JumpPressedAt { get; private set; } = float.NegativeInfinity;
         public float EvadePressedAt { get; private set; } = float.NegativeInfinity;
         public float AttackPressedAt { get; private set; } = float.NegativeInfinity;
+        public float ParryPressedAt { get; private set; } = float.NegativeInfinity;
+        public float InteractPressedAt { get; private set; } = float.NegativeInfinity;
+        public float HealPressedAt { get; private set; } = float.NegativeInfinity;
 
         private void Awake()
         {
@@ -31,6 +37,9 @@ namespace Alice.Player
             _jump = actions.FindAction("Gameplay/Jump", true);
             _evade = actions.FindAction("Gameplay/Evade", true);
             _attack = actions.FindAction("Gameplay/Attack", true);
+            _parry = actions.FindAction("Gameplay/Parry", true);
+            _interact = actions.FindAction("Gameplay/Interact", true);
+            _heal = actions.FindAction("Gameplay/Heal", true);
         }
 
         private void OnEnable()
@@ -55,6 +64,21 @@ namespace Alice.Player
             if (_attack.WasPressedThisFrame())
             {
                 AttackPressedAt = Time.time;
+            }
+
+            if (_parry.WasPressedThisFrame())
+            {
+                ParryPressedAt = Time.time;
+            }
+
+            if (_interact.WasPressedThisFrame())
+            {
+                InteractPressedAt = Time.time;
+            }
+
+            if (_heal.WasPressedThisFrame())
+            {
+                HealPressedAt = Time.time;
             }
         }
     }

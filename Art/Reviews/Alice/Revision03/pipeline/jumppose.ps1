@@ -1,4 +1,4 @@
-﻿param([string]$Skeleton, [string]$OutJson, [string]$OutPng, [ValidateSet('basic', 'detailed', 'thrust')][string]$Set = 'basic')
+﻿param([string]$Skeleton, [string]$OutJson, [string]$OutPng, [ValidateSet('basic', 'detailed', 'thrust', 'slash', 'parry', 'parry-variants', 'execution-card', 'hurt-defeat', 'salts')][string]$Set = 'basic')
 # Jump and attack poses for animate_with_skeleton_v3, built from the stance skeleton's bone lengths.
 # Angles are degrees from straight down, positive toward +x (forward when facing east).
 # RIGHT limbs are the near ones. Air frames keep the hips at stance height so the legs tuck up;
@@ -61,6 +61,103 @@ if ($Set -eq 'thrust')
         @('thrust_hold', 48, 48, -38, 0, 90, 92, -60, -85, 17, $true),
         @('recover_a', 30, 30, -25, 5, 55, 75, -35, -40, 8, $true),
         @('recover_b', 15, 15, -10, 10, 15, 35, -10, 10, 2, $true)
+    )
+}
+# Second hit of the combo and the air attack: the near arm rises up and back, then sweeps forward and down
+# in a wide arc. The ground set keeps a short stance; the air set tucks the legs like the jump apex.
+if ($Set -eq 'slash')
+{
+    $poses = @(
+        @('g_wind', 20, 20, -15, 5, 195, 215, -20, 20, -4, $true),
+        @('g_sweep_a', 30, 30, -20, 5, 130, 110, -40, -20, 6, $true),
+        @('g_sweep_b', 35, 35, -25, 5, 80, 65, -50, -40, 12, $true),
+        @('g_follow', 35, 35, -25, 5, 40, 20, -45, -30, 14, $true),
+        @('g_recover', 20, 20, -15, 10, 20, 35, -15, 10, 5, $true),
+        @('a_wind', 60, 110, 35, 115, 195, 215, -30, 10, -4, $false),
+        @('a_sweep_a', 55, 100, 30, 110, 130, 110, -50, -30, 6, $false),
+        @('a_sweep_b', 50, 95, 30, 105, 80, 65, -60, -45, 10, $false),
+        @('a_follow', 45, 90, 25, 100, 40, 20, -55, -35, 12, $false),
+        @('a_recover', 40, 80, 20, 90, 20, 35, -30, 0, 6, $false)
+    )
+}
+# Parry: the near arm raises the needle across the body in front, flings the blow up and away,
+# holds high for a moment and lowers. The weight stays back on the rear leg.
+if ($Set -eq 'parry')
+{
+    $poses = @(
+        @('p_guard', 15, 20, -15, 10, 100, 150, -20, 20, -3, $true),
+        @('p_deflect', 20, 25, -20, 10, 150, 190, -30, 0, -8, $true),
+        @('p_hold', 15, 20, -15, 10, 120, 170, -25, 10, -5, $true),
+        @('p_recover', 15, 15, -10, 10, 30, 50, -10, 10, 0, $true)
+    )
+}
+# Three parry ideas for the owner to compare, four frames each (guard, catch, beat, lower):
+# A high beat — needle upright before the face, the blow knocked upward;
+# B low beat — needle point down and forward, the blow swept down and aside;
+# C step back — weight back, needle across the chest, then a push forward.
+if ($Set -eq 'parry-variants')
+{
+    $poses = @(
+        @('a_guard', 25, 30, -20, 10, 70, 125, -25, 15, -4, $true),
+        @('a_catch', 25, 30, -20, 10, 80, 140, -30, 10, -7, $true),
+        @('a_beat', 20, 25, -20, 10, 120, 170, -35, 0, -9, $true),
+        @('a_lower', 15, 15, -10, 10, 40, 60, -15, 10, -2, $true),
+        @('b_guard', 35, 45, -25, 5, 45, 70, -30, -10, 8, $true),
+        @('b_catch', 35, 45, -25, 5, 40, 55, -35, -15, 10, $true),
+        @('b_beat', 30, 40, -25, 5, 15, -20, -40, -20, 6, $true),
+        @('b_lower', 15, 15, -10, 10, 25, 40, -15, 10, 2, $true),
+        @('c_guard', 10, 20, -25, 5, 75, 100, -20, 30, -8, $true),
+        @('c_catch', 8, 20, -28, 5, 70, 95, -25, 30, -12, $true),
+        @('c_beat', 30, 35, -30, 10, 88, 90, -40, -30, 8, $true),
+        @('c_lower', 15, 15, -10, 10, 30, 50, -15, 10, 0, $true)
+    )
+}
+# Execution of the card soldier (GDD 0.18): the free far hand grabs the card's edge, the near hand drives
+# the needle into the heart, then the hands pull apart — far up, near down — tearing the card in two,
+# and Alice steps back. The soldier's own frames are generated separately and played in sync.
+if ($Set -eq 'execution-card')
+{
+    $poses = @(
+        @('x_step', 35, 35, -25, 5, -40, 30, 70, 85, 8, $true),
+        @('x_grab', 35, 40, -30, 5, -60, 40, 75, 95, 10, $true),
+        @('x_stab', 45, 45, -35, 0, 88, 90, 75, 100, 14, $true),
+        @('x_hold', 45, 45, -35, 0, 85, 95, 80, 105, 12, $true),
+        @('x_rip_a', 40, 40, -30, 5, 55, 35, 130, 160, 6, $true),
+        @('x_rip_b', 35, 35, -30, 5, 30, 10, 165, 190, 2, $true),
+        @('x_back', 15, 20, -20, 10, 25, 35, 40, 60, -3, $true),
+        @('x_recover', 15, 15, -10, 10, 15, 35, -10, 10, 0, $true)
+    )
+}
+# Hurt, defeat and waking (GDD section 4). Hurt: the blow from the front throws the chest back, the knees
+# give, she steadies. Defeat: arms flung up, knees buckle, one knee, both knees slumping, a fall forward and
+# lying face down. Waking at the rest: a sharp gasp on her knees, rising, standing.
+if ($Set -eq 'hurt-defeat')
+{
+    $poses = @(
+        @('h_jolt', 10, 25, -20, 15, -40, -10, -60, -30, -14, $true),
+        @('h_recoil', 20, 40, -15, 30, 20, 50, -30, 0, -8, $true),
+        @('h_recover', 15, 20, -15, 10, 15, 35, -10, 10, -2, $true),
+        @('d_hit', 5, 20, -25, 10, 140, 165, 110, 140, -20, $true),
+        @('d_buckle', 30, 70, 0, 70, 40, 60, 20, 40, -5, $true),
+        @('d_kneel', 80, 80, 5, 95, 10, 20, 0, 10, 5, $true),
+        @('d_slump', 20, 100, 10, 95, 30, 40, 15, 30, 35, $true),
+        @('d_fall', 30, 110, 20, 105, 70, 80, 60, 70, 65, $true),
+        @('d_prone', -80, 0, -85, 5, 85, 95, 80, 90, 88, $true),
+        @('w_gasp', 10, 95, 5, 95, 20, 30, 10, 20, -12, $true),
+        @('w_rise', 70, 75, 15, 60, 30, 50, 10, 30, 12, $true),
+        @('w_stand', 15, 15, -10, 10, 15, 35, -10, 10, 0, $true)
+    )
+}
+# Smelling salts (GDD 0.20): the far hand takes the vial up under the nose, a sniff, the head jerks back,
+# the hand lowers. The near hand keeps the needle low so the script can draw it as usual.
+if ($Set -eq 'salts')
+{
+    $poses = @(
+        @('s_reach', 15, 15, -10, 10, 15, 35, 40, 90, 0, $true),
+        @('s_raise', 15, 15, -10, 10, 15, 35, 80, 160, 1, $true),
+        @('s_sniff', 15, 15, -10, 10, 15, 35, 90, 200, 4, $true),
+        @('s_jolt', 15, 20, -15, 15, 10, 30, 70, 170, -12, $true),
+        @('s_lower', 15, 15, -10, 10, 15, 35, 20, 40, -2, $true)
     )
 }
 

@@ -211,7 +211,6 @@ namespace Alice.Editor
                 AddButton(gameplay, "Interact", "<Keyboard>/e", "<Gamepad>/buttonNorth");
                 AddButton(gameplay, "Heal", "<Keyboard>/q", "<Gamepad>/leftShoulder");
                 AddButton(gameplay, "UseAbility", "<Mouse>/rightButton", "<Gamepad>/rightShoulder");
-                AddButton(gameplay, "NextAbility", "<Keyboard>/tab", "<Gamepad>/leftTrigger");
                 AddButton(gameplay, "Map", "<Keyboard>/m", "<Gamepad>/select");
                 AddButton(gameplay, "Pause", "<Keyboard>/escape", "<Gamepad>/start");
 

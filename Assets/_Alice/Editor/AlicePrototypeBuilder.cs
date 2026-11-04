@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Alice.Abilities;
+using Alice.Combat;
 using Alice.Core;
 using Alice.Player;
 using Alice.World;
@@ -25,10 +26,14 @@ namespace Alice.Editor
         private const string SettingsPath = Root + "/Data/Player/AliceMovement.asset";
         private const string PrefabPath = Root + "/Prefabs/Characters/Alice.prefab";
         private const string RoomName = "GreyRoom";
+        private const string ArenaScenePath = Root + "/Scenes/Prototype_Combat.unity";
+        private const string ArenaName = "CombatArena";
+        private const float ArenaSoldierDistance = 12f;
         private const float OneWayThickness = 0.5f;
 
         private static readonly Rect RoomBounds = new Rect(-4f, -10f, 116f, 32f);
         private static readonly Vector2 SpawnPosition = new Vector2(2f, 0f);
+        private static readonly Rect ArenaBounds = new Rect(-22f, -6f, 44f, 20f);
 
         private static readonly Color SolidColor = new Color(0.42f, 0.42f, 0.45f);
         private static readonly Color OneWayColor = new Color(0.62f, 0.58f, 0.5f);
@@ -131,6 +136,103 @@ namespace Alice.Editor
             }
 
             AssetDatabase.SaveAssets();
+        }
+
+        [MenuItem("Alice/Prototype/Build Combat Arena")]
+        public static void BuildArenaFromMenu()
+        {
+            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            {
+                BuildArena();
+            }
+        }
+
+        // Batch entry point: -executeMethod Alice.Editor.AlicePrototypeBuilder.BuildArenaBatch
+        public static void BuildArenaBatch()
+        {
+            BuildArena();
+            Debug.Log("ALICE_ARENA_COMPLETE");
+        }
+
+        /// <summary>
+        /// A flat arena for checking combat without the obstacle course: Alice in the middle, a soldier on
+        /// each side. Made once as a copy of the traversal scene, so camera, lighting and Alice match it;
+        /// later runs only restore missing geometry and keep everything someone moved or tuned.
+        /// </summary>
+        private static void BuildArena()
+        {
+            Build(false);
+            Sprite tile = EnsureTileSprite();
+
+            if (!File.Exists(ArenaScenePath) && !AssetDatabase.CopyAsset(ScenePath, ArenaScenePath))
+            {
+                throw new IOException("Could not create scene: " + ArenaScenePath);
+            }
+
+            Scene scene = EditorSceneManager.OpenScene(ArenaScenePath, OpenSceneMode.Single);
+            GameObject world = FindRoot(scene, "World");
+            GameObject gameplay = FindRoot(scene, "Gameplay");
+            Camera camera = FindRoot(scene, "Main Camera").GetComponent<Camera>();
+
+            // A fresh copy still carries the obstacle course and its soldier: replace them once.
+            Transform course = world.transform.Find(RoomName);
+            if (course != null)
+            {
+                UnityEngine.Object.DestroyImmediate(course.gameObject);
+                foreach (MeleeEnemy enemy in gameplay.GetComponentsInChildren<MeleeEnemy>(true))
+                {
+                    UnityEngine.Object.DestroyImmediate(enemy.gameObject);
+                }
+
+                gameplay.transform.Find("PlayerSpawn").position = Vector3.zero;
+                PlayerMotor alice = gameplay.GetComponentInChildren<PlayerMotor>(true);
+                alice.transform.position = Vector3.zero;
+                camera.transform.position = new Vector3(0f, 2.5f, camera.transform.position.z);
+                camera.GetComponent<CameraFollow2D>().Bounds = ArenaBounds;
+
+                AliceCombatSetup.PlaceSoldier(scene, gameplay.transform, new Vector2(ArenaSoldierDistance, 0f), -1);
+                AliceCombatSetup.PlaceSoldier(scene, gameplay.transform, new Vector2(-ArenaSoldierDistance, 0f), 1);
+            }
+
+            if (world.transform.Find(ArenaName) == null)
+            {
+                BuildArenaRoom(world.transform, tile);
+            }
+
+            EditorSceneManager.MarkSceneDirty(scene);
+            if (!EditorSceneManager.SaveScene(scene))
+            {
+                throw new IOException("Could not save scene: " + ArenaScenePath);
+            }
+
+            AddToBuildSettings(ArenaScenePath);
+            AssetDatabase.SaveAssets();
+        }
+
+        private static void BuildArenaRoom(Transform world, Sprite tile)
+        {
+            Transform room = new GameObject(ArenaName).transform;
+            room.SetParent(world, false);
+
+            // 40 tiles of flat floor between walls; soldiers stand 12 tiles from the middle, beyond their sight.
+            Block(room, tile, "Backdrop", -22f, -6f, 22f, 14f, BlockKind.Decoration);
+            Block(room, tile, "Floor", -22f, -6f, 22f, 0f, BlockKind.Solid);
+            Block(room, tile, "WallLeft", -22f, 0f, -20f, 14f, BlockKind.Solid);
+            Block(room, tile, "WallRight", 20f, 0f, 22f, 14f, BlockKind.Solid);
+            Block(room, tile, "Ceiling", -22f, 12f, 22f, 14f, BlockKind.Solid);
+        }
+
+        private static void AddToBuildSettings(string path)
+        {
+            EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;
+            if (Array.Exists(scenes, entry => entry.path == path))
+            {
+                return;
+            }
+
+            Array.Resize(ref scenes, scenes.Length + 1);
+            scenes[scenes.Length - 1] = new EditorBuildSettingsScene(path, true);
+            EditorBuildSettings.scenes = scenes;
         }
 
         private static GameObject FindRoot(Scene scene, string name)

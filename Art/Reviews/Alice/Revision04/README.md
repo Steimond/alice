@@ -78,3 +78,34 @@
 3. Тайлсеты — слабое место: пригодны для прототипа, до уровня фона и персонажей не дотягивают. Pro за 15 генераций не лучше стандарта за 1. Плитки, вероятно, лучше делать через Pro Flash по образцу фона и нарезать скриптом.
 4. Фон 256×144 — потолок одного изображения, а экран игры 640×360. Полноэкранные фоны придётся собирать из нескольких частей или слоёв параллакса; простое увеличение даст пиксели крупнее, чем у персонажей.
 5. Повторяемые находки для конвейера: светлую рамку по краю фона и пляшущую форму оружия между кадрами снимает скрипт чистки.
+
+## Солдат: реакция на удар и смерти по типу удара (GDD 0.18)
+
+3 ноября 2026, `animate_image_pixminimax` от стойки солдата, всего 4 генерации, кровь — `blood-palette.ps1`, перенос в игру — `soldier-frames.ps1`.
+
+| Что | Job | Кадры в игре | Описание (точно) |
+| --- | --- | --- | --- |
+| Вздрагивание, 4 кадра, последний закреплён на стойке | `822b9cf8-decc-4310-9798-7d1a0be3a437` | `card_soldier_hurt_00..03` (кадры 1–4) | «is hit in the chest and flinches sharply backward, head snapping back, staggers half a step, then recovers into the same guard pose holding the spear upright» |
+| Смерть от укола, 12 кадров, 2 генерации | `d25c9f62-cce2-4ce4-b163-4865c7e76d74` | `card_soldier_stab_00..09` (кадры 3–12) | «is stabbed through the chest by a thin needle, leaving only a small hole; a thin stream of glossy dark blood trickles from the wound down the card; it clutches the wound, drops the spear, sinks to its knees, writhes and twitches in agony, then slumps onto the ground and lies still while a small pool of blood slowly spreads» |
+| Обезглавливание, 8 кадров | `9876ddaa-4916-40df-a95c-572ea246c776` | `card_soldier_behead_00..06` (кадры 2–8) | «is beheaded by a fast spinning blade: the head flies off backward and rolls on the ground, a fountain of glossy dark blood sprays from the neck, the headless body stands for a moment, drops the spear, then collapses in a pool of blood» |
+
+В первые два кадра смерти от укола генератор сам дорисовал иглу в теле, в первый кадр обезглавливания — белый росчерк клинка; эти кадры не используются. Рассечение — выбранный ранее `death3`, он же смерть по умолчанию. Полосы: `enemy-hurt-strip-x4.png`, `enemy-stab-death-strip-x4.png`, `enemy-behead-strip-x4.png`.
+
+В игре смерть от укола проверена через меню `Alice/Automation`: третий укол убивает солдата, он оседает и корчится около 1,3 с. Рассечение и обезглавливание ждут взмаха и удара с разворота у Алисы.
+
+## Солдат: открытие после парирования и казнь
+
+3 ноября 2026, `animate_image_pixminimax`, 3 генерации, кровь — `blood-palette.ps1`, перенос — `soldier-frames.ps1`.
+
+| Что | Job | Кадры в игре | Описание (точно) |
+| --- | --- | --- | --- |
+| Открыт парированием, 8 кадров, последний закреплён на стойке | `4ad87604-ee38-43eb-87b3-f36a2b9af2f8` | `card_soldier_opened_00..06` (кадры 2–8) | «its spear is knocked aside by a parry: it reels backward off balance with the spear swung wide away from the body, arms flailing, chest left open, staggers dazed for a moment, then slowly regains the guard pose» |
+| Казнь контратакой, 12 кадров, 2 генерации | `edec2d88-b446-41e1-9083-321bf9b0959c` | `card_soldier_execution_00..09` (кадры 3–12) | «is executed with a needle driven deep into its heart from the front: it jerks upright, the spear falls from its hands, it convulses with the wound in its chest, glossy dark blood gushes out of the heart and runs down the card, then the blow is pulled out with a spurt of blood and it falls forward onto its face, dead in a spreading pool of blood» |
+
+В первом кадре открытия генератор нарисовал белую дугу удара, в первых двух кадрах казни — летящую иглу; эти кадры не используются. С третьего кадра казни игла сидит в сердце, что совпадает с удержанной иглой Алисы в контратаке. Проверено в игре через `Alice/Automation`: парирование выпада, открытие, контратака и казнь.
+
+## Солдат: казнь «разорвать карту»
+
+3 ноября 2026, `animate_image_pixminimax`, 12 кадров, 2 генерации, job `ab777e4b-407c-4a63-98d6-86289f0a9573`. Описание (точно): «is executed: its flat card body is seized by the top edge and pulled forward, a thin needle stabs through the heart in the middle of the card, then the card body is ripped in half from top to bottom, the two torn paper halves split apart with glossy dark blood gushing from the tear, the spear drops, and the torn soldier collapses in two halves into a pool of blood». Кровь — `blood-palette.ps1`, полоса — `enemy-tear-strip-x4.png`.
+
+В игре `card_soldier_tear_00..14`: три кадра стойки, затем кадры 1–12, всё растянуто на 1,3 с казни Алисы, чтобы игла входила в черву вместе с её ударом, а карта рвалась, когда она разводит руки. Проверено в арене `Prototype_Combat` через `Alice/Automation`.

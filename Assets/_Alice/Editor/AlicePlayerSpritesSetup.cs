@@ -22,8 +22,18 @@ namespace Alice.Editor
         private const string LandPrefix = "alice_trial_land_";
         private const string StepOffPrefix = "alice_trial_stepoff_";
         private const string ThrustPrefix = "alice_trial_thrust_";
-        // Thrust frames from the generation: wind-up, two of the extended arm, two of the return.
+        // Each strike is generated as five frames: wind-up, two of the blow, two of the return.
         private const int ThrustFrameCount = 5;
+        private const string SlashPrefix = "alice_trial_slash_";
+        private const string AirSlashPrefix = "alice_trial_airslash_";
+        private const string ParryPrefix = "alice_trial_parry_";
+        // Alice's side of the card soldier's execution; the ID matches MeleeEnemySettings and AliceCombat.
+        private const string CardExecutionPrefix = "alice_trial_exec_card_";
+        private const string CardExecutionId = "card_tear";
+        private const string HurtPrefix = "alice_trial_hurt_";
+        private const string DefeatPrefix = "alice_trial_defeat_";
+        private const string WakePrefix = "alice_trial_wake_";
+        private const string SaltsPrefix = "alice_trial_salts_";
         // Jump frames from the generation: takeoff, three rise frames, apex tuck, apex opening, fall start.
         private const int JumpFrameCount = 7;
         private const string SpriteSetPath = Root + "/Data/Player/AliceSprites.asset";
@@ -115,7 +125,68 @@ namespace Alice.Editor
                 }
             }
 
+            if (sprites.Slash.IsEmpty && sprites.AirSlash.IsEmpty)
+            {
+                Sprite[] slash = LoadFrames(SlashPrefix);
+                Sprite[] airSlash = LoadFrames(AirSlashPrefix);
+                if (slash.Length == ThrustFrameCount && airSlash.Length == ThrustFrameCount)
+                {
+                    sprites.AssignSlashes(SplitStrike(slash), SplitStrike(airSlash));
+                    EditorUtility.SetDirty(sprites);
+                }
+            }
+
+            if (!sprites.HasParry)
+            {
+                Sprite[] parry = LoadFrames(ParryPrefix);
+                if (parry.Length == PlayerSpriteSet.ParryFrameCount)
+                {
+                    sprites.AssignParry(parry);
+                    EditorUtility.SetDirty(sprites);
+                }
+            }
+
+            if (!sprites.HasExecution(CardExecutionId))
+            {
+                // Step, grab | stab, hold | tear, tear, step back, stand.
+                Sprite[] execution = LoadFrames(CardExecutionPrefix);
+                if (execution.Length == 8)
+                {
+                    sprites.AssignExecution(CardExecutionId, new StrikeFrames(execution.Take(2).ToArray(),
+                        execution.Skip(2).Take(2).ToArray(), execution.Skip(4).ToArray()));
+                    EditorUtility.SetDirty(sprites);
+                }
+            }
+
+            if (sprites.Hurt == null || sprites.Hurt.Length == 0)
+            {
+                Sprite[] hurt = LoadFrames(HurtPrefix);
+                Sprite[] defeat = LoadFrames(DefeatPrefix);
+                Sprite[] wake = LoadFrames(WakePrefix);
+                if (hurt.Length > 0 && defeat.Length > 0 && wake.Length > 0)
+                {
+                    sprites.AssignReactions(hurt, defeat, wake);
+                    EditorUtility.SetDirty(sprites);
+                }
+            }
+
+            if (sprites.Salts == null || sprites.Salts.Length == 0)
+            {
+                Sprite[] salts = LoadFrames(SaltsPrefix);
+                if (salts.Length > 0)
+                {
+                    sprites.AssignSalts(salts);
+                    EditorUtility.SetDirty(sprites);
+                }
+            }
+
             return sprites;
+        }
+
+        /// <summary>Strikes are generated as wind-up, two frames of the blow and two of the return.</summary>
+        private static StrikeFrames SplitStrike(Sprite[] frames)
+        {
+            return new StrikeFrames(new[] { frames[0] }, new[] { frames[1], frames[2] }, new[] { frames[3], frames[4] });
         }
 
         private static Sprite[] LoadFrames(string prefix)
