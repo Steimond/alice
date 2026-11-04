@@ -1,4 +1,4 @@
-﻿param([string]$Skeleton, [string]$OutJson, [string]$OutPng, [ValidateSet('basic', 'detailed', 'thrust', 'slash', 'parry', 'parry-variants', 'execution-card', 'hurt-defeat', 'salts')][string]$Set = 'basic')
+﻿param([string]$Skeleton, [string]$OutJson, [string]$OutPng, [ValidateSet('basic', 'detailed', 'thrust', 'slash', 'parry', 'parry-variants', 'execution-card', 'hurt-defeat', 'salts', 'slide', 'spin')][string]$Set = 'basic')
 # Jump and attack poses for animate_with_skeleton_v3, built from the stance skeleton's bone lengths.
 # Angles are degrees from straight down, positive toward +x (forward when facing east).
 # RIGHT limbs are the near ones. Air frames keep the hips at stance height so the legs tuck up;
@@ -158,6 +158,31 @@ if ($Set -eq 'salts')
         @('s_sniff', 15, 15, -10, 10, 15, 35, 90, 200, 4, $true),
         @('s_jolt', 15, 20, -15, 15, 10, 30, 70, 170, -12, $true),
         @('s_lower', 15, 15, -10, 10, 15, 35, 20, 40, -2, $true)
+    )
+}
+# Slide (GDD 0.13/0.14): a drop into the slide, two frames on the back with the near leg shot forward
+# along the ground and the far leg folded under, then getting up. The sliding body is 1.1 tiles tall and
+# a slide passage 2 tiles, so the low frames must stay under about 24 pixels. Needle trails behind.
+if ($Set -eq 'slide')
+{
+    $poses = @(
+        @('sl_drop', 55, 30, 20, 90, -40, -20, -60, -30, -25, $true),
+        @('sl_slide_a', 85, 0, 80, 25, -80, -80, -100, -95, -65, $true),
+        @('sl_slide_b', 88, 0, 82, 30, -85, -80, -95, -90, -68, $true),
+        @('sl_rise', 40, 60, 10, 90, 20, 40, -20, 0, 10, $true)
+    )
+}
+# Spin strike, the first technique that spends confidence: coil with the needle drawn back past the hip,
+# the arm sweeps through the space behind her, then in front at full stretch, follows through and settles.
+# A side view cannot show the turn itself; the sweeping needle and the swirling skirt carry it.
+if ($Set -eq 'spin')
+{
+    $poses = @(
+        @('sp_wind', 25, 30, -20, 10, -50, -80, 40, 70, 10, $true),
+        @('sp_back', 20, 20, -25, 10, -90, -90, 60, 80, -5, $true),
+        @('sp_front', 35, 35, -25, 5, 90, 90, -60, -40, 8, $true),
+        @('sp_follow', 30, 30, -20, 5, 60, 40, -40, -20, 12, $true),
+        @('sp_recover', 15, 15, -10, 10, 15, 35, -10, 10, 2, $true)
     )
 }
 

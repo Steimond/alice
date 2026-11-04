@@ -39,6 +39,9 @@ namespace Alice.Combat
         public HitKind Kind => _kind;
         public MeleeAttackTimeline Timeline => new MeleeAttackTimeline(_windup, _active, _recovery);
         public float Reach => _reach;
+
+        /// <summary>Negative when the move also reaches behind the attacker, as a spin does.</summary>
+        public float ReachStart => _reachStart;
         public int Damage => _damage;
 
         public Vector2 HitboxSize => new Vector2(Mathf.Max(0f, _reach - _reachStart), _hitHeight);

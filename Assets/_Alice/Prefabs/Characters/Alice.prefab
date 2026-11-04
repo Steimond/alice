@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 204809514914667600}
   - component: {fileID: 3884842841104110453}
   - component: {fileID: 1142773703752504919}
+  - component: {fileID: 7378590559388501927}
   m_Layer: 0
   m_Name: Alice
   m_TagString: Untagged
@@ -328,6 +329,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Alice::Alice.UI.Hud
   _skin: {fileID: 11400000, guid: d8b293231129bff4aa1baa083857db40, type: 2}
+--- !u!114 &7378590559388501927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3149202531935547728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b39e0f1673ba3224d8264aa5a80747f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Alice::Alice.Player.PlayerLoadout
+  _equippedTechnique: spin_strike
 --- !u!1 &4379791829432753759
 GameObject:
   m_ObjectHideFlags: 0

@@ -191,6 +191,12 @@ namespace Alice.Editor
                     changed = true;
                 }
 
+                if (!root.TryGetComponent(out PlayerLoadout _))
+                {
+                    root.AddComponent<PlayerLoadout>();
+                    changed = true;
+                }
+
                 Alice.UI.HudSkin skin = EnsureHudSkin();
                 if (!root.TryGetComponent(out Alice.UI.Hud hud))
                 {
@@ -270,14 +276,13 @@ namespace Alice.Editor
             var variants = new List<EnemySpriteSet.DeathVariant>(sprites.DeathVariants ?? new EnemySpriteSet.DeathVariant[0]);
 
             // The stab death is the slow one: the soldier writhes on its knees before it falls.
-            AddVariant(variants, HitKind.Thrust, "card_soldier_stab_", SoldierStabFrameTime);
-            AddVariant(variants, HitKind.Spin, "card_soldier_behead_", SoldierBeheadFrameTime);
-            AddVariant(variants, HitKind.Counter, "card_soldier_execution_", SoldierExecutionFrameTime);
+            bool grown = AddVariant(variants, HitKind.Thrust, "card_soldier_stab_", SoldierStabFrameTime);
+            grown |= AddVariant(variants, HitKind.Spin, "card_soldier_behead_", SoldierBeheadFrameTime);
+            grown |= AddVariant(variants, HitKind.Counter, "card_soldier_execution_", SoldierExecutionFrameTime);
             // The execution death spans Alice's whole card_tear execution, so both sides end together.
-            AddVariant(variants, HitKind.Execution, "card_soldier_tear_", 0f, SoldierTearDuration);
+            grown |= AddVariant(variants, HitKind.Execution, "card_soldier_tear_", 0f, SoldierTearDuration);
 
-            bool changed = hurt != sprites.Hurt || opened != sprites.Opened
-                || variants.Count != (sprites.DeathVariants?.Length ?? 0);
+            bool changed = grown || hurt != sprites.Hurt || opened != sprites.Opened;
             if (changed)
             {
                 sprites.AssignReactions(hurt, opened, variants.ToArray());
@@ -285,24 +290,39 @@ namespace Alice.Editor
             }
         }
 
-        private static void AddVariant(List<EnemySpriteSet.DeathVariant> variants, HitKind kind, string prefix, float frameTime,
+        /// <summary>
+        /// Adds a missing death, or takes in frames appended to an existing one (e.g. the blood settling
+        /// after a beheading), keeping its tuned frame time. Returns true when the list changed.
+        /// </summary>
+        private static bool AddVariant(List<EnemySpriteSet.DeathVariant> variants, HitKind kind, string prefix, float frameTime,
             float totalTime = 0f)
         {
-            if (variants.Exists(variant => variant.Kind == kind))
-            {
-                return;
-            }
-
             Sprite[] frames = LoadFrames(prefix);
-            if (frames.Length > 0)
+            int index = variants.FindIndex(variant => variant.Kind == kind);
+            if (index >= 0)
             {
-                if (totalTime > 0f)
+                EnemySpriteSet.DeathVariant existing = variants[index];
+                if (frames.Length <= (existing.Frames?.Length ?? 0))
                 {
-                    frameTime = totalTime / frames.Length;
+                    return false;
                 }
 
-                variants.Add(new EnemySpriteSet.DeathVariant(kind, frames, frameTime));
+                variants[index] = new EnemySpriteSet.DeathVariant(kind, frames, existing.FrameTime);
+                return true;
             }
+
+            if (frames.Length == 0)
+            {
+                return false;
+            }
+
+            if (totalTime > 0f)
+            {
+                frameTime = totalTime / frames.Length;
+            }
+
+            variants.Add(new EnemySpriteSet.DeathVariant(kind, frames, frameTime));
+            return true;
         }
 
         private static bool IsEmpty(Sprite[] frames)

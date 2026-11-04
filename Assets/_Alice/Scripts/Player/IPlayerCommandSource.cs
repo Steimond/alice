@@ -20,6 +20,9 @@ namespace Alice.Player
         /// <summary>Time.time of the last Parry press, or negative infinity.</summary>
         float ParryPressedAt { get; }
 
+        /// <summary>Time.time of the last UseAbility press (the chosen special technique), or negative infinity.</summary>
+        float UseAbilityPressedAt { get; }
+
         /// <summary>Time.time of the last Heal press (smelling salts), or negative infinity.</summary>
         float HealPressedAt { get; }
 

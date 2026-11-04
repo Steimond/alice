@@ -1,10 +1,11 @@
 using System;
+using System.Linq;
 using Alice.Combat;
 using UnityEngine;
 
 namespace Alice.Player
 {
-    /// <summary>Alice's frames for one enemy type's execution.</summary>
+    /// <summary>Alice's frames for one enemy type's execution, or for one special technique, by ID.</summary>
     [Serializable]
     public struct ExecutionFrames
     {
@@ -106,13 +107,18 @@ namespace Alice.Player
         [SerializeField] private StrikeFrames _slash;
         [SerializeField] private StrikeFrames _airSlash;
 
+        [Header("Counter after a parry; the thrust stands in while it has no frames")]
+        [SerializeField] private StrikeFrames _counter;
+
         [Header("Executions, by the enemy type's execution ID")]
         [SerializeField] private ExecutionFrames[] _executions = new ExecutionFrames[0];
 
-        [Header("Parry: guard, deflect, hold, lower")]
+        [Header("Parry: guard, deflect, hold, lower, one after another")]
         [SerializeField] private Sprite[] _parry = new Sprite[0];
-        [Tooltip("After a caught blow the deflect frame shows this long, then the hold.")]
-        [SerializeField, Min(0f)] private float _parryDeflectTime = 0.1f;
+        [Tooltip("How many of the parry frames belong to the guard, the deflect, the hold and the lowering.")]
+        [SerializeField] private int[] _parryPhaseCounts = { 1, 1, 1, 1 };
+        [Tooltip("After a caught blow the deflect frames play over this time, then the hold.")]
+        [SerializeField, Min(0f)] private float _parryDeflectTime = 0.12f;
         [Tooltip("The guard frame shows this long when nothing is caught; the catch itself is timed by each blow.")]
         [SerializeField, Min(0f)] private float _parryGuardTime = 0.15f;
 
@@ -123,6 +129,64 @@ namespace Alice.Player
         [SerializeField] private Sprite[] _defeat = new Sprite[0];
         [Tooltip("The gasp at the rest and getting up, spread over the wake time.")]
         [SerializeField] private Sprite[] _wake = new Sprite[0];
+
+        [Header("Special techniques, by technique ID")]
+        [SerializeField] private ExecutionFrames[] _techniques = new ExecutionFrames[0];
+
+        [Header("Slide")]
+        [Tooltip("Dropping into the slide, shown first.")]
+        [SerializeField] private Sprite _slideDrop;
+        [Tooltip("Sliding on the back; alternates for the rest of the slide.")]
+        [SerializeField] private Sprite[] _slideLoop = new Sprite[0];
+        [Tooltip("Getting up, shown briefly after the slide if she stays on the ground.")]
+        [SerializeField] private Sprite _slideRise;
+        [SerializeField, Min(0.01f)] private float _slideDropTime = 0.06f;
+        [SerializeField, Min(0.01f)] private float _slideFrameTime = 0.08f;
+        [SerializeField, Min(0f)] private float _slideRiseTime = 0.08f;
+
+        public Sprite SlideDrop => _slideDrop;
+        public Sprite[] SlideLoop => _slideLoop;
+        public Sprite SlideRise => _slideRise;
+        public float SlideDropTime => _slideDropTime;
+        public float SlideFrameTime => _slideFrameTime;
+        public float SlideRiseTime => _slideRiseTime;
+        public bool HasSlide => _slideLoop != null && _slideLoop.Length > 0;
+
+        public void AssignSlide(Sprite drop, Sprite[] loop, Sprite rise)
+        {
+            _slideDrop = drop;
+            _slideLoop = loop;
+            _slideRise = rise;
+        }
+
+        public void AssignTechnique(string id, StrikeFrames frames)
+        {
+            var list = new System.Collections.Generic.List<ExecutionFrames>(_techniques ?? new ExecutionFrames[0]);
+            list.RemoveAll(entry => entry.Id == id);
+            list.Add(new ExecutionFrames(id, frames));
+            _techniques = list.ToArray();
+        }
+
+        public bool HasTechnique(string id)
+        {
+            return !TechniquePhases(id).IsEmpty;
+        }
+
+        public StrikeFrames TechniquePhases(string id)
+        {
+            if (_techniques != null)
+            {
+                foreach (ExecutionFrames entry in _techniques)
+                {
+                    if (entry.Id == id)
+                    {
+                        return entry.Frames;
+                    }
+                }
+            }
+
+            return default;
+        }
 
         [Tooltip("Smelling salts: the vial to the nose, the sniff, the jolt; spread over the use.")]
         [SerializeField] private Sprite[] _salts = new Sprite[0];
@@ -172,15 +236,32 @@ namespace Alice.Player
         public Sprite[] Parry => _parry;
         public float ParryDeflectTime => _parryDeflectTime;
         public float ParryGuardTime => _parryGuardTime;
-        public bool HasParry => _parry != null && _parry.Length >= ParryFrameCount;
-        public const int ParryFrameCount = 4;
+        public bool HasParry => _parry != null && _parryPhaseCounts != null && _parryPhaseCounts.Length == ParryPhaseCount
+            && _parry.Length == _parryPhaseCounts.Sum() && _parryPhaseCounts.All(count => count > 0);
+        public const int ParryPhaseCount = 4;
+
+        public Sprite[] ParryGuard => ParryPhase(0);
+        public Sprite[] ParryDeflect => ParryPhase(1);
+        public Sprite[] ParryHold => ParryPhase(2);
+        public Sprite[] ParryLower => ParryPhase(3);
+
+        private Sprite[] ParryPhase(int phase)
+        {
+            int start = _parryPhaseCounts.Take(phase).Sum();
+            return _parry.Skip(start).Take(_parryPhaseCounts[phase]).ToArray();
+        }
         public StrikeFrames Slash => _slash;
         public StrikeFrames AirSlash => _airSlash;
 
         /// <summary>Frames for a phase of a strike; empty when that strike has no frames yet.</summary>
         public Sprite[] StrikePhase(PlayerStrike strike, AttackPhase phase)
         {
-            // The counter is a deeper thrust: the same frames, held longer by its recovery.
+            if (strike == PlayerStrike.Counter && !_counter.IsEmpty)
+            {
+                return _counter.Phase(phase);
+            }
+
+            // Without its own frames the counter is a deeper thrust: the same frames, held longer.
             if (strike == PlayerStrike.Thrust || strike == PlayerStrike.Counter)
             {
                 return phase switch
@@ -224,15 +305,23 @@ namespace Alice.Player
             _thrustRecovery = recovery;
         }
 
+        public StrikeFrames Counter => _counter;
+
+        public void AssignCounter(StrikeFrames counter)
+        {
+            _counter = counter;
+        }
+
         public void AssignSlashes(StrikeFrames slash, StrikeFrames airSlash)
         {
             _slash = slash;
             _airSlash = airSlash;
         }
 
-        public void AssignParry(Sprite[] parry)
+        public void AssignParry(Sprite[] parry, int guard, int deflect, int hold, int lower)
         {
             _parry = parry;
+            _parryPhaseCounts = new[] { guard, deflect, hold, lower };
         }
 
         public void AssignExecution(string id, StrikeFrames frames)

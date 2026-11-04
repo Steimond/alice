@@ -53,6 +53,11 @@ namespace Alice.Combat
         [Tooltip("How long before the blow lands a parry may start and still catch it; 0 = cannot be parried.")]
         [SerializeField, Min(0f)] private float _parryWindow = 0.12f;
 
+        [Tooltip("A blow that lands freezes the enemy for this long, together with the attacker's strike.")]
+        [SerializeField, Min(0f)] private float _hitStop = 0.08f;
+
+        public float HitStop => _hitStop;
+
         [Header("Reward")]
         [Tooltip("Queen's decrees, the currency, dropped on defeat.")]
         [SerializeField, Min(0)] private int _decreeReward = 15;

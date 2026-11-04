@@ -228,6 +228,34 @@ namespace Alice.Editor
             Debug.Log($"ALICE_AUTOMATION captured {path}");
         }
 
+        [MenuItem("Alice/Automation/Press Slide")]
+        public static void PressSlide()
+        {
+            TapButton(Keyboard.current?.leftShiftKey);
+        }
+
+        [MenuItem("Alice/Automation/Press Ability")]
+        public static void PressAbility()
+        {
+            TapButton(Mouse.current?.rightButton);
+        }
+
+        /// <summary>Fills Alice's confidence, so a technique can be tried without beating enemies first.</summary>
+        [MenuItem("Alice/Automation/Fill Confidence")]
+        public static void FillConfidence()
+        {
+            RouteInput();
+            PlayerSpoils spoils = EditorApplication.isPlaying ? Object.FindAnyObjectByType<PlayerSpoils>() : null;
+            if (spoils == null || spoils.Confidence == null)
+            {
+                Debug.LogWarning("ALICE_AUTOMATION needs Alice in Play mode.");
+                return;
+            }
+
+            spoils.Confidence.Gain(spoils.Confidence.Max);
+            Debug.Log("ALICE_AUTOMATION confidence filled.");
+        }
+
         [MenuItem("Alice/Automation/Press Heal")]
         public static void PressHeal()
         {

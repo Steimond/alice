@@ -12,15 +12,17 @@ namespace Alice.Player
         Slash,
         AirSlash,
         Counter,
-        Execution
+        Execution,
+        Technique
     }
 
     /// <summary>
     /// Needle attacks (GDD section 4): on the ground a short combo — thrust, then a slash if Attack is
     /// pressed again before the thrust has recovered; in the air a slash. Right after a parry the attack is a deep
     /// counter thrust. Interact next to a stunned enemy executes it, in sync with the enemy and safe from
-    /// other blows; the execution is a choice, so Attack never starts one. Movement input is locked for the whole
-    /// strike, so recovery is a real commitment; only the combo cuts it short.
+    /// other blows; the execution is a choice, so Attack never starts one. UseAbility performs the special
+    /// technique chosen at a rest if Alice has the confidence to pay for it. Movement input is locked for the
+    /// whole strike, so recovery is a real commitment; only the combo cuts it short.
     /// </summary>
     [RequireComponent(typeof(PlayerMotor))]
     public sealed class PlayerAttack : MonoBehaviour, IHitImmunity
@@ -33,8 +35,13 @@ namespace Alice.Player
         private PlayerMotor _motor;
         private IPlayerCommandSource _commands;
         private PlayerParry _parry;
+        private PlayerLoadout _loadout;
+        private PlayerSpoils _spoils;
         private float _consumedAttackAt = float.NegativeInfinity;
         private float _consumedInteractAt = float.NegativeInfinity;
+        private float _consumedAbilityAt = float.NegativeInfinity;
+        private MeleeMove _techniqueMove;
+        private float _hitStopUntil;
         private float _startedAt;
         private int _facing;
         private bool _comboQueued;
@@ -45,6 +52,9 @@ namespace Alice.Player
 
         /// <summary>ID of the execution being played, for the matching frames.</summary>
         public string ExecutionId { get; private set; }
+
+        /// <summary>ID of the technique being performed, for the matching frames.</summary>
+        public string TechniqueId { get; private set; }
 
         public AttackPhase Phase => IsAttacking ? _timeline.PhaseAt(Time.time - _startedAt) : AttackPhase.None;
 
@@ -61,6 +71,7 @@ namespace Alice.Player
             PlayerStrike.Slash => _settings.Slash,
             PlayerStrike.AirSlash => _settings.AirSlash,
             PlayerStrike.Counter => _settings.Counter,
+            PlayerStrike.Technique => _techniqueMove,
             _ => _settings.Thrust
         };
 
@@ -74,6 +85,8 @@ namespace Alice.Player
             _motor = GetComponent<PlayerMotor>();
             _commands = GetComponent<IPlayerCommandSource>();
             _parry = GetComponent<PlayerParry>();
+            _loadout = GetComponent<PlayerLoadout>();
+            _spoils = GetComponent<PlayerSpoils>();
             if (_settings == null)
             {
                 Debug.LogError("PlayerAttack needs combat settings.", this);
@@ -102,6 +115,15 @@ namespace Alice.Player
                 return;
             }
 
+            // Hit-stop: the strike's clock stands still for a moment after a blow lands, so it feels heavy.
+            // Only this strike pauses; the game's time scale is never touched.
+            if (now < _hitStopUntil)
+            {
+                _startedAt += Time.fixedDeltaTime;
+                _motor.Lock(_timeline.Duration - (now - _startedAt));
+                return;
+            }
+
             AttackPhase phase = Phase;
             if (Strike == PlayerStrike.Thrust && phase != AttackPhase.Windup && HasFreshPress(now))
             {
@@ -126,10 +148,40 @@ namespace Alice.Player
             if (phase == AttackPhase.Active && Strike != PlayerStrike.Execution)
             {
                 MeleeMove move = CurrentMove;
-                HitInfo hit = new HitInfo(move.Damage, _facing, gameObject, move.Kind);
-                MeleeHitbox.Strike(_motor.Position + move.HitboxCenter(_facing), move.HitboxSize, hit, gameObject,
-                    _struck, _overlaps);
+                if (StrikeWith(move) > 0)
+                {
+                    _settings.ImpactOf(move.Kind, out float hitStop, out float shake);
+                    _hitStopUntil = now + hitStop;
+                    Impacts.Raise(shake);
+                }
             }
+        }
+
+        /// <summary>
+        /// A move that also reaches behind her (a spin) strikes each side with its own direction, so a body
+        /// behind Alice is thrown and falls away from her too.
+        /// </summary>
+        /// <returns>How many bodies the blow landed on.</returns>
+        private int StrikeWith(MeleeMove move)
+        {
+            if (move.ReachStart >= 0f)
+            {
+                HitInfo hit = new HitInfo(move.Damage, _facing, gameObject, move.Kind);
+                return MeleeHitbox.Strike(_motor.Position + move.HitboxCenter(_facing), move.HitboxSize, hit,
+                    gameObject, _struck, _overlaps);
+            }
+
+            float height = move.HitboxSize.y;
+            float centerHeight = move.HitboxCenter(_facing).y;
+            return StrikeSide(_facing, move.Reach, height, centerHeight, move)
+                + StrikeSide(-_facing, -move.ReachStart, height, centerHeight, move);
+        }
+
+        private int StrikeSide(int side, float reach, float height, float centerHeight, MeleeMove move)
+        {
+            HitInfo hit = new HitInfo(move.Damage, side, gameObject, move.Kind);
+            Vector2 center = _motor.Position + new Vector2(side * reach * 0.5f, centerHeight);
+            return MeleeHitbox.Strike(center, new Vector2(reach, height), hit, gameObject, _struck, _overlaps);
         }
 
         private void TryStart(float now)
@@ -145,6 +197,16 @@ namespace Alice.Player
             {
                 _consumedInteractAt = _commands.InteractPressedAt;
                 return;
+            }
+
+            if (_motor.IsGrounded
+                && InputBuffer.IsFresh(_commands.UseAbilityPressedAt, _consumedAbilityAt, now, _settings.AttackBufferTime))
+            {
+                _consumedAbilityAt = _commands.UseAbilityPressedAt;
+                if (TryTechnique(now))
+                {
+                    return;
+                }
             }
 
             if (!HasFreshPress(now))
@@ -166,6 +228,23 @@ namespace Alice.Player
             _facing = _motor.Facing;
             PlayerStrike strike = _motor.IsGrounded ? PlayerStrike.Thrust : PlayerStrike.AirSlash;
             Begin(strike, now, strike == PlayerStrike.Thrust ? _settings.Thrust.Timeline : _settings.AirSlash.Timeline);
+        }
+
+        /// <summary>The chosen technique, paid in full from confidence; without enough, nothing happens.</summary>
+        private bool TryTechnique(float now)
+        {
+            if (_loadout == null || _spoils == null || _spoils.Confidence == null
+                || !_settings.TryGetTechnique(_loadout.EquippedTechnique, out TechniqueSpec technique)
+                || !_spoils.Confidence.TrySpend(technique.ConfidenceCost))
+            {
+                return false;
+            }
+
+            _facing = _motor.Facing;
+            _techniqueMove = technique.Move;
+            TechniqueId = technique.Id;
+            Begin(PlayerStrike.Technique, now, technique.Move.Timeline);
+            return true;
         }
 
         /// <summary>Executes the nearest stunned enemy in reach on either side, if Alice has frames for it.</summary>

@@ -109,3 +109,7 @@
 3 ноября 2026, `animate_image_pixminimax`, 12 кадров, 2 генерации, job `ab777e4b-407c-4a63-98d6-86289f0a9573`. Описание (точно): «is executed: its flat card body is seized by the top edge and pulled forward, a thin needle stabs through the heart in the middle of the card, then the card body is ripped in half from top to bottom, the two torn paper halves split apart with glossy dark blood gushing from the tear, the spear drops, and the torn soldier collapses in two halves into a pool of blood». Кровь — `blood-palette.ps1`, полоса — `enemy-tear-strip-x4.png`.
 
 В игре `card_soldier_tear_00..14`: три кадра стойки, затем кадры 1–12, всё растянуто на 1,3 с казни Алисы, чтобы игла входила в черву вместе с её ударом, а карта рвалась, когда она разводит руки. Проверено в арене `Prototype_Combat` через `Alice/Automation`.
+
+## Оседание крови после обезглавливания
+
+4 ноября 2026, 1 генерация. Владелец: последний кадр обезглавливания выглядел как застывшие в воздухе брызги. `animate_image_pixminimax` продолжил последний сырой кадр («брызги падают и растекаются в спокойную лужу», job `57c8e9b6-a693-498e-9ccc-5bab8c9a85f8`, кадры в `enemy-behead-settle/`). Генератор при этом почти убрал кровь, поэтому взяты только кадры 1–3 с падающими каплями. `behead-settle.ps1` пропускает их через `blood-palette.ps1`, делает неподвижный финальный кадр без висящих капель и подкладывает в два последних кадра нижнюю полосу лужи из прежнего финала. В игре — `card_soldier_behead_07..10`, обезглавливание теперь 11 кадров.

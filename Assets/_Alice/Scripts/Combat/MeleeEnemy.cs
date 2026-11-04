@@ -48,6 +48,7 @@ namespace Alice.Combat
         private float _cooldownUntil;
         private float _lungeMoved;
         private bool _wasStunned;
+        private float _frozenUntil;
 
         public MeleeEnemySettings Settings
         {
@@ -126,6 +127,13 @@ namespace Alice.Combat
 
         private void FixedUpdate()
         {
+            // Hit-stop: the body holds still for a moment after a blow, its state clock and frames with it.
+            if (Time.time < _frozenUntil)
+            {
+                _stateStartedAt += Time.fixedDeltaTime;
+                return;
+            }
+
             IsWalking = false;
             switch (CurrentState)
             {
@@ -245,6 +253,8 @@ namespace Alice.Combat
 
         private void OnDamaged(HitInfo hit)
         {
+            // The state entered below (stagger, stun, death) starts after the freeze.
+            _frozenUntil = Time.time + _settings.HitStop;
             if (_health.IsDead)
             {
                 return;

@@ -13,6 +13,7 @@ namespace Alice.Player
         private InputAction _parry;
         private InputAction _interact;
         private InputAction _heal;
+        private InputAction _useAbility;
 
         public Vector2 Move { get; private set; }
         public bool JumpHeld { get; private set; }
@@ -22,6 +23,7 @@ namespace Alice.Player
         public float ParryPressedAt { get; private set; } = float.NegativeInfinity;
         public float InteractPressedAt { get; private set; } = float.NegativeInfinity;
         public float HealPressedAt { get; private set; } = float.NegativeInfinity;
+        public float UseAbilityPressedAt { get; private set; } = float.NegativeInfinity;
 
         private void Awake()
         {
@@ -40,6 +42,7 @@ namespace Alice.Player
             _parry = actions.FindAction("Gameplay/Parry", true);
             _interact = actions.FindAction("Gameplay/Interact", true);
             _heal = actions.FindAction("Gameplay/Heal", true);
+            _useAbility = actions.FindAction("Gameplay/UseAbility", true);
         }
 
         private void OnEnable()
@@ -79,6 +82,11 @@ namespace Alice.Player
             if (_heal.WasPressedThisFrame())
             {
                 HealPressedAt = Time.time;
+            }
+
+            if (_useAbility.WasPressedThisFrame())
+            {
+                UseAbilityPressedAt = Time.time;
             }
         }
     }

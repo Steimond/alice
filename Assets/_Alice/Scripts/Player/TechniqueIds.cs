@@ -1,0 +1,8 @@
+namespace Alice.Player
+{
+    /// <summary>Stable IDs of the needle's special techniques, used by data, frames and saves.</summary>
+    public static class TechniqueIds
+    {
+        public const string SpinStrike = "spin_strike";
+    }
+}

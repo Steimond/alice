@@ -28,6 +28,9 @@ namespace Alice.Player
         private PlayerParry _parryAction;
         private PlayerDamageReaction _damage;
         private PlayerSalts _salts;
+        private bool _wasSliding;
+        private float _slideElapsed;
+        private float _riseUntil;
 
         public void Bind(PlayerMotor motor, PlayerSpriteSet sprites, SpriteRenderer renderer,
             SpriteRenderer placeholderBody, SpriteRenderer placeholderMarker)
@@ -54,7 +57,8 @@ namespace Alice.Player
                 return;
             }
 
-            bool drawn = !_motor.IsSliding;
+            // The grey-box body stands in only while a slide has no frames yet.
+            bool drawn = !_motor.IsSliding || _sprites.HasSlide;
             _renderer.enabled = drawn;
             if (_placeholderBody != null)
             {
@@ -69,6 +73,14 @@ namespace Alice.Player
             if (!drawn)
             {
                 _runDistance = 0f;
+                return;
+            }
+
+            Sprite slide = SelectSlideSprite();
+            if (slide != null)
+            {
+                _renderer.flipX = _motor.Facing < 0;
+                _renderer.sprite = slide;
                 return;
             }
 
@@ -98,6 +110,44 @@ namespace Alice.Player
 
             _renderer.flipX = _motor.Facing < 0;
             _renderer.sprite = SelectSprite();
+        }
+
+        /// <summary>The drop, the slide on her back while it lasts, then a moment getting up on the ground.</summary>
+        private Sprite SelectSlideSprite()
+        {
+            if (!_sprites.HasSlide)
+            {
+                return null;
+            }
+
+            if (_motor.IsSliding)
+            {
+                if (!_wasSliding)
+                {
+                    _wasSliding = true;
+                    _slideElapsed = 0f;
+                }
+
+                _slideElapsed += Time.deltaTime;
+                if (_slideElapsed < _sprites.SlideDropTime && _sprites.SlideDrop != null)
+                {
+                    return _sprites.SlideDrop;
+                }
+
+                Sprite[] loop = _sprites.SlideLoop;
+                int frame = Mathf.FloorToInt((_slideElapsed - _sprites.SlideDropTime) / _sprites.SlideFrameTime);
+                return loop[Mathf.Max(0, frame) % loop.Length];
+            }
+
+            if (_wasSliding)
+            {
+                _wasSliding = false;
+                _riseUntil = Time.time + _sprites.SlideRiseTime;
+            }
+
+            bool rising = Time.time < _riseUntil && _motor.IsGrounded && _sprites.SlideRise != null
+                && (_attack == null || !_attack.IsAttacking);
+            return rising ? _sprites.SlideRise : null;
         }
 
         /// <summary>Defeat and waking override everything; the flinch overrides all but them.</summary>
@@ -144,9 +194,12 @@ namespace Alice.Player
                 return null;
             }
 
-            Sprite[] frames = _attack.Strike == PlayerStrike.Execution
-                ? _sprites.ExecutionPhases(_attack.ExecutionId).Phase(_attack.Phase)
-                : _sprites.StrikePhase(_attack.Strike, _attack.Phase);
+            Sprite[] frames = _attack.Strike switch
+            {
+                PlayerStrike.Execution => _sprites.ExecutionPhases(_attack.ExecutionId).Phase(_attack.Phase),
+                PlayerStrike.Technique => _sprites.TechniquePhases(_attack.TechniqueId).Phase(_attack.Phase),
+                _ => _sprites.StrikePhase(_attack.Strike, _attack.Phase)
+            };
             if (frames == null || frames.Length == 0)
             {
                 return null;
@@ -167,21 +220,25 @@ namespace Alice.Player
                 return null;
             }
 
-            Sprite[] frames = _sprites.Parry;
             PlayerCombatSettings settings = _parryAction.Settings;
             if (_parryAction.Succeeded)
             {
-                return Time.time - _parryAction.SucceededAt < _sprites.ParryDeflectTime ? frames[1] : frames[2];
+                float sinceCatch = Time.time - _parryAction.SucceededAt;
+                return sinceCatch < _sprites.ParryDeflectTime
+                    ? Spread(_sprites.ParryDeflect, sinceCatch / _sprites.ParryDeflectTime)
+                    : Spread(_sprites.ParryHold, 0f);
             }
 
             float elapsed = _parryAction.Elapsed;
             if (elapsed <= _sprites.ParryGuardTime)
             {
-                return frames[0];
+                return Spread(_sprites.ParryGuard, elapsed / _sprites.ParryGuardTime);
             }
 
+            // Nothing caught: she holds high for the first half of what is left, then lowers.
             float rest = Mathf.Max(0.01f, settings.ParryDuration - _sprites.ParryGuardTime);
-            return (elapsed - _sprites.ParryGuardTime) / rest < 0.5f ? frames[2] : frames[3];
+            float late = (elapsed - _sprites.ParryGuardTime) / rest;
+            return late < 0.5f ? Spread(_sprites.ParryHold, late * 2f) : Spread(_sprites.ParryLower, late * 2f - 1f);
         }
 
         private Sprite SelectSprite()

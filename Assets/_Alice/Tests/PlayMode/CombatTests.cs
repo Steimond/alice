@@ -41,6 +41,7 @@ namespace Alice.Tests
             alice.AddComponent<PlayerDamageReaction>().Settings = combat;
             alice.AddComponent<PlayerSalts>().Settings = combat;
             alice.AddComponent<PlayerSpoils>().Settings = combat;
+            alice.AddComponent<PlayerLoadout>();
             alice.SetActive(true);
 
             yield return Steps(10);
@@ -134,6 +135,38 @@ namespace Alice.Tests
         }
 
         [UnityTest]
+        public IEnumerator SpinStrike_CostsConfidence_HitsBothSidesAndBeheads()
+        {
+            PlayerSpoils spoils = _motor.GetComponent<PlayerSpoils>();
+            PlayerAttack attack = _motor.GetComponent<PlayerAttack>();
+            _commands.UseAbilityPressedAt = Time.time;
+            yield return Steps(3);
+            Assert.That(attack.IsAttacking, Is.False, "Without enough confidence the technique does not start.");
+
+            spoils.Confidence.Gain(100f);
+            MeleeEnemy front = CreateSoldier(_motor.Position.x + 1.6f, -1);
+            MeleeEnemy behind = CreateSoldier(_motor.Position.x - 1.6f, 1);
+            yield return Steps(2);
+            _commands.UseAbilityPressedAt = Time.time;
+            yield return Steps(2);
+            Assert.That(attack.Strike, Is.EqualTo(PlayerStrike.Technique));
+            Assert.That(attack.TechniqueId, Is.EqualTo(TechniqueIds.SpinStrike));
+            Assert.That(spoils.Confidence.Current, Is.LessThan(100f), "The technique is paid for at once.");
+
+            float timeout = Time.time + 2f;
+            while ((front.CurrentState != MeleeEnemy.State.Dead || behind.CurrentState != MeleeEnemy.State.Dead)
+                && Time.time < timeout)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+
+            Assert.That(front.CurrentState, Is.EqualTo(MeleeEnemy.State.Dead));
+            Assert.That(behind.CurrentState, Is.EqualTo(MeleeEnemy.State.Dead), "The spin reaches behind her too.");
+            Assert.That(front.KillingBlow, Is.EqualTo(Alice.Core.HitKind.Spin), "A killing spin beheads.");
+            Assert.That(behind.Facing, Is.EqualTo(1), "The one behind falls away from her, facing her back.");
+        }
+
+        [UnityTest]
         public IEnumerator Salts_AtFullClarity_StillSpendTheCharge()
         {
             PlayerSalts salts = _motor.GetComponent<PlayerSalts>();
@@ -194,6 +227,8 @@ namespace Alice.Tests
                 seen.Add(renderer.sprite);
             }
 
+            // The strike ends in a physics step; the view catches up in the next drawn frame.
+            yield return null;
             Assert.That(seen, Is.SupersetOf(new[] { windup, active, recovery }));
             Assert.That(renderer.sprite, Is.EqualTo(idle), "Alice returns to standing after the thrust.");
         }
@@ -404,6 +439,7 @@ namespace Alice.Tests
             public float ParryPressedAt { get; set; } = float.NegativeInfinity;
             public float InteractPressedAt { get; set; } = float.NegativeInfinity;
             public float HealPressedAt { get; set; } = float.NegativeInfinity;
+            public float UseAbilityPressedAt { get; set; } = float.NegativeInfinity;
         }
     }
 }

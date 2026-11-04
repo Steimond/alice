@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using Alice.Combat;
 using Alice.Player;
 using UnityEditor;
 using UnityEngine;
@@ -22,11 +23,20 @@ namespace Alice.Editor
         private const string LandPrefix = "alice_trial_land_";
         private const string StepOffPrefix = "alice_trial_stepoff_";
         private const string ThrustPrefix = "alice_trial_thrust_";
-        // Each strike is generated as five frames: wind-up, two of the blow, two of the return.
-        private const int ThrustFrameCount = 5;
         private const string SlashPrefix = "alice_trial_slash_";
         private const string AirSlashPrefix = "alice_trial_airslash_";
+        private const string CounterPrefix = "alice_trial_counter_";
         private const string ParryPrefix = "alice_trial_parry_";
+
+        // The combat moves are 12-frame animations with anticipation and follow-through (owner, 4 Nov 2026).
+        // Frames per phase: wind-up, the blow, recovery.
+        private static readonly int[] ThrustSplit = { 3, 3, 6 };
+        private static readonly int[] SlashSplit = { 4, 3, 5 };
+        private static readonly int[] AirSlashSplit = { 5, 3, 4 };
+        // The counter's long recovery holds the buried needle before wrenching it out.
+        private static readonly int[] CounterSplit = { 1, 3, 8 };
+        // Guard, deflect, hold, lower.
+        private static readonly int[] ParrySplit = { 4, 3, 2, 3 };
         // Alice's side of the card soldier's execution; the ID matches MeleeEnemySettings and AliceCombat.
         private const string CardExecutionPrefix = "alice_trial_exec_card_";
         private const string CardExecutionId = "card_tear";
@@ -34,6 +44,8 @@ namespace Alice.Editor
         private const string DefeatPrefix = "alice_trial_defeat_";
         private const string WakePrefix = "alice_trial_wake_";
         private const string SaltsPrefix = "alice_trial_salts_";
+        private const string SlidePrefix = "alice_trial_slide_";
+        private const string SpinPrefix = "alice_trial_spin_";
         // Jump frames from the generation: takeoff, three rise frames, apex tuck, apex opening, fall start.
         private const int JumpFrameCount = 7;
         private const string SpriteSetPath = Root + "/Data/Player/AliceSprites.asset";
@@ -115,35 +127,38 @@ namespace Alice.Editor
                 }
             }
 
-            if (!sprites.HasThrust)
+            // Reassigned whenever the frames on disk no longer match what the set holds.
+            Sprite[] thrust = LoadFrames(ThrustPrefix);
+            if (NeedsStrike(thrust, ThrustSplit, sprites.StrikePhase(PlayerStrike.Thrust, AttackPhase.Windup),
+                    sprites.StrikePhase(PlayerStrike.Thrust, AttackPhase.Active),
+                    sprites.StrikePhase(PlayerStrike.Thrust, AttackPhase.Recovery)))
             {
-                Sprite[] thrust = LoadFrames(ThrustPrefix);
-                if (thrust.Length == ThrustFrameCount)
-                {
-                    sprites.AssignThrust(new[] { thrust[0] }, new[] { thrust[1], thrust[2] }, new[] { thrust[3], thrust[4] });
-                    EditorUtility.SetDirty(sprites);
-                }
+                StrikeFrames split = Split(thrust, ThrustSplit);
+                sprites.AssignThrust(split.Phase(AttackPhase.Windup), split.Phase(AttackPhase.Active),
+                    split.Phase(AttackPhase.Recovery));
+                EditorUtility.SetDirty(sprites);
             }
 
-            if (sprites.Slash.IsEmpty && sprites.AirSlash.IsEmpty)
+            Sprite[] slash = LoadFrames(SlashPrefix);
+            Sprite[] airSlash = LoadFrames(AirSlashPrefix);
+            if (NeedsStrike(slash, SlashSplit, sprites.Slash) || NeedsStrike(airSlash, AirSlashSplit, sprites.AirSlash))
             {
-                Sprite[] slash = LoadFrames(SlashPrefix);
-                Sprite[] airSlash = LoadFrames(AirSlashPrefix);
-                if (slash.Length == ThrustFrameCount && airSlash.Length == ThrustFrameCount)
-                {
-                    sprites.AssignSlashes(SplitStrike(slash), SplitStrike(airSlash));
-                    EditorUtility.SetDirty(sprites);
-                }
+                sprites.AssignSlashes(Split(slash, SlashSplit), Split(airSlash, AirSlashSplit));
+                EditorUtility.SetDirty(sprites);
             }
 
-            if (!sprites.HasParry)
+            Sprite[] counter = LoadFrames(CounterPrefix);
+            if (NeedsStrike(counter, CounterSplit, sprites.Counter))
             {
-                Sprite[] parry = LoadFrames(ParryPrefix);
-                if (parry.Length == PlayerSpriteSet.ParryFrameCount)
-                {
-                    sprites.AssignParry(parry);
-                    EditorUtility.SetDirty(sprites);
-                }
+                sprites.AssignCounter(Split(counter, CounterSplit));
+                EditorUtility.SetDirty(sprites);
+            }
+
+            Sprite[] parry = LoadFrames(ParryPrefix);
+            if (parry.Length == ParrySplit.Sum() && (!sprites.HasParry || sprites.Parry.Length != parry.Length))
+            {
+                sprites.AssignParry(parry, ParrySplit[0], ParrySplit[1], ParrySplit[2], ParrySplit[3]);
+                EditorUtility.SetDirty(sprites);
             }
 
             if (!sprites.HasExecution(CardExecutionId))
@@ -170,6 +185,31 @@ namespace Alice.Editor
                 }
             }
 
+            if (!sprites.HasSlide)
+            {
+                // Drop, two frames on the back, getting up.
+                Sprite[] slide = LoadFrames(SlidePrefix);
+                if (slide.Length == 4)
+                {
+                    sprites.AssignSlide(slide[0], new[] { slide[1], slide[2] }, slide[3]);
+                    EditorUtility.SetDirty(sprites);
+                }
+            }
+
+            // A real turn drawn frame by frame, 16 frames: sinking and coiling | the whip round through the back,
+            // the far side and the front into the lunge | overbalancing and straightening up.
+            // Reassigned whenever the number of frames on disk changes.
+            Sprite[] spin = LoadFrames(SpinPrefix);
+            StrikeFrames spinPhases = sprites.TechniquePhases(TechniqueIds.SpinStrike);
+            int assignedSpin = (spinPhases.Phase(AttackPhase.Windup)?.Length ?? 0)
+                + (spinPhases.Phase(AttackPhase.Active)?.Length ?? 0) + (spinPhases.Phase(AttackPhase.Recovery)?.Length ?? 0);
+            if (spin.Length == 16 && assignedSpin != spin.Length)
+            {
+                sprites.AssignTechnique(TechniqueIds.SpinStrike, new StrikeFrames(spin.Take(4).ToArray(),
+                    spin.Skip(4).Take(8).ToArray(), spin.Skip(12).ToArray()));
+                EditorUtility.SetDirty(sprites);
+            }
+
             if (sprites.Salts == null || sprites.Salts.Length == 0)
             {
                 Sprite[] salts = LoadFrames(SaltsPrefix);
@@ -183,10 +223,29 @@ namespace Alice.Editor
             return sprites;
         }
 
-        /// <summary>Strikes are generated as wind-up, two frames of the blow and two of the return.</summary>
-        private static StrikeFrames SplitStrike(Sprite[] frames)
+        /// <summary>Wind-up, blow and recovery frames, in order, by the given counts.</summary>
+        private static StrikeFrames Split(Sprite[] frames, int[] split)
         {
-            return new StrikeFrames(new[] { frames[0] }, new[] { frames[1], frames[2] }, new[] { frames[3], frames[4] });
+            return new StrikeFrames(frames.Take(split[0]).ToArray(), frames.Skip(split[0]).Take(split[1]).ToArray(),
+                frames.Skip(split[0] + split[1]).Take(split[2]).ToArray());
+        }
+
+        private static bool NeedsStrike(Sprite[] onDisk, int[] split, StrikeFrames current)
+        {
+            return NeedsStrike(onDisk, split, current.Phase(AttackPhase.Windup), current.Phase(AttackPhase.Active),
+                current.Phase(AttackPhase.Recovery));
+        }
+
+        /// <summary>True when the frames on disk are complete and differ from what the set holds.</summary>
+        private static bool NeedsStrike(Sprite[] onDisk, int[] split, Sprite[] windup, Sprite[] active, Sprite[] recovery)
+        {
+            if (onDisk.Length != split.Sum())
+            {
+                return false;
+            }
+
+            Sprite[] held = (windup ?? new Sprite[0]).Concat(active ?? new Sprite[0]).Concat(recovery ?? new Sprite[0]).ToArray();
+            return !held.SequenceEqual(onDisk) || (windup?.Length ?? 0) != split[0] || (active?.Length ?? 0) != split[1];
         }
 
         private static Sprite[] LoadFrames(string prefix)

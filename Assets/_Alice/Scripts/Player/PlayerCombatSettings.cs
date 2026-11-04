@@ -37,6 +37,26 @@ namespace Alice.Player
         public float Distance => _distance;
     }
 
+    /// <summary>A special technique (GDD section 4): its strike and the share of confidence it costs.</summary>
+    [System.Serializable]
+    public struct TechniqueSpec
+    {
+        [SerializeField] private string _id;
+        [SerializeField] private MeleeMove _move;
+        [SerializeField, Min(0f)] private float _confidenceCost;
+
+        public TechniqueSpec(string id, MeleeMove move, float confidenceCost)
+        {
+            _id = id;
+            _move = move;
+            _confidenceCost = confidenceCost;
+        }
+
+        public string Id => _id;
+        public MeleeMove Move => _move;
+        public float ConfidenceCost => _confidenceCost;
+    }
+
     [CreateAssetMenu(menuName = "Alice/Player Combat Settings", fileName = "AliceCombat")]
     public sealed class PlayerCombatSettings : ScriptableObject
     {
@@ -58,6 +78,15 @@ namespace Alice.Player
         [SerializeField, Min(0.01f)] private float _wakeTime = 1f;
         [SerializeField, Min(0.01f)] private float _wakeFadeTime = 0.35f;
 
+        [Header("Impact: a landed blow freezes Alice's strike for a moment and shakes the camera")]
+        [SerializeField, Min(0f)] private float _hitStop = 0.06f;
+        [Tooltip("Spin and counter: the heavy blows hold longer.")]
+        [SerializeField, Min(0f)] private float _heavyHitStop = 0.11f;
+        [SerializeField, Min(0f)] private float _hitShakePixels = 1f;
+        [SerializeField, Min(0f)] private float _heavyHitShakePixels = 2f;
+        [Tooltip("When Alice herself is hit.")]
+        [SerializeField, Min(0f)] private float _hurtShakePixels = 2f;
+
         [Header("Smelling salts: restore clarity")]
         [SerializeField, Min(0)] private int _saltCharges = 2;
         [Tooltip("Share of the clarity scale one charge restores.")]
@@ -73,13 +102,21 @@ namespace Alice.Player
         [Tooltip("An execution gives this many times the enemy's ordinary confidence reward.")]
         [SerializeField, Min(1f)] private float _executionConfidenceFactor = 3f;
 
+        [Header("Special techniques: chosen at a rest, used with UseAbility, paid in confidence")]
+        [Tooltip("Spin strike: the needle sweeps all round, behind and in front; a killing spin beheads. A visible coil, a whip round long enough for the turn to read, then the overbalance.")]
+        [SerializeField] private TechniqueSpec[] _techniques =
+        {
+            new TechniqueSpec(TechniqueIds.SpinStrike,
+                new MeleeMove(HitKind.Spin, 0.18f, 0.32f, 0.26f, -2.2f, 2.2f, 1.6f, 2f, 3), 30f)
+        };
+
         [Header("Needle")]
         [Tooltip("First hit on the ground: far and narrow.")]
-        [SerializeField] private MeleeMove _thrust = new MeleeMove(HitKind.Thrust, 0.07f, 0.1f, 0.2f, 0.2f, 2.75f, 0.5f, 1.6f, 1);
+        [SerializeField] private MeleeMove _thrust = new MeleeMove(HitKind.Thrust, 0.1f, 0.1f, 0.3f, 0.2f, 2.75f, 0.5f, 1.6f, 1);
         [Tooltip("Second hit of the combo: a wide arc in front.")]
-        [SerializeField] private MeleeMove _slash = new MeleeMove(HitKind.Slash, 0.08f, 0.12f, 0.28f, 0f, 2f, 2.6f, 1.5f, 1);
+        [SerializeField] private MeleeMove _slash = new MeleeMove(HitKind.Slash, 0.14f, 0.1f, 0.3f, 0f, 2f, 2.6f, 1.5f, 1);
         [Tooltip("Attack in the air: the same arc, reaching below the feet.")]
-        [SerializeField] private MeleeMove _airSlash = new MeleeMove(HitKind.Slash, 0.06f, 0.12f, 0.2f, 0f, 2f, 2.6f, 1.2f, 1);
+        [SerializeField] private MeleeMove _airSlash = new MeleeMove(HitKind.Slash, 0.12f, 0.1f, 0.2f, 0f, 2f, 2.6f, 1.2f, 1);
         [SerializeField, Range(0f, 0.2f)] private float _attackBufferTime = 0.12f;
 
         [Header("Parry and counter")]
@@ -102,6 +139,16 @@ namespace Alice.Player
         public float HitInvulnerability => _hitInvulnerability;
         public Vector2 KnockbackVelocity => _knockbackVelocity;
         public float KnockbackTime => _knockbackTime;
+        public float HurtShakePixels => _hurtShakePixels;
+
+        /// <summary>How long a landed blow of this kind freezes the strike, and how hard it shakes the camera.</summary>
+        public void ImpactOf(HitKind kind, out float hitStop, out float shakePixels)
+        {
+            bool heavy = kind == HitKind.Spin || kind == HitKind.Counter;
+            hitStop = heavy ? _heavyHitStop : _hitStop;
+            shakePixels = heavy ? _heavyHitShakePixels : _hitShakePixels;
+        }
+
         public int SaltCharges => _saltCharges;
         public float SaltRestoreShare => _saltRestoreShare;
         public float SaltTime => _saltTime;
@@ -131,6 +178,21 @@ namespace Alice.Player
             foreach (ExecutionSpec candidate in _executions)
             {
                 if (candidate.Id == id)
+                {
+                    spec = candidate;
+                    return true;
+                }
+            }
+
+            spec = default;
+            return false;
+        }
+
+        public bool TryGetTechnique(string id, out TechniqueSpec spec)
+        {
+            foreach (TechniqueSpec candidate in _techniques)
+            {
+                if (!string.IsNullOrEmpty(id) && candidate.Id == id)
                 {
                     spec = candidate;
                     return true;

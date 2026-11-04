@@ -10,7 +10,8 @@ param(
     [string]$NeedleOverrides,    # JSON: per frame {x, y, deg} in source pixels, for poses the generator did not follow
     [double]$NeedleAngle = 205,  # degrees, 0 = +x; 205 = trailing back and slightly down
     [double]$NeedleSwing = 0.6,  # share of the upper-arm swing passed on to the needle
-    [int]$NeedleLength = 32
+    [int]$NeedleLength = 32,
+    [switch]$SkipNeedle          # leave the hands empty; needle.ps1 draws a needle that turns with the body
 )
 Add-Type -AssemblyName System.Drawing
 New-Item -ItemType Directory -Force $OutDir | Out-Null
@@ -89,6 +90,13 @@ for ($i = 0; $i -lt $files.Count; $i++)
         if ($tx -ge 0 -and $tx -lt 128 -and $ty -ge 0 -and $ty -lt 80) { $out.SetPixel($tx, $ty, (Nearest $p)) }
     } }
     $src.Dispose()
+
+    if ($SkipNeedle)
+    {
+        $out.Save((Join-Path $OutDir ("run-{0:D2}.png" -f $i)), [System.Drawing.Imaging.ImageFormat]::Png)
+        $out.Dispose()
+        continue
+    }
 
     # Needle on the near hand. The generator puts the hand only roughly where the skeleton asked,
     # so snap to the nearest skin-coloured pixel around the requested wrist.

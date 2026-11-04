@@ -211,6 +211,7 @@ namespace Alice.Tests
             public float ParryPressedAt { get; set; } = float.NegativeInfinity;
             public float InteractPressedAt { get; set; } = float.NegativeInfinity;
             public float HealPressedAt { get; set; } = float.NegativeInfinity;
+            public float UseAbilityPressedAt { get; set; } = float.NegativeInfinity;
 
             public void PressJump()
             {

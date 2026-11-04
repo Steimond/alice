@@ -22,6 +22,11 @@ MonoBehaviour:
   _defeatDarkTime: 0.5
   _wakeTime: 1
   _wakeFadeTime: 0.35
+  _hitStop: 0.06
+  _heavyHitStop: 0.11
+  _hitShakePixels: 1
+  _heavyHitShakePixels: 2
+  _hurtShakePixels: 2
   _saltCharges: 2
   _saltRestoreShare: 0.4
   _saltTime: 0.8
@@ -29,11 +34,24 @@ MonoBehaviour:
   _saltBufferTime: 0.1
   _confidenceMax: 100
   _executionConfidenceFactor: 3
+  _techniques:
+  - _id: spin_strike
+    _move:
+      _kind: 3
+      _windup: 0.18
+      _active: 0.32
+      _recovery: 0.26
+      _reachStart: -2.2
+      _reach: 2.2
+      _hitHeight: 1.6
+      _hitCenterHeight: 2
+      _damage: 3
+    _confidenceCost: 30
   _thrust:
     _kind: 1
-    _windup: 0.07
+    _windup: 0.1
     _active: 0.1
-    _recovery: 0.2
+    _recovery: 0.3
     _reachStart: 0.2
     _reach: 2.75
     _hitHeight: 0.5
@@ -41,9 +59,9 @@ MonoBehaviour:
     _damage: 1
   _slash:
     _kind: 2
-    _windup: 0.08
-    _active: 0.12
-    _recovery: 0.28
+    _windup: 0.14
+    _active: 0.1
+    _recovery: 0.3
     _reachStart: 0
     _reach: 2
     _hitHeight: 2.6
@@ -51,8 +69,8 @@ MonoBehaviour:
     _damage: 1
   _airSlash:
     _kind: 2
-    _windup: 0.06
-    _active: 0.12
+    _windup: 0.12
+    _active: 0.1
     _recovery: 0.2
     _reachStart: 0
     _reach: 2

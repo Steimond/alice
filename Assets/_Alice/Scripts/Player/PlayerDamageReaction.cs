@@ -129,6 +129,7 @@ namespace Alice.Player
                 _attack.Cancel();
             }
 
+            Impacts.Raise(_settings.HurtShakePixels);
             if (_health.IsDead)
             {
                 return;
