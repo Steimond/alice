@@ -13,6 +13,31 @@ MonoBehaviour:
   m_Name: AliceSprites
   m_EditorClassIdentifier: Alice::Alice.Player.PlayerSpriteSet
   _idle: {fileID: 21300000, guid: c79e7f12d4d861540a7e89624c8eafcb, type: 3}
+  _idleBreath:
+  - {fileID: 21300000, guid: c79e7f12d4d861540a7e89624c8eafcb, type: 3}
+  - {fileID: 21300000, guid: e60a25ab02bd94b42af9617bc67faa7c, type: 3}
+  - {fileID: 21300000, guid: 0560ad89e1e2e60468dddde3535b0bda, type: 3}
+  - {fileID: 21300000, guid: 3daa7df83957abc4390f82ac34db19cb, type: 3}
+  _idleFrameTime: 0.3
+  _idleFidget:
+  - {fileID: 21300000, guid: fbf4b5e8aeeee9c47ac2ea2dba1b17f4, type: 3}
+  - {fileID: 21300000, guid: 74fc61e46f3885147836b9bc88b6d77a, type: 3}
+  - {fileID: 21300000, guid: 134f3bb1871178040baf8dda615ba1e5, type: 3}
+  - {fileID: 21300000, guid: 291386772cbc3cb43ab3bc4befa26ade, type: 3}
+  - {fileID: 21300000, guid: 3ecc0a585c1a7224c8d8889f9375a6cd, type: 3}
+  - {fileID: 21300000, guid: cb50a47376763cd4ba8b011325ceb6f1, type: 3}
+  - {fileID: 21300000, guid: 220011d048d40c64f8dd6dee286bc624, type: 3}
+  - {fileID: 21300000, guid: bbac44da549ef8c44a2bdce2d364dee9, type: 3}
+  - {fileID: 21300000, guid: 8dd5df2032bb4974ba146e424a42790a, type: 3}
+  - {fileID: 21300000, guid: 01125e7807f986f45b37a689f54dd425, type: 3}
+  - {fileID: 21300000, guid: e253a57f7c2d37941b06c1f192021e87, type: 3}
+  - {fileID: 21300000, guid: 3040ae2cb9c68f84eb074a12c79c2ba5, type: 3}
+  - {fileID: 21300000, guid: 0ec1fa841bbe1284db3abadcd5607b58, type: 3}
+  - {fileID: 21300000, guid: a4178af78cf2ca347945b69ffa7a1662, type: 3}
+  - {fileID: 21300000, guid: 3af85337a4d7dfa43a098588e33a3a30, type: 3}
+  - {fileID: 21300000, guid: eb7576f34efbdbe439bfd7e34c109559, type: 3}
+  _idleFidgetFrameTime: 0.15
+  _idleFidgetDelay: 6
   _run:
   - {fileID: 21300000, guid: 1e3d3536b07cfdc4aa882987f7b157db, type: 3}
   - {fileID: 21300000, guid: 3b542c4131bcb8e439b5330f77125a49, type: 3}

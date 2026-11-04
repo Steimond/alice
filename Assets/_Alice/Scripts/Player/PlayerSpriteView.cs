@@ -18,6 +18,8 @@ namespace Alice.Player
         [SerializeField] private SpriteRenderer _placeholderMarker;
 
         private float _runDistance;
+        private float _idleTime;
+        private int _idleFrame = -2;
         private bool _wasAirborne;
         private bool _jumped;
         private float _airTime;
@@ -293,7 +295,7 @@ namespace Alice.Player
                     _landing = false;
                 }
 
-                return _sprites.Idle;
+                return IdleFrame();
             }
 
             // Running on after touchdown skips the crouch: it would read as a stumble.
@@ -359,6 +361,22 @@ namespace Alice.Player
 
             Sprite[] loop = _sprites.FallLoop;
             return loop[Mathf.FloorToInt(loopTime / _sprites.FallFrameTime) % loop.Length];
+        }
+
+        private Sprite IdleFrame()
+        {
+            // Any frame drawn with something else restarts the breath, so stopping always begins at the stance.
+            if (_idleFrame != Time.frameCount - 1)
+            {
+                _idleTime = 0f;
+            }
+            else
+            {
+                _idleTime += Time.deltaTime;
+            }
+
+            _idleFrame = Time.frameCount;
+            return _sprites.IdleAt(_idleTime);
         }
 
         private Sprite RunFrame(Sprite[] run)

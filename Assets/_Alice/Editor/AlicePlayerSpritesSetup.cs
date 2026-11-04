@@ -16,7 +16,9 @@ namespace Alice.Editor
     {
         private const string Root = "Assets/_Alice";
         private const string FramesFolder = Root + "/Art/Characters/Alice/Trial";
-        private const string IdlePath = FramesFolder + "/alice_trial_idle_00.png";
+        private const string IdlePrefix = "alice_trial_idle_";
+        private const string IdleFidgetPrefix = "alice_trial_fidget_";
+        private const string IdlePath = FramesFolder + "/" + IdlePrefix + "00.png";
         private const string RunPrefix = "alice_trial_run_";
         private const string JumpPrefix = "alice_trial_jump_";
         private const string FallPrefix = "alice_trial_fall_";
@@ -216,6 +218,20 @@ namespace Alice.Editor
                     sprites.AssignSalts(salts);
                     EditorUtility.SetDirty(sprites);
                 }
+            }
+
+            Sprite[] breath = LoadFrames(IdlePrefix);
+            if (breath.Length > 1 && (sprites.IdleBreath == null || sprites.IdleBreath.Length != breath.Length))
+            {
+                sprites.AssignIdleBreath(breath);
+                EditorUtility.SetDirty(sprites);
+            }
+
+            Sprite[] fidget = LoadFrames(IdleFidgetPrefix);
+            if (fidget.Length > 0 && (sprites.IdleFidget == null || sprites.IdleFidget.Length != fidget.Length))
+            {
+                sprites.AssignIdleFidget(fidget);
+                EditorUtility.SetDirty(sprites);
             }
 
             return sprites;

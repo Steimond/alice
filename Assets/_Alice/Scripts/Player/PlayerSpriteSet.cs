@@ -59,6 +59,14 @@ namespace Alice.Player
     public sealed class PlayerSpriteSet : ScriptableObject
     {
         [SerializeField] private Sprite _idle;
+        [Tooltip("Breathing while standing; the first frame is the stance itself, so a stop never jumps.")]
+        [SerializeField] private Sprite[] _idleBreath = new Sprite[0];
+        [SerializeField, Min(0.01f)] private float _idleFrameTime = 0.3f;
+        [Tooltip("Played once after a stretch of breathing (she looks at her hem and sways), then the breath resumes.")]
+        [SerializeField] private Sprite[] _idleFidget = new Sprite[0];
+        [SerializeField, Min(0.01f)] private float _idleFidgetFrameTime = 0.15f;
+        [Tooltip("Breathing before the fidget; rounded up to whole breaths so it always starts from the stance.")]
+        [SerializeField, Min(0f)] private float _idleFidgetDelay = 6f;
         [SerializeField] private Sprite[] _run = new Sprite[0];
 
         [Tooltip("Distance in units the body travels during one run frame; matches how far the planted foot slides back in the drawing.")]
@@ -210,6 +218,46 @@ namespace Alice.Player
         }
 
         public Sprite Idle => _idle;
+        public Sprite[] IdleBreath => _idleBreath;
+
+        /// <summary>The standing frame after <paramref name="time"/> seconds of standing still.</summary>
+        public Sprite IdleAt(float time)
+        {
+            if (_idleBreath == null || _idleBreath.Length == 0)
+            {
+                return _idle;
+            }
+
+            if (_idleFidget != null && _idleFidget.Length > 0)
+            {
+                float breath = _idleBreath.Length * _idleFrameTime;
+                float breathing = Mathf.Max(1f, Mathf.Ceil(_idleFidgetDelay / breath)) * breath;
+                float cycle = breathing + _idleFidget.Length * _idleFidgetFrameTime;
+                float inCycle = time % cycle;
+                if (inCycle >= breathing)
+                {
+                    int frame = Mathf.FloorToInt((inCycle - breathing) / _idleFidgetFrameTime);
+                    return _idleFidget[Mathf.Min(frame, _idleFidget.Length - 1)];
+                }
+
+                time = inCycle;
+            }
+
+            return _idleBreath[Mathf.FloorToInt(time / _idleFrameTime) % _idleBreath.Length];
+        }
+
+        public Sprite[] IdleFidget => _idleFidget;
+
+        public void AssignIdleBreath(Sprite[] breath)
+        {
+            _idleBreath = breath;
+        }
+
+        public void AssignIdleFidget(Sprite[] fidget)
+        {
+            _idleFidget = fidget;
+        }
+
         public Sprite[] Run => _run;
         public float RunFrameDistance => _runFrameDistance;
         public float RunMinSpeed => _runMinSpeed;
