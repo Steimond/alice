@@ -98,4 +98,4 @@ MonoBehaviour:
     _windup: 0.3
     _active: 0.35
     _recovery: 0.65
-    _distance: 1.8
+    _distance: 2.4

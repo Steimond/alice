@@ -133,7 +133,7 @@ namespace Alice.Player
         [Header("Executions")]
         [Tooltip("An attack within this distance of an opened enemy executes it instead of the counter.")]
         [SerializeField, Min(0f)] private float _executionReach = 3f;
-        [SerializeField] private ExecutionSpec[] _executions = { new ExecutionSpec("card_tear", 0.3f, 0.35f, 0.65f, 1.8f) };
+        [SerializeField] private ExecutionSpec[] _executions = { new ExecutionSpec("card_tear", 0.3f, 0.35f, 0.65f, 2.4f) };
 
         public int MaxHealth => _maxHealth;
         public float HitInvulnerability => _hitInvulnerability;

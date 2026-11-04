@@ -35,6 +35,8 @@ namespace Alice.Editor
         private static readonly int[] AirSlashSplit = { 5, 3, 4 };
         // The counter's long recovery holds the buried needle before wrenching it out.
         private static readonly int[] CounterSplit = { 1, 3, 8 };
+        // Matches the soldier's tear: the stab lands as its card is pierced, the rip as it splits.
+        private static readonly int[] CardExecutionSplit = { 3, 3, 8 };
         // Guard, deflect, hold, lower.
         private static readonly int[] ParrySplit = { 4, 3, 2, 3 };
         // Alice's side of the card soldier's execution; the ID matches MeleeEnemySettings and AliceCombat.
@@ -161,16 +163,12 @@ namespace Alice.Editor
                 EditorUtility.SetDirty(sprites);
             }
 
-            if (!sprites.HasExecution(CardExecutionId))
+            // Reach and grab | the lunge into the heart | the pull, the rip, stepping back, standing.
+            Sprite[] execution = LoadFrames(CardExecutionPrefix);
+            if (NeedsStrike(execution, CardExecutionSplit, sprites.ExecutionPhases(CardExecutionId)))
             {
-                // Step, grab | stab, hold | tear, tear, step back, stand.
-                Sprite[] execution = LoadFrames(CardExecutionPrefix);
-                if (execution.Length == 8)
-                {
-                    sprites.AssignExecution(CardExecutionId, new StrikeFrames(execution.Take(2).ToArray(),
-                        execution.Skip(2).Take(2).ToArray(), execution.Skip(4).ToArray()));
-                    EditorUtility.SetDirty(sprites);
-                }
+                sprites.AssignExecution(CardExecutionId, Split(execution, CardExecutionSplit));
+                EditorUtility.SetDirty(sprites);
             }
 
             if (sprites.Hurt == null || sprites.Hurt.Length == 0)
