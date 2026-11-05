@@ -28,6 +28,8 @@ namespace Alice.Player
         private Health _health;
         private Vector2 _wakePosition;
         private int _wakeFacing;
+        private string _wakeRoomId = string.Empty;
+        private string _wakeSpotId = string.Empty;
         private float _stageStartedAt;
 
         public PlayerCombatSettings Settings
@@ -153,8 +155,19 @@ namespace Alice.Player
         /// <summary>The last rest she sat at; a defeat wakes her there.</summary>
         public void SetWakePoint(Vector2 position, int facing)
         {
+            SetWakePoint(position, facing, string.Empty, string.Empty);
+        }
+
+        /// <summary>
+        /// The last rest she sat at, with its room and spot ID: a defeat in another room carries her back to
+        /// that room in the dark.
+        /// </summary>
+        public void SetWakePoint(Vector2 position, int facing, string roomId, string spotId)
+        {
             _wakePosition = position;
             _wakeFacing = facing >= 0 ? 1 : -1;
+            _wakeRoomId = roomId ?? string.Empty;
+            _wakeSpotId = spotId ?? string.Empty;
         }
 
         /// <summary>
@@ -164,8 +177,16 @@ namespace Alice.Player
         private void WakeAtRest()
         {
             Enter(DefeatStage.Dark);
-            _motor.Teleport(_wakePosition);
-            _motor.Face(_wakeFacing);
+            if (!string.IsNullOrEmpty(_wakeRoomId) && _wakeRoomId != RoomPresence.CurrentId && RoomTravel.HasListener)
+            {
+                RoomTravel.Request(_wakeRoomId, _wakeSpotId);
+            }
+            else
+            {
+                _motor.Teleport(_wakePosition);
+                _motor.Face(_wakeFacing);
+            }
+
             _health.Refill();
             WorldReset.Raise();
             Autosave.Request();

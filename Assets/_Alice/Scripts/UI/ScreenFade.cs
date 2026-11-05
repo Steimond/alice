@@ -5,7 +5,8 @@ using UnityEngine.UI;
 namespace Alice.UI
 {
     /// <summary>
-    /// Black over the whole screen while Alice is defeated: it falls as she collapses and lifts as she wakes.
+    /// Black over the whole screen while Alice is defeated (it falls as she collapses and lifts as she wakes)
+    /// and whenever a system asks for it through ScreenDarkness, such as a change of room.
     /// The overlay canvas is built at runtime, so the scenes and the Alice prefab need no UI objects.
     /// </summary>
     [RequireComponent(typeof(PlayerDamageReaction))]
@@ -44,7 +45,7 @@ namespace Alice.UI
 
         private void LateUpdate()
         {
-            float darkness = _damage.Darkness;
+            float darkness = Mathf.Max(_damage.Darkness, Alice.Core.ScreenDarkness.Current);
             _image.enabled = darkness > 0f;
             _image.color = new Color(0f, 0f, 0f, darkness);
         }

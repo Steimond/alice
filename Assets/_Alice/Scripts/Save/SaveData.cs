@@ -17,6 +17,12 @@ namespace Alice.Save
         /// <summary>The rest Alice wakes at; empty before the first rest.</summary>
         public string RestId = string.Empty;
 
+        /// <summary>The room that chair stands in, so a loaded game starts there.</summary>
+        public string RestRoomId = string.Empty;
+
+        /// <summary>Permanent changes to the world: opened doors, pulled levers.</summary>
+        public List<string> Flags = new List<string>();
+
         public int Decrees;
         public float Confidence;
         public DecreeLossData Loss = new DecreeLossData();

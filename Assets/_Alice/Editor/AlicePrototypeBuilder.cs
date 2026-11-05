@@ -24,7 +24,7 @@ namespace Alice.Editor
         private const string ScenePath = Root + "/Scenes/Prototype_Traversal.unity";
         private const string TilePath = Root + "/Art/Prototype/GreyTile.png";
         private const string SettingsPath = Root + "/Data/Player/AliceMovement.asset";
-        private const string PrefabPath = Root + "/Prefabs/Characters/Alice.prefab";
+        internal const string PrefabPath = Root + "/Prefabs/Characters/Alice.prefab";
         private const string RoomName = "GreyRoom";
         private const string ArenaScenePath = Root + "/Scenes/Prototype_Combat.unity";
         private const string ArenaName = "CombatArena";
@@ -41,7 +41,7 @@ namespace Alice.Editor
         private static readonly Color PickupColor = new Color(0.95f, 0.8f, 0.2f);
         private static readonly Color BackdropColor = new Color(0.1f, 0.09f, 0.12f);
 
-        private enum BlockKind
+        internal enum BlockKind
         {
             Decoration,
             Solid,
@@ -222,7 +222,7 @@ namespace Alice.Editor
             Block(room, tile, "Ceiling", -22f, 12f, 22f, 14f, BlockKind.Solid);
         }
 
-        private static void AddToBuildSettings(string path)
+        internal static void AddToBuildSettings(string path)
         {
             EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;
             if (Array.Exists(scenes, entry => entry.path == path))
@@ -246,7 +246,7 @@ namespace Alice.Editor
             return found;
         }
 
-        private static Sprite EnsureTileSprite()
+        internal static Sprite EnsureTileSprite()
         {
             if (!File.Exists(TilePath))
             {
@@ -289,7 +289,7 @@ namespace Alice.Editor
             return AssetDatabase.LoadAssetAtPath<Sprite>(TilePath);
         }
 
-        private static PlayerMovementSettings EnsureSettings()
+        internal static PlayerMovementSettings EnsureSettings()
         {
             PlayerMovementSettings settings = AssetDatabase.LoadAssetAtPath<PlayerMovementSettings>(SettingsPath);
             if (settings == null)
@@ -301,7 +301,7 @@ namespace Alice.Editor
             return settings;
         }
 
-        private static GameObject EnsureAlicePrefab(Sprite tile, PlayerMovementSettings settings)
+        internal static GameObject EnsureAlicePrefab(Sprite tile, PlayerMovementSettings settings)
         {
             GameObject existing = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath);
             if (existing != null)
@@ -342,7 +342,7 @@ namespace Alice.Editor
             }
         }
 
-        private static void ConfigureCamera(Camera camera, Transform player)
+        internal static void ConfigureCamera(Camera camera, Transform player)
         {
             if (!camera.TryGetComponent(out PixelPerfectCamera pixelPerfect))
             {
@@ -413,7 +413,7 @@ namespace Alice.Editor
                 BlockKind.Solid);
         }
 
-        private static void Block(Transform parent, Sprite tile, string name,
+        internal static void Block(Transform parent, Sprite tile, string name,
             float xMin, float yMin, float xMax, float yMax, BlockKind kind)
         {
             Vector2 size = new Vector2(xMax - xMin, yMax - yMin);

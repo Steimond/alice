@@ -240,6 +240,8 @@ namespace Alice.Player
                 return false;
             }
 
+            // Spent confidence is kept at once, so quitting cannot buy it back (GDD section 10).
+            Autosave.Request();
             _facing = _motor.Facing;
             _techniqueMove = technique.Move;
             TechniqueId = technique.Id;

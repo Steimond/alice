@@ -39,6 +39,8 @@ namespace Alice.Tests
             data.Loss = new DecreeLossData { Exists = true, RoomId = "P_COMBAT", X = 3.5f, Y = 0f, Amount = 30 };
             data.KnownTechniques.Add("spin_strike");
             data.Abilities.Add("A01");
+            data.RestRoomId = "M3_A";
+            data.Flags.Add("door:D_M3A_W");
 
             _store.Write(data);
 
@@ -51,6 +53,8 @@ namespace Alice.Tests
             Assert.That(loaded.Loss.Amount, Is.EqualTo(30));
             Assert.That(loaded.KnownTechniques, Is.EqualTo(new[] { "spin_strike" }));
             Assert.That(loaded.Abilities, Is.EqualTo(new[] { "A01" }));
+            Assert.That(loaded.RestRoomId, Is.EqualTo("M3_A"));
+            Assert.That(loaded.Flags, Is.EqualTo(new[] { "door:D_M3A_W" }));
         }
 
         [Test]

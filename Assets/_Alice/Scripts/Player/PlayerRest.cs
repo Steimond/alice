@@ -52,6 +52,9 @@ namespace Alice.Player
         /// <summary>The rest she last sat at; a defeat wakes her there and a save names it.</summary>
         public string LastRestId { get; private set; } = string.Empty;
 
+        /// <summary>The room that chair stands in.</summary>
+        public string LastRestRoomId { get; private set; } = string.Empty;
+
         /// <summary>Raised once she is seated and the rest has taken effect.</summary>
         public event Action Rested;
 
@@ -128,23 +131,31 @@ namespace Alice.Player
         public void Capture(SaveData data)
         {
             data.RestId = LastRestId;
+            data.RestRoomId = LastRestRoomId;
         }
 
         /// <summary>A loaded game starts in the chair it names, which is also where a defeat wakes her.</summary>
         public void Restore(SaveData data)
         {
+            LastRestId = data.RestId ?? string.Empty;
+            LastRestRoomId = data.RestRoomId ?? string.Empty;
             IRestSpot spot = RestSpots.Find(data.RestId);
             if (spot == null)
             {
+                // The chair is in another room: the room loader brings her there; a defeat wakes her there too.
+                if (_reaction != null && !string.IsNullOrEmpty(LastRestId))
+                {
+                    _reaction.SetWakePoint(transform.position, _motor.Facing, LastRestRoomId, LastRestId);
+                }
+
                 return;
             }
 
-            LastRestId = spot.RestId;
             _motor.Teleport(spot.SeatPosition);
             _motor.Face(spot.Facing);
             if (_reaction != null)
             {
-                _reaction.SetWakePoint(spot.SeatPosition, spot.Facing);
+                _reaction.SetWakePoint(spot.SeatPosition, spot.Facing, LastRestRoomId, LastRestId);
             }
         }
 
@@ -187,9 +198,10 @@ namespace Alice.Player
             _health.Refill();
             WorldReset.Raise();
             LastRestId = Spot.RestId;
+            LastRestRoomId = RoomPresence.CurrentId;
             if (_reaction != null)
             {
-                _reaction.SetWakePoint(Spot.SeatPosition, Spot.Facing);
+                _reaction.SetWakePoint(Spot.SeatPosition, Spot.Facing, LastRestRoomId, LastRestId);
             }
 
             Enter(RestStage.Resting);

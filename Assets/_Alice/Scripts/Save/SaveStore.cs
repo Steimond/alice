@@ -86,6 +86,8 @@ namespace Alice.Save
             data.Loss ??= new DecreeLossData();
             data.KnownTechniques ??= new System.Collections.Generic.List<string>();
             data.Abilities ??= new System.Collections.Generic.List<string>();
+            data.Flags ??= new System.Collections.Generic.List<string>();
+            data.RestRoomId ??= string.Empty;
             return true;
         }
     }

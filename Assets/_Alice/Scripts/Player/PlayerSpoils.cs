@@ -104,6 +104,7 @@ namespace Alice.Player
 
             Decrees += LossAmount;
             SetLoss(false, 0, string.Empty, Vector2.zero);
+            Autosave.Request();
         }
 
         public void Capture(SaveData data)
@@ -138,6 +139,8 @@ namespace Alice.Player
             Decrees += defeat.Decrees;
             float factor = defeat.KillingBlow.Kind == HitKind.Execution ? _settings.ExecutionConfidenceFactor : 1f;
             Confidence.Gain(defeat.Confidence * factor);
+            // Spoils are kept the moment they are won, as in other soulslikes: quitting never rolls them back.
+            Autosave.Request();
         }
 
         /// <summary>

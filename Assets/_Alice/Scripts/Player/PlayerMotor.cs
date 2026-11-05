@@ -215,7 +215,8 @@ namespace Alice.Player
                 return;
             }
 
-            bool locked = now < _lockedUntil;
+            // A change of room takes the controls for the moment the screen is dark.
+            bool locked = now < _lockedUntil || RoomTravel.IsTravelling;
             Vector2 move = _commands != null && !locked ? _commands.Move : Vector2.zero;
             velocity.x = IsSliding ? UpdateSlide(move, now) : Run(velocity.x, move, deltaTime, now, !locked);
             if (!IsSliding)

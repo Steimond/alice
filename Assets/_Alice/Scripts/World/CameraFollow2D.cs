@@ -59,6 +59,24 @@ namespace Alice.World
             Impacts.Happened -= Shake;
         }
 
+        /// <summary>Jumps straight to the target, as after a change of room, instead of gliding across.</summary>
+        public void Snap()
+        {
+            if (_target == null || _camera == null)
+            {
+                return;
+            }
+
+            _currentLookAhead = 0f;
+            _lookAheadVelocity = 0f;
+            _velocity = Vector3.zero;
+            Vector3 desired = Clamp(_target.position + (Vector3)_offset);
+            desired.z = transform.position.z;
+            _base = desired;
+            _hasBase = true;
+            transform.position = desired;
+        }
+
         public void Shake(float pixels)
         {
             bool running = Time.time - _shakeStartedAt < _shakeTime;

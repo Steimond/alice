@@ -9,7 +9,7 @@ namespace Alice.World
     /// ordinary enemies return to their posts, the game saves and she may change her technique.
     /// </summary>
     [RequireComponent(typeof(BoxCollider2D))]
-    public sealed class RestPoint : MonoBehaviour, IRestSpot
+    public sealed class RestPoint : MonoBehaviour, IRestSpot, IArrivalSpot
     {
         [SerializeField] private string _restId = "R_P01";
         [Tooltip("+1: Alice sits facing right.")]
@@ -39,14 +39,21 @@ namespace Alice.World
             zone.offset = new Vector2(0f, 1.5f);
         }
 
+        // Waking after a defeat or loading a game puts her down at the chair.
+        string IArrivalSpot.SpotId => _restId;
+        Vector2 IArrivalSpot.ArrivalPosition => SeatPosition;
+        int IArrivalSpot.ArrivalFacing => Facing;
+
         private void OnEnable()
         {
             RestSpots.Register(this);
+            RoomTravel.Register(this);
         }
 
         private void OnDisable()
         {
             RestSpots.Unregister(this);
+            RoomTravel.Unregister(this);
         }
     }
 }

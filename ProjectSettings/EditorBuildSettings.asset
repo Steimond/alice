@@ -14,6 +14,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Alice/Scenes/Prototype_Combat.unity
     guid: 32d40857d5d3dc74ab7812a00c90f8f8
+  - enabled: 1
+    path: Assets/_Alice/Scenes/M3/M3_A.unity
+    guid: 6d5217d8cfe5c5a4387ad116f479fdf4
+  - enabled: 1
+    path: Assets/_Alice/Scenes/M3/M3_B.unity
+    guid: 8162ba083eaa1434ab3313411ab64288
+  - enabled: 1
+    path: Assets/_Alice/Scenes/M3/M3_C.unity
+    guid: 7bdb88e67978f02458a173902d6ab7be
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 352f75b52c1c04942b54bd86a5592d1c, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 69bee57977d568f4ca3a82eb941c9d4d, type: 3}

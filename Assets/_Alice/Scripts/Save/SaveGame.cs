@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using Alice.Core;
 using UnityEngine;
@@ -5,9 +6,9 @@ using UnityEngine;
 namespace Alice.Save
 {
     /// <summary>
-    /// The save of the running game. On start it loads the file and hands each part to the systems on Alice;
-    /// at every autosave point it gathers them again and writes. The file lives in persistentDataPath,
-    /// outside the repository.
+    /// The save of the running game. On start it loads the file, restores the world's permanent changes, hands
+    /// each part to the systems on Alice and sends her to the room of her last chair; at every autosave point it
+    /// gathers them again and writes. The file lives in persistentDataPath, outside the repository.
     /// </summary>
     public sealed class SaveGame : MonoBehaviour
     {
@@ -25,6 +26,9 @@ namespace Alice.Save
 
         public SaveStore Store => _store ??= new SaveStore(PathFor(_fileName));
 
+        /// <summary>The save read at start, if any; the room loader asks where to begin.</summary>
+        public static SaveData Loaded { get; private set; }
+
         private void OnEnable()
         {
             Autosave.Requested += Write;
@@ -37,12 +41,34 @@ namespace Alice.Save
 
         private void Start()
         {
-            if (_loadOnStart && Store.TryLoad(out SaveData data))
+            Loaded = null;
+            if (!_loadOnStart || !Store.TryLoad(out SaveData data))
             {
-                foreach (ISaveParticipant participant in Participants())
-                {
-                    participant.Restore(data);
-                }
+                WorldFlags.Replace(null);
+                return;
+            }
+
+            Loaded = data;
+            WorldFlags.Replace(data.Flags);
+            foreach (ISaveParticipant participant in Participants())
+            {
+                participant.Restore(data);
+            }
+
+            // A room played on its own in the Editor keeps Alice there; otherwise she wakes in her chair's room.
+            if (!RoomTravel.StartedInRoom && !string.IsNullOrEmpty(data.RestRoomId)
+                && data.RestRoomId != RoomPresence.CurrentId)
+            {
+                RoomTravel.Request(data.RestRoomId, data.RestId);
+            }
+        }
+
+        /// <summary>Whatever changed since the last autosave point is kept when the game closes.</summary>
+        private void OnApplicationQuit()
+        {
+            if (PlayerPresence.Current != null)
+            {
+                Write();
             }
         }
 
@@ -54,6 +80,7 @@ namespace Alice.Save
                 participant.Capture(data);
             }
 
+            data.Flags = new List<string>(WorldFlags.All);
             Store.Write(data);
         }
 

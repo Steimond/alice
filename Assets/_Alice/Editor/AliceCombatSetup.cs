@@ -244,6 +244,13 @@ namespace Alice.Editor
                     changed = true;
                 }
 
+                // Interact on doors and, later, levers and people (M3).
+                if (!root.TryGetComponent(out PlayerInteractor _))
+                {
+                    root.AddComponent<PlayerInteractor>();
+                    changed = true;
+                }
+
                 if (!root.TryGetComponent(out Alice.UI.RestMenu menu))
                 {
                     menu = root.AddComponent<Alice.UI.RestMenu>();

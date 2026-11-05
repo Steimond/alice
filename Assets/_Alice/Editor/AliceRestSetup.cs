@@ -118,7 +118,7 @@ namespace Alice.Editor
         /// The cushion sorts in front of her, so it hides the buried part of her needle. An older prefab without
         /// the cushion is rebuilt under the same path, keeping its GUID and the scene instances.
         /// </summary>
-        private static GameObject EnsureChairPrefab()
+        internal static GameObject EnsureChairPrefab()
         {
             GameObject existing = AssetDatabase.LoadAssetAtPath<GameObject>(ChairPrefabPath);
             if (existing != null && existing.transform.Find("Cushion") != null)
@@ -164,7 +164,7 @@ namespace Alice.Editor
         /// The lost purse shows as a daisy whose petals are rolled decrees, swaying where Alice fell (owner's
         /// choice of 4 Nov 2026). An older prefab without the sway is rebuilt.
         /// </summary>
-        private static GameObject EnsureCachePrefab()
+        internal static GameObject EnsureCachePrefab()
         {
             GameObject existing = AssetDatabase.LoadAssetAtPath<GameObject>(CachePrefabPath);
             if (existing != null && existing.GetComponentInChildren<SpriteLoop>(true) != null)

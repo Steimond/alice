@@ -5,7 +5,7 @@ namespace Alice.Player
 {
     /// <summary>Remembers the last fully supported ground and returns Alice there after a hazard.</summary>
     [RequireComponent(typeof(PlayerMotor))]
-    public sealed class PlayerRespawn : MonoBehaviour, IHazardTarget
+    public sealed class PlayerRespawn : MonoBehaviour, IHazardTarget, IRoomArrival
     {
         private const float FootProbeHeight = 0.05f;
         private const float FootProbeDistance = 0.15f;
@@ -31,6 +31,14 @@ namespace Alice.Player
             {
                 _safePosition = _motor.Position;
             }
+        }
+
+        /// <summary>Put down in a new room: the landing becomes her safe footing there.</summary>
+        public void ArriveAt(Vector2 position, int facing)
+        {
+            _motor.Teleport(position);
+            _motor.Face(facing);
+            _safePosition = position;
         }
 
         public void OnHazardTouched()
