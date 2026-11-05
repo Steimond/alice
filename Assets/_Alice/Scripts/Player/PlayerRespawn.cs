@@ -60,6 +60,12 @@ namespace Alice.Player
             int count = Physics2D.Raycast(origin, Vector2.down, _solidFilter, _hits, FootProbeDistance);
             for (int index = 0; index < count; index++)
             {
+                // A Cheshire bridge holds her for a moment but is never the place a fall returns her to.
+                if (_hits[index].collider.GetComponentInParent<ITemporaryGround>() != null)
+                {
+                    continue;
+                }
+
                 Rigidbody2D body = _hits[index].rigidbody;
                 if (body == null || body.gameObject != gameObject)
                 {

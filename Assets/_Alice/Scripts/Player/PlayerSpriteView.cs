@@ -1,4 +1,5 @@
 using Alice.Combat;
+using Alice.Core;
 using UnityEngine;
 
 namespace Alice.Player
@@ -14,6 +15,8 @@ namespace Alice.Player
         [SerializeField] private PlayerMotor _motor;
         [SerializeField] private PlayerSpriteSet _sprites;
         [SerializeField] private SpriteRenderer _renderer;
+
+        public SpriteRenderer Renderer => _renderer;
         [SerializeField] private SpriteRenderer _placeholderBody;
         [SerializeField] private SpriteRenderer _placeholderMarker;
 
@@ -34,6 +37,9 @@ namespace Alice.Player
         private bool _wasSliding;
         private float _slideElapsed;
         private float _riseUntil;
+        private IShrinkable _size;
+        private bool _wasSmall;
+        private float _shrinkElapsed = float.PositiveInfinity;
 
         public void Bind(PlayerMotor motor, PlayerSpriteSet sprites, SpriteRenderer renderer,
             SpriteRenderer placeholderBody, SpriteRenderer placeholderMarker)
@@ -52,6 +58,7 @@ namespace Alice.Player
             _damage = GetComponent<PlayerDamageReaction>();
             _salts = GetComponent<PlayerSalts>();
             _rest = GetComponent<PlayerRest>();
+            _size = GetComponent<IShrinkable>();
         }
 
         private void LateUpdate()
@@ -80,40 +87,172 @@ namespace Alice.Player
                 return;
             }
 
+            bool small = _size != null && _size.IsSmall;
+            bool smallFrames = _sprites.HasSmall;
+            Sprite shrink = SelectShrinkSprite(small, smallFrames);
+
             Sprite slide = SelectSlideSprite();
             if (slide != null)
             {
-                _renderer.flipX = _motor.Facing < 0;
-                _renderer.sprite = slide;
+                Draw(slide, _motor.Facing, small);
                 return;
             }
 
             Sprite reaction = SelectReactionSprite();
             if (reaction != null)
             {
-                _renderer.flipX = _motor.Facing < 0;
-                _renderer.sprite = reaction;
+                Draw(reaction, _motor.Facing, small);
                 return;
             }
 
             Sprite strike = SelectStrikeSprite();
             if (strike != null)
             {
-                _renderer.flipX = _attack.Facing < 0;
-                _renderer.sprite = strike;
+                Draw(strike, _attack.Facing, small);
                 return;
             }
 
             Sprite parry = SelectParrySprite();
             if (parry != null)
             {
-                _renderer.flipX = _parryAction.Facing < 0;
-                _renderer.sprite = parry;
+                Draw(parry, _parryAction.Facing, small);
                 return;
             }
 
-            _renderer.flipX = _motor.Facing < 0;
-            _renderer.sprite = SelectSprite();
+            if (shrink != null)
+            {
+                Draw(shrink, _motor.Facing, false);
+                return;
+            }
+
+            if (small && smallFrames)
+            {
+                Draw(SelectSmallSprite(), _motor.Facing, false);
+                return;
+            }
+
+            Draw(SelectSprite(), _motor.Facing, small);
+        }
+
+        /// <summary>
+        /// Full-size frames are drawn at the fallback scale while she is small: only movement has small frames, and
+        /// scaling pixel art down is a stopgap (GDD section 12), never the look of small Alice.
+        /// </summary>
+        private void Draw(Sprite sprite, float facing, bool fullSizeWhileSmall)
+        {
+            _renderer.flipX = facing < 0;
+            _renderer.sprite = sprite;
+            float scale = fullSizeWhileSmall ? _sprites.SmallFallbackScale : 1f;
+            _renderer.transform.localScale = new Vector3(scale, scale, 1f);
+        }
+
+        /// <summary>
+        /// Becoming small: she bites the mushroom, then shrinks. Growing back plays the shrink backwards.
+        /// </summary>
+        private Sprite SelectShrinkSprite(bool small, bool smallFrames)
+        {
+            Sprite[] frames = _sprites.Shrink;
+            if (small != _wasSmall)
+            {
+                _wasSmall = small;
+                _shrinkElapsed = 0f;
+            }
+            else
+            {
+                _shrinkElapsed += Time.deltaTime;
+            }
+
+            if (!smallFrames || frames == null || frames.Length == 0)
+            {
+                return null;
+            }
+
+            float elapsed = _shrinkElapsed;
+            Sprite[] bite = _sprites.Bite;
+            if (small && bite != null && bite.Length > 0)
+            {
+                float biteTime = bite.Length * _sprites.BiteFrameTime;
+                if (elapsed < biteTime)
+                {
+                    return bite[Mathf.Min(Mathf.FloorToInt(elapsed / _sprites.BiteFrameTime), bite.Length - 1)];
+                }
+
+                elapsed -= biteTime;
+            }
+
+            // Compared as time first: the idle value is infinite and would overflow as a frame index.
+            if (elapsed >= frames.Length * _sprites.ShrinkFrameTime)
+            {
+                return null;
+            }
+
+            int frame = Mathf.Min(Mathf.FloorToInt(elapsed / _sprites.ShrinkFrameTime), frames.Length - 1);
+            return small ? frames[frame] : frames[frames.Length - 1 - frame];
+        }
+
+        /// <summary>Small Alice only moves: standing, running, the jump by vertical speed and the landing.</summary>
+        private Sprite SelectSmallSprite()
+        {
+            if (!_motor.IsGrounded)
+            {
+                if (!_wasAirborne)
+                {
+                    _wasAirborne = true;
+                    _airTime = 0f;
+                    _fallTime = 0f;
+                }
+
+                _airTime += Time.deltaTime;
+                float vertical = _motor.Velocity.y;
+                if (vertical > _sprites.ApexSpeed)
+                {
+                    Sprite[] rise = _sprites.SmallRise;
+                    float climb = Mathf.InverseLerp(_sprites.RiseTopSpeed, _sprites.ApexSpeed, vertical);
+                    return rise[Mathf.Min(Mathf.FloorToInt(climb * rise.Length), rise.Length - 1)];
+                }
+
+                if (vertical >= -_sprites.ApexSpeed)
+                {
+                    Sprite[] apex = _sprites.SmallApex;
+                    return vertical >= 0f ? apex[0] : apex[apex.Length - 1];
+                }
+
+                _fallTime += Time.deltaTime;
+                Sprite[] fall = _sprites.SmallFall;
+                return fall[Mathf.FloorToInt(_fallTime / _sprites.FallFrameTime) % fall.Length];
+            }
+
+            if (_wasAirborne)
+            {
+                _wasAirborne = false;
+                _landing = _airTime >= _sprites.LandMinAirTime;
+                _landElapsed = 0f;
+            }
+
+            float speed = Mathf.Abs(_motor.Velocity.x);
+            if (speed < _sprites.RunMinSpeed)
+            {
+                _runDistance = 0f;
+                Sprite[] landing = _sprites.SmallLanding;
+                if (_landing && landing != null && landing.Length > 0)
+                {
+                    int frame = Mathf.FloorToInt(_landElapsed / _sprites.LandFrameTime);
+                    if (frame < landing.Length)
+                    {
+                        _landElapsed += Time.deltaTime;
+                        return landing[frame];
+                    }
+
+                    _landing = false;
+                }
+
+                return _sprites.SmallIdleAt(NextIdleTime());
+            }
+
+            _landing = false;
+            _runDistance += speed * Time.deltaTime;
+            Sprite[] run = _sprites.SmallRun;
+            return run[Mathf.FloorToInt(_runDistance / _sprites.SmallRunFrameDistance) % run.Length];
         }
 
         /// <summary>The drop, the slide on her back while it lasts, then a moment getting up on the ground.</summary>
@@ -400,6 +539,11 @@ namespace Alice.Player
 
         private Sprite IdleFrame()
         {
+            return _sprites.IdleAt(NextIdleTime());
+        }
+
+        private float NextIdleTime()
+        {
             // Any frame drawn with something else restarts the breath, so stopping always begins at the stance.
             if (_idleFrame != Time.frameCount - 1)
             {
@@ -411,7 +555,7 @@ namespace Alice.Player
             }
 
             _idleFrame = Time.frameCount;
-            return _sprites.IdleAt(_idleTime);
+            return _idleTime;
         }
 
         private Sprite RunFrame(Sprite[] run)

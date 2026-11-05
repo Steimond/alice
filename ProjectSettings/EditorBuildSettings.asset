@@ -23,6 +23,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Alice/Scenes/M3/M3_C.unity
     guid: 7bdb88e67978f02458a173902d6ab7be
+  - enabled: 1
+    path: Assets/_Alice/Scenes/M3/M3_D.unity
+    guid: 6f8bdafa40d291a4dbc76cea93a4925e
+  - enabled: 1
+    path: Assets/_Alice/Scenes/M3/M3_E.unity
+    guid: 3e820a3cac759694dbf2f2fc9f596d9e
+  - enabled: 1
+    path: Assets/_Alice/Scenes/M3/M3_F.unity
+    guid: 674833d5ab3452c40aa691c8d16a1252
+  - enabled: 1
+    path: Assets/_Alice/Scenes/M3/M3_G.unity
+    guid: 39448fd064fffeb4a91efa686036f2ee
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 352f75b52c1c04942b54bd86a5592d1c, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 69bee57977d568f4ca3a82eb941c9d4d, type: 3}

@@ -52,6 +52,14 @@ namespace Alice.Editor
         private const string SaltsPrefix = "alice_trial_salts_";
         private const string SlidePrefix = "alice_trial_slide_";
         private const string SpinPrefix = "alice_trial_spin_";
+        private const string SmallIdlePrefix = "alice_trial_small_idle_";
+        private const string SmallRunPrefix = "alice_trial_small_run_";
+        private const string SmallRisePrefix = "alice_trial_small_rise_";
+        private const string SmallApexPrefix = "alice_trial_small_apex_";
+        private const string SmallFallPrefix = "alice_trial_small_fall_";
+        private const string SmallLandPrefix = "alice_trial_small_land_";
+        private const string ShrinkPrefix = "alice_trial_shrink_";
+        private const string BitePrefix = "alice_trial_bite_";
         // Jump frames from the generation: takeoff, three rise frames, apex tuck, apex opening, fall start.
         private const int JumpFrameCount = 7;
         private const string SpriteSetPath = Root + "/Data/Player/AliceSprites.asset";
@@ -237,6 +245,30 @@ namespace Alice.Editor
                 Sprite[] settled = sit.Skip(sit.Length - RestDozeFrames).ToArray();
                 Sprite[] doze = settled.Reverse().Concat(settled.Skip(1).Take(RestDozeFrames - 2)).ToArray();
                 sprites.AssignRest(sit, doze);
+                EditorUtility.SetDirty(sprites);
+            }
+
+            // Small Alice (mushroom): assigned once the frames on disk exist and the set has none.
+            if (!sprites.HasSmall)
+            {
+                Sprite[] smallIdle = LoadFrames(SmallIdlePrefix);
+                Sprite[] smallRun = LoadFrames(SmallRunPrefix);
+                Sprite[] smallRise = LoadFrames(SmallRisePrefix);
+                Sprite[] smallApex = LoadFrames(SmallApexPrefix);
+                Sprite[] smallFall = LoadFrames(SmallFallPrefix);
+                if (smallIdle.Length > 0 && smallRun.Length > 0 && smallRise.Length > 0 && smallApex.Length > 0
+                    && smallFall.Length > 0)
+                {
+                    sprites.AssignSmall(smallIdle, smallRun, smallRise, smallApex, smallFall, LoadFrames(SmallLandPrefix),
+                        LoadFrames(ShrinkPrefix));
+                    EditorUtility.SetDirty(sprites);
+                }
+            }
+
+            Sprite[] bite = LoadFrames(BitePrefix);
+            if (bite.Length > 0 && (sprites.Bite == null || sprites.Bite.Length != bite.Length))
+            {
+                sprites.AssignBite(bite);
                 EditorUtility.SetDirty(sprites);
             }
 

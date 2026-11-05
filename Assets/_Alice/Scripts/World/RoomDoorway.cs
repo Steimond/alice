@@ -18,6 +18,8 @@ namespace Alice.World
         [SerializeField] private Vector2 _arrivalOffset = new Vector2(-2f, 0f);
         [Tooltip("+1: arriving Alice faces right (into a room whose doorway is on its left wall).")]
         [SerializeField] private int _arrivalFacing = -1;
+        [Tooltip("A little door (A02): it takes Alice only while the mushroom has made her small.")]
+        [SerializeField] private bool _requiresSmall;
 
         private float _armedAt;
 
@@ -35,6 +37,13 @@ namespace Alice.World
             _arrivalFacing = arrivalFacing >= 0 ? 1 : -1;
         }
 
+        public bool RequiresSmall
+        {
+            get => _requiresSmall;
+            set => _requiresSmall = value;
+        }
+
+        public string TargetRoomId => _targetRoomId;
         public string SpotId => _doorwayId;
         public Vector2 ArrivalPosition => (Vector2)transform.position + _arrivalOffset;
         public int ArrivalFacing => _arrivalFacing >= 0 ? 1 : -1;
@@ -65,6 +74,11 @@ namespace Alice.World
 
             Transform alice = PlayerPresence.Current;
             if (alice == null || other.attachedRigidbody == null || other.attachedRigidbody.transform != alice)
+            {
+                return;
+            }
+
+            if (_requiresSmall && (!alice.TryGetComponent(out IShrinkable size) || !size.IsSmall))
             {
                 return;
             }

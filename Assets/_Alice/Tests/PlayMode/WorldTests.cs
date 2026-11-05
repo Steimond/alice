@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Alice.Abilities;
 using Alice.Core;
 using Alice.World;
 using NUnit.Framework;
@@ -27,6 +28,7 @@ namespace Alice.Tests
             }
 
             _created.Clear();
+            _doorFrames = null;
             WorldFlags.Replace(null);
         }
 
@@ -73,6 +75,145 @@ namespace Alice.Tests
 
             doorwayObject.SetActive(false);
             Assert.That(RoomTravel.FindSpot("D_TEST_E"), Is.Null, "An unloaded room's spots are gone.");
+        }
+
+        [UnityTest]
+        public IEnumerator CheshireBridge_TurnsSolidNearAliceOnlyWithTheStep()
+        {
+            GameObject bridgeObject = Track(new GameObject("TestBridge"));
+            BoxCollider2D surface = bridgeObject.AddComponent<BoxCollider2D>();
+            surface.size = new Vector2(12f, 0.5f);
+            CheshireBridge bridge = bridgeObject.AddComponent<CheshireBridge>();
+            bridge.Bind(surface, null);
+
+            GameObject alice = Track(new GameObject("TestAlice"));
+            AbilityInventory abilities = alice.AddComponent<AbilityInventory>();
+            PlayerPresence.Register(alice.transform);
+            try
+            {
+                alice.transform.position = new Vector3(-7f, 0f, 0f);
+                yield return null;
+                Assert.That(surface.enabled, Is.False, "Without the Cheshire Step it is only an outline.");
+                Assert.That(bridge, Is.InstanceOf<ITemporaryGround>(), "It is never safe footing.");
+
+                abilities.Unlock(AbilityIds.CheshireStep);
+                yield return null;
+                Assert.That(surface.enabled, Is.True, "Within reach of its end, it turns solid by itself.");
+
+                alice.transform.position = new Vector3(2f, 0.25f, 0f);
+                yield return new WaitForSeconds(1f);
+                Assert.That(surface.enabled, Is.True, "It holds while she is on it.");
+
+                alice.transform.position = new Vector3(14f, 0f, 0f);
+                yield return new WaitForSeconds(0.6f);
+                Assert.That(surface.enabled, Is.False, "Once she has moved away, it fades.");
+            }
+            finally
+            {
+                PlayerPresence.Unregister(alice.transform);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator LittleDoor_BiteShrinksAlice_AndTheDoorStaysOpen()
+        {
+            GameObject alice = Track(new GameObject("TestAlice"));
+            AbilityInventory abilities = alice.AddComponent<AbilityInventory>();
+            TestShrinkable size = alice.AddComponent<TestShrinkable>();
+            PlayerPresence.Register(alice.transform);
+            try
+            {
+                LittleDoor door = CreateLittleDoor();
+                yield return null;
+                Assert.That(door.IsOpen, Is.False);
+                Assert.That(door.CanInteract(Vector2.zero), Is.False, "Without the mushroom nothing happens.");
+
+                abilities.Unlock(AbilityIds.Mushroom);
+                Assert.That(door.CanInteract(Vector2.zero), Is.True);
+                door.Interact(alice);
+                Assert.That(size.IsSmall, Is.True, "The bite makes her small.");
+                Assert.That(door.IsOpen, Is.True);
+                Assert.That(WorldFlags.Has(door.Flag), Is.True, "Opening is a permanent change of the world.");
+                Assert.That(door.CanInteract(Vector2.zero), Is.False, "Already small: no second bite.");
+
+                // The other side of the passage, or the same room loaded again: the door stands open.
+                LittleDoor again = CreateLittleDoor();
+                yield return null;
+                yield return null;
+                Assert.That(again.IsOpen, Is.True);
+                SpriteRenderer drawn = again.GetComponent<SpriteRenderer>();
+                Assert.That(drawn.sprite, Is.SameAs(_doorFrames[_doorFrames.Length - 1]), "It is drawn standing open.");
+            }
+            finally
+            {
+                PlayerPresence.Unregister(alice.transform);
+            }
+        }
+
+        private Sprite[] _doorFrames;
+
+        private LittleDoor CreateLittleDoor()
+        {
+            if (_doorFrames == null)
+            {
+                Texture2D texture = new Texture2D(2, 2);
+                _created.Add(texture);
+                _doorFrames = new[]
+                {
+                    Sprite.Create(texture, new Rect(0f, 0f, 2f, 2f), Vector2.zero),
+                    Sprite.Create(texture, new Rect(0f, 0f, 1f, 1f), Vector2.zero)
+                };
+                _created.AddRange(_doorFrames);
+            }
+
+            GameObject doorObject = Track(new GameObject("TestLittleDoor"));
+            LittleDoor door = doorObject.AddComponent<LittleDoor>();
+            door.DoorId = "LD_TEST";
+            door.Bind(doorObject.AddComponent<SpriteRenderer>(), _doorFrames);
+            return door;
+        }
+
+        private sealed class TestShrinkable : MonoBehaviour, IShrinkable
+        {
+            public bool IsSmall { get; private set; }
+
+            public void Shrink()
+            {
+                IsSmall = true;
+            }
+
+            public void Grow()
+            {
+                IsSmall = false;
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator ClockGuillotine_HeldByTheClock_StaysUp()
+        {
+            GameObject frame = Track(new GameObject("TestGuillotine"));
+            GameObject blade = new GameObject("Blade");
+            blade.transform.SetParent(frame.transform, false);
+            blade.transform.localPosition = new Vector3(0f, 2.5f, 0f);
+            BoxCollider2D body = blade.AddComponent<BoxCollider2D>();
+            frame.SetActive(false);
+            ClockGuillotine mechanism = frame.AddComponent<ClockGuillotine>();
+            mechanism.Bind(blade.transform, body);
+            frame.SetActive(true);
+
+            mechanism.Delay(6f);
+            // It runs on until the blade is up, at most one cycle, then holds it there.
+            yield return new WaitForSeconds(2.4f);
+            float lowest = float.MaxValue;
+            float until = Time.time + 1.5f;
+            while (Time.time < until)
+            {
+                lowest = Mathf.Min(lowest, blade.transform.localPosition.y);
+                yield return new WaitForFixedUpdate();
+            }
+
+            Assert.That(lowest, Is.GreaterThan(7f), "Held by the clock, the blade stays raised.");
+            Assert.That(Time.timeScale, Is.EqualTo(1f), "The clock never touches the global time scale.");
         }
 
         private PermanentDoor CreateDoor(string id, int latchSide, out Collider2D body)

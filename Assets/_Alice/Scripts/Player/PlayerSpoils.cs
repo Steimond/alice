@@ -82,7 +82,7 @@ namespace Alice.Player
             HasLoss && LossRoomId == RoomPresence.CurrentId
             && Vector2.Distance(transform.position, LossPosition) <= _settings.LossPickupRadius
             && (_reaction == null || !_reaction.IsDefeated)
-            && (_motor == null || (_motor.IsGrounded && !_motor.IsLocked && !_motor.IsSliding));
+            && (_motor == null || (_motor.IsGrounded && !_motor.IsLocked && !_motor.IsSliding && !_motor.RunOnly));
 
         private void FixedUpdate()
         {

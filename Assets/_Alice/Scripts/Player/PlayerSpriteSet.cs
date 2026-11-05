@@ -141,6 +141,65 @@ namespace Alice.Player
         [Header("Special techniques, by technique ID")]
         [SerializeField] private ExecutionFrames[] _techniques = new ExecutionFrames[0];
 
+        [Header("Small (mushroom, A02)")]
+        [Tooltip("Standing small: a breathing loop.")]
+        [SerializeField] private Sprite[] _smallIdle = new Sprite[0];
+        [SerializeField] private Sprite[] _smallRun = new Sprite[0];
+        [Tooltip("In the air, by vertical speed: rising, the top, falling.")]
+        [SerializeField] private Sprite[] _smallRise = new Sprite[0];
+        [SerializeField] private Sprite[] _smallApex = new Sprite[0];
+        [SerializeField] private Sprite[] _smallFall = new Sprite[0];
+        [SerializeField] private Sprite[] _smallLanding = new Sprite[0];
+        [Tooltip("The bite of the mushroom, before she shrinks; full size, from the stance back to the stance.")]
+        [SerializeField] private Sprite[] _bite = new Sprite[0];
+        [SerializeField, Min(0.01f)] private float _biteFrameTime = 0.08f;
+        [Tooltip("From her standing pose to the small one; played backwards when she grows back.")]
+        [SerializeField] private Sprite[] _shrink = new Sprite[0];
+        [SerializeField, Min(0.01f)] private float _smallIdleFrameTime = 0.3f;
+        [Tooltip("Metres per run frame while small: her legs are short, so they turn over faster at the same speed.")]
+        [SerializeField, Min(0.01f)] private float _smallRunFrameDistance = 0.25f;
+        [SerializeField, Min(0.01f)] private float _shrinkFrameTime = 0.06f;
+        [Tooltip("What has no small frames (attacks, reactions) is drawn at this scale while she is small.")]
+        [SerializeField, Range(0.2f, 1f)] private float _smallFallbackScale = 0.5f;
+
+        public Sprite[] SmallRun => _smallRun;
+        public float SmallRunFrameDistance => _smallRunFrameDistance;
+        public Sprite[] SmallRise => _smallRise;
+        public Sprite[] SmallApex => _smallApex;
+        public Sprite[] SmallFall => _smallFall;
+        public Sprite[] SmallLanding => _smallLanding;
+        public Sprite[] Shrink => _shrink;
+        public Sprite[] Bite => _bite;
+        public float BiteFrameTime => _biteFrameTime;
+
+        public void AssignBite(Sprite[] bite)
+        {
+            _bite = bite;
+        }
+        public float ShrinkFrameTime => _shrinkFrameTime;
+        public float SmallFallbackScale => _smallFallbackScale;
+
+        public bool HasSmall => _smallIdle != null && _smallIdle.Length > 0 && _smallRun != null && _smallRun.Length > 0
+            && _smallRise != null && _smallRise.Length > 0 && _smallApex != null && _smallApex.Length > 0
+            && _smallFall != null && _smallFall.Length > 0;
+
+        public Sprite SmallIdleAt(float time)
+        {
+            return _smallIdle[Mathf.FloorToInt(time / _smallIdleFrameTime) % _smallIdle.Length];
+        }
+
+        public void AssignSmall(Sprite[] idle, Sprite[] run, Sprite[] rise, Sprite[] apex, Sprite[] fall, Sprite[] landing,
+            Sprite[] shrink)
+        {
+            _smallIdle = idle;
+            _smallRun = run;
+            _smallRise = rise;
+            _smallApex = apex;
+            _smallFall = fall;
+            _smallLanding = landing;
+            _shrink = shrink;
+        }
+
         [Header("Slide")]
         [Tooltip("Dropping into the slide, shown first.")]
         [SerializeField] private Sprite _slideDrop;

@@ -22,3 +22,15 @@ MonoBehaviour:
   - _roomId: M3_C
     _scene: M3_C
     _startSpot: 
+  - _roomId: M3_D
+    _scene: M3_D
+    _startSpot: 
+  - _roomId: M3_E
+    _scene: M3_E
+    _startSpot: 
+  - _roomId: M3_F
+    _scene: M3_F
+    _startSpot: 
+  - _roomId: M3_G
+    _scene: M3_G
+    _startSpot: 

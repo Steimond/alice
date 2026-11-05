@@ -78,6 +78,12 @@ namespace Alice.Player
 
         bool IHitImmunity.IsImmune => IsInvulnerable;
 
+        /// <summary>
+        /// Only running, no jump, slide or any other action: small Alice (GDD 0.26) is there just to get through a
+        /// little door. The action components read it alongside <see cref="IsLocked"/>.
+        /// </summary>
+        public bool RunOnly { get; set; }
+
         /// <summary>True while an action, a knockback or a freeze owns Alice and input does not move her.</summary>
         public bool IsLocked
         {
@@ -302,7 +308,7 @@ namespace Alice.Player
                 : _settings.GroundDeceleration;
             velocityX = Mathf.MoveTowards(velocityX, target, rate * deltaTime);
 
-            bool evadePressed = canEvade && _commands != null && InputBuffer.IsFresh(
+            bool evadePressed = canEvade && !RunOnly && _commands != null && InputBuffer.IsFresh(
                 _commands.EvadePressedAt, _consumedEvadeAt, now, _settings.EvadeBufferTime);
             if (evadePressed && IsGrounded && now >= _slideReadyAt)
             {
@@ -350,6 +356,13 @@ namespace Alice.Player
         {
             if (_commands == null)
             {
+                return velocityY;
+            }
+
+            if (RunOnly)
+            {
+                // The press is spent, so it does not fire the moment she grows back.
+                _consumedJumpAt = _commands.JumpPressedAt;
                 return velocityY;
             }
 

@@ -41,7 +41,7 @@ namespace Alice.Player
                 return;
             }
 
-            bool busy = !_motor.IsGrounded || _motor.IsLocked || _motor.IsSliding
+            bool busy = !_motor.IsGrounded || _motor.IsLocked || _motor.IsSliding || _motor.RunOnly
                 || (_reaction != null && _reaction.IsDefeated) || (_rest != null && _rest.IsResting)
                 || (_spoils != null && _spoils.CanRecoverLoss);
             if (busy || !TryFind(out IInteractable target))

@@ -251,6 +251,13 @@ namespace Alice.Editor
                     changed = true;
                 }
 
+                // The mushroom (A02) makes her small at marked passages.
+                if (!root.TryGetComponent(out PlayerSize _))
+                {
+                    root.AddComponent<PlayerSize>();
+                    changed = true;
+                }
+
                 if (!root.TryGetComponent(out Alice.UI.RestMenu menu))
                 {
                     menu = root.AddComponent<Alice.UI.RestMenu>();

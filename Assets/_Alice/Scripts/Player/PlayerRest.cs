@@ -161,7 +161,7 @@ namespace Alice.Player
 
         private bool CanSit()
         {
-            return _motor.IsGrounded && !_motor.IsSliding
+            return _motor.IsGrounded && !_motor.IsSliding && !_motor.RunOnly
                 && (_reaction == null || !_reaction.IsDefeated)
                 && (_attack == null || !_attack.IsAttacking)
                 && (_salts == null || !_salts.IsUsing)

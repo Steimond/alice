@@ -30,6 +30,7 @@ GameObject:
   - component: {fileID: 2886173985739692959}
   - component: {fileID: 5504344368759912519}
   - component: {fileID: 4680237058651781366}
+  - component: {fileID: 3877452149562848113}
   m_Layer: 0
   m_Name: Alice
   m_TagString: Untagged
@@ -386,6 +387,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Alice::Alice.Player.PlayerInteractor
   _bufferTime: 0.12
+--- !u!114 &3877452149562848113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3149202531935547728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f62ee3a71234a440aa4f93205e309ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Alice::Alice.Player.PlayerSize
+  _smallScale: 0.5
+  _smallTime: 12
 --- !u!1 &4379791829432753759
 GameObject:
   m_ObjectHideFlags: 0

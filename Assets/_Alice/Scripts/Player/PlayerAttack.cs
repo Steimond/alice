@@ -186,7 +186,7 @@ namespace Alice.Player
 
         private void TryStart(float now)
         {
-            if (_motor.IsSliding || _motor.IsLocked || _commands == null)
+            if (_motor.IsSliding || _motor.IsLocked || _motor.RunOnly || _commands == null)
             {
                 return;
             }

@@ -85,7 +85,7 @@ namespace Alice.Player
 
             if (IsParrying || _commands == null
                 || !InputBuffer.IsFresh(_commands.ParryPressedAt, _consumedParryAt, now, _settings.ParryBufferTime)
-                || _motor.IsSliding || _motor.IsLocked || !_motor.IsGrounded
+                || _motor.IsSliding || _motor.IsLocked || _motor.RunOnly || !_motor.IsGrounded
                 || (_attack != null && _attack.IsAttacking))
             {
                 return;

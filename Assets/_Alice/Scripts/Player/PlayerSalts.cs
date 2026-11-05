@@ -101,7 +101,7 @@ namespace Alice.Player
                 return;
             }
 
-            bool busy = !_motor.IsGrounded || _motor.IsLocked || _motor.IsSliding
+            bool busy = !_motor.IsGrounded || _motor.IsLocked || _motor.IsSliding || _motor.RunOnly
                 || (_attack != null && _attack.IsAttacking) || (_parry != null && _parry.IsParrying)
                 || (_damage != null && _damage.IsDefeated);
             // Busy or an empty pocket: the press is kept for a moment in case that changes. A clear head is no
