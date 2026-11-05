@@ -78,6 +78,12 @@ namespace Alice.Player
         [SerializeField, Min(0.01f)] private float _wakeTime = 1f;
         [SerializeField, Min(0.01f)] private float _wakeFadeTime = 0.35f;
 
+        [Header("Rest in the armchair (GDD section 4)")]
+        [Tooltip("Stabbing the needle into the pincushion and sitting down; a hit before it ends cancels the rest.")]
+        [SerializeField, Min(0.05f)] private float _restSitTime = 2.4f;
+        [Tooltip("Getting up and pulling the needle out: the same frames backwards.")]
+        [SerializeField, Min(0.05f)] private float _restRiseTime = 1.6f;
+
         [Header("Impact: a landed blow freezes Alice's strike for a moment and shakes the camera")]
         [SerializeField, Min(0f)] private float _hitStop = 0.06f;
         [Tooltip("Spin and counter: the heavy blows hold longer.")]
@@ -96,6 +102,10 @@ namespace Alice.Player
         [Tooltip("Share of the use after which the clarity comes back (the sniff).")]
         [SerializeField, Range(0f, 1f)] private float _saltTakesEffectAt = 0.55f;
         [SerializeField, Range(0f, 0.2f)] private float _saltBufferTime = 0.1f;
+
+        [Header("Lost decrees")]
+        [Tooltip("How close Alice's feet must be to the lost purse for Interact to pick it up, in tiles.")]
+        [SerializeField, Min(0.1f)] private float _lossPickupRadius = 1.2f;
 
         [Header("Confidence: spent by special techniques")]
         [SerializeField, Min(1f)] private float _confidenceMax = 100f;
@@ -139,6 +149,8 @@ namespace Alice.Player
         public Vector2 KnockbackVelocity => _knockbackVelocity;
         public float KnockbackTime => _knockbackTime;
         public float HurtShakePixels => _hurtShakePixels;
+        public float RestSitTime => _restSitTime;
+        public float RestRiseTime => _restRiseTime;
 
         /// <summary>How long a landed blow of this kind freezes the strike, and how hard it shakes the camera.</summary>
         public void ImpactOf(HitKind kind, out float hitStop, out float shakePixels)
@@ -154,6 +166,7 @@ namespace Alice.Player
         public float SaltTakesEffectAt => _saltTakesEffectAt;
         public float SaltBufferTime => _saltBufferTime;
         public float ConfidenceMax => _confidenceMax;
+        public float LossPickupRadius => _lossPickupRadius;
         public float ExecutionConfidenceFactor => _executionConfidenceFactor;
         public float HurtTime => _hurtTime;
         public float DefeatFallTime => _defeatFallTime;

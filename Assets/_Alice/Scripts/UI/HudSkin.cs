@@ -2,6 +2,23 @@ using UnityEngine;
 
 namespace Alice.UI
 {
+    /// <summary>The icon a technique shows in the rest menu, addressed by its stable ID.</summary>
+    [System.Serializable]
+    public struct TechniqueIcon
+    {
+        [SerializeField] private string _id;
+        [SerializeField] private Sprite _sprite;
+
+        public TechniqueIcon(string id, Sprite sprite)
+        {
+            _id = id;
+            _sprite = sprite;
+        }
+
+        public string Id => _id;
+        public Sprite Sprite => _sprite;
+    }
+
     /// <summary>Icons, colours and sizes of the in-game HUD (GDD section 4), in pixels of the 640x360 frame.</summary>
     [CreateAssetMenu(menuName = "Alice/HUD Skin", fileName = "HudSkin")]
     public sealed class HudSkin : ScriptableObject
@@ -10,6 +27,10 @@ namespace Alice.UI
         [SerializeField] private Sprite _saltFull;
         [SerializeField] private Sprite _saltEmpty;
         [SerializeField] private Sprite _decree;
+
+        [Header("Rest menu: technique icons by technique ID")]
+        [SerializeField] private TechniqueIcon[] _techniqueIcons = new TechniqueIcon[0];
+        [SerializeField] private Color _selected = new Color(0.92f, 0.88f, 0.8f);
 
         [Header("Clarity bar")]
         [Tooltip("Bar pixels per clarity point, so a raised maximum makes the bar longer.")]
@@ -49,6 +70,36 @@ namespace Alice.UI
         public int Margin => _margin;
         public float LostDelay => _lostDelay;
         public float LostShrinkSpeed => _lostShrinkSpeed;
+
+        public Color Selected => _selected;
+
+        public Sprite TechniqueIconFor(string techniqueId)
+        {
+            foreach (TechniqueIcon icon in _techniqueIcons)
+            {
+                if (icon.Id == techniqueId)
+                {
+                    return icon.Sprite;
+                }
+            }
+
+            return null;
+        }
+
+        public void AssignTechniqueIcon(string techniqueId, Sprite sprite)
+        {
+            for (int index = 0; index < _techniqueIcons.Length; index++)
+            {
+                if (_techniqueIcons[index].Id == techniqueId)
+                {
+                    _techniqueIcons[index] = new TechniqueIcon(techniqueId, sprite);
+                    return;
+                }
+            }
+
+            System.Array.Resize(ref _techniqueIcons, _techniqueIcons.Length + 1);
+            _techniqueIcons[_techniqueIcons.Length - 1] = new TechniqueIcon(techniqueId, sprite);
+        }
 
         public void AssignIcons(Sprite saltFull, Sprite saltEmpty, Sprite decree)
         {

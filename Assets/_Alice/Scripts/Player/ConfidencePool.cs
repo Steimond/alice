@@ -26,6 +26,12 @@ namespace Alice.Player
             }
         }
 
+        /// <summary>Loading a save puts back what she had.</summary>
+        public void Set(float amount)
+        {
+            Current = Mathf.Clamp(amount, 0f, Max);
+        }
+
         public bool CanAfford(float cost)
         {
             return cost <= Current;

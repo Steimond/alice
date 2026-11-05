@@ -18,6 +18,8 @@ namespace Alice.Editor
         private const string FramesFolder = Root + "/Art/Characters/Alice/Trial";
         private const string IdlePrefix = "alice_trial_idle_";
         private const string IdleFidgetPrefix = "alice_trial_fidget_";
+        private const string RestPrefix = "alice_trial_rest_";
+        private const int RestDozeFrames = 4;
         private const string IdlePath = FramesFolder + "/" + IdlePrefix + "00.png";
         private const string RunPrefix = "alice_trial_run_";
         private const string JumpPrefix = "alice_trial_jump_";
@@ -224,6 +226,17 @@ namespace Alice.Editor
             if (breath.Length > 1 && (sprites.IdleBreath == null || sprites.IdleBreath.Length != breath.Length))
             {
                 sprites.AssignIdleBreath(breath);
+                EditorUtility.SetDirty(sprites);
+            }
+
+            // Rest: the whole sit into the armchair, then a doze that nods the head back and forth over the
+            // last frames, where she has already settled.
+            Sprite[] sit = LoadFrames(RestPrefix);
+            if (sit.Length > RestDozeFrames && (sprites.RestSit == null || sprites.RestSit.Length != sit.Length))
+            {
+                Sprite[] settled = sit.Skip(sit.Length - RestDozeFrames).ToArray();
+                Sprite[] doze = settled.Reverse().Concat(settled.Skip(1).Take(RestDozeFrames - 2)).ToArray();
+                sprites.AssignRest(sit, doze);
                 EditorUtility.SetDirty(sprites);
             }
 

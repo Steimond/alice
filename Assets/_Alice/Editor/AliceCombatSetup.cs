@@ -121,6 +121,16 @@ namespace Alice.Editor
                 }
             }
 
+            if (skin.TechniqueIconFor(TechniqueIds.SpinStrike) == null)
+            {
+                Sprite spin = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "/Art/UI/Rest/technique_spin_strike.png");
+                if (spin != null)
+                {
+                    skin.AssignTechniqueIcon(TechniqueIds.SpinStrike, spin);
+                    EditorUtility.SetDirty(skin);
+                }
+            }
+
             return skin;
         }
 
@@ -218,6 +228,31 @@ namespace Alice.Editor
                 if (marker != null)
                 {
                     UnityEngine.Object.DestroyImmediate(marker.gameObject);
+                    changed = true;
+                }
+
+                // Rest in the armchair and its technique menu (M3).
+                if (!root.TryGetComponent(out PlayerRest rest))
+                {
+                    rest = root.AddComponent<PlayerRest>();
+                    changed = true;
+                }
+
+                if (rest.Settings == null)
+                {
+                    rest.Settings = settings;
+                    changed = true;
+                }
+
+                if (!root.TryGetComponent(out Alice.UI.RestMenu menu))
+                {
+                    menu = root.AddComponent<Alice.UI.RestMenu>();
+                    changed = true;
+                }
+
+                if (menu.Skin == null)
+                {
+                    menu.Skin = skin;
                     changed = true;
                 }
 

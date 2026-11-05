@@ -7,8 +7,8 @@ namespace Alice.Player
     /// <summary>
     /// What a landed hit does to Alice: knockback away from the blow, a dropped attack and a flinch. At zero
     /// health the defeat of GDD section 4 plays out: she collapses, the screen goes dark, she is moved to the
-    /// rest and the world resets, then she wakes with a sharp breath and gets up. Rest points arrive in M3,
-    /// so until then she wakes where the room started her.
+    /// rest and the world resets, then she wakes with a sharp breath and gets up. Before her first rest she
+    /// wakes where the room started her.
     /// </summary>
     [RequireComponent(typeof(PlayerMotor), typeof(Health))]
     public sealed class PlayerDamageReaction : MonoBehaviour, IHitImmunity
@@ -150,7 +150,17 @@ namespace Alice.Player
             _motor.Lock(_settings.DefeatFallTime + _settings.DefeatDarkTime + _settings.WakeTime);
         }
 
-        /// <summary>In full darkness: back at the rest, whole again, and the world reset around her.</summary>
+        /// <summary>The last rest she sat at; a defeat wakes her there.</summary>
+        public void SetWakePoint(Vector2 position, int facing)
+        {
+            _wakePosition = position;
+            _wakeFacing = facing >= 0 ? 1 : -1;
+        }
+
+        /// <summary>
+        /// In full darkness: back at the rest, whole again, and the world reset around her. The lost purse is
+        /// already on the ground, so the save written now keeps it even if the game is closed here.
+        /// </summary>
         private void WakeAtRest()
         {
             Enter(DefeatStage.Dark);
@@ -158,6 +168,7 @@ namespace Alice.Player
             _motor.Face(_wakeFacing);
             _health.Refill();
             WorldReset.Raise();
+            Autosave.Request();
         }
 
         private void Enter(DefeatStage stage)

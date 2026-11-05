@@ -15,6 +15,10 @@ MonoBehaviour:
   _saltFull: {fileID: 21300000, guid: ff441e346cf6bc64a9e5f6c90ce4a848, type: 3}
   _saltEmpty: {fileID: 21300000, guid: d5c6cefd8b3cc254a9be1110336612be, type: 3}
   _decree: {fileID: 21300000, guid: e3e1094d31676ed4cb02ea89982e4829, type: 3}
+  _techniqueIcons:
+  - _id: spin_strike
+    _sprite: {fileID: 21300000, guid: 106693f01e77fd747b6795fdf874710f, type: 3}
+  _selected: {r: 0.92, g: 0.88, b: 0.8, a: 1}
   _clarityPixelsPerPoint: 1
   _clarityHeight: 6
   _clarityFill: {r: 0.82, g: 0.88, b: 0.93, a: 1}

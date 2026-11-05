@@ -27,6 +27,8 @@ GameObject:
   - component: {fileID: 3884842841104110453}
   - component: {fileID: 1142773703752504919}
   - component: {fileID: 7378590559388501927}
+  - component: {fileID: 2886173985739692959}
+  - component: {fileID: 5504344368759912519}
   m_Layer: 0
   m_Name: Alice
   m_TagString: Untagged
@@ -341,7 +343,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b39e0f1673ba3224d8264aa5a80747f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Alice::Alice.Player.PlayerLoadout
+  _knownTechniques:
+  - spin_strike
   _equippedTechnique: spin_strike
+--- !u!114 &2886173985739692959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3149202531935547728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c0e9e1f5738deb4c81ef3feb65d5540, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Alice::Alice.Player.PlayerRest
+  _settings: {fileID: 11400000, guid: 78b679617ed005b479dd5e1b00ddc1fd, type: 2}
+--- !u!114 &5504344368759912519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3149202531935547728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15b87b9f07eb99d48a3e847ac23a2337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Alice::Alice.UI.RestMenu
+  _skin: {fileID: 11400000, guid: d8b293231129bff4aa1baa083857db40, type: 2}
 --- !u!1 &4379791829432753759
 GameObject:
   m_ObjectHideFlags: 0

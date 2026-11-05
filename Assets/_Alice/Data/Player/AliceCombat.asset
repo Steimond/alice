@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: AliceCombat
   m_EditorClassIdentifier: Alice::Alice.Player.PlayerCombatSettings
   _maxHealth: 100
-  _hitInvulnerability: 0.9
   _knockbackVelocity: {x: 6, y: 5}
   _knockbackTime: 0.22
   _hurtTime: 0.3
@@ -22,6 +21,8 @@ MonoBehaviour:
   _defeatDarkTime: 0.5
   _wakeTime: 1
   _wakeFadeTime: 0.35
+  _restSitTime: 2.4
+  _restRiseTime: 1.6
   _hitStop: 0.06
   _heavyHitStop: 0.11
   _hitShakePixels: 1

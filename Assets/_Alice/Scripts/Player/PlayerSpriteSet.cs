@@ -206,6 +206,22 @@ namespace Alice.Player
             _salts = salts;
         }
 
+        [Tooltip("Stabbing the needle into the pincushion and sitting down in the armchair, spread over the sit; the chair, spools and cushion are drawn into every frame. Played backwards to get up.")]
+        [SerializeField] private Sprite[] _restSit = new Sprite[0];
+        [Tooltip("Dozing in the chair, looped while she rests: the head nods.")]
+        [SerializeField] private Sprite[] _restDoze = new Sprite[0];
+        [SerializeField, Min(0.05f)] private float _restDozeFrameTime = 0.35f;
+
+        public Sprite[] RestSit => _restSit;
+        public Sprite[] RestDoze => _restDoze;
+        public float RestDozeFrameTime => _restDozeFrameTime;
+
+        public void AssignRest(Sprite[] sit, Sprite[] doze)
+        {
+            _restSit = sit;
+            _restDoze = doze;
+        }
+
         public Sprite[] Hurt => _hurt;
         public Sprite[] Defeat => _defeat;
         public Sprite[] Wake => _wake;

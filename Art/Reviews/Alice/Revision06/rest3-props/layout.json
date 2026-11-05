@@ -1,0 +1,22 @@
+[
+    {
+        "File":  "rest_chair.png",
+        "Order":  4,
+        "X":  -6
+    },
+    {
+        "File":  "rest_spool_red.png",
+        "Order":  5,
+        "X":  40
+    },
+    {
+        "File":  "rest_spool_blue.png",
+        "Order":  6,
+        "X":  58
+    },
+    {
+        "File":  "rest_cushion.png",
+        "Order":  12,
+        "X":  21
+    }
+]

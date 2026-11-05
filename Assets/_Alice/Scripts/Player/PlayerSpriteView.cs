@@ -30,6 +30,7 @@ namespace Alice.Player
         private PlayerParry _parryAction;
         private PlayerDamageReaction _damage;
         private PlayerSalts _salts;
+        private PlayerRest _rest;
         private bool _wasSliding;
         private float _slideElapsed;
         private float _riseUntil;
@@ -50,6 +51,7 @@ namespace Alice.Player
             _parryAction = GetComponent<PlayerParry>();
             _damage = GetComponent<PlayerDamageReaction>();
             _salts = GetComponent<PlayerSalts>();
+            _rest = GetComponent<PlayerRest>();
         }
 
         private void LateUpdate()
@@ -176,7 +178,40 @@ namespace Alice.Player
                 return Spread(_sprites.Hurt, (Time.time - _damage.HurtAt) / settings.HurtTime);
             }
 
+            Sprite resting = SelectRestSprite();
+            if (resting != null)
+            {
+                return resting;
+            }
+
             return _salts != null && _salts.IsUsing ? Spread(_sprites.Salts, _salts.Progress) : null;
+        }
+
+        /// <summary>Sitting down into the chair, dozing in it, and the sit played backwards to get up.</summary>
+        private Sprite SelectRestSprite()
+        {
+            Sprite[] sit = _sprites.RestSit;
+            if (_rest == null || !_rest.IsResting || sit == null || sit.Length == 0)
+            {
+                return null;
+            }
+
+            PlayerCombatSettings settings = _rest.Settings;
+            switch (_rest.Stage)
+            {
+                case PlayerRest.RestStage.Sitting:
+                    return Spread(sit, _rest.StageTime / settings.RestSitTime);
+                case PlayerRest.RestStage.Rising:
+                    return Spread(sit, 1f - _rest.StageTime / settings.RestRiseTime);
+                default:
+                    Sprite[] doze = _sprites.RestDoze;
+                    if (doze == null || doze.Length == 0)
+                    {
+                        return sit[sit.Length - 1];
+                    }
+
+                    return doze[Mathf.FloorToInt(_rest.StageTime / _sprites.RestDozeFrameTime) % doze.Length];
+            }
         }
 
         private static Sprite Spread(Sprite[] frames, float progress)

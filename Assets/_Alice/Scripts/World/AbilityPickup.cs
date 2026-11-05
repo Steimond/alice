@@ -20,6 +20,16 @@ namespace Alice.World
             GetComponent<Collider2D>().isTrigger = true;
         }
 
+        private void Start()
+        {
+            // A loaded save may already hold this ability; the pickup is then long gone.
+            Transform alice = Alice.Core.PlayerPresence.Current;
+            if (alice != null && alice.TryGetComponent(out AbilityInventory inventory) && inventory.Has(_abilityId))
+            {
+                gameObject.SetActive(false);
+            }
+        }
+
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.attachedRigidbody != null

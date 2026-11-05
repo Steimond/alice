@@ -293,6 +293,33 @@ namespace Alice.Editor
             Debug.Log(report.ToString());
         }
 
+        /// <summary>Starts the prototype rooms from scratch: no rest, no decrees, no lost purse.</summary>
+        [MenuItem("Alice/Automation/Delete Save")]
+        public static void DeleteSave()
+        {
+            Alice.Save.SaveStore store = new Alice.Save.SaveStore(Alice.Save.SaveGame.PathFor("alice-save.json"));
+            store.Delete();
+            Debug.Log("ALICE_AUTOMATION deleted the save at " + store.FilePath);
+        }
+
+        /// <summary>Gives Alice decrees as if she had beaten enemies, to try the lost purse quickly.</summary>
+        [MenuItem("Alice/Automation/Give 50 Decrees")]
+        public static void GiveDecrees()
+        {
+            if (!EditorApplication.isPlaying)
+            {
+                Debug.LogWarning("ALICE_AUTOMATION works in Play mode only, so the scene is never changed.");
+                return;
+            }
+
+            PlayerSpoils spoils = Object.FindAnyObjectByType<PlayerSpoils>();
+            if (spoils != null)
+            {
+                EnemyDefeats.Raise(new EnemyDefeat(null, new HitInfo(1, 1, spoils.gameObject), 50, 0f));
+                Debug.Log($"ALICE_AUTOMATION decrees now {spoils.Decrees}.");
+            }
+        }
+
         [MenuItem("Alice/Automation/Reset Enemies")]
         public static void ResetEnemies()
         {

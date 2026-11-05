@@ -51,8 +51,9 @@ namespace Alice.Combat
                         return null;
                     }
 
+                    // The hit-stop of the killing blow holds the state clock back, so it starts below zero.
                     int frame = Mathf.FloorToInt(_enemy.StateTime / frameTime);
-                    return death[Mathf.Min(frame, death.Length - 1)];
+                    return death[Mathf.Clamp(frame, 0, death.Length - 1)];
                 case MeleeEnemy.State.Stagger:
                     return Spread(_sprites.Hurt, _enemy.StateTime / _enemy.Settings.StaggerTime);
                 case MeleeEnemy.State.Opened:
