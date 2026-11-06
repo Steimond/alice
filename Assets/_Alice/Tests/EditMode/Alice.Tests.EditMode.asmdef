@@ -3,6 +3,7 @@
     "rootNamespace": "Alice.Tests",
     "references": [
         "Alice",
+        "Alice.Editor",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],
