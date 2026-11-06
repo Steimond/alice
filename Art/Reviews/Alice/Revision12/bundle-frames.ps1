@@ -2,12 +2,14 @@
 # is drawn, the sparkle above the knot included), so the bundle never shifts and the bottom-centre pivot sits on
 # its bottom row.
 param(
-    [string]$OutDir = "C:\Projects\alice\Assets\_Alice\Art\World\Items"
+    [string]$OutDir = "C:\Projects\alice\Assets\_Alice\Art\World\Items",
+    # raw\glint-small: the small bundle (6 Nov 2026); raw\glint was the first, too big to carry.
+    [string]$Source = "raw\glint-small"
 )
 
 Add-Type -AssemblyName System.Drawing
 New-Item -ItemType Directory -Force $OutDir | Out-Null
-$frames = 0..7 | ForEach-Object { New-Object System.Drawing.Bitmap (Join-Path $PSScriptRoot "raw\glint\$_.png") }
+$frames = 0..7 | ForEach-Object { New-Object System.Drawing.Bitmap (Join-Path $PSScriptRoot "$Source\$_.png") }
 $minX = 99; $minY = 99; $maxX = -1; $maxY = -1
 foreach ($b in $frames)
 {

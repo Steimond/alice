@@ -44,9 +44,9 @@ namespace Alice.World
                 return;
             }
 
+            // The ability is hers (and saved) at once; the bundle goes when her hand takes it.
             inventory.Unlock(_abilityId);
-            gameObject.SetActive(false);
-            ItemNotice.Announce(_abilityId);
+            BundleOpening.Begin(this, alice, _abilityId);
         }
     }
 }

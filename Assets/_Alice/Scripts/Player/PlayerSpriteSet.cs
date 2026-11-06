@@ -141,6 +141,10 @@ namespace Alice.Player
         [Header("Special techniques, by technique ID")]
         [SerializeField] private ExecutionFrames[] _techniques = new ExecutionFrames[0];
 
+        [Header("Picking a bundle up (GDD 0.28)")]
+        [Tooltip("Bend, take the bundle, look at it, tuck it away; spread over PlayerPickup's duration.")]
+        [SerializeField] private Sprite[] _pickup = new Sprite[0];
+
         [Header("Small (mushroom, A02)")]
         [Tooltip("Standing small: a breathing loop.")]
         [SerializeField] private Sprite[] _smallIdle = new Sprite[0];
@@ -170,6 +174,12 @@ namespace Alice.Player
         public Sprite[] SmallLanding => _smallLanding;
         public Sprite[] Shrink => _shrink;
         public Sprite[] Bite => _bite;
+        public Sprite[] Pickup => _pickup;
+
+        public void AssignPickup(Sprite[] pickup)
+        {
+            _pickup = pickup;
+        }
         public float BiteFrameTime => _biteFrameTime;
 
         public void AssignBite(Sprite[] bite)

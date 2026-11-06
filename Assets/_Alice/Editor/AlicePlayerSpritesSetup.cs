@@ -60,6 +60,7 @@ namespace Alice.Editor
         private const string SmallLandPrefix = "alice_trial_small_land_";
         private const string ShrinkPrefix = "alice_trial_shrink_";
         private const string BitePrefix = "alice_trial_bite_";
+        private const string PickupPrefix = "alice_trial_pickup_";
         // Jump frames from the generation: takeoff, three rise frames, apex tuck, apex opening, fall start.
         private const int JumpFrameCount = 7;
         private const string SpriteSetPath = Root + "/Data/Player/AliceSprites.asset";
@@ -263,6 +264,13 @@ namespace Alice.Editor
                         LoadFrames(ShrinkPrefix));
                     EditorUtility.SetDirty(sprites);
                 }
+            }
+
+            Sprite[] pickup = LoadFrames(PickupPrefix);
+            if (pickup.Length > 0 && (sprites.Pickup == null || sprites.Pickup.Length != pickup.Length))
+            {
+                sprites.AssignPickup(pickup);
+                EditorUtility.SetDirty(sprites);
             }
 
             Sprite[] bite = LoadFrames(BitePrefix);

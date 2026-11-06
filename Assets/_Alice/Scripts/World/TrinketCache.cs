@@ -39,8 +39,7 @@ namespace Alice.World
             }
 
             receiver.ReceiveTrinket(_trinketId);
-            gameObject.SetActive(false);
-            ItemNotice.Announce(_trinketId);
+            BundleOpening.Begin(this, alice, _trinketId);
         }
 
         private bool AliceHasIt()

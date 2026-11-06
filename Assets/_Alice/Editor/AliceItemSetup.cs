@@ -147,6 +147,12 @@ namespace Alice.Editor
                 }
 
                 popup.Bind(skin, catalog, font);
+                // She bends for every bundle (GDD 0.28).
+                if (!root.TryGetComponent(out PlayerPickup _))
+                {
+                    root.AddComponent<PlayerPickup>();
+                }
+
                 PrefabUtility.SaveAsPrefabAsset(root, AlicePrefabPath);
             }
             finally

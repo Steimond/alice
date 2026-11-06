@@ -38,6 +38,7 @@ namespace Alice.Player
         private float _slideElapsed;
         private float _riseUntil;
         private IShrinkable _size;
+        private PlayerPickup _pickup;
         private bool _wasSmall;
         private float _shrinkElapsed = float.PositiveInfinity;
 
@@ -59,6 +60,7 @@ namespace Alice.Player
             _salts = GetComponent<PlayerSalts>();
             _rest = GetComponent<PlayerRest>();
             _size = GetComponent<IShrinkable>();
+            _pickup = GetComponent<PlayerPickup>();
         }
 
         private void LateUpdate()
@@ -321,6 +323,11 @@ namespace Alice.Player
             if (resting != null)
             {
                 return resting;
+            }
+
+            if (_pickup != null && _pickup.IsPickingUp && _sprites.Pickup != null && _sprites.Pickup.Length > 0)
+            {
+                return Spread(_sprites.Pickup, _pickup.Progress);
             }
 
             return _salts != null && _salts.IsUsing ? Spread(_sprites.Salts, _salts.Progress) : null;

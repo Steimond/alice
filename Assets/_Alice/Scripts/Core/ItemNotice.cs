@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Alice.Core
 {
@@ -7,6 +8,15 @@ namespace Alice.Core
     /// and name in the middle of the screen. The world announces the find by the item's stable ID; the interface
     /// knows how to show it.
     /// </summary>
+    /// <summary>
+    /// Who picks bundles up (GDD 0.28): Alice bends for the bundle lying at <paramref name="itemFoot"/> and returns
+    /// how many seconds pass before her hand takes it, so the bundle stays on the floor until then.
+    /// </summary>
+    public interface IItemPicker
+    {
+        float BeginPickUp(Vector2 itemFoot);
+    }
+
     public static class ItemNotice
     {
         public static event Action<string> Found;
