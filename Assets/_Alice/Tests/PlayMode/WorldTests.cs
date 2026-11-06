@@ -150,6 +150,36 @@ namespace Alice.Tests
             }
         }
 
+        [UnityTest]
+        public IEnumerator AbilityBundle_OpensOnInteract_AndAnnouncesTheItem()
+        {
+            GameObject alice = Track(new GameObject("TestAlice"));
+            AbilityInventory abilities = alice.AddComponent<AbilityInventory>();
+            PlayerPresence.Register(alice.transform);
+            string announced = null;
+            void Remember(string id) => announced = id;
+            ItemNotice.Found += Remember;
+            try
+            {
+                GameObject bundle = Track(new GameObject("TestBundle"));
+                bundle.AddComponent<BoxCollider2D>().isTrigger = true;
+                AbilityPickup pickup = bundle.AddComponent<AbilityPickup>();
+                pickup.AbilityId = AbilityIds.Clock;
+                yield return null;
+
+                Assert.That(pickup.CanInteract(Vector2.zero), Is.True);
+                pickup.Interact(alice);
+                Assert.That(abilities.Has(AbilityIds.Clock), Is.True);
+                Assert.That(bundle.activeSelf, Is.False, "An opened bundle is gone.");
+                Assert.That(announced, Is.EqualTo(AbilityIds.Clock), "The find is announced by its ID.");
+            }
+            finally
+            {
+                ItemNotice.Found -= Remember;
+                PlayerPresence.Unregister(alice.transform);
+            }
+        }
+
         private Sprite[] _doorFrames;
 
         private LittleDoor CreateLittleDoor()

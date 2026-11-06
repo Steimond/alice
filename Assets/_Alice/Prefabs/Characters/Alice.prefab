@@ -31,6 +31,8 @@ GameObject:
   - component: {fileID: 5504344368759912519}
   - component: {fileID: 4680237058651781366}
   - component: {fileID: 3877452149562848113}
+  - component: {fileID: 8897509794339202683}
+  - component: {fileID: 3644166183555440419}
   m_Layer: 0
   m_Name: Alice
   m_TagString: Untagged
@@ -399,8 +401,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f62ee3a71234a440aa4f93205e309ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Alice::Alice.Player.PlayerSize
-  _smallScale: 0.5
-  _smallTime: 12
+  _growDistance: 4
+  _shrinkHold: 1.1
+  _growHold: 0.5
+--- !u!114 &8897509794339202683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3149202531935547728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e66079ed75ef8d43ba0a4d388ba67f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Alice::Alice.Player.PlayerTrinkets
+  _catalog:
+  - {fileID: 11400000, guid: 11d559a54c34cf143a709c0ee6e7bc0f, type: 2}
+  - {fileID: 11400000, guid: 36ee71f34565cc243a1e19c4b3e1c618, type: 2}
+  - {fileID: 11400000, guid: 0c7e4af327435b6409a6f0cffd9c1650, type: 2}
+  _found: []
+  _worn: []
+  _pockets: 2
+--- !u!114 &3644166183555440419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3149202531935547728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddb5e036c3040b248bb0c19116fe692a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Alice::Alice.UI.ItemPopup
+  _skin: {fileID: 11400000, guid: d8b293231129bff4aa1baa083857db40, type: 2}
+  _catalog: {fileID: 11400000, guid: a0280478d41a7af42aff3a9ee0d3587a, type: 2}
+  _font: {fileID: 12800000, guid: c5c1925709218ef488864eefd0128eeb, type: 3}
+  _shownTime: 2.5
+  _fadeTime: 0.3
 --- !u!1 &4379791829432753759
 GameObject:
   m_ObjectHideFlags: 0

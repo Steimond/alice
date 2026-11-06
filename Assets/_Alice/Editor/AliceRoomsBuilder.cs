@@ -340,7 +340,10 @@ namespace Alice.Editor
             rest.GetComponent<RestPoint>().RestId = restId;
         }
 
-        /// <summary>A permanent ability lying on the floor; touching it unlocks the ability for good.</summary>
+        /// <summary>
+        /// A bundle with a permanent ability lying on the floor (GDD 0.28); Interact opens it. AliceItemSetup turns
+        /// the placeholder into the bundle art.
+        /// </summary>
         private static void PlacePickup(Context context, string abilityId, Vector2 position)
         {
             SpriteRenderer art = Visual(context, "Pickup_" + abilityId, position + new Vector2(0f, 0.75f), new Vector2(1f, 1f),
@@ -348,7 +351,7 @@ namespace Alice.Editor
             art.transform.SetParent(context.Gameplay, true);
             BoxCollider2D trigger = art.gameObject.AddComponent<BoxCollider2D>();
             trigger.isTrigger = true;
-            trigger.size = Vector2.one;
+            trigger.size = new Vector2(2f, 2f);
             art.gameObject.AddComponent<AbilityPickup>().AbilityId = abilityId;
         }
 

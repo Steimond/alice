@@ -216,9 +216,9 @@ namespace Alice.Player
                 return false;
             }
 
-            // Only presses made after she settled: the one that sat her down does not stand her up.
-            return _commands.JumpPressedAt > _stageStartedAt || _commands.EvadePressedAt > _stageStartedAt
-                || _commands.InteractPressedAt > _stageStartedAt;
+            // Only presses made after she settled: the one that sat her down does not stand her up. Interact no
+            // longer does: at a rest it puts a trinket on or takes it off (GDD 0.27).
+            return _commands.JumpPressedAt > _stageStartedAt || _commands.EvadePressedAt > _stageStartedAt;
         }
 
         /// <summary>A blow throws her out of the chair; before she is seated it also cancels the rest.</summary>

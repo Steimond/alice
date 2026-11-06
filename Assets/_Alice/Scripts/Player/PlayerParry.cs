@@ -15,6 +15,10 @@ namespace Alice.Player
 
         private PlayerMotor _motor;
         private PlayerAttack _attack;
+        private PlayerTrinkets _trinkets;
+
+        // A worn button widens every blow's window (GDD 0.27).
+        private float WindowBonus => _trinkets != null ? _trinkets.ParryWindowBonus : 0f;
         private IPlayerCommandSource _commands;
         private float _consumedParryAt = float.NegativeInfinity;
         private float _startedAt;
@@ -41,6 +45,7 @@ namespace Alice.Player
             _motor = GetComponent<PlayerMotor>();
             _attack = GetComponent<PlayerAttack>();
             _commands = GetComponent<IPlayerCommandSource>();
+            _trinkets = GetComponent<PlayerTrinkets>();
             if (_settings == null)
             {
                 Debug.LogError("PlayerParry needs combat settings.", this);
@@ -57,7 +62,8 @@ namespace Alice.Player
         public bool TryIntercept(HitInfo hit)
         {
             // The blow sets how early a parry may start; a blow pushing Alice backwards came from the side she faces.
-            if (!IsParrying || Succeeded || hit.ParryWindow <= 0f || Elapsed > hit.ParryWindow || hit.DirectionX == Facing)
+            if (!IsParrying || Succeeded || hit.ParryWindow <= 0f || Elapsed > hit.ParryWindow + WindowBonus
+                || hit.DirectionX == Facing)
             {
                 return false;
             }

@@ -22,7 +22,6 @@ namespace Alice.Editor
         private const int PostSortingOrder = 3;
 
         // Where the prop's foot is, relative to the gate object the builder made (see AliceRoomsBuilder).
-        private static readonly Vector2 PickupFoot = new Vector2(0f, -0.5f);      // object at floor + 0.75: hovers
         private static readonly Vector2 MarkerFoot = new Vector2(0f, -0.5f);      // object at floor + 0.5
         private static readonly Vector2 LittleDoorFoot = new Vector2(0f, -0.75f); // object at floor + 0.75
         private static readonly Vector2 BladeFoot = new Vector2(0f, -2.5f);       // blade centre, 5 tiles high
@@ -64,11 +63,6 @@ namespace Alice.Editor
             bool changed = false;
             foreach (GameObject root in scene.GetRootGameObjects())
             {
-                foreach (AbilityPickup pickup in root.GetComponentsInChildren<AbilityPickup>(true))
-                {
-                    changed |= Dress(pickup.gameObject, Load("gate_pickup_" + pickup.AbilityId), PickupFoot) != null;
-                }
-
                 foreach (ClockMarker marker in root.GetComponentsInChildren<ClockMarker>(true))
                 {
                     changed |= Dress(marker.gameObject, Load("gate_clock"), MarkerFoot) != null;

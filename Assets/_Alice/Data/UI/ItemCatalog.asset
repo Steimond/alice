@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 376bc24f3c8b333469dd9fdefd400b4b, type: 3}
+  m_Name: ItemCatalog
+  m_EditorClassIdentifier: Alice::Alice.UI.ItemCatalog
+  _entries:
+  - Id: A01
+    Icon: {fileID: 21300000, guid: 00d677db2599d2144923cecebf1a1813, type: 3}
+    Name:
+      m_TableReference:
+        m_TableCollectionName: Items
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: A01
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - Id: A02
+    Icon: {fileID: 21300000, guid: a3b1397b21ea09540945947c6e996ac3, type: 3}
+    Name:
+      m_TableReference:
+        m_TableCollectionName: Items
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: A02
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - Id: A03
+    Icon: {fileID: 21300000, guid: c0370b96c63d7a14eb2c3453a6e17478, type: 3}
+    Name:
+      m_TableReference:
+        m_TableCollectionName: Items
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: A03
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - Id: A04
+    Icon: {fileID: 21300000, guid: 85a8610cf07313340a0e5af9a9539a58, type: 3}
+    Name:
+      m_TableReference:
+        m_TableCollectionName: Items
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: A04
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - Id: T01
+    Icon: {fileID: 21300000, guid: b6b6b80eb38cf0f4fa00b76046a460e5, type: 3}
+    Name:
+      m_TableReference:
+        m_TableCollectionName: Items
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: T01
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - Id: T02
+    Icon: {fileID: 21300000, guid: 581464c816280ce40ad84d683f325ab2, type: 3}
+    Name:
+      m_TableReference:
+        m_TableCollectionName: Items
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: T02
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - Id: T03
+    Icon: {fileID: 21300000, guid: 96d57d055b689824dbf68bff74563cb4, type: 3}
+    Name:
+      m_TableReference:
+        m_TableCollectionName: Items
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: T03
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []

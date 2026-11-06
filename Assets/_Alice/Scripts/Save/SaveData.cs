@@ -29,6 +29,10 @@ namespace Alice.Save
         public string EquippedTechnique = string.Empty;
         public List<string> KnownTechniques = new List<string>();
         public List<string> Abilities = new List<string>();
+        public List<string> Trinkets = new List<string>();
+        public List<string> WornTrinkets = new List<string>();
+        // 0 in saves written before pockets existed: read as the starting count.
+        public int Pockets;
     }
 
     /// <summary>The single lost purse: where it lies and how much is in it.</summary>

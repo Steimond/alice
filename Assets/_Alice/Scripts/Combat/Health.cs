@@ -13,6 +13,7 @@ namespace Alice.Combat
     {
         private readonly List<IHitImmunity> _immunities = new List<IHitImmunity>();
         private readonly List<IHitInterceptor> _interceptors = new List<IHitInterceptor>();
+        private readonly List<IDamageTakenModifier> _modifiers = new List<IDamageTakenModifier>();
 
         private HealthPool _pool;
         private float _hitInvulnerability;
@@ -32,6 +33,7 @@ namespace Alice.Combat
         {
             GetComponents(_immunities);
             GetComponents(_interceptors);
+            GetComponents(_modifiers);
         }
 
         public void Initialize(int max, float hitInvulnerability)
@@ -59,7 +61,13 @@ namespace Alice.Combat
                 return false;
             }
 
-            if (!_pool.Damage(hit.Damage))
+            int damage = hit.Damage;
+            foreach (IDamageTakenModifier modifier in _modifiers)
+            {
+                damage = modifier.ModifyDamage(damage);
+            }
+
+            if (!_pool.Damage(damage))
             {
                 return false;
             }

@@ -37,6 +37,8 @@ namespace Alice.Player
         private PlayerParry _parry;
         private PlayerLoadout _loadout;
         private PlayerSpoils _spoils;
+        private PlayerTrinkets _trinkets;
+        private Health _health;
         private float _consumedAttackAt = float.NegativeInfinity;
         private float _consumedInteractAt = float.NegativeInfinity;
         private float _consumedAbilityAt = float.NegativeInfinity;
@@ -87,6 +89,8 @@ namespace Alice.Player
             _parry = GetComponent<PlayerParry>();
             _loadout = GetComponent<PlayerLoadout>();
             _spoils = GetComponent<PlayerSpoils>();
+            _trinkets = GetComponent<PlayerTrinkets>();
+            _health = GetComponent<Health>();
             if (_settings == null)
             {
                 Debug.LogError("PlayerAttack needs combat settings.", this);
@@ -293,6 +297,12 @@ namespace Alice.Player
             ExecutionId = spec.Id;
             Begin(PlayerStrike.Execution, now, spec.Timeline);
             target.BeginExecution(gameObject, -direction);
+            // A worn candied sweet: an execution steadies her a little (GDD 0.27).
+            if (_trinkets != null && _health != null && _trinkets.ExecutionHeal > 0)
+            {
+                _health.Restore(_trinkets.ExecutionHeal);
+            }
+
             return true;
         }
 

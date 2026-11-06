@@ -191,6 +191,7 @@ GameObject:
   m_Component:
   - component: {fileID: 149998954}
   - component: {fileID: 149998955}
+  - component: {fileID: 149998956}
   m_Layer: 0
   m_Name: Art
   m_TagString: Untagged
@@ -207,7 +208,7 @@ Transform:
   m_GameObject: {fileID: 149998953}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalPosition: {x: 0, y: -0.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -262,7 +263,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 00d677db2599d2144923cecebf1a1813, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f35dbfe1186ca914e89f9fced368259a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -273,6 +274,42 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!114 &149998956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 149998953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fc18f7e783e3ed49b159baca1a67766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Alice::Alice.World.SpriteLoop
+  _frames:
+  - {fileID: 21300000, guid: f35dbfe1186ca914e89f9fced368259a, type: 3}
+  - {fileID: 21300000, guid: ac99de8f071b5a947b853d83c3048a64, type: 3}
+  - {fileID: 21300000, guid: 3694f6052bb7f564dbb2380faca92182, type: 3}
+  - {fileID: 21300000, guid: 87a025b223908d8468c202cbb1639725, type: 3}
+  - {fileID: 21300000, guid: d1b2e658a62458140b583c2572a97d80, type: 3}
+  - {fileID: 21300000, guid: 163871913d49e7746b55c03eea49548b, type: 3}
+  - {fileID: 21300000, guid: 3074702360ad3394d8d0deef06becef8, type: 3}
+  - {fileID: 21300000, guid: ae612d684a1fc4a478bd7dc164771ad7, type: 3}
+  - {fileID: 21300000, guid: f35dbfe1186ca914e89f9fced368259a, type: 3}
+  - {fileID: 21300000, guid: f35dbfe1186ca914e89f9fced368259a, type: 3}
+  - {fileID: 21300000, guid: f35dbfe1186ca914e89f9fced368259a, type: 3}
+  - {fileID: 21300000, guid: f35dbfe1186ca914e89f9fced368259a, type: 3}
+  - {fileID: 21300000, guid: f35dbfe1186ca914e89f9fced368259a, type: 3}
+  - {fileID: 21300000, guid: f35dbfe1186ca914e89f9fced368259a, type: 3}
+  - {fileID: 21300000, guid: f35dbfe1186ca914e89f9fced368259a, type: 3}
+  - {fileID: 21300000, guid: f35dbfe1186ca914e89f9fced368259a, type: 3}
+  - {fileID: 21300000, guid: f35dbfe1186ca914e89f9fced368259a, type: 3}
+  - {fileID: 21300000, guid: f35dbfe1186ca914e89f9fced368259a, type: 3}
+  - {fileID: 21300000, guid: f35dbfe1186ca914e89f9fced368259a, type: 3}
+  - {fileID: 21300000, guid: f35dbfe1186ca914e89f9fced368259a, type: 3}
+  - {fileID: 21300000, guid: f35dbfe1186ca914e89f9fced368259a, type: 3}
+  - {fileID: 21300000, guid: f35dbfe1186ca914e89f9fced368259a, type: 3}
+  _frameTime: 0.12
 --- !u!1001 &329831793
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -698,7 +735,7 @@ BoxCollider2D:
     drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
 --- !u!1 &1025001973
 GameObject:

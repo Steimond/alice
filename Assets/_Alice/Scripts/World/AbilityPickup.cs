@@ -1,11 +1,15 @@
 using Alice.Abilities;
+using Alice.Core;
 using UnityEngine;
 
 namespace Alice.World
 {
-    /// <summary>Grants a permanent ability on touch. Persistence arrives with saves in M3.</summary>
+    /// <summary>
+    /// A bundle with a permanent ability (GDD 0.28): Interact opens it, the ability is Alice's for good and the
+    /// bundle is gone. A loaded save that already holds the ability hides the bundle.
+    /// </summary>
     [RequireComponent(typeof(Collider2D))]
-    public sealed class AbilityPickup : MonoBehaviour
+    public sealed class AbilityPickup : MonoBehaviour, IInteractable
     {
         [SerializeField] private string _abilityId = AbilityIds.Fan;
 
@@ -22,22 +26,27 @@ namespace Alice.World
 
         private void Start()
         {
-            // A loaded save may already hold this ability; the pickup is then long gone.
-            Transform alice = Alice.Core.PlayerPresence.Current;
-            if (alice != null && alice.TryGetComponent(out AbilityInventory inventory) && inventory.Has(_abilityId))
+            if (AbilityCheck.AliceHas(_abilityId))
             {
                 gameObject.SetActive(false);
             }
         }
 
-        private void OnTriggerEnter2D(Collider2D other)
+        public bool CanInteract(Vector2 alicePosition)
         {
-            if (other.attachedRigidbody != null
-                && other.attachedRigidbody.TryGetComponent(out AbilityInventory inventory))
+            return !AbilityCheck.AliceHas(_abilityId);
+        }
+
+        public void Interact(GameObject alice)
+        {
+            if (!alice.TryGetComponent(out AbilityInventory inventory) || inventory.Has(_abilityId))
             {
-                inventory.Unlock(_abilityId);
-                gameObject.SetActive(false);
+                return;
             }
+
+            inventory.Unlock(_abilityId);
+            gameObject.SetActive(false);
+            ItemNotice.Announce(_abilityId);
         }
     }
 }
