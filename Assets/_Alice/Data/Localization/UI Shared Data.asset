@@ -14,7 +14,75 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
   m_TableCollectionName: UI
   m_TableCollectionNameGuidString: 8fe0e814e94eed54b9754356a14d43b4
-  m_Entries: []
+  m_Entries:
+  - m_Id: 2581698934022144
+    m_Key: map.zone.B01
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698975965184
+    m_Key: map.zone.unknown
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742400
+    m_Key: map.mark
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742401
+    m_Key: map.hints
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742402
+    m_Key: map.legend.Alice
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742403
+    m_Key: map.legend.Rest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742404
+    m_Key: map.legend.ShortcutDoor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742405
+    m_Key: map.legend.Lift
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742406
+    m_Key: map.legend.GateFan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742407
+    m_Key: map.legend.GateMushroom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742408
+    m_Key: map.legend.GateCheshire
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742409
+    m_Key: map.legend.GateClock
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742410
+    m_Key: map.legend.LostDecrees
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742411
+    m_Key: map.legend.MarkPin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742412
+    m_Key: map.legend.MarkCross
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742413
+    m_Key: map.legend.MarkButton
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742414
+    m_Key: map.legend.MarkKnot
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

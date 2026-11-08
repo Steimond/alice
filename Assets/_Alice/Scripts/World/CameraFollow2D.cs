@@ -114,7 +114,26 @@ namespace Alice.World
             desired = Clamp(desired);
             desired.z = transform.position.z;
             _base = Vector3.SmoothDamp(_base, desired, ref _velocity, _smoothTime);
-            transform.position = _base + ShakeOffset();
+            transform.position = SnapToTarget(_base) + ShakeOffset();
+        }
+
+        /// <summary>
+        /// The picture is drawn at screen resolution, so the camera and the target each land on a whole pixel.
+        /// Rounded apart, the target wobbles a pixel against the screen while both move; keeping the camera a
+        /// whole number of pixels away from the target holds her still on screen and steps the world instead.
+        /// </summary>
+        private Vector3 SnapToTarget(Vector3 position)
+        {
+            float pixels = WorldMetrics.PixelsPerUnit;
+            Vector3 target = _target.position;
+            Vector3 snapped = position;
+            snapped.x = (Mathf.Round(target.x * pixels) + Mathf.Round((position.x - target.x) * pixels)) / pixels;
+            snapped.y = (Mathf.Round(target.y * pixels) + Mathf.Round((position.y - target.y) * pixels)) / pixels;
+
+            // At a room's edge the bounds win; they lie on whole tiles, so the clamped camera stays on the grid.
+            snapped = Clamp(snapped);
+            snapped.z = position.z;
+            return snapped;
         }
 
         private Vector3 ShakeOffset()

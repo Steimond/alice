@@ -21,6 +21,32 @@ namespace Alice.World
         [Tooltip("Where Alice starts when this room is played on its own.")]
         [SerializeField] private Vector2 _startPosition = Vector2.zero;
         [SerializeField] private int _startFacing = 1;
+        [Tooltip("Where the room's local origin lies on its biome's world map, in tiles. Neighbouring rooms meet " +
+            "there wall to wall, so a passage is the same opening in both (LevelDesignGuide, section 4); the in-game " +
+            "map will draw rooms from it too.")]
+        [SerializeField] private Vector2Int _worldPosition = Vector2Int.zero;
+        [Tooltip("Stable ID of the zone (biome) this room belongs to on the map, such as B01.")]
+        [SerializeField] private string _zoneId = string.Empty;
+        [Tooltip("A secret room stays off the map until Alice has been inside, whatever else reveals the map.")]
+        [SerializeField] private bool _secret;
+
+        public string ZoneId
+        {
+            get => _zoneId;
+            set => _zoneId = value;
+        }
+
+        public bool Secret
+        {
+            get => _secret;
+            set => _secret = value;
+        }
+
+        public Vector2Int WorldPosition
+        {
+            get => _worldPosition;
+            set => _worldPosition = value;
+        }
 
         public string RoomId
         {

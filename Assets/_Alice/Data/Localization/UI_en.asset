@@ -17,7 +17,75 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 8fe0e814e94eed54b9754356a14d43b4, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 2581698934022144
+    m_Localized: Lower Quarters
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698975965184
+    m_Localized: Uncharted Parts
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742400
+    m_Localized: 'Mark:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742401
+    m_Localized: "Stick \u2014 cursor \xB7 Interact \u2014 mark \xB7 Shoulders \u2014 mark type \xB7 Jump \u2014 zoom \xB7 Map \u2014 close"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742402
+    m_Localized: Alice
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742403
+    m_Localized: Resting chair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742404
+    m_Localized: Shortcut door
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742405
+    m_Localized: Lift
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742406
+    m_Localized: Needs the fan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742407
+    m_Localized: Needs the mushroom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742408
+    m_Localized: Needs the Cheshire Step
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742409
+    m_Localized: Needs the watch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742410
+    m_Localized: Lost decrees
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742411
+    m_Localized: Pin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742412
+    m_Localized: Cross
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742413
+    m_Localized: Button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2581698992742414
+    m_Localized: Knot
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

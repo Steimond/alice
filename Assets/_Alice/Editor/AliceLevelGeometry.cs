@@ -51,6 +51,17 @@ namespace Alice.Editor
         {
             Undo.IncrementCurrentGroup();
             int group = Undo.GetCurrentGroup();
+            SetCells(scene, brush, cells, erase);
+            RebuildBlocks(scene);
+            Undo.CollapseUndoOperations(group);
+        }
+
+        /// <summary>
+        /// Sets or clears cells without regenerating the blocks, for builders that paint many strokes and then
+        /// call <see cref="RebuildBlocks"/> once.
+        /// </summary>
+        public static void SetCells(Scene scene, LevelBrush brush, RectInt cells, bool erase)
+        {
             Tilemap layer = EnsureLayer(scene, brush);
             Undo.RegisterCompleteObjectUndo(layer, erase ? "Erase level cells" : "Paint level cells");
             TileBase tile = erase ? null : EnsureTile(brush);
@@ -83,9 +94,6 @@ namespace Alice.Editor
                     }
                 }
             }
-
-            RebuildBlocks(scene);
-            Undo.CollapseUndoOperations(group);
         }
 
         /// <summary>Recreates World/Geometry from the painted cells. Blocks placed by the builders elsewhere stay.</summary>

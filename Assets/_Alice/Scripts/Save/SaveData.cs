@@ -33,6 +33,21 @@ namespace Alice.Save
         public List<string> WornTrinkets = new List<string>();
         // 0 in saves written before pockets existed: read as the starting count.
         public int Pockets;
+
+        /// <summary>Rooms revealed on the map, by stable room ID.</summary>
+        public List<string> MapRooms = new List<string>();
+
+        /// <summary>Marks the player left on the map.</summary>
+        public List<MapMarkData> MapMarks = new List<MapMarkData>();
+    }
+
+    /// <summary>One player mark: its kind (MapIconKind as a number) and where it lies, in world tiles.</summary>
+    [Serializable]
+    public sealed class MapMarkData
+    {
+        public int Kind;
+        public float X;
+        public float Y;
     }
 
     /// <summary>The single lost purse: where it lies and how much is in it.</summary>

@@ -34,3 +34,27 @@ MonoBehaviour:
   - _roomId: M3_G
     _scene: M3_G
     _startSpot: 
+  - _roomId: L01
+    _scene: L01
+    _startSpot: 
+  - _roomId: L02
+    _scene: L02
+    _startSpot: 
+  - _roomId: L03
+    _scene: L03
+    _startSpot: 
+  - _roomId: L04
+    _scene: L04
+    _startSpot: 
+  - _roomId: L05
+    _scene: L05
+    _startSpot: 
+  - _roomId: L06
+    _scene: L06
+    _startSpot: 
+  - _roomId: L07
+    _scene: L07
+    _startSpot: 
+  - _roomId: L08
+    _scene: L08
+    _startSpot: 

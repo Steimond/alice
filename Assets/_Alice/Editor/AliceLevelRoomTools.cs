@@ -331,7 +331,7 @@ namespace Alice.Editor
         private const float WorldMetricsWidth = Alice.Core.WorldMetrics.ViewWidthTiles;
         private const float WorldMetricsHeight = 23f;
 
-        private static void AddToCatalog(string roomId)
+        internal static void AddToCatalog(string roomId)
         {
             var catalog = AssetDatabase.LoadAssetAtPath<RoomCatalog>(CatalogPath);
             if (catalog == null)

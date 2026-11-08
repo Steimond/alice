@@ -262,6 +262,12 @@ namespace Alice.Editor
             TapButton(Keyboard.current?.qKey);
         }
 
+        [MenuItem("Alice/Automation/Press Map")]
+        public static void PressMap()
+        {
+            TapButton(Keyboard.current?.mKey);
+        }
+
         [MenuItem("Alice/Automation/Log Input State")]
         public static void LogInputState()
         {

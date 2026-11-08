@@ -97,6 +97,20 @@ namespace Alice.Editor
 
             using (new EditorGUI.DisabledScope(EditorApplication.isPlaying))
             {
+                if (room != null)
+                {
+                    // Where the room stands on the biome's map: neighbours meet it wall to wall (LevelDesignGuide, 4).
+                    EditorGUI.BeginChangeCheck();
+                    Vector2Int world = EditorGUILayout.Vector2IntField("Место на карте биома", room.WorldPosition);
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        Undo.RecordObject(room, "Move room on biome map");
+                        room.WorldPosition = world;
+                        EditorUtility.SetDirty(room);
+                        EditorSceneManager.MarkSceneDirty(scene);
+                    }
+                }
+
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     _newRoomId = EditorGUILayout.TextField(_newRoomId, GUILayout.MinWidth(60f));
@@ -128,6 +142,14 @@ namespace Alice.Editor
                     {
                         _problems = AliceLevelRoomTools.Validate(scene);
                         _status = _problems.Count == 0 ? "Проблем не найдено." : $"Проблем: {_problems.Count}.";
+                    }
+
+                    if (GUILayout.Button("Карта биома"))
+                    {
+                        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+                        {
+                            AliceLevelWorldWindow.Open();
+                        }
                     }
 
                     if (GUILayout.Button("Запечь: плитка"))
