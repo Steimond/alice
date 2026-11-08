@@ -21,6 +21,38 @@ namespace Alice.Tests
             _scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         }
 
+        [Test]
+        public void BakedArtLinesUpWithTheBlocks()
+        {
+            AliceLevelGeometry.Paint(_scene, LevelBrush.Solid, new RectInt(-7, -3, 20, 3), false);
+            AliceLevelGeometry.Paint(_scene, LevelBrush.OneWay, new RectInt(2, 3, 5, 1), false);
+            AliceLevelGeometry.Paint(_scene, LevelBrush.BackWall, new RectInt(-7, -3, 20, 12), false);
+            string prefix = AliceRoomArtBaker.BakedPathPrefix(_scene);
+            try
+            {
+                AliceRoomArtBaker.BakeScene(_scene, false);
+
+                // All three layers cover the room's bounding cells, from (-7, -3) to (13, 9).
+                SpriteRenderer[] layers = AliceLevelGeometry.FindRoot(_scene, "World")
+                    .GetComponentsInChildren<SpriteRenderer>(true)
+                    .Where(renderer => renderer.enabled && renderer.sprite != null && renderer.sprite.texture.width > 16)
+                    .ToArray();
+                Assert.That(layers.Length, Is.EqualTo(3));
+                foreach (SpriteRenderer layer in layers)
+                {
+                    Assert.That((Vector2)layer.bounds.min, Is.EqualTo(new Vector2(-7f, -3f)), layer.name);
+                    Assert.That((Vector2)layer.bounds.max, Is.EqualTo(new Vector2(13f, 9f)), layer.name);
+                }
+            }
+            finally
+            {
+                foreach (string layer in new[] { "_backwall", "_masonry", "_catwalks" })
+                {
+                    AssetDatabase.DeleteAsset(prefix + layer + ".png");
+                }
+            }
+        }
+
         private List<BoxCollider2D> Blocks()
         {
             Transform world = AliceLevelGeometry.FindRoot(_scene, "World");

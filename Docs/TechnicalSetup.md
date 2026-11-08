@@ -275,7 +275,7 @@ CLI самостоятельно управляет batch-флагами и за
 
 Клетка принадлежит блоку, если её центр внутри блока; клетки за пределами комнаты считаются массивом, поэтому наружные стены уходят за край без обводки. Ловушки (триггеры) и прочие объекты не трогаются.
 
-Исходники — `Art/World/LowerQuarters/Source`: `lq_fill_masonry.png`, `lq_rim_tile.png` (верх — светлая плитка прачечной), `lq_rim_slab.png` (мокрые плиты с водорослями — для затопленной зоны), `lq_rim_plank.png`. Тайлсеты переупорядочены скриптом `Revision14/pack-wang.ps1`: тайл с углами NW, NE, SW, SE лежит под номером NW·8 + NE·4 + SW·2 + SE. Запечённые PNG — `Art/World/LowerQuarters/Baked/<сцена>_backwall|masonry|catwalks.png` (спрайт, 16 px на юнит, Point, пивот снизу слева).
+Исходники — `Art/World/LowerQuarters/Source`: `lq_fill_masonry.png`, `lq_rim_tile.png` (верх — светлая плитка прачечной), `lq_rim_slab.png` (мокрые плиты с водорослями — для затопленной зоны), `lq_rim_plank.png`. Тайлсеты переупорядочены скриптом `Revision14/pack-wang.ps1`: тайл с углами NW, NE, SW, SE лежит под номером NW·8 + NE·4 + SW·2 + SE. Запечённые PNG — `Art/World/LowerQuarters/Baked/<сцена>_backwall|masonry|catwalks.png` (спрайт, 16 px на юнит, Point, пивот снизу слева). Папки `Baked` исключены из `AliceCharacterArtPostprocessor`: он ставит всему в `Art/World` пивот снизу по центру, и 8 ноября 2026 это сдвинуло запечённую комнату влево на половину ширины. Запекатель к тому же ставит слой по фактическому пивоту спрайта, а тест `BakedArtLinesUpWithTheBlocks` проверяет, что слои покрывают ровно клетки блоков.
 
 Меню:
 

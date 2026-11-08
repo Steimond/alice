@@ -93,6 +93,17 @@ namespace Alice.Editor
             BakeOpenScene(SlabRimPath);
         }
 
+        /// <summary>Bakes the given scene without saving it; files are named after the scene.</summary>
+        public static void BakeScene(Scene scene, bool wetSlabs)
+        {
+            Bake(scene, wetSlabs ? SlabRimPath : TileRimPath);
+        }
+
+        public static string BakedPathPrefix(Scene scene)
+        {
+            return BakedFolder + "/" + scene.name;
+        }
+
         private static void BakeOpenScene(string rimPath)
         {
             if (!LeavePlayModeFirst())
@@ -455,7 +466,10 @@ namespace Alice.Editor
                 child.SetParent(artRoot, false);
             }
 
-            child.position = origin;
+            // The image's bottom-left corner goes on the room's bottom-left cell whatever pivot the import ended
+            // up with (an import postprocessor once forced bottom-centre and shifted every room by half its width).
+            Vector2 pivot = sprite.pivot / sprite.pixelsPerUnit;
+            child.position = origin + (Vector3)pivot;
             SpriteRenderer renderer = child.GetComponent<SpriteRenderer>();
             if (renderer == null)
             {

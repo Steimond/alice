@@ -15,11 +15,18 @@ namespace Alice.Editor
         private const string UiFolder = "Assets/_Alice/Art/UI/";
         // World props such as the rest armchair stand on the floor like characters and share their pivot.
         private const string WorldFolder = "Assets/_Alice/Art/World/";
+        // Baked room art covers a whole room from its bottom-left corner; AliceRoomArtBaker sets its own import.
+        private const string BakedFolderMark = "/Baked/";
 
         private void OnPreprocessTexture()
         {
             if (!assetPath.StartsWith(CharactersFolder) && !assetPath.StartsWith(UiFolder)
                 && !assetPath.StartsWith(WorldFolder))
+            {
+                return;
+            }
+
+            if (assetPath.Contains(BakedFolderMark))
             {
                 return;
             }
