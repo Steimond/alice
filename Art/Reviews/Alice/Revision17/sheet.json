@@ -7,5 +7,7 @@
     { "id": "heap", "dir": "sheet/drop-raw", "frames": [8], "clearLast": true },
     { "id": "rise", "dir": "sheet/drop-raw", "frames": [7,6,5,4,3,2,1,0] },
     { "id": "wrap", "dir": "sheet/wrap-raw", "frames": [0,1,2,3,4,5,6,7] },
-    { "id": "death", "dir": "sheet/death-raw", "frames": [1,2,3,4,5,6,7,8], "clearLast": true }
+    { "id": "death", "dir": "sheet/death-raw", "frames": [1,2,3,4,5,6,7,8], "clearLast": true },
+    { "id": "stunned", "dir": "../Revision18/sheet-stunned-raw", "frames": [0,1,2,3] },
+    { "id": "death_execution", "dir": "../Revision18/sheet-exec-src", "frames": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], "clearLast": true }
   ] }

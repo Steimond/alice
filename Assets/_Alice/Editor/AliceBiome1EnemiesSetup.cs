@@ -58,6 +58,9 @@ namespace Alice.Editor
             public ClipSpec[] Clips;
             public Func<EnemySettings> CreateSettings;
             public Func<GameObject, EnemySettings, EnemyBase> AddBehaviour;
+            public ExecutionSpec Execution;
+            /// <summary>Alice's frames of the execution split into wind-up, killing blow and finish.</summary>
+            public int[] ExecutionSplit;
         }
 
         private static readonly TypeSpec[] Types =
@@ -69,9 +72,13 @@ namespace Alice.Editor
                 {
                     new ClipSpec("hover", 0.08f, true), new ClipSpec("windup", 0.1f), new ClipSpec("dive", 0.1f),
                     new ClipSpec("fall", 0.07f), new ClipSpec("grounded", 0.1f), new ClipSpec("rise", 0.1f),
-                    new ClipSpec("deathair", 0.07f), new ClipSpec("death", 0.12f), new ClipSpec("deathfloor", 0.3f)
+                    new ClipSpec("deathair", 0.07f), new ClipSpec("death", 0.12f), new ClipSpec("deathfloor", 0.08f),
+                    new ClipSpec("stunned", 0.1f, true), new ClipSpec("death_execution", 0.1f)
                 },
-                CreateSettings = () => Create<FlyingDiverSettings>("EN11", new Vector2(2.2f, 2f), 3, 0, 10f, 9f, 8f, 12, 4f),
+                // Pinned to the floor like a specimen: raise, one blow down through the body, a long press, rise.
+                Execution = new ExecutionSpec("moth_pin", 0.35f, 0.1f, 1f, 1.6f),
+                ExecutionSplit = new[] { 2, 2, 12 },
+                CreateSettings = () => Create<FlyingDiverSettings>("EN11", new Vector2(2.2f, 2f), 3, 0, 10f, 3f, 8f, 12, 4f),
                 AddBehaviour = (root, settings) =>
                 {
                     FlyingDiver enemy = root.AddComponent<FlyingDiver>();
@@ -86,8 +93,11 @@ namespace Alice.Editor
                 {
                     new ClipSpec("idle", 0.1f), new ClipSpec("run", 0.055f, true), new ClipSpec("windup", 0.1f),
                     new ClipSpec("skid", 0.1f), new ClipSpec("daze", 0.1f), new ClipSpec("hurt", 0.1f),
-                    new ClipSpec("death", 0.09f)
+                    new ClipSpec("death", 0.09f), new ClipSpec("stunned", 0.1f, true), new ClipSpec("death_execution", 0.1f)
                 },
+                // A hand pins it down, the fist comes down into the nape; the needle reaches down to the floor past its neck.
+                Execution = new ExecutionSpec("rat_nape", 0.45f, 0.1f, 0.95f, 2.5f),
+                ExecutionSplit = new[] { 4, 2, 10 },
                 CreateSettings = () => Create<ChargerSettings>("EN02", new Vector2(3.2f, 2.2f), 5, 10, 10f, 2f, 9f, 20, 6f),
                 AddBehaviour = (root, settings) =>
                 {
@@ -103,8 +113,12 @@ namespace Alice.Editor
                 {
                     // The walk advances by distance; Thrower counts 0.1 s per walk frame.
                     new ClipSpec("idle", 0.1f), new ClipSpec("walk", 0.1f, true), new ClipSpec("throw", 0.1f),
-                    new ClipSpec("hurt", 0.1f), new ClipSpec("death", 0.09f)
+                    new ClipSpec("hurt", 0.1f), new ClipSpec("death", 0.09f), new ClipSpec("stunned", 0.1f, true),
+                    new ClipSpec("death_execution", 0.1f)
                 },
+                // The throat seized, the needle driven straight in at chest height: its middle passes through the neck.
+                Execution = new ExecutionSpec("duck_throat", 0.5f, 0.1f, 0.9f, 2.6f),
+                ExecutionSplit = new[] { 5, 2, 9 },
                 CreateSettings = () => Create<ThrowerSettings>("EN12", new Vector2(1.4f, 3.4f), 3, 10, 11f, 3f, 6f, 15, 5f),
                 AddBehaviour = (root, settings) =>
                 {
@@ -120,8 +134,11 @@ namespace Alice.Editor
                 {
                     new ClipSpec("hang", 0.14f, true), new ClipSpec("tremble", 0.1f), new ClipSpec("drop", 0.1f),
                     new ClipSpec("heap", 0.1f), new ClipSpec("rise", 0.1f), new ClipSpec("wrap", 0.1f, true),
-                    new ClipSpec("death", 0.1f)
+                    new ClipSpec("death", 0.1f), new ClipSpec("stunned", 0.12f, true), new ClipSpec("death_execution", 0.1f)
                 },
+                // Kneeling over the heap: the needle down into it, then both hands rip the cloth apart.
+                Execution = new ExecutionSpec("sheet_rip", 0.6f, 0.1f, 0.8f, 1f),
+                ExecutionSplit = new[] { 7, 2, 7 },
                 CreateSettings = () => Create<AmbusherSettings>("EN13", new Vector2(2.2f, 4.6f), 4, 0, 6f, 5f, 0f, 12, 4f),
                 AddBehaviour = (root, settings) =>
                 {
@@ -157,10 +174,13 @@ namespace Alice.Editor
                 EnemyClipSet clips = EnsureClips(type);
                 string prefabPath = $"{PrefabRoot}/{type.Name}.prefab";
                 EnsurePrefab(type, settings, clips, prefabPath);
+                EnsureExecution(type, settings);
+                EnsureExecutionOutline(prefabPath);
                 EnsurePaletteVariant(prefabPath, type.Name);
             }
 
             EnsureClothespin();
+            EnsureLaundryProps();
             AssetDatabase.SaveAssets();
             Debug.Log("Biome 1 enemies set up: Moth, Racer, Duck, Sheet.");
         }
@@ -226,9 +246,10 @@ namespace Alice.Editor
                 }
                 else if (!frames.SequenceEqual(clips[index].Frames ?? new Sprite[0]))
                 {
-                    // Redrawn frames come in; the tuned timing stays.
+                    // Redrawn frames come in; the tuned timing stays unless the clip got a different length.
                     EnemyClipSet.Clip old = clips[index];
-                    clips[index] = new EnemyClipSet.Clip(spec.Id, frames, old.FrameTime, old.Loop);
+                    float frameTime = old.Frames != null && old.Frames.Length == frames.Length ? old.FrameTime : spec.FrameTime;
+                    clips[index] = new EnemyClipSet.Clip(spec.Id, frames, frameTime, old.Loop);
                     changed = true;
                 }
             }
@@ -295,6 +316,144 @@ namespace Alice.Editor
             finally
             {
                 UnityEngine.Object.DestroyImmediate(root);
+            }
+        }
+
+        private const string AliceCombatPath = Root + "/Data/Player/AliceCombat.asset";
+        private const string AliceSpritesPath = Root + "/Data/Player/AliceSprites.asset";
+        private const string AliceFrames = Root + "/Art/Characters/Alice/Trial";
+        private const string SilhouetteShaderPath = Root + "/Shaders/SpriteSilhouette.shader";
+
+        /// <summary>
+        /// The type's execution on both sides: its ID and length in the enemy's data (only while unset, so tuning
+        /// stays), Alice's timing in AliceCombat (only when missing) and her frames alice_trial_exec_&lt;prefix&gt;_NN.
+        /// </summary>
+        private static void EnsureExecution(TypeSpec type, EnemySettings settings)
+        {
+            ExecutionSpec spec = type.Execution;
+            if (string.IsNullOrEmpty(settings.ExecutionId))
+            {
+                MeleeAttackTimeline timeline = spec.Timeline;
+                var serialized = new SerializedObject(settings);
+                serialized.FindProperty("_executionId").stringValue = spec.Id;
+                serialized.FindProperty("_executionTime").floatValue = timeline.Duration;
+                serialized.ApplyModifiedPropertiesWithoutUndo();
+            }
+
+            var combat = AssetDatabase.LoadAssetAtPath<PlayerCombatSettings>(AliceCombatPath);
+            if (combat != null && combat.AddExecutionIfMissing(spec))
+            {
+                EditorUtility.SetDirty(combat);
+            }
+
+            var sprites = AssetDatabase.LoadAssetAtPath<PlayerSpriteSet>(AliceSpritesPath);
+            Sprite[] frames = LoadFrames(AliceFrames, $"alice_trial_exec_{type.Prefix}_");
+            if (sprites == null || frames.Length != type.ExecutionSplit.Sum())
+            {
+                return;
+            }
+
+            StrikeFrames held = sprites.ExecutionPhases(spec.Id);
+            Sprite[] current = (held.Phase(AttackPhase.Windup) ?? new Sprite[0])
+                .Concat(held.Phase(AttackPhase.Active) ?? new Sprite[0])
+                .Concat(held.Phase(AttackPhase.Recovery) ?? new Sprite[0]).ToArray();
+            if (current.SequenceEqual(frames))
+            {
+                return;
+            }
+
+            int[] split = type.ExecutionSplit;
+            sprites.AssignExecution(spec.Id, new StrikeFrames(frames.Take(split[0]).ToArray(),
+                frames.Skip(split[0]).Take(split[1]).ToArray(), frames.Skip(split[0] + split[1]).ToArray()));
+            EditorUtility.SetDirty(sprites);
+        }
+
+        /// <summary>The pulsing outline that offers the execution, on prefabs made before it existed.</summary>
+        private static void EnsureExecutionOutline(string prefabPath)
+        {
+            Shader silhouette = AssetDatabase.LoadAssetAtPath<Shader>(SilhouetteShaderPath);
+            if (silhouette == null || !File.Exists(prefabPath))
+            {
+                return;
+            }
+
+            GameObject root = PrefabUtility.LoadPrefabContents(prefabPath);
+            try
+            {
+                if (root.TryGetComponent(out ExecutionOutline _) || !root.TryGetComponent(out EnemyBase enemy))
+                {
+                    return;
+                }
+
+                Transform sprite = root.transform.Find(SpriteChildName);
+                root.AddComponent<ExecutionOutline>().Bind(enemy, sprite.GetComponent<SpriteRenderer>(), silhouette);
+                PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
+            }
+            finally
+            {
+                PrefabUtility.UnloadPrefabContents(root);
+            }
+        }
+
+        private const string LaundryArt = Root + "/Art/World/Laundry";
+        private const string PropsRoot = Root + "/Prefabs/Level/Props";
+        // Behind the sheets, whose pegs sit on it, and in front of Alice, who passes under it.
+        private const int RopeSortingOrder = 11;
+
+        /// <summary>
+        /// Dressing for laundry rooms in the palette: a clothesline of any length between two hooks, and a harmless
+        /// hanging sheet (the sheet enemy's sway) for the ambusher to hide among.
+        /// </summary>
+        private static void EnsureLaundryProps()
+        {
+            AliceProjectSetup.EnsureFolder(PropsRoot);
+            string linePath = PropsRoot + "/Clothesline.prefab";
+            Sprite rope = AssetDatabase.LoadAssetAtPath<Sprite>(LaundryArt + "/clothesline_rope.png");
+            Sprite hook = AssetDatabase.LoadAssetAtPath<Sprite>(LaundryArt + "/clothesline_hook.png");
+            if (!File.Exists(linePath) && rope != null && hook != null)
+            {
+                GameObject root = new GameObject("Clothesline");
+                try
+                {
+                    SpriteRenderer Part(string name, Sprite sprite)
+                    {
+                        var child = new GameObject(name);
+                        child.transform.SetParent(root.transform, false);
+                        SpriteRenderer renderer = child.AddComponent<SpriteRenderer>();
+                        renderer.sprite = sprite;
+                        renderer.sortingOrder = RopeSortingOrder;
+                        return renderer;
+                    }
+
+                    SpriteRenderer line = Part("Rope", rope);
+                    SpriteRenderer left = Part("HookLeft", hook);
+                    SpriteRenderer right = Part("HookRight", hook);
+                    root.AddComponent<Alice.World.Clothesline>().Bind(line, left, right);
+                    PrefabUtility.SaveAsPrefabAsset(root, linePath);
+                }
+                finally
+                {
+                    UnityEngine.Object.DestroyImmediate(root);
+                }
+            }
+
+            string sheetPath = PropsRoot + "/HangingSheet.prefab";
+            Sprite[] sway = LoadFrames($"{ArtRoot}/Sheet", "sheet_hang_");
+            if (!File.Exists(sheetPath) && sway.Length > 0)
+            {
+                GameObject root = new GameObject("HangingSheet");
+                try
+                {
+                    SpriteRenderer renderer = root.AddComponent<SpriteRenderer>();
+                    renderer.sprite = sway[0];
+                    renderer.sortingOrder = SheetSortingOrder;
+                    root.AddComponent<Alice.World.SpriteLoop>().Bind(sway, 0.14f);
+                    PrefabUtility.SaveAsPrefabAsset(root, sheetPath);
+                }
+                finally
+                {
+                    UnityEngine.Object.DestroyImmediate(root);
+                }
             }
         }
 
@@ -414,8 +573,28 @@ namespace Alice.Editor
                 }
             }
 
+            // The sheet hides among laundry: a line over its bay, one harmless sheet beside it.
+            if (gameplay.GetComponentInChildren<Alice.World.Clothesline>(true) == null)
+            {
+                var line = AssetDatabase.LoadAssetAtPath<GameObject>(PropsRoot + "/Clothesline.prefab");
+                var decoy = AssetDatabase.LoadAssetAtPath<GameObject>(PropsRoot + "/HangingSheet.prefab");
+                if (line != null && decoy != null)
+                {
+                    var lineInstance = (GameObject)PrefabUtility.InstantiatePrefab(line, scene);
+                    lineInstance.transform.SetParent(gameplay.transform, false);
+                    lineInstance.transform.position = new Vector2(15f, SheetBelowRope);
+                    lineInstance.GetComponent<Alice.World.Clothesline>().Length = 8;
+                    var decoyInstance = (GameObject)PrefabUtility.InstantiatePrefab(decoy, scene);
+                    decoyInstance.transform.SetParent(gameplay.transform, false);
+                    decoyInstance.transform.position = new Vector2(13.5f, 0f);
+                }
+            }
+
             EditorSceneManager.SaveScene(scene);
         }
+
+        // A sheet's pegs sit on the rope when the rope's pivot is this far above the sheet's (68 px).
+        private const float SheetBelowRope = 68f / 16f;
 
         private static void Place(Scene scene, Transform parent, string name, Vector2 position, int facing)
         {

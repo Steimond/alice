@@ -17,6 +17,10 @@ MonoBehaviour:
   _maxHealth: 3
   _hitInvulnerability: 0.12
   _hitStop: 0.08
+  _executionId: moth_pin
+  _stunAtHealth: 1
+  _stunnedTime: 2.5
+  _executionTime: 1.45
   _sightRange: 10
   _sightHeight: 3
   _leashDistance: 8

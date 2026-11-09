@@ -5,14 +5,18 @@ namespace Alice.Editor
 {
     /// <summary>
     /// Play in the Editor always starts from the main menu, whatever scene is open (owner's decision, GDD 0.35),
-    /// as the built game does. For checking one room on its own the switch Alice → Play From Main Menu turns it
-    /// off for this machine; it stays on by default.
+    /// as the built game does. Two ways past it for checking one room: Alice → Play This Scene (F5) starts the open
+    /// scene once and leaves the rule on, and Alice → Play From Main Menu turns the rule off for this machine.
     /// </summary>
     [InitializeOnLoad]
     public static class AlicePlayStart
     {
         private const string MenuPath = "Alice/Play From Main Menu";
+        private const string PlayHerePath = "Alice/Play This Scene _F5";
         private const string PrefKey = "Alice.PlayFromMainMenu";
+        // SessionState, not EditorPrefs: the one-off skip survives the domain reload on entering Play but never
+        // outlives the Editor session, so a crash mid-Play cannot leave the menu switched off for good.
+        private const string HereOnceKey = "Alice.PlayHereOnce";
 
         static AlicePlayStart()
         {
@@ -23,6 +27,12 @@ namespace Alice.Editor
             {
                 if (state == PlayModeStateChange.ExitingEditMode)
                 {
+                    Apply();
+                }
+                else if (state == PlayModeStateChange.EnteredPlayMode && SessionState.GetBool(HereOnceKey, false))
+                {
+                    // Play has already picked its start scene; the next Play goes through the menu again.
+                    SessionState.EraseBool(HereOnceKey);
                     Apply();
                 }
             };
@@ -51,9 +61,30 @@ namespace Alice.Editor
             return true;
         }
 
+        /// <summary>Enters Play in the open scene, skipping the main menu this one time.</summary>
+        [MenuItem(PlayHerePath, false, 1)]
+        public static void PlayHere()
+        {
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+            {
+                return;
+            }
+
+            SessionState.SetBool(HereOnceKey, true);
+            Apply();
+            EditorApplication.isPlaying = true;
+        }
+
+        [MenuItem(PlayHerePath, true)]
+        private static bool PlayHereCheck()
+        {
+            return !EditorApplication.isPlayingOrWillChangePlaymode;
+        }
+
         public static void Apply()
         {
-            EditorSceneManager.playModeStartScene = Enabled && !IsTestRun()
+            bool fromMenu = Enabled && !SessionState.GetBool(HereOnceKey, false) && !IsTestRun();
+            EditorSceneManager.playModeStartScene = fromMenu
                 ? AssetDatabase.LoadAssetAtPath<SceneAsset>(AliceMainMenuSetup.ScenePath)
                 : null;
         }

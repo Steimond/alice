@@ -43,7 +43,7 @@ namespace Alice.Combat
         public override bool BlocksBodies => false;
         protected override bool ContactHurts => false;
 
-        public override string ClipId
+        protected override string ArchetypeClipId
         {
             get
             {
@@ -67,10 +67,10 @@ namespace Alice.Combat
             }
         }
 
-        public override float ClipTime =>
+        protected override float ArchetypeClipTime =>
             CurrentState == State.Dead && _diedHanging ? StateTime - _settings.Drop : StateTime;
 
-        public override float ClipSpan
+        protected override float ArchetypeClipSpan
         {
             get
             {
@@ -174,6 +174,7 @@ namespace Alice.Combat
             }
 
             Enter(State.Heap);
+            TryStun();
         }
 
         private void UpdateHold()
@@ -219,6 +220,14 @@ namespace Alice.Combat
             {
                 Enter(State.Drop);
             }
+        }
+
+        // Only the heap on the floor reels: a hanging sheet just drops.
+        protected override bool CanStunNow => CurrentState == State.Heap;
+
+        protected override void OnStunEnded()
+        {
+            Enter(State.Rise);
         }
 
         protected override void OnKilled(HitInfo hit)

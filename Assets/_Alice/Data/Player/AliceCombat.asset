@@ -33,6 +33,7 @@ MonoBehaviour:
   _saltTime: 0.8
   _saltTakesEffectAt: 0.55
   _saltBufferTime: 0.1
+  _lossPickupRadius: 1.2
   _confidenceMax: 100
   _executionConfidenceFactor: 3
   _techniques:
@@ -100,3 +101,23 @@ MonoBehaviour:
     _active: 0.35
     _recovery: 0.65
     _distance: 2.4
+  - _id: moth_pin
+    _windup: 0.35
+    _active: 0.1
+    _recovery: 1
+    _distance: 1.6
+  - _id: rat_nape
+    _windup: 0.45
+    _active: 0.1
+    _recovery: 0.95
+    _distance: 2.5
+  - _id: duck_throat
+    _windup: 0.5
+    _active: 0.1
+    _recovery: 0.9
+    _distance: 2.6
+  - _id: sheet_rip
+    _windup: 0.6
+    _active: 0.1
+    _recovery: 0.8
+    _distance: 1

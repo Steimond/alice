@@ -185,6 +185,19 @@ namespace Alice.Player
         public MeleeMove Counter => _counter;
         public float ExecutionReach => _executionReach;
 
+        /// <summary>Adds an execution an enemy type brings, unless one with its ID is already tuned here.</summary>
+        public bool AddExecutionIfMissing(ExecutionSpec spec)
+        {
+            if (TryGetExecution(spec.Id, out _))
+            {
+                return false;
+            }
+
+            var list = new System.Collections.Generic.List<ExecutionSpec>(_executions ?? new ExecutionSpec[0]) { spec };
+            _executions = list.ToArray();
+            return true;
+        }
+
         public bool TryGetExecution(string id, out ExecutionSpec spec)
         {
             foreach (ExecutionSpec candidate in _executions)

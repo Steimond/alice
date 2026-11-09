@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7039517191144879843}
   - component: {fileID: 6154017359211997225}
   - component: {fileID: 2858747556343099641}
+  - component: {fileID: 3481669571534960844}
   m_Layer: 0
   m_Name: Moth
   m_TagString: Untagged
@@ -170,6 +171,24 @@ MonoBehaviour:
   _flashTime: 0.08
   _blinkWhileRecovering: 0
   _blinkPeriod: 0.1
+--- !u!114 &3481669571534960844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4046407967197064701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 328de0dee4a455e4cb1c0d4482547d6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Alice::Alice.Combat.ExecutionOutline
+  _enemy: {fileID: 7039517191144879843}
+  _source: {fileID: 130111851415989155}
+  _silhouette: {fileID: 4800000, guid: 284b934abaa3005449d1b74186b436ca, type: 3}
+  _color: {r: 1, g: 0.86, b: 0.45, a: 1}
+  _pulsePeriod: 0.5
+  _minAlpha: 0.35
 --- !u!1 &8674058342284277599
 GameObject:
   m_ObjectHideFlags: 0

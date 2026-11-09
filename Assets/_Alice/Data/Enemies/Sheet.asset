@@ -17,6 +17,10 @@ MonoBehaviour:
   _maxHealth: 4
   _hitInvulnerability: 0.12
   _hitStop: 0.08
+  _executionId: sheet_rip
+  _stunAtHealth: 1
+  _stunnedTime: 2.5
+  _executionTime: 1.5
   _sightRange: 6
   _sightHeight: 5
   _leashDistance: 0

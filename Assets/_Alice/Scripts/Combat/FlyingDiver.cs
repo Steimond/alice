@@ -33,6 +33,7 @@ namespace Alice.Combat
         private Vector2 _exposedTo;
         private float _fallSpeed;
         private bool _landedDead;
+        private bool _stunLanded;
 
         public FlyingDiverSettings Settings
         {
@@ -46,7 +47,7 @@ namespace Alice.Combat
         public override bool BlocksBodies => false;
         protected override bool ContactHurts => false;
 
-        public override string ClipId
+        protected override string ArchetypeClipId
         {
             get
             {
@@ -70,7 +71,7 @@ namespace Alice.Combat
             }
         }
 
-        public override float ClipSpan
+        protected override float ArchetypeClipSpan
         {
             get
             {
@@ -95,6 +96,7 @@ namespace Alice.Combat
             _cooldownUntil = 0f;
             _fallSpeed = 0f;
             _landedDead = false;
+            _stunLanded = false;
             Enter(State.Hover);
         }
 
@@ -294,6 +296,25 @@ namespace Alice.Combat
             _fallSpeed = 0f;
             _cooldownUntil = Time.time + _settings.Cooldown;
             Enter(State.Falling);
+        }
+
+        // Knocked down nearly beaten, it reels on the floor; the stun may begin while it still falls.
+        protected override bool CanStunNow => CurrentState == State.Falling || CurrentState == State.Grounded;
+
+        protected override string StunnedClipId => _stunLanded ? "stunned" : "fall";
+
+        protected override void TickWhileStunned()
+        {
+            if (!_stunLanded)
+            {
+                _stunLanded = CurrentState == State.Grounded || FallToFloor();
+            }
+        }
+
+        protected override void OnStunEnded()
+        {
+            _stunLanded = false;
+            Enter(State.Rising);
         }
 
         protected override void OnKilled(HitInfo hit)

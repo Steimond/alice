@@ -7,5 +7,7 @@
     { "id": "skid", "dir": "racer/skid-raw", "frames": [1,2,3,4,5,6,7,8], "shiftY": 3 },
     { "id": "daze", "dir": "racer/daze-raw", "frames": [2,3,4,5,6,7,8,9,10,11,12], "shiftX": 20, "shiftY": 3 },
     { "id": "hurt", "dir": "racer/hurt-raw", "frames": [1,2,3,4], "shiftY": 3, "minBlob": 120 },
-    { "id": "death", "dir": "racer/death-raw", "frames": [1,2,3,4,5,6,7,8,9,10,11,12], "shiftY": 1, "clearLast": true }
+    { "id": "death", "dir": "racer/death-raw", "frames": [1,2,3,4,5,6,7,8,9,10,11,12], "shiftY": 1, "clearLast": true },
+    { "id": "stunned", "dir": "racer/daze-raw", "frames": [4,5,6,7,8,7,6,5], "shiftX": 20, "shiftY": 3 },
+    { "id": "death_execution", "dir": "../Revision18/rat-exec-raw", "frames": [2,3,4,5,6,7,8,9,10,11,12], "shiftY": 3, "clearLast": true }
   ] }

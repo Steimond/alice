@@ -38,7 +38,7 @@ namespace Alice.Combat
 
         protected override bool ContactHurts => CurrentState != State.Dead && CurrentState != State.Stagger;
 
-        public override string ClipId
+        protected override string ArchetypeClipId
         {
             get
             {
@@ -58,9 +58,9 @@ namespace Alice.Combat
             }
         }
 
-        public override float ClipTime => CurrentState == State.Walk ? _walkDistance / _settings.WalkFrameDistance * 0.1f : StateTime;
+        protected override float ArchetypeClipTime => CurrentState == State.Walk ? _walkDistance / _settings.WalkFrameDistance * 0.1f : StateTime;
 
-        public override float ClipSpan
+        protected override float ArchetypeClipSpan
         {
             get
             {
@@ -209,6 +209,12 @@ namespace Alice.Combat
             Facing = -hit.DirectionX;
             _cooldownUntil = Time.time + _settings.Cooldown * 0.5f;
             Enter(State.Stagger);
+        }
+
+        protected override void OnStunEnded()
+        {
+            _cooldownUntil = Time.time + _settings.Cooldown;
+            Enter(State.Guard);
         }
 
         protected override void OnKilled(HitInfo hit)

@@ -11,7 +11,8 @@ namespace Alice.Combat
     {
         private static readonly Vector2[] Offsets = { Vector2.left, Vector2.right, Vector2.up, Vector2.down };
 
-        [SerializeField] private MeleeEnemy _enemy;
+        [Tooltip("Any enemy that can be executed (IExecutable): the soldier, the biome 1 archetypes.")]
+        [SerializeField] private MonoBehaviour _enemy;
         [SerializeField] private SpriteRenderer _source;
         [Tooltip("Alice/SpriteSilhouette: draws the sprite in one flat colour.")]
         [SerializeField] private Shader _silhouette;
@@ -20,10 +21,11 @@ namespace Alice.Combat
         [SerializeField, Range(0f, 1f)] private float _minAlpha = 0.35f;
 
         private SpriteRenderer[] _copies;
+        private Alice.Core.IExecutable _executable;
 
         private Material _material;
 
-        public void Bind(MeleeEnemy enemy, SpriteRenderer source, Shader silhouette)
+        public void Bind(MonoBehaviour enemy, SpriteRenderer source, Shader silhouette)
         {
             _enemy = enemy;
             _source = source;
@@ -32,6 +34,7 @@ namespace Alice.Combat
 
         private void Awake()
         {
+            _executable = _enemy as Alice.Core.IExecutable;
             if (_source == null || _silhouette == null)
             {
                 enabled = false;
@@ -65,7 +68,7 @@ namespace Alice.Combat
 
         private void LateUpdate()
         {
-            bool visible = _enemy != null && _enemy.CanBeExecuted;
+            bool visible = _executable != null && _executable.CanBeExecuted;
             float wave = 0.5f + 0.5f * Mathf.Sin(Time.time * 2f * Mathf.PI / _pulsePeriod);
             Color color = _color;
             color.a = Mathf.Lerp(_minAlpha, 1f, wave);

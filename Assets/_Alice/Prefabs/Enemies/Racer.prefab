@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: 7500466361429666999}
   - component: {fileID: 6063088341163965683}
   - component: {fileID: 5816305287186455010}
+  - component: {fileID: 1457453887801174243}
   m_Layer: 0
   m_Name: Racer
   m_TagString: Untagged
@@ -262,3 +263,21 @@ MonoBehaviour:
   _flashTime: 0.08
   _blinkWhileRecovering: 0
   _blinkPeriod: 0.1
+--- !u!114 &1457453887801174243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7374252449756409438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 328de0dee4a455e4cb1c0d4482547d6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Alice::Alice.Combat.ExecutionOutline
+  _enemy: {fileID: 7500466361429666999}
+  _source: {fileID: 8612020892467106165}
+  _silhouette: {fileID: 4800000, guid: 284b934abaa3005449d1b74186b436ca, type: 3}
+  _color: {r: 1, g: 0.86, b: 0.45, a: 1}
+  _pulsePeriod: 0.5
+  _minAlpha: 0.35

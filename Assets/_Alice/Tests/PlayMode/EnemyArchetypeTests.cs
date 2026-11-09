@@ -244,6 +244,82 @@ namespace Alice.Tests
             Assert.That(sheet.CurrentState, Is.EqualTo(Ambusher.State.Hanging));
         }
 
+        [UnityTest]
+        public IEnumerator Duck_NearlyBeaten_IsStunnedOnce_AndItsExecutionRunsTheExecutionDeath()
+        {
+            ThrowerSettings settings = Track(ScriptableObject.CreateInstance<ThrowerSettings>());
+            SetExecution(settings, "duck_throat");
+            _motor.Teleport(new Vector2(-30f, 0.02f));
+            Thrower duck = Create<Thrower>(new Vector2(0f, 0f), enemy => enemy.Settings = settings);
+            Health health = duck.GetComponent<Health>();
+            yield return Steps(5);
+
+            health.ReceiveHit(new HitInfo(health.Current - settings.StunAtHealth, 1, _motor.gameObject, HitKind.Thrust));
+            yield return Steps(2);
+            Assert.That(duck.IsStunned, Is.True);
+            Assert.That(duck.CanBeExecuted, Is.True);
+            Assert.That(duck.ClipId, Is.EqualTo("stunned"));
+
+            duck.BeginExecution(_motor.gameObject, 1);
+            yield return Steps(1);
+            Assert.That(duck.IsDead, Is.True);
+            Assert.That(duck.KillingBlow, Is.EqualTo(HitKind.Execution));
+            Assert.That(duck.ClipId, Is.EqualTo("death"));
+            Assert.That(duck.ClipSpan, Is.EqualTo(settings.ExecutionTime), "The death is spread over Alice's execution.");
+        }
+
+        [UnityTest]
+        public IEnumerator Moth_StunnedByTheBlowThatDropsIt_FallsAndReelsOnTheFloor_ThenLiftsOff()
+        {
+            FlyingDiverSettings settings = Track(ScriptableObject.CreateInstance<FlyingDiverSettings>());
+            SetExecution(settings, "moth_pin");
+            _motor.Teleport(new Vector2(-30f, 0.02f));
+            FlyingDiver moth = Create<FlyingDiver>(new Vector2(3f, 7f), enemy => enemy.Settings = settings);
+            Health health = moth.GetComponent<Health>();
+            yield return Steps(5);
+
+            health.ReceiveHit(new HitInfo(health.Current - settings.StunAtHealth, 1, _motor.gameObject, HitKind.Slash));
+            yield return Steps(2);
+            Assert.That(moth.IsStunned, Is.True, "The near-fatal blow stuns it as it drops.");
+            Assert.That(moth.ClipId, Is.EqualTo("fall"), "Still in the air it shows its fall.");
+
+            yield return Steps(40);
+            Assert.That(moth.Position.y, Is.EqualTo(0f).Within(0.05f), "Stunned, it still falls to the floor.");
+            Assert.That(moth.ClipId, Is.EqualTo("stunned"));
+
+            yield return new WaitForSeconds(settings.StunnedTime);
+            Assert.That(moth.IsStunned, Is.False);
+            Assert.That(moth.CurrentState == FlyingDiver.State.Rising || moth.CurrentState == FlyingDiver.State.Climb,
+                Is.True, "When the stun runs out it gets up and lifts off.");
+        }
+
+        [UnityTest]
+        public IEnumerator Sheet_IsStunnedOnlyInAHeap_NotWhileItHangs()
+        {
+            AmbusherSettings settings = Track(ScriptableObject.CreateInstance<AmbusherSettings>());
+            SetExecution(settings, "sheet_rip");
+            _motor.Teleport(new Vector2(-3f, 0.02f));
+            Ambusher sheet = Create<Ambusher>(new Vector2(0f, 0f), enemy => enemy.Settings = settings);
+            Health health = sheet.GetComponent<Health>();
+            yield return Steps(5);
+
+            health.ReceiveHit(new HitInfo(health.Current - settings.StunAtHealth, 1, _motor.gameObject, HitKind.Thrust));
+            yield return Steps(2);
+            Assert.That(sheet.IsStunned, Is.False, "A hanging sheet just drops.");
+
+            yield return new WaitForSeconds(settings.Drop + 0.2f);
+            Assert.That(sheet.CurrentState, Is.EqualTo(Ambusher.State.Heap));
+            Assert.That(sheet.IsStunned, Is.True, "Lying in a heap, beaten low, it reels.");
+            Assert.That(sheet.CanBeExecuted, Is.True);
+        }
+
+        // The execution ID is authored in the asset; tests have no editor to set it.
+        private static void SetExecution(EnemySettings settings, string id)
+        {
+            typeof(EnemySettings).GetField("_executionId",
+                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).SetValue(settings, id);
+        }
+
         private T Create<T>(Vector2 position, System.Action<T> configure) where T : EnemyBase
         {
             GameObject root = Track(new GameObject(typeof(T).Name));

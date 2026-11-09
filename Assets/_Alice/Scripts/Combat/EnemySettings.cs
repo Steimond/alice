@@ -20,6 +20,16 @@ namespace Alice.Combat
         [Tooltip("A blow that lands freezes the enemy for this long, together with the attacker's strike.")]
         [SerializeField, Min(0f)] private float _hitStop = 0.08f;
 
+        [Header("Stun and execution")]
+        [Tooltip("Stable ID of this type's execution; Alice keeps frames and timing under the same ID. Empty = no execution and no stun.")]
+        [SerializeField] private string _executionId = string.Empty;
+        [Tooltip("A blow that leaves this much health or less stuns it once per life; only then can it be executed. 0 = never.")]
+        [SerializeField, Min(0)] private int _stunAtHealth = 1;
+        [Tooltip("How long the stun lasts: Alice may execute, finish with any blow or let it recover.")]
+        [SerializeField, Min(0f)] private float _stunnedTime = 2.5f;
+        [Tooltip("Length of Alice's execution of this type; the enemy's execution death is spread over it so both end together.")]
+        [SerializeField, Min(0.1f)] private float _executionTime = 1.3f;
+
         [Header("Sight")]
         [SerializeField, Min(0f)] private float _sightRange = 9f;
         [SerializeField, Min(0f)] private float _sightHeight = 3f;
@@ -40,6 +50,10 @@ namespace Alice.Combat
         [SerializeField, Min(0f)] private float _confidenceReward = 5f;
 
         public string ArchetypeId => _archetypeId;
+        public string ExecutionId => _executionId;
+        public int StunAtHealth => _stunAtHealth;
+        public float StunnedTime => _stunnedTime;
+        public float ExecutionTime => _executionTime;
         public Vector2 BodySize => _bodySize;
         public int MaxHealth => _maxHealth;
         public float HitInvulnerability => _hitInvulnerability;

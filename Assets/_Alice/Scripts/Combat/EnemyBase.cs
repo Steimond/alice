@@ -29,7 +29,7 @@ namespace Alice.Combat
     /// only writes its own states. The pivot is at the bottom of the body box.
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D), typeof(Health))]
-    public abstract class EnemyBase : MonoBehaviour, IBodyBlocker, IEnemyClipSource
+    public abstract class EnemyBase : MonoBehaviour, IBodyBlocker, IEnemyClipSource, IExecutable
     {
         private const float ProbeLift = 0.1f;
         private const float GroundProbeDepth = 0.4f;
@@ -46,6 +46,9 @@ namespace Alice.Combat
         private float _frozenUntil;
         private float _nextContactAt;
         private float _stateStartedAt;
+        private float _stunnedAt;
+        private float _diedAt;
+        private bool _wasStunned;
 
         protected Rigidbody2D Body { get; private set; }
         protected BoxCollider2D BodyCollider { get; private set; }
@@ -69,9 +72,25 @@ namespace Alice.Combat
         /// <summary>Seconds in the current state, held back by the hit-stop.</summary>
         public float StateTime => Time.time - _stateStartedAt;
 
-        public abstract string ClipId { get; }
-        public virtual float ClipTime => StateTime;
-        public virtual float ClipSpan => 0f;
+        /// <summary>True while a near-fatal blow keeps it reeling; only now can it be executed (GDD section 4).</summary>
+        public bool IsStunned { get; private set; }
+
+        public bool CanBeExecuted => IsStunned && !IsDead && !string.IsNullOrEmpty(BaseSettings.ExecutionId);
+        public string ExecutionId => BaseSettings.ExecutionId;
+
+        private bool Executed => IsDead && KillingBlow == HitKind.Execution;
+
+        // Stun and execution are shared; everything else is the archetype's own clip.
+        public string ClipId => IsStunned ? StunnedClipId : Executed ? "death" : ArchetypeClipId;
+        public float ClipTime => IsStunned ? Time.time - _stunnedAt : Executed ? Time.time - _diedAt : ArchetypeClipTime;
+        public float ClipSpan => Executed ? BaseSettings.ExecutionTime : IsStunned ? 0f : ArchetypeClipSpan;
+
+        protected abstract string ArchetypeClipId { get; }
+        protected virtual float ArchetypeClipTime => StateTime;
+        protected virtual float ArchetypeClipSpan => 0f;
+
+        /// <summary>The reeling clip; a flyer still falling can show its fall instead.</summary>
+        protected virtual string StunnedClipId => "stunned";
 
         public virtual bool BlocksBodies => !IsDead;
 
@@ -126,6 +145,8 @@ namespace Alice.Combat
             BodyCollider.enabled = true;
             KillingBlow = HitKind.Other;
             IsDead = false;
+            IsStunned = false;
+            _wasStunned = false;
             Facing = _initialFacing >= 0 ? 1 : -1;
             _frozenUntil = 0f;
             OnSpawn();
@@ -137,6 +158,18 @@ namespace Alice.Combat
             if (Time.time < _frozenUntil)
             {
                 _stateStartedAt += Time.fixedDeltaTime;
+                return;
+            }
+
+            if (IsStunned)
+            {
+                TickWhileStunned();
+                if (Time.time - _stunnedAt >= BaseSettings.StunnedTime)
+                {
+                    IsStunned = false;
+                    OnStunEnded();
+                }
+
                 return;
             }
 
@@ -159,6 +192,46 @@ namespace Alice.Combat
         /// <summary>The enemy has just died; the archetype picks its dying state.</summary>
         protected abstract void OnKilled(HitInfo hit);
 
+        /// <summary>Whether a near-fatal blow may stun it in its present state, e.g. the sheet only once it lies in a heap.</summary>
+        protected virtual bool CanStunNow => true;
+
+        /// <summary>Runs instead of <see cref="Tick"/> while stunned: a knocked-down flyer keeps falling.</summary>
+        protected virtual void TickWhileStunned()
+        {
+        }
+
+        /// <summary>The stun ran out without an execution; the archetype picks up again.</summary>
+        protected abstract void OnStunEnded();
+
+        /// <summary>
+        /// Stuns it once per life when its health is down to the threshold and its state allows it. Called after every
+        /// blow, and by an archetype whose stun waits for a state (the sheet landing in a heap).
+        /// </summary>
+        protected bool TryStun()
+        {
+            if (IsDead || IsStunned || _wasStunned || string.IsNullOrEmpty(BaseSettings.ExecutionId)
+                || Health.Current > BaseSettings.StunAtHealth || !CanStunNow)
+            {
+                return false;
+            }
+
+            _wasStunned = true;
+            IsStunned = true;
+            _stunnedAt = Time.time;
+            return true;
+        }
+
+        public void BeginExecution(GameObject by, int fromSide)
+        {
+            if (!CanBeExecuted)
+            {
+                return;
+            }
+
+            // Facing the executioner; the execution death starts now, in sync with Alice.
+            Health.Kill(new HitInfo(Health.Current, -fromSide, by, HitKind.Execution));
+        }
+
         protected void RestartStateClock()
         {
             _stateStartedAt = Time.time;
@@ -167,15 +240,30 @@ namespace Alice.Combat
         private void HandleDamaged(HitInfo hit)
         {
             _frozenUntil = Time.time + BaseSettings.HitStop;
-            if (!Health.IsDead)
+            if (Health.IsDead)
             {
-                OnHurt(hit);
+                return;
+            }
+
+            if (IsStunned)
+            {
+                // Stunned, it only takes the blows; the stun itself runs on.
+                return;
+            }
+
+            // The archetype reacts first (a flyer drops), then the stun may catch the new state.
+            OnHurt(hit);
+            if (TryStun())
+            {
+                Facing = -hit.DirectionX;
             }
         }
 
         private void HandleDied(HitInfo hit)
         {
             IsDead = true;
+            IsStunned = false;
+            _diedAt = Time.time;
             KillingBlow = hit.Kind;
             Facing = -hit.DirectionX;
             BodyCollider.enabled = false;

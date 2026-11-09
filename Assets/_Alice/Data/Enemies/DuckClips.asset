@@ -70,3 +70,31 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 59769edf19c301543b1766fa0887722c, type: 3}
     _frameTime: 0.09
     _loop: 0
+  - _id: stunned
+    _frames:
+    - {fileID: 21300000, guid: 48c7954ffee194946b3d38f5a3ba625c, type: 3}
+    - {fileID: 21300000, guid: c72accb292baeb54cae6c5e03d1a77da, type: 3}
+    - {fileID: 21300000, guid: 09020e451dcd5b74faefefe87ad6885b, type: 3}
+    - {fileID: 21300000, guid: f314a54c5fa51f74da3fef2c3f88998b, type: 3}
+    - {fileID: 21300000, guid: 2e7c8a72498144346a55af5250dec442, type: 3}
+    - {fileID: 21300000, guid: b7751ded216f1ca4db2a2fed82e2f660, type: 3}
+    - {fileID: 21300000, guid: c8e08ba91847c994c89b02dca5cb564a, type: 3}
+    - {fileID: 21300000, guid: dd9952af9d22328409289e94f5e06350, type: 3}
+    _frameTime: 0.1
+    _loop: 1
+  - _id: death_execution
+    _frames:
+    - {fileID: 21300000, guid: 2f00cad15439c054b948d60d6cdaa3b2, type: 3}
+    - {fileID: 21300000, guid: 3a222d6288f26f146a4822563f163e85, type: 3}
+    - {fileID: 21300000, guid: c601a60ede0564b4297465ba5392c04a, type: 3}
+    - {fileID: 21300000, guid: 22a14c1150a9c2744852fb0ca84747a6, type: 3}
+    - {fileID: 21300000, guid: 27ed82042728d19409cbabe77196564a, type: 3}
+    - {fileID: 21300000, guid: 2dd7044433acf9b4b8b2e572ac8485a8, type: 3}
+    - {fileID: 21300000, guid: b476edea8cb3d964d9abb8b75b524157, type: 3}
+    - {fileID: 21300000, guid: eb57c8d15f32adc448adb911b05a9fbd, type: 3}
+    - {fileID: 21300000, guid: 4b0ef53dce5d3aa43aceba5ea3708c48, type: 3}
+    - {fileID: 21300000, guid: b912059ad333f414f907ffaae2891fe9, type: 3}
+    - {fileID: 21300000, guid: 5cdf29a1d2dcbc744b8faf737be87964, type: 3}
+    - {fileID: 21300000, guid: 83a6aa34c1440c84fbd356aa797298a0, type: 3}
+    _frameTime: 0.1
+    _loop: 0

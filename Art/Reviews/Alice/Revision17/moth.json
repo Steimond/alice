@@ -9,5 +9,7 @@
     { "id": "rise", "dir": "moth/rise-raw", "frames": [1,2,3,4,5,6,7,8] },
     { "id": "deathair", "dir": "moth/death3-raw", "frames": [1,2,3,4,5,6,7,8], "alignBottom": true },
     { "id": "death", "dir": "moth/death3-raw", "frames": [9,10,11,12], "alignBottom": true, "clearLast": true },
-    { "id": "deathfloor", "dir": "moth/death2-raw", "frames": [1,8], "alignBottom": true, "clearLast": true, "minBlob": 60 }
+    { "id": "deathfloor", "dir": "../Revision18/moth-gore-a-raw", "frames": [1,2,3,4,5,6,7,8,9,10,11,12], "alignBottom": true, "clearLast": true },
+    { "id": "stunned", "dir": "../Revision18/moth-stunned-raw", "frames": [0,1,2,3,4,5,6,7], "alignBottom": true },
+    { "id": "death_execution", "dir": "../Revision18/moth-pin-raw", "frames": [1,2,3,4,5,6,7,8,9,10,11,12], "alignBottom": true, "clearLast": true }
   ] }

@@ -17,6 +17,10 @@ MonoBehaviour:
   _maxHealth: 5
   _hitInvulnerability: 0.12
   _hitStop: 0.08
+  _executionId: rat_nape
+  _stunAtHealth: 1
+  _stunnedTime: 2.5
+  _executionTime: 1.5
   _sightRange: 10
   _sightHeight: 2
   _leashDistance: 9
