@@ -1,13 +1,13 @@
 { "prefix": "racer", "palette": "racer/look-a.png", "outDir": "../../../../Assets/_Alice/Art/Characters/Enemies/Racer",
   "width": 112, "height": 64,
   "clips": [
-    { "id": "idle", "dir": "racer/idle-src", "frames": [0], "shiftY": 3 },
-    { "id": "run", "dir": "racer/run2-raw", "frames": [0,1,2,3,4,5,6,7], "shiftY": 3 },
-    { "id": "windup", "dir": "racer/windup2-raw", "frames": [1,2,3,4,5,6,7,8], "shiftY": 3 },
-    { "id": "skid", "dir": "racer/skid-raw", "frames": [1,2,3,4,5,6,7,8], "shiftY": 3 },
-    { "id": "daze", "dir": "racer/daze-raw", "frames": [2,3,4,5,6,7,8,9,10,11,12], "shiftX": 20, "shiftY": 3 },
-    { "id": "hurt", "dir": "racer/hurt-raw", "frames": [1,2,3,4], "shiftY": 3, "minBlob": 120 },
+    { "id": "idle", "dir": "../Revision19/racer/idle-src", "frames": [0], "shiftY": 3 },
+    { "id": "run", "dir": "racer/run2-raw", "frames": [1,2,3,4,5,6,7], "frameShiftX": [2,0,-1,0,-1,0,2], "shiftY": 3 },
+    { "id": "windup", "dir": "../Revision19/racer/windup-raw", "frames": [1,2,3,4,5,6,7,8], "shiftY": 3 },
+    { "id": "skid", "dir": "../Revision19/racer/skid-raw", "frames": [1,2,3,4,5,6,7,8], "shiftY": 3 },
+    { "id": "daze", "dir": "../Revision19/racer/daze-raw", "frames": [1,2,3,4,5,6,7,8,9,10,11,12], "shiftY": 3, "minBlob": 20 },
+    { "id": "hurt", "dir": "../Revision19/racer/daze-raw", "frames": [2,3,2,1], "shiftY": 3, "minBlob": 20 },
     { "id": "death", "dir": "racer/death-raw", "frames": [1,2,3,4,5,6,7,8,9,10,11,12], "shiftY": 1, "clearLast": true },
-    { "id": "stunned", "dir": "racer/daze-raw", "frames": [4,5,6,7,8,7,6,5], "shiftX": 20, "shiftY": 3 },
+    { "id": "stunned", "dir": "../Revision19/racer/daze-raw", "frames": [3,4,5,6,7,6,5,4], "shiftY": 3, "minBlob": 20 },
     { "id": "death_execution", "dir": "../Revision18/rat-exec-raw", "frames": [2,3,4,5,6,7,8,9,10,11,12], "shiftY": 3, "clearLast": true }
   ] }

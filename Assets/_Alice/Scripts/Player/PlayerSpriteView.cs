@@ -328,6 +328,12 @@ namespace Alice.Player
                 return resting;
             }
 
+            if (_restraint is PlayerRestraint restraint && restraint.IsTearingFree && _sprites.TearFree != null
+                && _sprites.TearFree.Length > 0)
+            {
+                return Spread(_sprites.TearFree, restraint.TearProgress);
+            }
+
             if (_pickup != null && _pickup.IsPickingUp && _sprites.Pickup != null && _sprites.Pickup.Length > 0)
             {
                 return Spread(_sprites.Pickup, _pickup.Progress);

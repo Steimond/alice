@@ -45,6 +45,7 @@ namespace Alice.Combat
         private Health _health;
         private ContactFilter2D _solidFilter;
         private Vector2 _home;
+        private readonly EnemyAwareness _awareness = new EnemyAwareness();
         private float _stateStartedAt;
         private float _cooldownUntil;
         private float _lungeMoved;
@@ -126,6 +127,7 @@ namespace Alice.Combat
             _wasStunned = false;
             Facing = _initialFacing >= 0 ? 1 : -1;
             _cooldownUntil = 0f;
+            _awareness.Forget();
             Enter(State.Guard);
         }
 
@@ -367,10 +369,8 @@ namespace Alice.Combat
             }
 
             target = player.position;
-            Vector2 offset = target - _body.position;
-            bool seen = Mathf.Abs(offset.x) <= _settings.SightRange && Mathf.Abs(offset.y) <= _settings.SightHeight;
-            bool withinLeash = Mathf.Abs(target.x - _home.x) <= _settings.LeashDistance + _settings.AttackStartRange;
-            return seen && withinLeash;
+            return _awareness.Track(target - _body.position, _settings.SightRange, _settings.SightHeight,
+                _settings.LoseSightRange, _settings.LoseSightHeight);
         }
 
         private void Walk(float distance)

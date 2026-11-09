@@ -15,9 +15,8 @@ namespace Alice.Player
         // Longer than any hold lasts; the holder or her struggle always ends it first.
         private const float HoldLock = 30f;
 
-        [Tooltip("Torn free by her own struggle, she hops clear of the holder: back and up, tiles per second.")]
-        [SerializeField] private Vector2 _escapeHop = new Vector2(4f, 7f);
-        [SerializeField, Min(0f)] private float _escapeHopTime = 0.2f;
+        [Tooltip("Torn free by her own struggle, she stands and rips the holder apart for this long before she moves again.")]
+        [SerializeField, Min(0f)] private float _tearFreeTime = 0.5f;
 
         private PlayerMotor _motor;
         private Health _health;
@@ -27,9 +26,16 @@ namespace Alice.Player
         private int _pressesNeeded;
         private int _presses;
         private float _lastSeenPress;
+        private float _tearStartedAt = float.NegativeInfinity;
 
         public bool IsRestrained => _holder != null;
         public float StruggleProgress => _pressesNeeded > 0 ? Mathf.Clamp01(_presses / (float)_pressesNeeded) : 0f;
+        public bool BrokeFree { get; private set; }
+
+        /// <summary>True for a moment after she breaks free, while she tears the holder apart.</summary>
+        public bool IsTearingFree => Time.time - _tearStartedAt < _tearFreeTime;
+
+        public float TearProgress => _tearFreeTime > 0f ? Mathf.Clamp01((Time.time - _tearStartedAt) / _tearFreeTime) : 1f;
 
         private void Awake()
         {
@@ -62,6 +68,7 @@ namespace Alice.Player
             }
 
             _holder = by;
+            BrokeFree = false;
             _pressesNeeded = Mathf.Max(1, pressesToEscape);
             _presses = 0;
             _lastSeenPress = LatestPress();
@@ -94,8 +101,10 @@ namespace Alice.Player
                 _presses++;
                 if (_presses >= _pressesNeeded)
                 {
+                    BrokeFree = true;
                     Free();
-                    _motor.Knockback(new Vector2(-_motor.Facing * _escapeHop.x, _escapeHop.y), _escapeHopTime);
+                    _tearStartedAt = Time.time;
+                    _motor.Freeze(_tearFreeTime);
                 }
             }
         }

@@ -24,7 +24,9 @@ MonoBehaviour:
   _walkSpeed: 1.6
   _sightRange: 9
   _sightHeight: 3
-  _leashDistance: 7
+  _loseSightRange: 15
+  _loseSightHeight: 6
+  _leashDistance: 12
   _attackStartRange: 3.2
   _windup: 0.7
   _active: 0.18

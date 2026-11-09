@@ -123,8 +123,8 @@ namespace Alice.Player
         [Header("Needle")]
         [Tooltip("First hit on the ground: far and narrow.")]
         [SerializeField] private MeleeMove _thrust = new MeleeMove(HitKind.Thrust, 0.1f, 0.1f, 0.3f, 0.2f, 2.75f, 0.5f, 1.6f, 1);
-        [Tooltip("Second hit of the combo: a wide arc in front.")]
-        [SerializeField] private MeleeMove _slash = new MeleeMove(HitKind.Slash, 0.14f, 0.1f, 0.3f, 0f, 2f, 2.6f, 1.5f, 1);
+        [Tooltip("Second hit of the combo: a wide arc in front, as far as the thrust, so a thrust that lands is never followed by a slash that falls short (owner, 9 November 2026).")]
+        [SerializeField] private MeleeMove _slash = new MeleeMove(HitKind.Slash, 0.14f, 0.1f, 0.3f, 0f, 2.75f, 2.6f, 1.5f, 1);
         [Tooltip("Attack in the air: the same arc, reaching below the feet.")]
         [SerializeField] private MeleeMove _airSlash = new MeleeMove(HitKind.Slash, 0.12f, 0.1f, 0.2f, 0f, 2f, 2.6f, 1.2f, 1);
         [SerializeField, Range(0f, 0.2f)] private float _attackBufferTime = 0.12f;

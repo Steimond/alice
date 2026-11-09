@@ -27,7 +27,6 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 92c008488a208774c9373c602ae8e5b7, type: 3}
     - {fileID: 21300000, guid: be5c008cf123b164d851acb9500deb78, type: 3}
     - {fileID: 21300000, guid: 070c654c204ce484fa34a813b24ef4ee, type: 3}
-    - {fileID: 21300000, guid: e8aa256d5cddc294d95eb509447d418b, type: 3}
     _frameTime: 0.055
     _loop: 1
   - _id: windup
@@ -67,6 +66,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: fa62aaaadb53a014aacf7bd56b8a10b6, type: 3}
     - {fileID: 21300000, guid: 615bf7b50b3538b4fb5720e07e8458fb, type: 3}
     - {fileID: 21300000, guid: cc2386fdae10d3846afd0b67ae93b787, type: 3}
+    - {fileID: 21300000, guid: 276a10e3e968a6f42abc9b5c5c600a9b, type: 3}
     _frameTime: 0.1
     _loop: 0
   - _id: hurt

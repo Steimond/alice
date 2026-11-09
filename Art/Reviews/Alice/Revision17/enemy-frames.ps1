@@ -22,9 +22,29 @@ public static class EnemyFrames
         ColorTranslator.FromHtml("#A01511"), ColorTranslator.FromHtml("#900C08"), ColorTranslator.FromHtml("#820A07"),
         ColorTranslator.FromHtml("#730403"), ColorTranslator.FromHtml("#650202"), ColorTranslator.FromHtml("#570201") };
 
-    static readonly Color Glint = ColorTranslator.FromHtml("#CC6351");
+    // Gloss in a spray is the brightest blood tone, never a pale pink: blood is always red (owner, 9 November 2026).
+    static readonly Color Glint = ColorTranslator.FromHtml("#A01511");
+
+    // Saturated yellow or orange inside a gush (the generator's guts and fat) becomes blood as well.
+    static bool IsYellowGore(Color c) { return c.R >= 0xB0 && c.G >= 0x80 && c.B < c.G * 0.75 && c.R - c.B >= 0x50; }
+
+    static bool NearBlood(Bitmap b, int x, int y, int r)
+    {
+        for (int dy = -r; dy <= r; dy++)
+            for (int dx = -r; dx <= r; dx++)
+            {
+                int nx = x + dx, ny = y + dy;
+                if (nx < 0 || ny < 0 || nx >= b.Width || ny >= b.Height) continue;
+                Color n = b.GetPixel(nx, ny);
+                if (n.A >= 128 && IsNeonBlood(n)) return true;
+            }
+        return false;
+    }
 
     static bool IsNeonBlood(Color c) { return c.R >= 0x60 && c.G <= 0x30 && c.B <= 0x30 && c.R > c.G * 2 + 0x30; }
+
+    // Dark red counts as well: some gushes are drawn maroon, and their gloss is still a pale streak inside.
+    static bool IsBloodish(Color c) { return IsNeonBlood(c) || (c.R >= 0x20 && c.R > c.G * 3 && c.R > c.B * 3); }
 
     static bool NextToBlood(Bitmap b, int x, int y)
     {
@@ -35,7 +55,7 @@ public static class EnemyFrames
                 int nx = x + dx, ny = y + dy;
                 if (nx < 0 || ny < 0 || nx >= b.Width || ny >= b.Height) continue;
                 Color n = b.GetPixel(nx, ny);
-                if (n.A >= 128 && IsNeonBlood(n)) found++;
+                if (n.A >= 128 && IsBloodish(n)) found++;
             }
         return found >= 2;
     }
@@ -78,9 +98,13 @@ public static class EnemyFrames
                     int tx = x + shiftX, ty = y + shiftY;
                     if (tx < 0 || ty < 0 || tx >= width || ty >= height) continue;
                     Color o;
-                    if (c.R >= 0xD0 && c.G >= 0xA0 && c.B >= 0xA0 && NextToBlood(src, x, y))
+                    if (c.R >= 0xD0 && c.G >= 0xC0 && c.B >= 0xC0 && NextToBlood(src, x, y))
                     {
                         o = Glint; // the gloss streak inside a spray
+                    }
+                    else if (IsYellowGore(c) && NearBlood(src, x, y, 3))
+                    {
+                        o = c.G >= 0xD0 ? Ramp[0] : Ramp[1];
                     }
                     else if (IsNeonBlood(c))
                     {
@@ -179,6 +203,8 @@ foreach ($clip in $data.clips)
     {
         $source = Join-Path $root ("{0}/{1:D2}.png" -f $clip.dir, [int]$frame)
         $shiftX = if ($clip.shiftX -ne $null) { [int]$clip.shiftX } else { 0 }
+        # Per-frame nudges that hold the body still inside a loop (the run drifted by its chalk mark).
+        if ($clip.frameShiftX -ne $null) { $shiftX += [int]$clip.frameShiftX[$index] }
         $shiftY = if ($clip.shiftY -ne $null) { [int]$clip.shiftY } else { 0 }
         $clearAir = [bool]$clip.clearLast -and $index -eq $last
         $clipBlob = if ($clip.minBlob) { [int]$clip.minBlob } else { $minBlob }

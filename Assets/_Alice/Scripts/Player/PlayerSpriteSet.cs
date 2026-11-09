@@ -141,6 +141,10 @@ namespace Alice.Player
         [Header("Special techniques, by technique ID")]
         [SerializeField] private ExecutionFrames[] _techniques = new ExecutionFrames[0];
 
+        [Header("Tearing free of a holder (sheet EN13)")]
+        [Tooltip("Wrapped and struggling free, she rips the cloth apart; spread over PlayerRestraint's tear time.")]
+        [SerializeField] private Sprite[] _tearFree = new Sprite[0];
+
         [Header("Picking a bundle up (GDD 0.28)")]
         [Tooltip("Bend, take the bundle, look at it, tuck it away; spread over PlayerPickup's duration.")]
         [SerializeField] private Sprite[] _pickup = new Sprite[0];
@@ -175,6 +179,13 @@ namespace Alice.Player
         public Sprite[] Shrink => _shrink;
         public Sprite[] Bite => _bite;
         public Sprite[] Pickup => _pickup;
+        public Sprite[] TearFree => _tearFree;
+
+        public void AssignTearFree(Sprite[] frames)
+        {
+            _tearFree = frames;
+        }
+
 
         public void AssignPickup(Sprite[] pickup)
         {

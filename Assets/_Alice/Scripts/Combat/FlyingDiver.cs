@@ -186,10 +186,12 @@ namespace Alice.Combat
             }
 
             alice = player.position;
-            bool sideways = Mathf.Abs(alice.x - Body.position.x) <= _settings.SightRange
-                && Mathf.Abs(alice.x - Home.x) <= _settings.LeashDistance + _settings.HoverOffsetX;
-            bool between = alice.y >= _floorY - _settings.SightHeight && alice.y <= _floorY + _settings.HoverHeight;
-            return sideways && between;
+            // Height is measured from the floor it hangs over, not from its body: noticing covers the whole space
+            // from the floor up to its hover, keeping her reaches further down as well.
+            float aboveFloor = alice.y - (_floorY + (_settings.HoverHeight - _settings.SightHeight) * 0.5f);
+            float halfBand = _settings.HoverHeight * 0.5f + _settings.SightHeight * 0.5f;
+            return Awareness.Track(new Vector2(alice.x - Body.position.x, aboveFloor), _settings.SightRange, halfBand,
+                _settings.LoseSightRange, halfBand + _settings.LoseSightHeight - _settings.SightHeight);
         }
 
         /// <summary>Aims at where Alice stands when the wind-up ends, a little past her, at head height.</summary>

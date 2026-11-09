@@ -14,6 +14,9 @@ namespace Alice.Core
         /// <summary>0 when caught, 1 when she breaks free.</summary>
         float StruggleProgress { get; }
 
+        /// <summary>True when the last hold ended by her own struggle, not by the holder letting go or her defeat.</summary>
+        bool BrokeFree { get; }
+
         /// <summary>
         /// Starts a hold at <paramref name="holdAt"/> (feet) unless she is immune right now: sliding through, already
         /// held, defeated. <paramref name="pressesToEscape"/> is how many presses free her.

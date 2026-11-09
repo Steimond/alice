@@ -105,7 +105,7 @@ namespace Alice.Combat
 
         private void UpdateGuard()
         {
-            if (!TryGetAlice(out Vector2 alice, _settings.ThrowRange))
+            if (!TryGetAlice(out Vector2 alice))
             {
                 ReturnHome();
                 return;

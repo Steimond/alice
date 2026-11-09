@@ -31,8 +31,12 @@ namespace Alice.Combat
         [SerializeField, Min(0f)] private float _walkSpeed = 1.6f;
         [SerializeField, Min(0f)] private float _sightRange = 9f;
         [SerializeField, Min(0f)] private float _sightHeight = 3f;
-        [Tooltip("How far from its post the enemy follows Alice before giving up.")]
-        [SerializeField, Min(0f)] private float _leashDistance = 7f;
+        [Tooltip("Once it has seen Alice it keeps her while she is this close sideways to where it stands now, wider than the sight range.")]
+        [SerializeField, Min(0f)] private float _loseSightRange = 15f;
+        [Tooltip("The same for height, wider than the sight height.")]
+        [SerializeField, Min(0f)] private float _loseSightHeight = 6f;
+        [Tooltip("How far from its post it walks while following Alice; past it, it waits facing her.")]
+        [SerializeField, Min(0f)] private float _leashDistance = 12f;
 
         [Header("Attack")]
         [Tooltip("Starts the attack once Alice's centre is this close.")]
@@ -91,6 +95,8 @@ namespace Alice.Combat
         public float WalkSpeed => _walkSpeed;
         public float SightRange => _sightRange;
         public float SightHeight => _sightHeight;
+        public float LoseSightRange => _loseSightRange;
+        public float LoseSightHeight => _loseSightHeight;
         public float LeashDistance => _leashDistance;
         public float AttackStartRange => _attackStartRange;
         public MeleeAttackTimeline Timeline => new MeleeAttackTimeline(_windup, _active, _recovery);

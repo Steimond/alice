@@ -177,6 +177,7 @@ namespace Alice.Tests
             }
 
             Assert.That(_restraint.IsRestrained, Is.True, "Standing under it, Alice is wrapped.");
+            yield return new WaitForSeconds(settings.Drop + 0.1f);
             Assert.That(sheet.CurrentState, Is.EqualTo(Ambusher.State.Hold));
             Vector2 heldAt = _motor.Position;
 
@@ -191,22 +192,27 @@ namespace Alice.Tests
             }
 
             Assert.That(_restraint.IsRestrained, Is.False, "Enough struggling tears her free.");
+            Assert.That(_restraint.IsTearingFree, Is.True, "She rips the cloth apart where she stands.");
             yield return Steps(2);
-            Assert.That(sheet.CurrentState, Is.EqualTo(Ambusher.State.Heap), "Thrown off, it lies in a heap.");
+            Assert.That(sheet.IsDead, Is.True, "Torn apart, the sheet is dead.");
+            Assert.That(sheet.ClipId, Is.EqualTo("torn"));
         }
 
         [UnityTest]
-        public IEnumerator Sheet_StruckFromOutsideItsReach_DropsWithoutWrapping()
+        public IEnumerator Sheet_CutWhileItHangs_DiesAtOneBlow_WithoutWrapping()
         {
             AmbusherSettings settings = Track(ScriptableObject.CreateInstance<AmbusherSettings>());
+            SetMaxHealth(settings, 1);
             _motor.Teleport(new Vector2(-2.6f, 0.02f));
             Ambusher sheet = Create<Ambusher>(new Vector2(0f, 0f), enemy => enemy.Settings = settings);
             yield return Steps(5);
             Assert.That(sheet.CurrentState, Is.EqualTo(Ambusher.State.Hanging), "A thrust's length away it stays still.");
 
             sheet.GetComponent<Health>().ReceiveHit(new HitInfo(1, 1, _motor.gameObject, HitKind.Thrust));
+            yield return Steps(2);
+            Assert.That(sheet.IsDead, Is.True, "One blow cuts it.");
+            Assert.That(sheet.ClipId, Is.EqualTo("cut"), "Its lower half falls, the upper half stays on the line.");
             yield return new WaitForSeconds(settings.Drop + 0.2f);
-            Assert.That(sheet.CurrentState, Is.EqualTo(Ambusher.State.Heap));
             Assert.That(_restraint.IsRestrained, Is.False);
         }
 
@@ -294,7 +300,7 @@ namespace Alice.Tests
         }
 
         [UnityTest]
-        public IEnumerator Sheet_IsStunnedOnlyInAHeap_NotWhileItHangs()
+        public IEnumerator Sheet_IsNeverStunned()
         {
             AmbusherSettings settings = Track(ScriptableObject.CreateInstance<AmbusherSettings>());
             SetExecution(settings, "sheet_rip");
@@ -304,13 +310,43 @@ namespace Alice.Tests
             yield return Steps(5);
 
             health.ReceiveHit(new HitInfo(health.Current - settings.StunAtHealth, 1, _motor.gameObject, HitKind.Thrust));
-            yield return Steps(2);
-            Assert.That(sheet.IsStunned, Is.False, "A hanging sheet just drops.");
+            yield return Steps(5);
+            Assert.That(sheet.CurrentState, Is.EqualTo(Ambusher.State.Hanging), "A sturdier sheet just takes the blow.");
+            Assert.That(sheet.IsStunned, Is.False, "Cloth does not reel.");
+            Assert.That(sheet.CanBeExecuted, Is.False);
+        }
 
-            yield return new WaitForSeconds(settings.Drop + 0.2f);
-            Assert.That(sheet.CurrentState, Is.EqualTo(Ambusher.State.Heap));
-            Assert.That(sheet.IsStunned, Is.True, "Lying in a heap, beaten low, it reels.");
-            Assert.That(sheet.CanBeExecuted, Is.True);
+        [UnityTest]
+        public IEnumerator Sheet_TwitchesWhileAliceIsNear_AndCatchesHerForCertainWhenSheStepsUnder()
+        {
+            AmbusherSettings settings = Track(ScriptableObject.CreateInstance<AmbusherSettings>());
+            _motor.Teleport(new Vector2(-1.8f, 0.02f));
+            Ambusher sheet = Create<Ambusher>(new Vector2(0f, 0f), enemy => enemy.Settings = settings);
+            yield return Steps(5);
+            Assert.That(sheet.CurrentState, Is.EqualTo(Ambusher.State.Tremble), "Near it, she sees it twitch.");
+
+            yield return new WaitForSeconds(settings.Tremble * 2.5f);
+            Assert.That(sheet.CurrentState, Is.EqualTo(Ambusher.State.Tremble), "It keeps twitching, it does not drop.");
+            Assert.That(_restraint.IsRestrained, Is.False);
+
+            _motor.Teleport(new Vector2(4f, 0.02f));
+            yield return Steps(3);
+            Assert.That(sheet.CurrentState, Is.EqualTo(Ambusher.State.Hanging), "She went away: it calms down.");
+
+            // Running across: the frame she is under it, she is held, however fast she goes.
+            _motor.Teleport(new Vector2(0.6f, 0.02f));
+            yield return Steps(2);
+            Assert.That(_restraint.IsRestrained, Is.True, "Stepping under it, she is caught.");
+            Vector2 heldAt = _motor.Position;
+            yield return new WaitForSeconds(settings.Drop + 0.1f);
+            Assert.That(sheet.CurrentState, Is.EqualTo(Ambusher.State.Hold));
+            Assert.That(Vector2.Distance(_motor.Position, heldAt), Is.LessThan(0.05f), "The fall does not let her go.");
+        }
+
+        private static void SetMaxHealth(EnemySettings settings, int value)
+        {
+            typeof(EnemySettings).GetField("_maxHealth",
+                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).SetValue(settings, value);
         }
 
         // The execution ID is authored in the asset; tests have no editor to set it.

@@ -20,10 +20,12 @@ MonoBehaviour:
   _executionId: duck_throat
   _stunAtHealth: 1
   _stunnedTime: 2.5
-  _executionTime: 1.5
+  _executionTime: 1.7
   _sightRange: 11
   _sightHeight: 3
-  _leashDistance: 6
+  _loseSightRange: 15
+  _loseSightHeight: 6
+  _leashDistance: 10
   _contactDamage: 10
   _contactMargin: 0.1
   _contactInterval: 0.5

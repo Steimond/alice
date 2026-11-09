@@ -20,10 +20,12 @@ MonoBehaviour:
   _executionId: moth_pin
   _stunAtHealth: 1
   _stunnedTime: 2.5
-  _executionTime: 1.45
+  _executionTime: 1.5
   _sightRange: 10
   _sightHeight: 3
-  _leashDistance: 8
+  _loseSightRange: 15
+  _loseSightHeight: 6
+  _leashDistance: 12
   _contactDamage: 0
   _contactMargin: 0.1
   _contactInterval: 0.5

@@ -56,6 +56,8 @@ namespace Alice.Combat
         protected ContactFilter2D SolidFilter { get; private set; }
         protected Vector2 Home { get; private set; }
 
+        protected EnemyAwareness Awareness { get; } = new EnemyAwareness();
+
         public abstract EnemySettings BaseSettings { get; }
 
         public int InitialFacing
@@ -149,6 +151,7 @@ namespace Alice.Combat
             _wasStunned = false;
             Facing = _initialFacing >= 0 ? 1 : -1;
             _frozenUntil = 0f;
+            Awareness.Forget();
             OnSpawn();
         }
 
@@ -319,8 +322,8 @@ namespace Alice.Combat
             return MeleeHitbox.Strike(box.center, box.size, hit, gameObject, Struck, Overlaps);
         }
 
-        /// <summary>Alice's feet, when she is seen inside the sight box and the leash.</summary>
-        protected bool TryGetAlice(out Vector2 target, float extraLeash = 0f)
+        /// <summary>Alice's feet, while she is followed: noticed in the sight box, kept in the wider lose-sight box.</summary>
+        protected bool TryGetAlice(out Vector2 target)
         {
             target = default;
             Transform player = PlayerPresence.Current;
@@ -330,10 +333,8 @@ namespace Alice.Combat
             }
 
             target = player.position;
-            Vector2 offset = target - Body.position;
-            bool seen = Mathf.Abs(offset.x) <= BaseSettings.SightRange && Mathf.Abs(offset.y) <= BaseSettings.SightHeight;
-            bool withinLeash = Mathf.Abs(target.x - Home.x) <= BaseSettings.LeashDistance + extraLeash;
-            return seen && withinLeash;
+            return Awareness.Track(target - Body.position, BaseSettings.SightRange, BaseSettings.SightHeight,
+                BaseSettings.LoseSightRange, BaseSettings.LoseSightHeight);
         }
 
         /// <summary>

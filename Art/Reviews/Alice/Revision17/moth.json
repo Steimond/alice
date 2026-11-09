@@ -2,7 +2,7 @@
   "width": 80, "height": 64,
   "clips": [
     { "id": "hover", "dir": "moth/hover-raw", "frames": [0,1,2,3,4,5,6,7], "shiftY": 1 },
-    { "id": "windup", "dir": "moth/windup-raw", "frames": [1,2,3,4,5,6,7,8], "shiftY": 1 },
+    { "id": "windup", "dir": "../Revision19/moth/windup2-raw", "frames": [1,2,3,4,5,6,7,8], "shiftY": 1 },
     { "id": "dive", "dir": "moth/windup-raw", "frames": [8], "shiftY": 1 },
     { "id": "fall", "dir": "moth/fall-raw", "frames": [2,3,4,5,6,7,8], "alignBottom": true, "minBlob": 12 },
     { "id": "grounded", "dir": "moth/fall-raw", "frames": [8], "alignBottom": true },

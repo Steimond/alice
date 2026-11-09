@@ -75,9 +75,10 @@ namespace Alice.Editor
                     new ClipSpec("deathair", 0.07f), new ClipSpec("death", 0.12f), new ClipSpec("deathfloor", 0.08f),
                     new ClipSpec("stunned", 0.1f, true), new ClipSpec("death_execution", 0.1f)
                 },
-                // Pinned to the floor like a specimen: raise, one blow down through the body, a long press, rise.
-                Execution = new ExecutionSpec("moth_pin", 0.35f, 0.1f, 1f, 1.6f),
-                ExecutionSplit = new[] { 2, 2, 12 },
+                // Pinned to the floor like a specimen: raise, kneel, one blow down through the body with the fist at knee
+                // height (owner: the arm should not reach so deep), a long press, rise.
+                Execution = new ExecutionSpec("moth_pin", 0.4f, 0.1f, 1f, 2.2f),
+                ExecutionSplit = new[] { 3, 2, 11 },
                 CreateSettings = () => Create<FlyingDiverSettings>("EN11", new Vector2(2.2f, 2f), 3, 0, 10f, 3f, 8f, 12, 4f),
                 AddBehaviour = (root, settings) =>
                 {
@@ -116,9 +117,10 @@ namespace Alice.Editor
                     new ClipSpec("hurt", 0.1f), new ClipSpec("death", 0.09f), new ClipSpec("stunned", 0.1f, true),
                     new ClipSpec("death_execution", 0.1f)
                 },
-                // The throat seized, the needle driven straight in at chest height: its middle passes through the neck.
-                Execution = new ExecutionSpec("duck_throat", 0.5f, 0.1f, 0.9f, 2.6f),
-                ExecutionSplit = new[] { 5, 2, 9 },
+                // The beak torn off (owner, 9 November 2026): the needle driven into its root at face height, then wrenched
+                // back over her shoulder; the beak flies, blood gushes from the face. The ID stays from the first version.
+                Execution = new ExecutionSpec("duck_throat", 0.45f, 0.15f, 1.1f, 2.6f),
+                ExecutionSplit = new[] { 3, 2, 11 },
                 CreateSettings = () => Create<ThrowerSettings>("EN12", new Vector2(1.4f, 3.4f), 3, 10, 11f, 3f, 6f, 15, 5f),
                 AddBehaviour = (root, settings) =>
                 {
@@ -133,13 +135,11 @@ namespace Alice.Editor
                 Clips = new[]
                 {
                     new ClipSpec("hang", 0.14f, true), new ClipSpec("tremble", 0.1f), new ClipSpec("drop", 0.1f),
-                    new ClipSpec("heap", 0.1f), new ClipSpec("rise", 0.1f), new ClipSpec("wrap", 0.1f, true),
-                    new ClipSpec("death", 0.1f), new ClipSpec("stunned", 0.12f, true), new ClipSpec("death_execution", 0.1f)
+                    new ClipSpec("wrap", 0.1f, true),
+                    new ClipSpec("death", 0.1f), new ClipSpec("cut", 0.09f), new ClipSpec("torn", 0.07f)
                 },
-                // Kneeling over the heap: the needle down into it, then both hands rip the cloth apart.
-                Execution = new ExecutionSpec("sheet_rip", 0.6f, 0.1f, 0.8f, 1f),
-                ExecutionSplit = new[] { 7, 2, 7 },
-                CreateSettings = () => Create<AmbusherSettings>("EN13", new Vector2(2.2f, 4.6f), 4, 0, 6f, 5f, 0f, 12, 4f),
+                // Cloth, not a fighter: one blow ends it, so it is never stunned or executed (owner, 9 November 2026).
+                CreateSettings = () => Create<AmbusherSettings>("EN13", new Vector2(2.2f, 4.6f), 1, 0, 6f, 5f, 0f, 12, 4f),
                 AddBehaviour = (root, settings) =>
                 {
                     Ambusher enemy = root.AddComponent<Ambusher>();
@@ -167,6 +167,7 @@ namespace Alice.Editor
             AliceProjectSetup.EnsureFolder(PrefabRoot);
             AliceProjectSetup.EnsureFolder(PaletteRoot);
             EnsureAliceRestraint();
+            EnsureTearFree();
 
             foreach (TypeSpec type in Types)
             {
@@ -331,6 +332,11 @@ namespace Alice.Editor
         private static void EnsureExecution(TypeSpec type, EnemySettings settings)
         {
             ExecutionSpec spec = type.Execution;
+            if (string.IsNullOrEmpty(spec.Id))
+            {
+                return;
+            }
+
             if (string.IsNullOrEmpty(settings.ExecutionId))
             {
                 MeleeAttackTimeline timeline = spec.Timeline;
@@ -503,6 +509,20 @@ namespace Alice.Editor
                 duck.Projectile = pin.GetComponent<ArcProjectile>();
                 EditorUtility.SetDirty(duck);
             }
+        }
+
+        /// <summary>Alice ripping the sheet apart as she struggles free (alice_trial_tearfree_NN), once drawn.</summary>
+        private static void EnsureTearFree()
+        {
+            var sprites = AssetDatabase.LoadAssetAtPath<PlayerSpriteSet>(AliceSpritesPath);
+            Sprite[] frames = LoadFrames(AliceFrames, "alice_trial_tearfree_");
+            if (sprites == null || frames.Length == 0 || (sprites.TearFree ?? new Sprite[0]).SequenceEqual(frames))
+            {
+                return;
+            }
+
+            sprites.AssignTearFree(frames);
+            EditorUtility.SetDirty(sprites);
         }
 
         private static void EnsureAliceRestraint()

@@ -14,15 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Alice::Alice.Combat.AmbusherSettings
   _archetypeId: EN13
   _bodySize: {x: 2.2, y: 4.6}
-  _maxHealth: 4
+  _maxHealth: 1
   _hitInvulnerability: 0.12
   _hitStop: 0.08
-  _executionId: sheet_rip
-  _stunAtHealth: 1
+  _executionId: 
+  _stunAtHealth: 0
   _stunnedTime: 2.5
   _executionTime: 1.5
   _sightRange: 6
   _sightHeight: 5
+  _loseSightRange: 15
+  _loseSightHeight: 6
   _leashDistance: 0
   _contactDamage: 0
   _contactMargin: 0.1
@@ -34,14 +36,10 @@ MonoBehaviour:
   _confidenceReward: 4
   _triggerRange: 2.2
   _tremble: 0.5
-  _drop: 0.4
+  _drop: 0.3
   _wrapRange: 1.1
   _hangingBody: {x: 2.2, y: 4.6}
   _pressesToEscape: 7
   _squeezeInterval: 0.7
   _squeezeDamage: 8
-  _maxHold: 4.5
-  _heapTime: 2.6
-  _rise: 0.8
-  _rearm: 1.5
   _heapBody: {x: 2.6, y: 0.8}

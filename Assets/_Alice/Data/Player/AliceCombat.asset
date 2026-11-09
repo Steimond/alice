@@ -65,7 +65,7 @@ MonoBehaviour:
     _active: 0.1
     _recovery: 0.3
     _reachStart: 0
-    _reach: 2
+    _reach: 2.75
     _hitHeight: 2.6
     _hitCenterHeight: 1.5
     _damage: 1
@@ -102,19 +102,19 @@ MonoBehaviour:
     _recovery: 0.65
     _distance: 2.4
   - _id: moth_pin
-    _windup: 0.35
+    _windup: 0.4
     _active: 0.1
     _recovery: 1
-    _distance: 1.6
+    _distance: 2.2
   - _id: rat_nape
     _windup: 0.45
     _active: 0.1
     _recovery: 0.95
     _distance: 2.5
   - _id: duck_throat
-    _windup: 0.5
-    _active: 0.1
-    _recovery: 0.9
+    _windup: 0.45
+    _active: 0.15
+    _recovery: 1.1
     _distance: 2.6
   - _id: sheet_rip
     _windup: 0.6

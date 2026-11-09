@@ -33,8 +33,12 @@ namespace Alice.Combat
         [Header("Sight")]
         [SerializeField, Min(0f)] private float _sightRange = 9f;
         [SerializeField, Min(0f)] private float _sightHeight = 3f;
-        [Tooltip("How far from its post it follows Alice before giving up.")]
-        [SerializeField, Min(0f)] private float _leashDistance = 7f;
+        [Tooltip("Once it has seen Alice it keeps her while she is this close sideways to where it stands now, wider than the sight range.")]
+        [SerializeField, Min(0f)] private float _loseSightRange = 15f;
+        [Tooltip("The same for height, wider than the sight height.")]
+        [SerializeField, Min(0f)] private float _loseSightHeight = 6f;
+        [Tooltip("How far from its post it walks while following Alice; past it, it waits facing her.")]
+        [SerializeField, Min(0f)] private float _leashDistance = 12f;
 
         [Header("Body contact")]
         [Tooltip("Pressing against the living body hurts (GDD section 4); 0 = the body is harmless.")]
@@ -60,6 +64,8 @@ namespace Alice.Combat
         public float HitStop => _hitStop;
         public float SightRange => _sightRange;
         public float SightHeight => _sightHeight;
+        public float LoseSightRange => _loseSightRange;
+        public float LoseSightHeight => _loseSightHeight;
         public float LeashDistance => _leashDistance;
         public int ContactDamage => _contactDamage;
         public float ContactMargin => _contactMargin;

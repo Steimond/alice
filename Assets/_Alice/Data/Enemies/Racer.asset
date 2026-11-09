@@ -23,7 +23,9 @@ MonoBehaviour:
   _executionTime: 1.5
   _sightRange: 10
   _sightHeight: 2
-  _leashDistance: 9
+  _loseSightRange: 15
+  _loseSightHeight: 6
+  _leashDistance: 12
   _contactDamage: 10
   _contactMargin: 0.1
   _contactInterval: 0.5

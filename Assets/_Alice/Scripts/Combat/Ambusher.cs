@@ -5,10 +5,11 @@ namespace Alice.Combat
 {
     /// <summary>
     /// Archetype for something that hides among the decor and drops on Alice (the laundry sheet EN13, GDD section 9).
-    /// It hangs like any other sheet; when she comes close it twitches, then drops and wraps whoever stands under it.
-    /// The wrap is a grab: it cannot be parried, it squeezes on a rhythm, and Alice tears free by struggling. Missed
-    /// or thrown off, it lies in a heap open to every blow, then creeps back up. A blow from outside its reach makes
-    /// it drop harmlessly: that is how a wary player deals with it.
+    /// It is cloth, not a fighter: one blow ends it (owner's decision, 9 November 2026). Cut while it hangs, its
+    /// lower half falls bleeding and the upper half stays on the line. When Alice comes close it twitches, the one
+    /// tell a watchful player gets; whoever steps under it is caught for certain (owner: otherwise players just run
+    /// past it), so it never lies missed in a heap. The grab cannot be parried and squeezes on a rhythm until she
+    /// struggles free, and then she tears it apart and it is dead.
     /// </summary>
     public sealed class Ambusher : EnemyBase
     {
@@ -18,8 +19,6 @@ namespace Alice.Combat
             Tremble,
             Drop,
             Hold,
-            Heap,
-            Rise,
             Dead
         }
 
@@ -27,8 +26,7 @@ namespace Alice.Combat
 
         private IRestrainable _captive;
         private float _nextSqueezeAt;
-        private float _armedAt;
-        private bool _diedHanging;
+        private string _deathClip = "death";
 
         public AmbusherSettings Settings
         {
@@ -55,20 +53,13 @@ namespace Alice.Combat
                         return "drop";
                     case State.Hold:
                         return "wrap";
-                    case State.Heap:
-                        return "heap";
-                    case State.Rise:
-                        return "rise";
                     case State.Dead:
-                        return _diedHanging && StateTime < _settings.Drop ? "drop" : "death";
+                        return _deathClip;
                     default:
                         return "hang";
                 }
             }
         }
-
-        protected override float ArchetypeClipTime =>
-            CurrentState == State.Dead && _diedHanging ? StateTime - _settings.Drop : StateTime;
 
         protected override float ArchetypeClipSpan
         {
@@ -80,8 +71,6 @@ namespace Alice.Combat
                         return _settings.Tremble;
                     case State.Drop:
                         return _settings.Drop;
-                    case State.Rise:
-                        return _settings.Rise;
                     default:
                         return 0f;
                 }
@@ -91,8 +80,7 @@ namespace Alice.Combat
         protected override void OnSpawn()
         {
             ReleaseCaptive();
-            _armedAt = 0f;
-            _diedHanging = false;
+            _deathClip = "death";
             Enter(State.Hanging);
         }
 
@@ -107,43 +95,38 @@ namespace Alice.Combat
             switch (CurrentState)
             {
                 case State.Hanging:
-                    if (Time.time >= _armedAt && AliceWithin(_settings.TriggerRange))
+                    if (!TryGrab() && AliceWithin(_settings.TriggerRange))
                     {
                         Enter(State.Tremble);
                     }
 
                     break;
                 case State.Tremble:
-                    if (StateTime >= _settings.Tremble)
+                    if (TryGrab())
                     {
-                        Enter(State.Drop);
+                        break;
+                    }
+
+                    // It twitches while she lingers near and calms down when she goes; the twitch repeats.
+                    if (!AliceWithin(_settings.TriggerRange))
+                    {
+                        Enter(State.Hanging);
+                    }
+                    else if (StateTime >= _settings.Tremble)
+                    {
+                        Enter(State.Tremble);
                     }
 
                     break;
                 case State.Drop:
                     if (StateTime >= _settings.Drop)
                     {
-                        Land();
+                        Enter(State.Hold);
                     }
 
                     break;
                 case State.Hold:
                     UpdateHold();
-                    break;
-                case State.Heap:
-                    if (StateTime >= _settings.HeapTime)
-                    {
-                        Enter(State.Rise);
-                    }
-
-                    break;
-                case State.Rise:
-                    if (StateTime >= _settings.Rise)
-                    {
-                        _armedAt = Time.time + _settings.Rearm;
-                        Enter(State.Hanging);
-                    }
-
                     break;
             }
         }
@@ -160,37 +143,41 @@ namespace Alice.Combat
             return Mathf.Abs(offset.x) <= range && offset.y > -0.5f && offset.y < _settings.HangingBody.y;
         }
 
-        /// <summary>Lands on the floor: wraps Alice when she stands under it, otherwise lies there.</summary>
-        private void Land()
+        /// <summary>
+        /// Alice under it is caught the moment she is there: the hold starts as the cloth begins to fall, so no run
+        /// carries her out from under it.
+        /// </summary>
+        private bool TryGrab()
         {
             Transform alice = PlayerPresence.Current;
-            if (alice != null && AliceWithin(_settings.WrapRange) && alice.TryGetComponent(out IRestrainable captive)
-                && captive.TryRestrain(gameObject, _settings.PressesToEscape, Body.position))
+            if (alice == null || !AliceWithin(_settings.WrapRange) || !alice.TryGetComponent(out IRestrainable captive)
+                || !captive.TryRestrain(gameObject, _settings.PressesToEscape, Body.position))
             {
-                _captive = captive;
-                _nextSqueezeAt = Time.time + _settings.SqueezeInterval;
-                Enter(State.Hold);
-                return;
+                return false;
             }
 
-            Enter(State.Heap);
-            TryStun();
+            _captive = captive;
+            _nextSqueezeAt = Time.time + _settings.Drop + _settings.SqueezeInterval;
+            Enter(State.Drop);
+            return true;
         }
 
         private void UpdateHold()
         {
             if (_captive == null || !_captive.IsRestrained)
             {
-                // Torn free, or she fell: the sheet drops off her into a heap.
+                IRestrainable captive = _captive;
                 _captive = null;
-                Enter(State.Heap);
-                return;
-            }
+                if (captive != null && captive.BrokeFree && captive is Component freed)
+                {
+                    // She has torn free: she rips it apart in the same moment, and that is its end.
+                    _deathClip = "torn";
+                    Health.Kill(new HitInfo(Health.Current, -Facing, freed.gameObject, HitKind.Other));
+                    return;
+                }
 
-            if (StateTime >= _settings.MaxHold)
-            {
-                ReleaseCaptive();
-                Enter(State.Heap);
+                // She fell inside it: it hangs back up; her defeat resets the room anyway.
+                Enter(State.Hanging);
                 return;
             }
 
@@ -213,27 +200,26 @@ namespace Alice.Combat
             }
         }
 
+        // A sturdier sheet in the data (more than one point of health) just takes the blow and keeps hanging.
         protected override void OnHurt(HitInfo hit)
         {
-            // Struck while it hangs, it drops at once; out of reach that wraps nobody.
-            if (CurrentState == State.Hanging || CurrentState == State.Tremble)
-            {
-                Enter(State.Drop);
-            }
         }
 
-        // Only the heap on the floor reels: a hanging sheet just drops.
-        protected override bool CanStunNow => CurrentState == State.Heap;
+        // Cloth does not reel and is not executed: one blow is enough.
+        protected override bool CanStunNow => false;
 
         protected override void OnStunEnded()
         {
-            Enter(State.Rise);
         }
 
         protected override void OnKilled(HitInfo hit)
         {
+            if (CurrentState == State.Hanging || CurrentState == State.Tremble)
+            {
+                _deathClip = "cut";
+            }
+
             ReleaseCaptive();
-            _diedHanging = CurrentState == State.Hanging || CurrentState == State.Tremble || CurrentState == State.Drop;
             Enter(State.Dead);
         }
 
@@ -241,9 +227,8 @@ namespace Alice.Combat
         {
             CurrentState = state;
             RestartStateClock();
-            bool lying = state == State.Heap || state == State.Hold || state == State.Dead;
-            Vector2 size = lying ? _settings.HeapBody : _settings.HangingBody;
-            if (state == State.Hold)
+            Vector2 size = state == State.Dead ? _settings.HeapBody : _settings.HangingBody;
+            if (state == State.Drop || state == State.Hold)
             {
                 // Wrapped around Alice it is as tall as she is, and her blows cannot reach it from inside.
                 size = new Vector2(_settings.HeapBody.x * 0.5f, 3f);
