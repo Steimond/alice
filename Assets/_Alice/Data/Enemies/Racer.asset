@@ -14,18 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Alice::Alice.Combat.ChargerSettings
   _archetypeId: EN02
   _bodySize: {x: 3.2, y: 2.2}
-  _maxHealth: 5
+  _maxHealth: 2
   _hitInvulnerability: 0.12
   _hitStop: 0.08
   _executionId: rat_nape
   _stunAtHealth: 1
+  _stunChance: 0.5
   _stunnedTime: 2.5
-  _executionTime: 1.5
+  _executionTime: 2.2
   _sightRange: 10
   _sightHeight: 2
   _loseSightRange: 15
   _loseSightHeight: 6
   _leashDistance: 12
+  _patrolRange: 3
+  _patrolSpeed: 1.2
+  _patrolPause: {x: 1.5, y: 4}
   _contactDamage: 10
   _contactMargin: 0.1
   _contactInterval: 0.5
@@ -36,6 +40,7 @@ MonoBehaviour:
   _confidenceReward: 6
   _walkSpeed: 2.2
   _runFrameDistance: 0.45
+  _walkFrameDistance: 0.12
   _chargeStartRange: 8
   _minChargeRange: 2.5
   _windup: 0.8

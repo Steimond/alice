@@ -46,6 +46,37 @@ public static class EnemyFrames
     // Dark red counts as well: some gushes are drawn maroon, and their gloss is still a pale streak inside.
     static bool IsBloodish(Color c) { return IsNeonBlood(c) || (c.R >= 0x20 && c.R > c.G * 3 && c.R > c.B * 3); }
 
+    // How many of the four sides are bright blood: a gloss streak inside a gush, not the chalk beside it.
+    static int BloodSides(Bitmap b, int x, int y)
+    {
+        int n = 0;
+        int[,] d = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+        for (int i = 0; i < 4; i++)
+        {
+            int nx = x + d[i, 0], ny = y + d[i, 1];
+            if (nx < 0 || ny < 0 || nx >= b.Width || ny >= b.Height) continue;
+            Color q = b.GetPixel(nx, ny);
+            if (q.A >= 128 && q.R >= 0xD0 && q.G <= 0x50) n++;
+        }
+        return n;
+    }
+
+    // True when a pixel has a neighbour that is neither empty, bright blood nor light: it sits on the body, not in a spray.
+    static bool TouchesBody(Bitmap b, int x, int y)
+    {
+        for (int dy = -1; dy <= 1; dy++)
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                int nx = x + dx, ny = y + dy;
+                if ((dx == 0 && dy == 0) || nx < 0 || ny < 0 || nx >= b.Width || ny >= b.Height) continue;
+                Color q = b.GetPixel(nx, ny);
+                bool blood = q.R >= 0xD0 && q.G <= 0x50;
+                bool light = q.R >= 0xD0 && q.G >= 0x90;
+                if (q.A >= 128 && !blood && !light) return true;
+            }
+        return false;
+    }
+
     static bool NextToBlood(Bitmap b, int x, int y)
     {
         int found = 0;
@@ -85,7 +116,7 @@ public static class EnemyFrames
 
     // shiftX/shiftY place the source on the target canvas; alignBottom drops the drawing onto the bottom row.
     public static Bitmap Convert(string path, int width, int height, int shiftX, int shiftY, List<Color> palette,
-        double maxDistance, int minBlob, bool alignBottom, bool clearAir, bool mapPalette)
+        double maxDistance, int minBlob, bool alignBottom, bool clearAir, bool mapPalette, bool clampBottom, bool gore, bool settle, bool settleAny)
     {
         var dst = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
         using (var src = new Bitmap(path))
@@ -96,11 +127,19 @@ public static class EnemyFrames
                     Color c = src.GetPixel(x, y);
                     if (c.A < 128) continue;
                     int tx = x + shiftX, ty = y + shiftY;
+                    // clampBottom: a shift down keeps what already lies on the floor row there instead of cutting it off.
+                    if (clampBottom && ty >= height && y < height) ty = height - 1;
                     if (tx < 0 || ty < 0 || tx >= width || ty >= height) continue;
                     Color o;
-                    if (c.R >= 0xD0 && c.G >= 0xC0 && c.B >= 0xC0 && NextToBlood(src, x, y))
+                    if (((c.R >= 0xD0 && c.G >= 0xC0 && c.B >= 0xC0) || (gore && c.R >= 0xD0 && c.G >= 0x90 && (BloodSides(src, x, y) >= 2 || !TouchesBody(src, x, y))))
+                        && NextToBlood(src, x, y))
                     {
                         o = Glint; // the gloss streak inside a spray
+                    }
+                    else if (gore && c.R >= 0xD0 && c.G <= 0x40 && c.B <= 0x50)
+                    {
+                        // gore: in a death clip the bright pink-red of a glowing eye is blood as well, and goes dark red.
+                        o = Ramp[0];
                     }
                     else if (IsYellowGore(c) && NearBlood(src, x, y, 3))
                     {
@@ -139,7 +178,51 @@ public static class EnemyFrames
                 dst = moved;
             }
         }
+        if (settle) Settle(dst, settleAny);
         return dst;
+    }
+
+    // A creature lying on the floor: the bulk of its body comes down onto the floor row and the few pixels that reached
+    // lower (a paw, a hem, a drop) are pressed onto it, instead of the body hovering over them. Standing frames, taller
+    // than LyingHeight, are left alone: their feet are the contact.
+    const int LyingHeight = 30;
+
+    static void Settle(Bitmap b, bool any)
+    {
+        int w = b.Width, h = b.Height, top = -1;
+        var rows = new int[h];
+        for (int y = 0; y < h; y++)
+            for (int x = 0; x < w; x++)
+            {
+                Color c = b.GetPixel(x, y);
+                if (c.A == 0 || IsBloodish(c)) continue;
+                rows[y]++;
+                if (top < 0) top = y;
+            }
+        if (top < 0 || (!any && h - top > LyingHeight)) return;
+        int most = 0;
+        for (int y = 0; y < h; y++) most = Math.Max(most, rows[y]);
+        int bulk = h - 1;
+        while (bulk > 0 && rows[bulk] * 2 < most) bulk--;
+        int down = h - 1 - bulk;
+        if (down <= 0) return;
+        var moved = new Bitmap(w, h, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+        for (int y = 0; y < h; y++)
+            for (int x = 0; x < w; x++)
+            {
+                Color c = b.GetPixel(x, y);
+                if (c.A == 0) continue;
+                int ty = Math.Min(h - 1, y + down);
+                if (y + down >= h && moved.GetPixel(x, ty).A > 0 && !IsBloodish(c)) continue;
+                moved.SetPixel(x, ty, c);
+            }
+        using (Graphics g = Graphics.FromImage(b))
+        {
+            g.Clear(Color.Transparent);
+            g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+            g.DrawImageUnscaled(moved, 0, 0);
+        }
+        moved.Dispose();
     }
 
     // Detached pieces smaller than minBlob go; with clearAir every piece but the largest goes unless it lies on
@@ -209,7 +292,19 @@ foreach ($clip in $data.clips)
         $clearAir = [bool]$clip.clearLast -and $index -eq $last
         $clipBlob = if ($clip.minBlob) { [int]$clip.minBlob } else { $minBlob }
         $bitmap = [EnemyFrames]::Convert($source, [int]$data.width, [int]$data.height, $shiftX, $shiftY, $palette,
-            $maxDistance, $clipBlob, [bool]$clip.alignBottom, $clearAir, -not [bool]$clip.keepColours)
+            $maxDistance, $clipBlob, [bool]$clip.alignBottom, $clearAir, -not [bool]$clip.keepColours, [bool]$clip.clampBottom, [bool]$clip.gore, ([bool]$clip.settle -or ($clip.settleFrom -ne $null -and $index -ge [int]$clip.settleFrom)), ($clip.settleFrom -ne $null -and $index -ge [int]$clip.settleFrom))
+        # eraseRed: [[frame, x0, y0, x1, y1], ...] in canvas pixels clears red strays (ribbon scraps the generator
+        # left under a body) inside the box; other colours there stay.
+        if ($clip.eraseRed -ne $null)
+        {
+            foreach ($box in $clip.eraseRed)
+            {
+                if ([int]$box[0] -ne $index) { continue }
+                for ($ey = [int]$box[2]; $ey -le [int]$box[4]; $ey++) { for ($ex = [int]$box[1]; $ex -le [int]$box[3]; $ex++) {
+                    $p = $bitmap.GetPixel($ex, $ey)
+                    if ($p.A -gt 0 -and $p.R -gt $p.G * 1.6) { $bitmap.SetPixel($ex, $ey, [System.Drawing.Color]::Transparent) } } }
+            }
+        }
         $name = "{0}_{1}_{2:D2}.png" -f $data.prefix, $clip.id, $index
         $bitmap.Save((Join-Path $outDir $name), [System.Drawing.Imaging.ImageFormat]::Png)
         $bitmap.Dispose()

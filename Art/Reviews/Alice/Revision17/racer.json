@@ -1,13 +1,14 @@
-{ "prefix": "racer", "palette": "racer/look-a.png", "outDir": "../../../../Assets/_Alice/Art/Characters/Enemies/Racer",
-  "width": 112, "height": 64,
+{ "prefix": "racer", "palette": "../Revision20/racer/look.png", "outDir": "../../../../Assets/_Alice/Art/Characters/Enemies/Racer",
+  "width": 184, "height": 64,
   "clips": [
-    { "id": "idle", "dir": "../Revision19/racer/idle-src", "frames": [0], "shiftY": 3 },
-    { "id": "run", "dir": "racer/run2-raw", "frames": [1,2,3,4,5,6,7], "frameShiftX": [2,0,-1,0,-1,0,2], "shiftY": 3 },
-    { "id": "windup", "dir": "../Revision19/racer/windup-raw", "frames": [1,2,3,4,5,6,7,8], "shiftY": 3 },
-    { "id": "skid", "dir": "../Revision19/racer/skid-raw", "frames": [1,2,3,4,5,6,7,8], "shiftY": 3 },
-    { "id": "daze", "dir": "../Revision19/racer/daze-raw", "frames": [1,2,3,4,5,6,7,8,9,10,11,12], "shiftY": 3, "minBlob": 20 },
-    { "id": "hurt", "dir": "../Revision19/racer/daze-raw", "frames": [2,3,2,1], "shiftY": 3, "minBlob": 20 },
-    { "id": "death", "dir": "racer/death-raw", "frames": [1,2,3,4,5,6,7,8,9,10,11,12], "shiftY": 1, "clearLast": true },
-    { "id": "stunned", "dir": "../Revision19/racer/daze-raw", "frames": [3,4,5,6,7,6,5,4], "shiftY": 3, "minBlob": 20 },
-    { "id": "death_execution", "dir": "../Revision18/rat-exec-raw", "frames": [2,3,4,5,6,7,8,9,10,11,12], "shiftY": 3, "clearLast": true }
+    { "id": "idle", "dir": "../Revision21/racer/idle-combo", "frames": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23], "shiftX": 13, "shiftY": 3 },
+    { "id": "walk", "dir": "../Revision21/racer/walk1-raw", "frames": [0,1,2,3,4,5,6,7], "frameShiftX": [2,1,-1,-2,-1,0,1,1], "shiftX": 13, "shiftY": 3 },
+    { "id": "run", "dir": "../Revision20/racer/run1-raw", "frames": [1,2,3,4,5,6,7], "frameShiftX": [4,-1,-6,-8,-12,-11,-6], "eraseRed": [[0,93,47,100,51],[1,97,43,103,48]], "shiftX": 13, "shiftY": 3 },
+    { "id": "windup", "dir": "../Revision20/racer/windup2-raw", "frames": [1,2,3,4,5,6,7,8], "shiftX": 13, "shiftY": 3 },
+    { "id": "skid", "dir": "../Revision20/racer/skid2-raw", "frames": [1,2,3,4,5,6,7,8], "frameShiftX": [-11,-4,4,9,8,4,0,0], "shiftX": 13, "shiftY": 3 },
+    { "id": "daze", "dir": "../Revision20/racer/daze2-raw", "frames": [1,2,3,4,5,6,7,8,9,10,11,12], "frameShiftX": [7,11,6,4,2,6,3,3,0,-10,-5,0], "shiftX": 13, "shiftY": 3, "minBlob": 20 },
+    { "id": "hurt", "dir": "../Revision20/racer/daze2-raw", "frames": [1,2,2,1], "frameShiftX": [10,14,14,10], "shiftX": 13, "shiftY": 3, "minBlob": 20 },
+    { "id": "death", "dir": "../Revision20/racer/death1-raw", "frames": [1,2,3,4,5,6,7,8,9,10,11,12], "shiftX": 13, "shiftY": 3, "clearLast": true, "gore": true, "settle": true, "settleFrom": 6 },
+    { "id": "stunned", "dir": "../Revision20/racer/daze2-raw", "frames": [4,5,6,7,8,7,6,5], "frameShiftX": [5,5,5,5,5,5,5,5], "shiftX": 13, "shiftY": 3, "minBlob": 20 },
+    { "id": "death_execution", "dir": "../Revision21/racer/exec4-raw", "frames": [1,2,2,3,4,4,5,5,6,7,9,10,11,12,13,16], "shiftX": 13, "shiftY": 3, "clearLast": true, "gore": true, "settle": true, "settleFrom": 2 }
   ] }

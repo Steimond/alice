@@ -25,6 +25,8 @@ namespace Alice.Combat
         [SerializeField] private string _executionId = string.Empty;
         [Tooltip("A blow that leaves this much health or less stuns it once per life; only then can it be executed. 0 = never.")]
         [SerializeField, Min(0)] private int _stunAtHealth = 1;
+        [Tooltip("Chance that crossing the threshold stuns it and offers the execution; rolled once per life.")]
+        [SerializeField, Range(0f, 1f)] private float _stunChance = 0.5f;
         [Tooltip("How long the stun lasts: Alice may execute, finish with any blow or let it recover.")]
         [SerializeField, Min(0f)] private float _stunnedTime = 2.5f;
         [Tooltip("Length of Alice's execution of this type; the enemy's execution death is spread over it so both end together.")]
@@ -39,6 +41,14 @@ namespace Alice.Combat
         [SerializeField, Min(0f)] private float _loseSightHeight = 6f;
         [Tooltip("How far from its post it walks while following Alice; past it, it waits facing her.")]
         [SerializeField, Min(0f)] private float _leashDistance = 12f;
+
+        [Header("Patrol")]
+        [Tooltip("While it has not seen Alice it strolls to random points this far from its post and back; 0 = it stands at its post.")]
+        [SerializeField, Min(0f)] private float _patrolRange = 3f;
+        [Tooltip("Strolling speed, slower than its pursuit.")]
+        [SerializeField, Min(0f)] private float _patrolSpeed = 1.2f;
+        [Tooltip("How long it stands at each point, seconds: a random time between the two.")]
+        [SerializeField] private Vector2 _patrolPause = new Vector2(1.5f, 4f);
 
         [Header("Body contact")]
         [Tooltip("Pressing against the living body hurts (GDD section 4); 0 = the body is harmless.")]
@@ -56,6 +66,7 @@ namespace Alice.Combat
         public string ArchetypeId => _archetypeId;
         public string ExecutionId => _executionId;
         public int StunAtHealth => _stunAtHealth;
+        public float StunChance => _stunChance;
         public float StunnedTime => _stunnedTime;
         public float ExecutionTime => _executionTime;
         public Vector2 BodySize => _bodySize;
@@ -67,6 +78,9 @@ namespace Alice.Combat
         public float LoseSightRange => _loseSightRange;
         public float LoseSightHeight => _loseSightHeight;
         public float LeashDistance => _leashDistance;
+        public float PatrolRange => _patrolRange;
+        public float PatrolSpeed => _patrolSpeed;
+        public Vector2 PatrolPause => _patrolPause;
         public int ContactDamage => _contactDamage;
         public float ContactMargin => _contactMargin;
         public float ContactInterval => _contactInterval;

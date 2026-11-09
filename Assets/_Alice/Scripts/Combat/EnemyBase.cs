@@ -44,6 +44,9 @@ namespace Alice.Combat
         protected readonly Collider2D[] Overlaps = new Collider2D[8];
 
         private float _frozenUntil;
+        private float _patrolTarget;
+        private bool _patrolHasTarget;
+        private float _patrolPauseUntil;
         private float _nextContactAt;
         private float _stateStartedAt;
         private float _stunnedAt;
@@ -151,6 +154,8 @@ namespace Alice.Combat
             _wasStunned = false;
             Facing = _initialFacing >= 0 ? 1 : -1;
             _frozenUntil = 0f;
+            _patrolHasTarget = false;
+            _patrolPauseUntil = 0f;
             Awareness.Forget();
             OnSpawn();
         }
@@ -207,8 +212,8 @@ namespace Alice.Combat
         protected abstract void OnStunEnded();
 
         /// <summary>
-        /// Stuns it once per life when its health is down to the threshold and its state allows it. Called after every
-        /// blow, and by an archetype whose stun waits for a state (the sheet landing in a heap).
+        /// Stuns it at most once per life when its health is down to the threshold, its state allows it and the roll of
+        /// <see cref="EnemySettings.StunChance"/> succeeds. Called after every blow.
         /// </summary>
         protected bool TryStun()
         {
@@ -218,7 +223,13 @@ namespace Alice.Combat
                 return false;
             }
 
+            // One roll per life, when the threshold is first crossed: the execution is a chance, not a certainty.
             _wasStunned = true;
+            if (Random.value >= BaseSettings.StunChance)
+            {
+                return false;
+            }
+
             IsStunned = true;
             _stunnedAt = Time.time;
             return true;
@@ -319,7 +330,7 @@ namespace Alice.Combat
         protected int StrikeWithBody(HitInfo hit, float margin = 0f)
         {
             Bounds box = BodyBounds(margin);
-            return MeleeHitbox.Strike(box.center, box.size, hit, gameObject, Struck, Overlaps);
+            return MeleeHitbox.Strike(box.center, box.size, hit, gameObject, Struck, Overlaps, aliceOnly: true);
         }
 
         /// <summary>Alice's feet, while she is followed: noticed in the sight box, kept in the wider lose-sight box.</summary>
@@ -335,6 +346,62 @@ namespace Alice.Combat
             target = player.position;
             return Awareness.Track(target - Body.position, BaseSettings.SightRange, BaseSettings.SightHeight,
                 BaseSettings.LoseSightRange, BaseSettings.LoseSightHeight);
+        }
+
+        /// <summary>
+        /// One step of the stroll while Alice is unseen (owner: enemies walk to and fro and now and then stand, alive):
+        /// it walks to a random point within <see cref="EnemySettings.PatrolRange"/> of its post, stands there a random
+        /// while, then picks the next. After a chase the first point brings it back near its post. Returns the distance
+        /// walked this step: 0 while it stands.
+        /// </summary>
+        protected float Patrol()
+        {
+            if (Time.time < _patrolPauseUntil)
+            {
+                return 0f;
+            }
+
+            float range = BaseSettings.PatrolRange;
+            float x = Body.position.x;
+            if (!_patrolHasTarget)
+            {
+                _patrolTarget = range > 0f ? Home.x + Random.Range(-range, range) : Home.x;
+                if (range > 0f && Mathf.Abs(_patrolTarget - x) < 1f)
+                {
+                    // Too short a walk reads as a twitch: go a little further the other way.
+                    _patrolTarget = Mathf.Clamp(x + (x < Home.x ? 1.5f : -1.5f), Home.x - range, Home.x + range);
+                }
+
+                _patrolHasTarget = true;
+            }
+
+            float dx = _patrolTarget - x;
+            if (Mathf.Abs(dx) <= 0.05f)
+            {
+                StandAtPatrolPoint(range);
+                return 0f;
+            }
+
+            Facing = dx > 0f ? 1 : -1;
+            float moved = MoveOnFloor(Mathf.Min(Mathf.Abs(dx), BaseSettings.PatrolSpeed * Time.fixedDeltaTime), out _);
+            if (moved <= 0f)
+            {
+                // A wall or a ledge ends this walk early.
+                StandAtPatrolPoint(range);
+            }
+
+            return moved;
+        }
+
+        private void StandAtPatrolPoint(float range)
+        {
+            _patrolHasTarget = false;
+            Vector2 pause = BaseSettings.PatrolPause;
+            _patrolPauseUntil = Time.time + Random.Range(Mathf.Min(pause.x, pause.y), Mathf.Max(pause.x, pause.y));
+            if (range <= 0f)
+            {
+                Facing = _initialFacing >= 0 ? 1 : -1;
+            }
         }
 
         /// <summary>

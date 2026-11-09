@@ -92,13 +92,15 @@ namespace Alice.Editor
                 Name = "Racer", Prefix = "racer",
                 Clips = new[]
                 {
-                    new ClipSpec("idle", 0.1f), new ClipSpec("run", 0.055f, true), new ClipSpec("windup", 0.1f),
+                    new ClipSpec("idle", 0.12f, true), new ClipSpec("walk", 0.1f, true), new ClipSpec("run", 0.055f, true),
+                    new ClipSpec("windup", 0.1f),
                     new ClipSpec("skid", 0.1f), new ClipSpec("daze", 0.1f), new ClipSpec("hurt", 0.1f),
                     new ClipSpec("death", 0.09f), new ClipSpec("stunned", 0.1f, true), new ClipSpec("death_execution", 0.1f)
                 },
-                // A hand pins it down, the fist comes down into the nape; the needle reaches down to the floor past its neck.
-                Execution = new ExecutionSpec("rat_nape", 0.45f, 0.1f, 0.95f, 2.5f),
-                ExecutionSplit = new[] { 4, 2, 10 },
+                // Kneeling at its head (owner: more blood, more to it): the needle into the nape twice, then twisted and
+                // ripped out back over her shoulder; the rat bursts at each blow and fountains at the rip.
+                Execution = new ExecutionSpec("rat_nape", 0.35f, 0.1f, 1.75f, 3f),
+                ExecutionSplit = new[] { 2, 1, 12 },
                 CreateSettings = () => Create<ChargerSettings>("EN02", new Vector2(3.2f, 2.2f), 5, 10, 10f, 2f, 9f, 20, 6f),
                 AddBehaviour = (root, settings) =>
                 {
@@ -113,7 +115,7 @@ namespace Alice.Editor
                 Clips = new[]
                 {
                     // The walk advances by distance; Thrower counts 0.1 s per walk frame.
-                    new ClipSpec("idle", 0.1f), new ClipSpec("walk", 0.1f, true), new ClipSpec("throw", 0.1f),
+                    new ClipSpec("idle", 0.12f, true), new ClipSpec("walk", 0.1f, true), new ClipSpec("throw", 0.1f),
                     new ClipSpec("hurt", 0.1f), new ClipSpec("death", 0.09f), new ClipSpec("stunned", 0.1f, true),
                     new ClipSpec("death_execution", 0.1f)
                 },
@@ -613,8 +615,9 @@ namespace Alice.Editor
             EditorSceneManager.SaveScene(scene);
         }
 
-        // A sheet's pegs sit on the rope when the rope's pivot is this far above the sheet's (68 px).
-        private const float SheetBelowRope = 68f / 16f;
+        // A sheet's pegs sit on the rope when the rope's pivot is this far above the sheet's (67 px; the sheet frames
+        // sit 1 px lower so that what falls from it lies on the floor).
+        private const float SheetBelowRope = 67f / 16f;
 
         private static void Place(Scene scene, Transform parent, string name, Vector2 position, int facing)
         {

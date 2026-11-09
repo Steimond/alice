@@ -1,11 +1,11 @@
 { "prefix": "sheet", "palette": "sheet/look-b.png", "outDir": "../../../../Assets/_Alice/Art/Characters/Enemies/Sheet",
   "width": 64, "height": 80,
   "clips": [
-    { "id": "hang", "dir": "../Revision19/sheet/sway1-raw", "frames": [0,1,0,7,6,5,6,7] },
-    { "id": "tremble", "dir": "sheet/tremble2-raw", "frames": [1,2,3,4,5,6,7,8] },
-    { "id": "drop", "dir": "sheet/drop-raw", "frames": [1,2,3,4] },
-    { "id": "wrap", "dir": "sheet/wrap-raw", "frames": [0,1,2,3,4,5,6,7] },
+    { "id": "hang", "dir": "../Revision19/sheet/sway1-raw", "frames": [0,1,0,7,6,5,6,7], "shiftY": 1, "clampBottom": true },
+    { "id": "tremble", "dir": "sheet/tremble2-raw", "frames": [1,2,3,4,5,6,7,8], "shiftY": 1, "clampBottom": true },
+    { "id": "drop", "dir": "sheet/drop-raw", "frames": [1,2,3,4], "shiftY": 1, "clampBottom": true },
+    { "id": "wrap", "dir": "sheet/wrap-raw", "frames": [0,1,2,3,4,5,6,7], "shiftY": 1, "clampBottom": true },
     { "id": "death", "dir": "sheet/death-raw", "frames": [1,2,3,4,5,6,7,8], "clearLast": true },
-    { "id": "cut", "dir": "../Revision19/sheet/cut2-raw", "frames": [1,2,3,4,5,6,7,8,9,10,11,12], "clearLast": true },
-    { "id": "torn", "dir": "../Revision19/sheet/torn2-raw", "frames": [3,4,5,6,7,8,9,10,11,12], "clearLast": true }
+    { "id": "cut", "dir": "../Revision19/sheet/cut2-raw", "frames": [1,2,3,4,5,6,7,8,9,10,11,12], "shiftY": 1, "clampBottom": true, "clearLast": true },
+    { "id": "torn", "dir": "../Revision19/sheet/torn2-raw", "frames": [3,4,5,6,7,8,9,10,11,12], "shiftY": 1, "clampBottom": true, "clearLast": true }
   ] }

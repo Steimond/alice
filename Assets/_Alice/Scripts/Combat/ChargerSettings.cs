@@ -14,6 +14,8 @@ namespace Alice.Combat
         [SerializeField, Min(0f)] private float _walkSpeed = 2.2f;
         [Tooltip("Tiles per frame of the run clip while it trots, so the feet match the floor.")]
         [SerializeField, Min(0.01f)] private float _runFrameDistance = 0.45f;
+        [Tooltip("Tiles walked per frame of the strolling walk clip.")]
+        [SerializeField, Min(0.01f)] private float _walkFrameDistance = 0.12f;
 
         [Header("Charge")]
         [Tooltip("Starts the wind-up when Alice is this close and on its level.")]
@@ -40,6 +42,7 @@ namespace Alice.Combat
 
         public float WalkSpeed => _walkSpeed;
         public float RunFrameDistance => _runFrameDistance;
+        public float WalkFrameDistance => _walkFrameDistance;
         public float ChargeStartRange => _chargeStartRange;
         public float MinChargeRange => _minChargeRange;
         public float Windup => _windup;

@@ -23,7 +23,6 @@ namespace Alice.Combat
             Dead
         }
 
-        private const float HomeTolerance = 0.1f;
 
         [SerializeField] private ChargerSettings _settings;
 
@@ -51,6 +50,8 @@ namespace Alice.Combat
                 switch (CurrentState)
                 {
                     case State.Walk:
+                        // Strolling about its post it walks; closing in on Alice it runs.
+                        return Awareness.Engaged ? "run" : "walk";
                     case State.Charge:
                         return "run";
                     case State.Windup:
@@ -70,7 +71,12 @@ namespace Alice.Combat
         }
 
         protected override float ArchetypeClipTime =>
-            CurrentState == State.Walk ? _walkDistance / _settings.RunFrameDistance * _settings.ChargeFrameTime : StateTime;
+            CurrentState != State.Walk ? StateTime
+            : Awareness.Engaged ? _walkDistance / _settings.RunFrameDistance * _settings.ChargeFrameTime
+            : _walkDistance / _settings.WalkFrameDistance * WalkClipFrameTime;
+
+        // The walk clip's own frame time (clip set "walk"): its frames are paced by the distance walked.
+        private const float WalkClipFrameTime = 0.1f;
 
         protected override float ArchetypeClipSpan
         {
@@ -142,7 +148,7 @@ namespace Alice.Combat
         {
             if (!TryGetAlice(out Vector2 alice))
             {
-                ReturnHome();
+                Wander();
                 return;
             }
 
@@ -183,18 +189,12 @@ namespace Alice.Combat
             Enter(State.Windup);
         }
 
-        private void ReturnHome()
+        /// <summary>Alice unseen: it strolls about its post and now and then stands (<see cref="EnemyBase.Patrol"/>).</summary>
+        private void Wander()
         {
-            float toHome = Home.x - Body.position.x;
-            if (Mathf.Abs(toHome) <= HomeTolerance)
-            {
-                Facing = InitialFacing;
-                SetState(State.Guard);
-                return;
-            }
-
-            Facing = toHome > 0f ? 1 : -1;
-            Walk();
+            float moved = Patrol();
+            _walkDistance += moved;
+            SetState(moved > 0f ? State.Walk : State.Guard);
         }
 
         private float Walk()

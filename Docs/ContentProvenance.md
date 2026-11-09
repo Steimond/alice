@@ -102,4 +102,8 @@ Blasphemous и Nine Sols — ориентиры жанра и требовате
 
 9 ноября 2026: `Art/Reviews/Alice/Revision19/` — правки владельца по врагам биома 1: срез и разрыв простыни, Алиса рвёт ткань, новое колыхание, подготовка моли, казни моли и утки (вырванный клюв), стойка крысы с хвостом и её клипы (`animate_image_pixminimax`); созданы PixelLab на подписке по просьбе владельца. Иглу, чистку, перенос и сборку маятника колыхания делают скрипты, ручной дорисовки не было. Файлы — `Assets/_Alice/Art/Characters/Alice/Trial/alice_trial_{tearfree,exec_moth,exec_duck}_*`, `Art/Characters/Enemies/*`.
 
+9 ноября 2026: `Art/Reviews/Alice/Revision20/` — гонщик перерисован целиком: облик (`create_image_pro_flash`, образец стиля — утка-прачка из Revision17) и все анимации (`animate_image_pixminimax`); созданы PixelLab на подписке по просьбе владельца. Перенос, чистка, выравнивание и центровка — скриптом `enemy-frames.ps1`, ручной дорисовки не было. Файлы — `Assets/_Alice/Art/Characters/Enemies/Racer`.
+
+9 ноября 2026: `Art/Reviews/Alice/Revision21/` — айдлы утки и крысы, шаг крысы, новая казнь крысы (анимация Алисы и смерть крысы, `animate_image_pixminimax`); созданы PixelLab на подписке по просьбе владельца. Иглу, чистку, склейку айдлов и перенос делают скрипты, ручной дорисовки не было. Файлы — `Assets/_Alice/Art/Characters/Enemies/{Racer,Duck}`, `Art/Characters/Alice/Trial/alice_trial_exec_racer_*`.
+
 Перед коммерческим релизом: проверка названия и логотипа, выбранных территорий, всех переводов и лицензий, затем юридическая оценка конкретных материалов.

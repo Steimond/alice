@@ -140,16 +140,26 @@ namespace Alice.Editor
             _sources = _sources.OrderBy(source => source.Name).ToList();
         }
 
-        /// <summary>Every sprite array of the asset; a wind-up, blow and recovery under one parent become one clip.</summary>
+        /// <summary>
+        /// Every sprite array of the asset as one whole animation under its own short name: a strike's wind-up, blow
+        /// and recovery (stored as three lists) play as one clip, never as pieces of two or three frames.
+        /// </summary>
         private static void CollectSpriteLists(ScriptableObject asset, List<Entry> into)
         {
-            var phases = new Dictionary<string, List<Sprite>>();
+            var order = new List<string>();
+            var wholes = new Dictionary<string, List<Sprite>>();
             var serialized = new SerializedObject(asset);
             SerializedProperty property = serialized.GetIterator();
             while (property.Next(true))
             {
                 if (!property.isArray || property.propertyType != SerializedPropertyType.Generic
                     || property.arrayElementType != "PPtr<$Sprite>")
+                {
+                    continue;
+                }
+
+                // The iterator also enters each array as its inner "Array" node; that would be every list again.
+                if (property.name == "Array")
                 {
                     continue;
                 }
@@ -162,56 +172,72 @@ namespace Alice.Editor
                     continue;
                 }
 
-                string name = Label(property);
-                into.Add(new Entry { Name = name, Frames = frames, FrameTime = 0.08f, Loop = true });
-
-                string leaf = property.name;
-                if (leaf == "_windup" || leaf == "_active" || leaf == "_recovery")
+                string name = NameOf(property);
+                if (!wholes.TryGetValue(name, out List<Sprite> whole))
                 {
-                    string parent = name.Substring(0, name.LastIndexOf('/'));
-                    if (!phases.TryGetValue(parent, out List<Sprite> whole))
-                    {
-                        whole = new List<Sprite>();
-                        phases[parent] = whole;
-                    }
-
-                    whole.AddRange(frames);
+                    whole = new List<Sprite>();
+                    wholes[name] = whole;
+                    order.Add(name);
                 }
+
+                whole.AddRange(frames);
             }
 
-            foreach (KeyValuePair<string, List<Sprite>> whole in phases)
+            foreach (string name in order)
             {
-                into.Add(new Entry { Name = whole.Key + " (whole)", Frames = whole.Value.ToArray(), FrameTime = 0.08f });
+                into.Add(new Entry { Name = name, Frames = wholes[name].ToArray(), FrameTime = 0.08f, Loop = true });
             }
 
             into.Sort((a, b) => string.CompareOrdinal(a.Name, b.Name));
         }
 
-        // "_executions.Array.data[2]._frames._windup" reads as "executions/moth_pin/frames/windup".
-        private static string Label(SerializedProperty property)
-        {
-            var parts = new List<string>();
-            SerializedObject owner = property.serializedObject;
-            string[] steps = property.propertyPath.Replace(".Array.data[", "[").Split('.');
-            string walked = string.Empty;
-            foreach (string step in steps)
-            {
-                int bracket = step.IndexOf('[');
-                string field = bracket >= 0 ? step.Substring(0, bracket) : step;
-                walked = walked.Length == 0 ? field : walked + "." + field;
-                parts.Add(field.TrimStart('_'));
-                if (bracket < 0)
-                {
-                    continue;
-                }
+        private static readonly string[] PhaseSuffixes = { "Windup", "Active", "Recovery" };
 
-                string index = step.Substring(bracket + 1, step.Length - bracket - 2);
-                walked += ".Array.data[" + index + "]";
-                SerializedProperty id = owner.FindProperty(walked + "._id");
-                parts.Add(id != null && !string.IsNullOrEmpty(id.stringValue) ? id.stringValue : index);
+        // "_thrustWindup" and "_thrustActive" are both "thrust"; "_executions.Array.data[2]._frames._windup" is the
+        // execution's own ID ("moth_pin"); any other list is its field name ("run", "jumpRise").
+        private static string NameOf(SerializedProperty property)
+        {
+            string leaf = property.name.TrimStart('_');
+            if (leaf == "windup" || leaf == "active" || leaf == "recovery")
+            {
+                return LastIdOnPath(property) ?? ParentField(property);
             }
 
-            return string.Join("/", parts);
+            foreach (string suffix in PhaseSuffixes)
+            {
+                if (leaf.Length > suffix.Length && leaf.EndsWith(suffix))
+                {
+                    return leaf.Substring(0, leaf.Length - suffix.Length);
+                }
+            }
+
+            return leaf;
+        }
+
+        private static string LastIdOnPath(SerializedProperty property)
+        {
+            string path = property.propertyPath;
+            string found = null;
+            int at = path.IndexOf(".Array.data[", System.StringComparison.Ordinal);
+            while (at >= 0)
+            {
+                int close = path.IndexOf(']', at);
+                SerializedProperty id = property.serializedObject.FindProperty(path.Substring(0, close + 1) + "._id");
+                if (id != null && !string.IsNullOrEmpty(id.stringValue))
+                {
+                    found = id.stringValue;
+                }
+
+                at = path.IndexOf(".Array.data[", close, System.StringComparison.Ordinal);
+            }
+
+            return found;
+        }
+
+        private static string ParentField(SerializedProperty property)
+        {
+            string[] steps = property.propertyPath.Split('.');
+            return steps.Length >= 2 ? steps[steps.Length - 2].TrimStart('_') : property.name.TrimStart('_');
         }
 
         private void OnGUI()

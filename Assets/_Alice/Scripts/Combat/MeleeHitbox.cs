@@ -12,10 +12,11 @@ namespace Alice.Combat
     {
         /// <summary>
         /// Hits every damageable body in the box that this swing has not hit yet.
-        /// <paramref name="struck"/> belongs to one swing; clear it when a new swing starts.
+        /// <paramref name="struck"/> belongs to one swing; clear it when a new swing starts. Enemies pass
+        /// <paramref name="aliceOnly"/>: their blows are for Alice and never hurt each other.
         /// </summary>
         public static int Strike(Vector2 center, Vector2 size, HitInfo hit, GameObject attacker,
-            HashSet<IDamageable> struck, Collider2D[] buffer)
+            HashSet<IDamageable> struck, Collider2D[] buffer, bool aliceOnly = false)
         {
             // Enemy bodies are triggers so Alice can slide through them; the swing must still find them.
             ContactFilter2D filter = new ContactFilter2D { useTriggers = true };
@@ -25,7 +26,8 @@ namespace Alice.Combat
             {
                 Collider2D other = buffer[index];
                 GameObject owner = other.attachedRigidbody != null ? other.attachedRigidbody.gameObject : other.gameObject;
-                if (owner == attacker || !owner.TryGetComponent(out IDamageable target) || !struck.Add(target))
+                if (owner == attacker || (aliceOnly && owner.transform != PlayerPresence.Current)
+                    || !owner.TryGetComponent(out IDamageable target) || !struck.Add(target))
                 {
                     continue;
                 }

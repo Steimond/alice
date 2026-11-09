@@ -27,6 +27,9 @@ namespace Alice.Tests
             PlayerMovementSettings movement = Track(ScriptableObject.CreateInstance<PlayerMovementSettings>());
             PlayerCombatSettings combat = Track(ScriptableObject.CreateInstance<PlayerCombatSettings>());
             _enemySettings = Track(ScriptableObject.CreateInstance<MeleeEnemySettings>());
+            // The stun is a chance in the game; these tests need it every time.
+            typeof(MeleeEnemySettings).GetField("_stunChance", System.Reflection.BindingFlags.Instance
+                | System.Reflection.BindingFlags.NonPublic).SetValue(_enemySettings, 1f);
 
             GameObject alice = Track(new GameObject("TestAlice"));
             alice.SetActive(false);

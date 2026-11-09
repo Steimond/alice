@@ -88,7 +88,7 @@ namespace Alice.Tests
         }
 
         [UnityTest]
-        public IEnumerator Moth_BlowInTheAir_KnocksItToTheFloor_WhereBlowsKeepLanding()
+        public IEnumerator Moth_BlowInTheAir_DoesNotBringItDown()
         {
             FlyingDiverSettings settings = Track(ScriptableObject.CreateInstance<FlyingDiverSettings>());
             _motor.Teleport(new Vector2(-20f, 0.02f));
@@ -98,15 +98,65 @@ namespace Alice.Tests
 
             health.ReceiveHit(new HitInfo(1, 1, _motor.gameObject, HitKind.Slash));
             yield return Steps(40);
-            Assert.That(moth.CurrentState, Is.EqualTo(FlyingDiver.State.Grounded));
-            Assert.That(moth.Position.y, Is.EqualTo(0f).Within(0.05f), "It lies on the floor.");
+            Assert.That(health.Current, Is.EqualTo(health.Max - 1), "The blow lands.");
+            Assert.That(moth.Position.y, Is.GreaterThan(5f), "It keeps flying: only the stun drops it.");
+            Assert.That(moth.CurrentState, Is.Not.EqualTo(FlyingDiver.State.Falling));
+        }
 
-            yield return Steps(10);
-            int before = health.Current;
-            health.ReceiveHit(new HitInfo(1, 1, _motor.gameObject, HitKind.Thrust));
+        [UnityTest]
+        public IEnumerator Unseen_ItStrollsAboutItsPost_AndStandsNowAndThen()
+        {
+            ThrowerSettings settings = Track(ScriptableObject.CreateInstance<ThrowerSettings>());
+            _motor.Teleport(new Vector2(-40f, 0.02f));
+            Thrower duck = Create<Thrower>(new Vector2(0f, 0f), enemy => enemy.Settings = settings);
+
+            bool walked = false;
+            bool stood = false;
+            float farthest = 0f;
+            float until = Time.time + settings.PatrolPause.y + 2f * settings.PatrolRange / settings.PatrolSpeed + 2f;
+            while (Time.time < until && !(walked && stood && farthest > 0.5f))
+            {
+                walked |= duck.CurrentState == Thrower.State.Walk;
+                stood |= duck.CurrentState == Thrower.State.Guard && duck.StateTime > 0.5f;
+                farthest = Mathf.Max(farthest, Mathf.Abs(duck.Position.x));
+                Assert.That(Mathf.Abs(duck.Position.x), Is.LessThanOrEqualTo(settings.PatrolRange + 0.05f), "It keeps near its post.");
+                yield return new WaitForFixedUpdate();
+            }
+
+            Assert.That(walked, Is.True, "It walks about.");
+            Assert.That(stood, Is.True, "It stands now and then.");
+            Assert.That(farthest, Is.GreaterThan(0.5f));
+        }
+
+        [UnityTest]
+        public IEnumerator Stun_IsAChance_RolledOncePerLife()
+        {
+            ThrowerSettings settings = Track(ScriptableObject.CreateInstance<ThrowerSettings>());
+            SetExecution(settings, "duck_throat");
+            SetStunChance(settings, 0f);
+            // Three health, the threshold at two: one blow crosses it, the next still leaves the duck alive.
+            typeof(EnemySettings).GetField("_stunAtHealth",
+                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).SetValue(settings, 2);
+            _motor.Teleport(new Vector2(-30f, 0.02f));
+            Thrower duck = Create<Thrower>(new Vector2(0f, 0f), enemy => enemy.Settings = settings);
+            Health health = duck.GetComponent<Health>();
+            yield return Steps(5);
+
+            health.ReceiveHit(new HitInfo(health.Current - settings.StunAtHealth, 1, _motor.gameObject, HitKind.Thrust));
             yield return Steps(2);
-            Assert.That(health.Current, Is.EqualTo(before - 1));
-            Assert.That(moth.CurrentState, Is.EqualTo(FlyingDiver.State.Grounded), "On the floor it just takes the blows.");
+            Assert.That(duck.IsStunned, Is.False, "The roll failed: no execution this time.");
+
+            SetStunChance(settings, 1f);
+            health.ReceiveHit(new HitInfo(1, 1, _motor.gameObject, HitKind.Thrust));
+            Assert.That(health.IsDead, Is.False);
+            yield return Steps(2);
+            Assert.That(duck.IsStunned, Is.False, "One roll per life: later blows do not roll again.");
+
+            WorldReset.Raise();
+            yield return Steps(2);
+            health.ReceiveHit(new HitInfo(health.Current - settings.StunAtHealth, 1, _motor.gameObject, HitKind.Thrust));
+            yield return Steps(2);
+            Assert.That(duck.IsStunned, Is.True, "A new life rolls anew.");
         }
 
         [UnityTest]
@@ -134,6 +184,29 @@ namespace Alice.Tests
             Assert.That(_aliceHealth.Current, Is.EqualTo(_aliceHealth.Max - settings.ChargeDamage),
                 "The ram hits Alice once on its way.");
             Assert.That(dazed, Is.True, "Head first into the wall it reels.");
+        }
+
+        [UnityTest]
+        public IEnumerator Racer_ChargingThroughAnotherEnemy_DoesNotHurtIt()
+        {
+            ChargerSettings settings = Track(ScriptableObject.CreateInstance<ChargerSettings>());
+            Charger racer = Create<Charger>(new Vector2(6f, 0f), enemy =>
+            {
+                enemy.Settings = settings;
+                enemy.InitialFacing = -1;
+            });
+            Thrower duck = Create<Thrower>(new Vector2(2.5f, 0f),
+                enemy => enemy.Settings = Track(ScriptableObject.CreateInstance<ThrowerSettings>()));
+            Health duckHealth = duck.GetComponent<Health>();
+
+            float timeout = Time.time + 4f;
+            while (_aliceHealth.Current == _aliceHealth.Max && Time.time < timeout)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+
+            Assert.That(_aliceHealth.Current, Is.LessThan(_aliceHealth.Max), "The ram reaches Alice.");
+            Assert.That(duckHealth.Current, Is.EqualTo(duckHealth.Max), "Enemies never hurt each other.");
         }
 
         [UnityTest]
@@ -349,11 +422,19 @@ namespace Alice.Tests
                 System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).SetValue(settings, value);
         }
 
+        private static void SetStunChance(EnemySettings settings, float chance)
+        {
+            typeof(EnemySettings).GetField("_stunChance",
+                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).SetValue(settings, chance);
+        }
+
         // The execution ID is authored in the asset; tests have no editor to set it.
         private static void SetExecution(EnemySettings settings, string id)
         {
             typeof(EnemySettings).GetField("_executionId",
                 System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).SetValue(settings, id);
+            // Stun tests need the stun every time; the chance itself is tested on its own.
+            SetStunChance(settings, 1f);
         }
 
         private T Create<T>(Vector2 position, System.Action<T> configure) where T : EnemyBase

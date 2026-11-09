@@ -293,7 +293,15 @@ namespace Alice.Combat
                 _settings.HitCenterHeight);
             HitInfo hit = new HitInfo(_settings.Damage, Facing, gameObject, HitKind.Thrust, _settings.ParryWindow,
                 _settings.Knockback);
-            MeleeHitbox.Strike(center, new Vector2(length, _settings.HitHeight), hit, gameObject, _struck, _overlaps);
+            MeleeHitbox.Strike(center, new Vector2(length, _settings.HitHeight), hit, gameObject, _struck, _overlaps,
+                aliceOnly: true);
+        }
+
+        // One roll per life, when the threshold is first crossed: the execution is a chance, not a certainty.
+        private bool RollStun()
+        {
+            _wasStunned = true;
+            return Random.value < _settings.StunChance;
         }
 
         private void OnDamaged(HitInfo hit)
@@ -308,9 +316,9 @@ namespace Alice.Combat
             // Nearly beaten, it reels once per life, even out of its own blow. The execution is offered, never
             // forced: any further blow still finishes it.
             if (!_wasStunned && CurrentState != State.Stunned && _health.Current <= _settings.StunAtHealth
-                && !string.IsNullOrEmpty(_settings.ExecutionId))
+                && !string.IsNullOrEmpty(_settings.ExecutionId)
+                && RollStun())
             {
-                _wasStunned = true;
                 Facing = -hit.DirectionX;
                 Enter(State.Stunned);
                 return;

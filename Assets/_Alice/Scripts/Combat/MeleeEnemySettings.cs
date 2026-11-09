@@ -24,6 +24,8 @@ namespace Alice.Combat
         [SerializeField, Min(0f)] private float _openedTime = 1.2f;
         [Tooltip("A blow that leaves this much health or less stuns the enemy once per life; only then can it be executed. 0 = never.")]
         [SerializeField, Min(0)] private int _stunAtHealth = 1;
+        [Tooltip("Chance that crossing the threshold stuns it and offers the execution; rolled once per life.")]
+        [SerializeField, Range(0f, 1f)] private float _stunChance = 0.5f;
         [Tooltip("How long the stun lasts: Alice may execute, finish with any blow or let it recover.")]
         [SerializeField, Min(0f)] private float _stunnedTime = 2.5f;
 
@@ -91,6 +93,7 @@ namespace Alice.Combat
         public float StaggerTime => _staggerTime;
         public float OpenedTime => _openedTime;
         public int StunAtHealth => _stunAtHealth;
+        public float StunChance => _stunChance;
         public float StunnedTime => _stunnedTime;
         public float WalkSpeed => _walkSpeed;
         public float SightRange => _sightRange;

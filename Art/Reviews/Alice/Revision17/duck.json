@@ -1,11 +1,11 @@
 ﻿{ "prefix": "duck", "palette": "duck/look-b.png", "outDir": "../../../../Assets/_Alice/Art/Characters/Enemies/Duck",
   "width": 96, "height": 64,
   "clips": [
-    { "id": "idle", "dir": "duck/idle-src", "frames": [0] },
+    { "id": "idle", "dir": "../Revision21/duck/idle-combo", "frames": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23] },
     { "id": "walk", "dir": "duck/walk-raw", "frames": [0,1,2,3,4,5,6,7] },
     { "id": "throw", "dir": "duck/throw-raw", "frames": [1,2,3,4,5,6,7,8,9,10,11,12], "shiftX": 16, "minBlob": 30 },
     { "id": "hurt", "dir": "duck/hurt-raw", "frames": [1,2,3,4] },
-    { "id": "death", "dir": "duck/death2-raw", "frames": [1,2,3,4,5,6,7,8,9,10,11,12], "clearLast": true },
+    { "id": "death", "dir": "duck/death2-raw", "frames": [1,2,3,4,5,6,7,8,9,10,11,12], "clearLast": true, "settle": true, "settleFrom": 7 },
     { "id": "stunned", "dir": "../Revision18/duck-stunned-raw", "frames": [0,1,2,3,4,5,6,7] },
-    { "id": "death_execution", "dir": "../Revision19/duck/beak2-raw", "frames": [0,0,0,0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12], "clearLast": true }
+    { "id": "death_execution", "dir": "../Revision19/duck/beak2-raw", "frames": [0,0,0,0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12], "clearLast": true, "settle": true }
   ] }

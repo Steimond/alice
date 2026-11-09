@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Alice::Alice.Combat.ThrowerSettings
   _archetypeId: EN12
   _bodySize: {x: 1.4, y: 3.4}
-  _maxHealth: 3
+  _maxHealth: 2
   _hitInvulnerability: 0.12
   _hitStop: 0.08
   _executionId: duck_throat
   _stunAtHealth: 1
+  _stunChance: 0.5
   _stunnedTime: 2.5
   _executionTime: 1.7
   _sightRange: 11
@@ -26,6 +27,9 @@ MonoBehaviour:
   _loseSightRange: 15
   _loseSightHeight: 6
   _leashDistance: 10
+  _patrolRange: 3
+  _patrolSpeed: 1.2
+  _patrolPause: {x: 1.5, y: 4}
   _contactDamage: 10
   _contactMargin: 0.1
   _contactInterval: 0.5

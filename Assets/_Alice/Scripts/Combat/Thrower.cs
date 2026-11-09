@@ -19,7 +19,6 @@ namespace Alice.Combat
             Dead
         }
 
-        private const float HomeTolerance = 0.1f;
 
         [SerializeField] private ThrowerSettings _settings;
 
@@ -107,7 +106,7 @@ namespace Alice.Combat
         {
             if (!TryGetAlice(out Vector2 alice))
             {
-                ReturnHome();
+                Wander();
                 return;
             }
 
@@ -144,18 +143,12 @@ namespace Alice.Combat
             SetState(State.Guard);
         }
 
-        private void ReturnHome()
+        /// <summary>Alice unseen: it strolls about its post and now and then stands (<see cref="EnemyBase.Patrol"/>).</summary>
+        private void Wander()
         {
-            float toHome = Home.x - Body.position.x;
-            if (Mathf.Abs(toHome) <= HomeTolerance)
-            {
-                Facing = InitialFacing;
-                SetState(State.Guard);
-                return;
-            }
-
-            Facing = toHome > 0f ? 1 : -1;
-            Walk();
+            float moved = Patrol();
+            _walkDistance += moved;
+            SetState(moved > 0f ? State.Walk : State.Guard);
         }
 
         private float Walk()

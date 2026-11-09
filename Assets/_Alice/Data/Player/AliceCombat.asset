@@ -107,10 +107,10 @@ MonoBehaviour:
     _recovery: 1
     _distance: 2.2
   - _id: rat_nape
-    _windup: 0.45
+    _windup: 0.35
     _active: 0.1
-    _recovery: 0.95
-    _distance: 2.5
+    _recovery: 1.75
+    _distance: 3
   - _id: duck_throat
     _windup: 0.45
     _active: 0.15

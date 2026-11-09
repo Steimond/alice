@@ -6,8 +6,9 @@ namespace Alice.Combat
     /// <summary>
     /// Archetype for a flyer that hangs out of reach and dives (the clothes moth EN11, GDD section 9). It drifts
     /// above Alice, folds its wings in a long wind-up, dives through her head height, then hangs exposed a little
-    /// above the reach of ground blows: Alice catches it with a blow in a jump. A blow in the air or a parried dive
-    /// throws it to the floor, where any blow lands until it lifts off again.
+    /// above the reach of ground blows: Alice catches it with a blow in a jump. Blows do not bring it down (owner,
+    /// 9 November 2026): a blow breaks off a wind-up or a dive and a parried dive leaves it hanging open; only the
+    /// stun that offers its execution drops it to the floor, where it reels until it lifts off again.
     /// </summary>
     public sealed class FlyingDiver : EnemyBase, IParryable
     {
@@ -275,34 +276,32 @@ namespace Alice.Combat
 
         protected override void OnHurt(HitInfo hit)
         {
-            // On the floor it just takes the blows; anywhere else the blow throws it down.
-            if (CurrentState == State.Grounded)
+            // It stays in the air; a blow only breaks off an attack under way, and it climbs back to wait.
+            _fallSpeed = 0f;
+            Facing = -hit.DirectionX;
+            if (CurrentState == State.Windup || CurrentState == State.Dive)
+            {
+                _cooldownUntil = Time.time + _settings.Cooldown;
+                Enter(State.Climb);
+            }
+        }
+
+        /// <summary>A parried dive stops where it is and the moth hangs there open, as after a dive.</summary>
+        public void OnParried(GameObject by)
+        {
+            if (IsDead || IsStunned)
             {
                 return;
             }
 
-            Facing = -hit.DirectionX;
-            KnockDown();
-        }
-
-        public void OnParried(GameObject by)
-        {
-            if (!IsDead)
-            {
-                KnockDown();
-            }
-        }
-
-        private void KnockDown()
-        {
-            _fallSpeed = 0f;
+            _exposedFrom = Body.position;
+            _exposedTo = Body.position;
             _cooldownUntil = Time.time + _settings.Cooldown;
-            Enter(State.Falling);
+            Enter(State.Exposed);
         }
 
-        // Knocked down nearly beaten, it reels on the floor; the stun may begin while it still falls.
-        protected override bool CanStunNow => CurrentState == State.Falling || CurrentState == State.Grounded;
-
+        // Stunned anywhere (the base allows it in every state), it drops to the floor and reels there: only then is
+        // it executed.
         protected override string StunnedClipId => _stunLanded ? "stunned" : "fall";
 
         protected override void TickWhileStunned()
