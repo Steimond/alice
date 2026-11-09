@@ -39,34 +39,6 @@ MonoBehaviour:
     m_Key: map.legend.Rest
     m_Metadata:
       m_Items: []
-  - m_Id: 2581698992742404
-    m_Key: map.legend.ShortcutDoor
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2581698992742405
-    m_Key: map.legend.Lift
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2581698992742406
-    m_Key: map.legend.GateFan
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2581698992742407
-    m_Key: map.legend.GateMushroom
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2581698992742408
-    m_Key: map.legend.GateCheshire
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2581698992742409
-    m_Key: map.legend.GateClock
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2581698992742410
-    m_Key: map.legend.LostDecrees
-    m_Metadata:
-      m_Items: []
   - m_Id: 2581698992742411
     m_Key: map.legend.MarkPin
     m_Metadata:
@@ -81,6 +53,138 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 2581698992742414
     m_Key: map.legend.MarkKnot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2630438763962368
+    m_Key: map.legend.Item
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954914123776
+    m_Key: menu.play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844032
+    m_Key: menu.settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844033
+    m_Key: menu.quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844034
+    m_Key: menu.back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844035
+    m_Key: menu.slots
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844036
+    m_Key: menu.slot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844037
+    m_Key: menu.slot.empty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844038
+    m_Key: menu.newgame
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844039
+    m_Key: menu.continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844040
+    m_Key: menu.delete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844041
+    m_Key: menu.delete.question
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844042
+    m_Key: menu.yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844043
+    m_Key: menu.no
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844044
+    m_Key: menu.playtime
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232640
+    m_Key: menu.decrees
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232641
+    m_Key: menu.finds
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232642
+    m_Key: menu.place.unknown
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232643
+    m_Key: menu.settings.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232644
+    m_Key: menu.language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232645
+    m_Key: menu.language.system
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232646
+    m_Key: menu.screen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232647
+    m_Key: menu.fullscreen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232648
+    m_Key: menu.windowed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232649
+    m_Key: menu.windowscale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232650
+    m_Key: menu.vsync
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232651
+    m_Key: menu.volume.master
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232652
+    m_Key: menu.volume.music
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232653
+    m_Key: menu.volume.effects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232654
+    m_Key: menu.shake
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232655
+    m_Key: menu.on
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232656
+    m_Key: menu.off
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232657
+    m_Key: menu.hints
     m_Metadata:
       m_Items: []
   m_Metadata:

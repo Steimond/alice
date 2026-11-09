@@ -90,7 +90,17 @@ namespace Alice.Editor
 
         private void DrawRoom(Scene scene)
         {
-            EditorGUILayout.LabelField("Комната", EditorStyles.boldLabel);
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("Комната", EditorStyles.boldLabel);
+                if (GUILayout.Button(new GUIContent("Размеры",
+                        "Все размеры для левел-дизайна: высота и дальность прыжка, веер, подкат, проходы, потолки, "
+                        + "затворы и враги — посчитаны из данных игры"), GUILayout.Width(80f)))
+                {
+                    AliceLevelMetricsWindow.Open();
+                }
+            }
+
             Room room = AliceLevelRoomTools.FindRoom(scene);
             EditorGUILayout.LabelField("Сцена", scene.name);
             EditorGUILayout.LabelField("ID", room != null ? room.RoomId : "— нет компонента Room —");

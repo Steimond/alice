@@ -66,7 +66,6 @@ namespace Alice.Editor
             public readonly List<(LevelBrush Brush, RectInt Cells, bool Erase)> Strokes = new List<(LevelBrush, RectInt, bool)>();
             public readonly List<Opening> Openings = new List<Opening>();
             public readonly List<Shaft> Shafts = new List<Shaft>();
-            public readonly List<(MapIconKind Kind, Vector2 Position)> Points = new List<(MapIconKind, Vector2)>();
             public System.Action<Scene> Furnish = scene => { };
 
             public Plan Solid(int x0, int y0, int x1, int y1) => Stroke(LevelBrush.Solid, x0, y0, x1, y1, false);
@@ -88,13 +87,6 @@ namespace Alice.Editor
             public Plan Door(string id, int side, int floor, string targetRoom, string targetDoorway)
             {
                 Openings.Add(new Opening { Id = id, Side = side, Floor = floor, TargetRoom = targetRoom, TargetDoorway = targetDoorway });
-                return this;
-            }
-
-            /// <summary>A map icon the geometry alone does not give: a fan gate, a lift.</summary>
-            public Plan Point(MapIconKind kind, float x, float y)
-            {
-                Points.Add((kind, new Vector2(x, y)));
                 return this;
             }
 
@@ -203,14 +195,6 @@ namespace Alice.Editor
             foreach (Shaft shaft in plan.Shafts)
             {
                 PlaceShaft(scene, shaft);
-            }
-
-            foreach ((MapIconKind kind, Vector2 position) in plan.Points)
-            {
-                var point = new GameObject("MapPoint_" + kind).AddComponent<MapPoint>();
-                point.transform.SetParent(AliceLevelGeometry.EnsureRoot(scene, "Gameplay"), false);
-                point.transform.position = position;
-                point.Kind = kind;
             }
 
             Place(scene, CachePrefab, plan.Start);
@@ -328,7 +312,6 @@ namespace Alice.Editor
                 .Clear(6, 37, 10, 39)
                 .Door("D_L02_W", -1, 2, "L01", "D_L01_E")
                 .Door("D_L02_E", 1, 18, "L03", "D_L03_W")
-                .Point(MapIconKind.GateFan, 3f, 26.5f).Point(MapIconKind.Lift, 8f, 35f)
                 .Drop("D_L02_LIFT", new Vector2(8f, 38.5f), new Vector2(8f, 2f), 1, "L06", "D_L06_LIFT"));
 
             // L03 · Stairs and the first niche (E04), beside L02 and under L05: the needle corner, the bolted door, the
@@ -395,7 +378,6 @@ namespace Alice.Editor
                 .Solid(0, 0, 32, 2).Solid(26, 0, 32, 6).Clear(22, 0, 26, 2)
                 .Door("D_L06_E", 1, 6, "L05", "D_L05_W")
                 .Door("D_L06_W", -1, 2, "L07", "D_L07_E")
-                .Point(MapIconKind.Lift, 24f, 3.5f)
                 .Drop("D_L06_LIFT", new Vector2(24f, 0.5f), new Vector2(20f, 2f), -1, "L02", "D_L02_LIFT"));
 
             // L07 · The drive — Dodo's arena: 40 flat tiles, ceiling 12 above the floor, a one-way beam at each end.
@@ -421,7 +403,6 @@ namespace Alice.Editor
                 .OneWay(8, 15, 14, 16).OneWay(2, 19, 6, 20).OneWay(8, 23, 14, 24).OneWay(2, 27, 6, 28)
                 .OneWay(8, 31, 14, 32).OneWay(2, 35, 6, 36).OneWay(6, 39, 12, 40)
                 .Clear(6, 44, 10, 46)
-                .Point(MapIconKind.GateFan, 22f, 9.5f)
                 .Door("D_L08_E", 1, 2, "L07", "D_L07_W"));
 
             return plans;

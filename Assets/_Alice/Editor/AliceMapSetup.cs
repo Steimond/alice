@@ -13,7 +13,7 @@ using UnityEngine.SceneManagement;
 namespace Alice.Editor
 {
     /// <summary>
-    /// The in-game map (GDD 0.33): its words in the UI localization table, the map skin, the atlas baked from the
+    /// The in-game map (GDD 0.33, 0.34): its words in the UI localization table, the map skin, the atlas baked from the
     /// room scenes, and the map components on Alice. Idempotent: words already in the table, zones already in the
     /// atlas (with their names and tints) and the components' settings are kept. Baking the atlas again after rooms
     /// change is a separate menu, also called by the room builders.
@@ -39,21 +39,32 @@ namespace Alice.Editor
             ("map.zone.B01", "Нижние покои", "Lower Quarters"),
             ("map.zone.unknown", "Неизвестные места", "Uncharted Parts"),
             ("map.mark", "Отметка:", "Mark:"),
-            ("map.hints", "Стик — курсор · Действие — отметка · Плечи — вид отметки · Прыжок — масштаб · Карта — закрыть",
-                "Stick — cursor · Interact — mark · Shoulders — mark type · Jump — zoom · Map — close"),
+            ("map.hints", HintsRu, HintsEn),
             ("map.legend.Alice", "Алиса", "Alice"),
             ("map.legend.Rest", "Кресло отдыха", "Resting chair"),
-            ("map.legend.ShortcutDoor", "Короткий путь", "Shortcut door"),
-            ("map.legend.Lift", "Лифт", "Lift"),
-            ("map.legend.GateFan", "Нужен веер", "Needs the fan"),
-            ("map.legend.GateMushroom", "Нужен гриб", "Needs the mushroom"),
-            ("map.legend.GateCheshire", "Нужен Чеширский шаг", "Needs the Cheshire Step"),
-            ("map.legend.GateClock", "Нужны часы", "Needs the watch"),
-            ("map.legend.LostDecrees", "Потерянные указы", "Lost decrees"),
+            ("map.legend.Item", "Свёрток", "Bundle"),
             ("map.legend.MarkPin", "Булавка", "Pin"),
             ("map.legend.MarkCross", "Крестик", "Cross"),
             ("map.legend.MarkButton", "Пуговица", "Button"),
             ("map.legend.MarkKnot", "Узелок", "Knot")
+        };
+
+        private const string HintsRu = "Стик — курсор · Действие — отметка · Плечи — вид отметки · Прыжок — вся карта · Карта — закрыть";
+        private const string HintsEn = "Stick — cursor · Interact — mark · Shoulders — mark type · Jump — whole map · Map — close";
+
+        // Texts changed since an earlier version: replaced only while they still read as that version wrote them,
+        // so an edit made in the table stays.
+        private static readonly (string Key, string OldRu, string OldEn)[] Revised =
+        {
+            ("map.hints", "Стик — курсор · Действие — отметка · Плечи — вид отметки · Прыжок — масштаб · Карта — закрыть",
+                "Stick — cursor · Interact — mark · Shoulders — mark type · Jump — zoom · Map — close")
+        };
+
+        // Keys of icons the map no longer shows (GDD 0.34).
+        private static readonly string[] Retired =
+        {
+            "map.legend.ShortcutDoor", "map.legend.Lift", "map.legend.GateFan", "map.legend.GateMushroom",
+            "map.legend.GateCheshire", "map.legend.GateClock", "map.legend.LostDecrees"
         };
 
         [MenuItem("Alice/Prototype/Set Up Map")]
@@ -98,14 +109,41 @@ namespace Alice.Editor
                 string code = table.LocaleIdentifier.Code;
                 foreach ((string key, string ru, string en) in Words)
                 {
-                    if (table.GetEntry(key) != null)
+                    StringTableEntry entry = table.GetEntry(key);
+                    string wanted = code == "ru" ? ru : en;
+                    if (entry == null)
                     {
+                        // Russian is the source language; every other locale starts from English.
+                        table.AddEntry(key, wanted);
+                        EditorUtility.SetDirty(table);
                         continue;
                     }
 
-                    // Russian is the source language; every other locale starts from English.
-                    table.AddEntry(key, code == "ru" ? ru : en);
-                    EditorUtility.SetDirty(table);
+                    foreach ((string revisedKey, string oldRu, string oldEn) in Revised)
+                    {
+                        if (revisedKey == key && entry.Value == (code == "ru" ? oldRu : oldEn))
+                        {
+                            entry.Value = wanted;
+                            EditorUtility.SetDirty(table);
+                        }
+                    }
+                }
+
+                foreach (string key in Retired)
+                {
+                    if (table.GetEntry(key) != null)
+                    {
+                        table.RemoveEntry(key);
+                        EditorUtility.SetDirty(table);
+                    }
+                }
+            }
+
+            foreach (string key in Retired)
+            {
+                if (collection.SharedData.Contains(key))
+                {
+                    collection.SharedData.RemoveKey(key);
                 }
             }
 
@@ -127,7 +165,9 @@ namespace Alice.Editor
                 skin.Font = AssetDatabase.LoadAssetAtPath<Font>(FontPath);
             }
 
-            List<MapSkin.Legend> legend = (skin.Entries ?? new MapSkin.Legend[0]).Where(entry => entry != null).ToList();
+            // Entries of kinds the map no longer has go; the rest keep their labels and sprites.
+            List<MapSkin.Legend> legend = (skin.Entries ?? new MapSkin.Legend[0])
+                .Where(entry => entry != null && System.Enum.IsDefined(typeof(MapIconKind), entry.Kind)).ToList();
             foreach (MapIconKind kind in System.Enum.GetValues(typeof(MapIconKind)))
             {
                 if (legend.All(entry => entry.Kind != kind))
@@ -248,46 +288,32 @@ namespace Alice.Editor
             });
 
             Vector2 origin = room.WorldPosition;
-            void Add(MapIconKind kind, Vector3 position, float lift, string flag)
+            void Add(MapIconKind kind, Vector3 position, float lift, string itemId)
             {
                 icons.Add(new MapAtlas.IconEntry
                 {
                     Kind = kind,
                     RoomId = room.RoomId,
                     Position = (Vector2)position + origin + new Vector2(0f, lift),
-                    Flag = flag ?? string.Empty
+                    ItemId = itemId ?? string.Empty
                 });
             }
 
             GameObject[] roots = scene.GetRootGameObjects();
             foreach (RestPoint rest in roots.SelectMany(root => root.GetComponentsInChildren<RestPoint>(true)))
             {
-                Add(MapIconKind.Rest, rest.transform.position, 1f, null);
+                Add(MapIconKind.Rest, rest.transform.position, MapAtlas.FloorIconLift, null);
             }
 
-            foreach (PermanentDoor door in roots.SelectMany(root => root.GetComponentsInChildren<PermanentDoor>(true)))
+            // Only what Alice can find (GDD 0.34): gates, doors and lifts stay off the map.
+            foreach (AbilityPickup bundle in roots.SelectMany(root => root.GetComponentsInChildren<AbilityPickup>(true)))
             {
-                Add(MapIconKind.ShortcutDoor, door.transform.position, 2f, door.Flag);
+                Add(MapIconKind.Item, bundle.transform.position, MapAtlas.FloorIconLift, bundle.AbilityId);
             }
 
-            foreach (LittleDoor door in roots.SelectMany(root => root.GetComponentsInChildren<LittleDoor>(true)))
+            foreach (TrinketCache bundle in roots.SelectMany(root => root.GetComponentsInChildren<TrinketCache>(true)))
             {
-                Add(MapIconKind.GateMushroom, door.transform.position, 0.5f, door.Flag);
-            }
-
-            foreach (CheshireBridge bridge in roots.SelectMany(root => root.GetComponentsInChildren<CheshireBridge>(true)))
-            {
-                Add(MapIconKind.GateCheshire, bridge.transform.position, 1f, null);
-            }
-
-            foreach (ClockGuillotine guillotine in roots.SelectMany(root => root.GetComponentsInChildren<ClockGuillotine>(true)))
-            {
-                Add(MapIconKind.GateClock, guillotine.transform.position, 2f, null);
-            }
-
-            foreach (MapPoint point in roots.SelectMany(root => root.GetComponentsInChildren<MapPoint>(true)))
-            {
-                Add(point.Kind, point.transform.position, 0f, point.Flag);
+                Add(MapIconKind.Item, bundle.transform.position, MapAtlas.FloorIconLift, bundle.TrinketId);
             }
         }
 

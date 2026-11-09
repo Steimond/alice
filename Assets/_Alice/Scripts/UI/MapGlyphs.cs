@@ -6,7 +6,7 @@ namespace Alice.UI
 {
     /// <summary>
     /// The map's icons as 7×7 pixel patterns, drawn by code so the map needs no hand-made art; a MapSkin can give a
-    /// sprite instead. Gates differ by shape and symbol, not only by colour (GDD section 10).
+    /// sprite instead. A bundle lying in the world is a tied box (GDD 0.34).
     /// </summary>
     public static class MapGlyphs
     {
@@ -16,13 +16,7 @@ namespace Alice.UI
         {
             [MapIconKind.Alice] = new[] { "...X...", "..XXX..", ".XXXXX.", "XXXXXXX", ".XXXXX.", "..XXX..", "...X..." },
             [MapIconKind.Rest] = new[] { "X......", "X......", "X......", "XXXXXXX", "X.....X", "X.....X", "......." },
-            [MapIconKind.ShortcutDoor] = new[] { ".XXXXX.", "X.....X", "X.....X", "X...X.X", "X.....X", "X.....X", "XXXXXXX" },
-            [MapIconKind.Lift] = new[] { "...X...", "..XXX..", ".X.X.X.", "...X...", ".X.X.X.", "..XXX..", "...X..." },
-            [MapIconKind.GateFan] = new[] { "X.X.X.X", ".XXXXX.", "..XXX..", "...X...", "...X...", "...X...", "......." },
-            [MapIconKind.GateMushroom] = new[] { ".XXXXX.", "XXXXXXX", "X.X.X.X", "...X...", "...X...", "..XXX..", "......." },
-            [MapIconKind.GateCheshire] = new[] { ".X...X.", ".......", ".......", "X.....X", ".X...X.", "..XXX..", "......." },
-            [MapIconKind.GateClock] = new[] { "..XXX..", ".X...X.", "X..X..X", "X..XX.X", "X.....X", ".X...X.", "..XXX.." },
-            [MapIconKind.LostDecrees] = new[] { "...X...", ".X.X.X.", "..XXX..", "XXX.XXX", "..XXX..", ".X.X.X.", "...X..." },
+            [MapIconKind.Item] = new[] { "..X.X..", "...X...", "XXXXXXX", "X..X..X", "XXXXXXX", "X..X..X", "XXXXXXX" },
             [MapIconKind.MarkPin] = new[] { "..XX...", ".XXXX..", ".XXXX..", "..XX...", "...X...", "...X...", "...X..." },
             [MapIconKind.MarkCross] = new[] { "X.....X", ".X...X.", "..X.X..", "...X...", "..X.X..", ".X...X.", "X.....X" },
             [MapIconKind.MarkButton] = new[] { ".XXXXX.", "XXXXXXX", "XX.X.XX", "XXXXXXX", "XX.X.XX", "XXXXXXX", ".XXXXX." },
@@ -33,13 +27,7 @@ namespace Alice.UI
         {
             [MapIconKind.Alice] = new Color32(242, 230, 200, 255),
             [MapIconKind.Rest] = new Color32(224, 160, 80, 255),
-            [MapIconKind.ShortcutDoor] = new Color32(201, 162, 122, 255),
-            [MapIconKind.Lift] = new Color32(159, 195, 217, 255),
-            [MapIconKind.GateFan] = new Color32(195, 155, 224, 255),
-            [MapIconKind.GateMushroom] = new Color32(195, 155, 224, 255),
-            [MapIconKind.GateCheshire] = new Color32(195, 155, 224, 255),
-            [MapIconKind.GateClock] = new Color32(195, 155, 224, 255),
-            [MapIconKind.LostDecrees] = new Color32(208, 74, 74, 255)
+            [MapIconKind.Item] = new Color32(232, 202, 112, 255)
         };
 
         private static readonly Color32 MarkColor = new Color32(232, 224, 204, 255);

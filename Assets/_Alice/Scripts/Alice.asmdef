@@ -5,6 +5,7 @@
         "Unity.InputSystem",
         "Unity.RenderPipelines.Universal.Runtime",
         "Unity.Localization",
+        "Unity.ResourceManager",
         "UnityEngine.UI"
     ],
     "includePlatforms": [],

@@ -36,83 +36,6 @@ MonoBehaviour:
       m_WaitForCompletion: 0
       m_LocalVariables: []
     Icon: {fileID: 0}
-  - Kind: 2
-    Label:
-      m_TableReference:
-        m_TableCollectionName: UI
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: map.legend.ShortcutDoor
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-    Icon: {fileID: 0}
-  - Kind: 3
-    Label:
-      m_TableReference:
-        m_TableCollectionName: UI
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: map.legend.Lift
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-    Icon: {fileID: 0}
-  - Kind: 4
-    Label:
-      m_TableReference:
-        m_TableCollectionName: UI
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: map.legend.GateFan
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-    Icon: {fileID: 0}
-  - Kind: 5
-    Label:
-      m_TableReference:
-        m_TableCollectionName: UI
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: map.legend.GateMushroom
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-    Icon: {fileID: 0}
-  - Kind: 6
-    Label:
-      m_TableReference:
-        m_TableCollectionName: UI
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: map.legend.GateCheshire
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-    Icon: {fileID: 0}
-  - Kind: 7
-    Label:
-      m_TableReference:
-        m_TableCollectionName: UI
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: map.legend.GateClock
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-    Icon: {fileID: 0}
-  - Kind: 8
-    Label:
-      m_TableReference:
-        m_TableCollectionName: UI
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: map.legend.LostDecrees
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-    Icon: {fileID: 0}
   - Kind: 20
     Label:
       m_TableReference:
@@ -153,6 +76,17 @@ MonoBehaviour:
       m_TableEntryReference:
         m_KeyId: 0
         m_Key: map.legend.MarkKnot
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    Icon: {fileID: 0}
+  - Kind: 9
+    Label:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: map.legend.Item
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []

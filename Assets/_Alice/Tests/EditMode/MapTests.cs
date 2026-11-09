@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Alice.Tests
 {
-    /// <summary>The in-game map (GDD 0.33): what is revealed, the player's marks, the save, and the drawing.</summary>
+    /// <summary>The in-game map (GDD 0.33, 0.34): what is explored, the player's marks, the save, and the drawing.</summary>
     public sealed class MapTests
     {
         private MapAtlas _atlas;
@@ -21,7 +21,9 @@ namespace Alice.Tests
             {
                 Room("A", "Z1", false, 0, "######" + "#....." + "#....." + "######"),
                 Room("B", "Z1", false, 6, "######" + "......" + ".....#" + "######"),
-                Room("S", "Z1", true, 12, "######" + "#....#" + "#....#" + "######")
+                Room("S", "Z1", true, 12, "######" + "#....#" + "#....#" + "######"),
+                // A wall splits this room: the right part is not reached from the left.
+                Room("W", "Z1", false, 20, "######" + "#..#.#" + "#..#.#" + "######")
             };
             _atlas.Zones = new[] { new MapAtlas.ZoneEntry { Id = "Z1", Tint = Color.blue } };
         }
@@ -44,22 +46,46 @@ namespace Alice.Tests
         }
 
         [Test]
-        public void EnteringARoomRevealsItOnce()
+        public void TheMapOpensAroundAliceAsSheGoes()
         {
             var state = new MapState();
-            Assert.That(state.Visit("A"), Is.True);
-            Assert.That(state.Visit("A"), Is.False);
+            MapAtlas.RoomEntry a = _atlas.FindRoom("A");
+            Assert.That(state.IsRevealed("A"), Is.False);
+            Assert.That(state.Explore(a, new Vector2Int(1, 1), 2), Is.GreaterThan(0));
             Assert.That(state.IsRevealed("A"), Is.True);
-            Assert.That(state.IsRevealed("B"), Is.False);
+            Assert.That(state.IsExplored(a, 2, 2), Is.True);
+            Assert.That(state.IsExplored(a, 5, 1), Is.False, "Beyond the radius stays unknown.");
+            Assert.That(state.Explore(a, new Vector2Int(1, 1), 2), Is.EqualTo(0), "Standing still opens nothing new.");
+            Assert.That(state.IsRevealed("B"), Is.False, "The next room opens only from inside it.");
+        }
+
+        [Test]
+        public void RockStopsTheMapFromOpening()
+        {
+            var state = new MapState();
+            MapAtlas.RoomEntry w = _atlas.FindRoom("W");
+            state.Explore(w, new Vector2Int(1, 1), 9);
+            Assert.That(state.IsExplored(w, 2, 2), Is.True);
+            Assert.That(state.IsExplored(w, 4, 1), Is.False, "The far side of a wall is not seen.");
+        }
+
+        [Test]
+        public void StandingOnTheFloorStartsFromTheCellAbove()
+        {
+            var state = new MapState();
+            MapAtlas.RoomEntry a = _atlas.FindRoom("A");
+            Assert.That(state.Explore(a, new Vector2Int(2, 0), 1), Is.GreaterThan(0));
+            Assert.That(state.IsExplored(a, 2, 1), Is.True);
         }
 
         [Test]
         public void RevealingAZoneSkipsItsSecretRooms()
         {
             var state = new MapState();
-            Assert.That(state.RevealZone(_atlas, "Z1"), Is.EqualTo(2));
+            Assert.That(state.RevealZone(_atlas, "Z1"), Is.EqualTo(3));
             Assert.That(state.IsRevealed("S"), Is.False);
-            state.Visit("S");
+            Assert.That(state.IsExplored(_atlas.FindRoom("B"), 1, 1), Is.True);
+            state.Explore(_atlas.FindRoom("S"), new Vector2Int(1, 1), 3);
             Assert.That(state.IsRevealed("S"), Is.True);
         }
 
@@ -80,14 +106,15 @@ namespace Alice.Tests
             try
             {
                 MapProgress progress = alice.AddComponent<MapProgress>();
-                progress.State.Visit("A");
+                progress.State.Explore(_atlas.FindRoom("A"), new Vector2Int(2, 1), 2);
                 progress.State.AddMark(MapIconKind.MarkButton, new Vector2(4f, 1f));
                 var data = new SaveData();
                 progress.Capture(data);
 
                 MapProgress loaded = new GameObject("Loaded").AddComponent<MapProgress>();
                 loaded.Restore(JsonUtility.FromJson<SaveData>(JsonUtility.ToJson(data)));
-                Assert.That(loaded.State.IsRevealed("A"), Is.True);
+                Assert.That(loaded.State.IsExplored(_atlas.FindRoom("A"), 2, 2), Is.True);
+                Assert.That(loaded.State.IsExplored(_atlas.FindRoom("A"), 5, 2), Is.False);
                 Assert.That(loaded.State.Marks.Single().Kind, Is.EqualTo(MapIconKind.MarkButton));
                 Assert.That(loaded.State.Marks.Single().Position, Is.EqualTo(new Vector2(4f, 1f)));
                 Object.DestroyImmediate(loaded.gameObject);
@@ -107,10 +134,10 @@ namespace Alice.Tests
         }
 
         [Test]
-        public void OnlyRevealedRoomsAreDrawnAndPassagesStayOpen()
+        public void OnlyExploredCellsAreDrawnAndPassagesStayOpen()
         {
             var state = new MapState();
-            state.Visit("A");
+            state.Explore(_atlas.FindRoom("A"), new Vector2Int(2, 1), 9);
             const int scale = 2;
             Texture2D map = MapPainter.Paint(_atlas, state, "A", scale);
             try

@@ -1,20 +1,15 @@
 namespace Alice.World
 {
     /// <summary>
-    /// What a point on the map shows (GDD section 10). Gates differ by shape and symbol, not only by colour.
-    /// New kinds go at the end: saves and the atlas store the number.
+    /// What a point on the map shows (GDD 0.34): only what Alice has found — where she is, the resting chairs, the
+    /// bundles still lying where she saw them — and the player's own marks. Gates, lifts and hazards stay off the
+    /// map. New kinds go at the end: saves and the atlas store the number.
     /// </summary>
     public enum MapIconKind
     {
         Alice = 0,
         Rest = 1,
-        ShortcutDoor = 2,
-        Lift = 3,
-        GateFan = 4,
-        GateMushroom = 5,
-        GateCheshire = 6,
-        GateClock = 7,
-        LostDecrees = 8,
+        Item = 9,
         MarkPin = 20,
         MarkCross = 21,
         MarkButton = 22,

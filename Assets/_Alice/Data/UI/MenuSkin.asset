@@ -1,0 +1,312 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 880c83a66ea410f4faa803bec8ea8231, type: 3}
+  m_Name: MenuSkin
+  m_EditorClassIdentifier: Alice::Alice.UI.MenuSkin
+  _font: {fileID: 12800000, guid: c5c1925709218ef488864eefd0128eeb, type: 3}
+  _background: {fileID: 21300000, guid: b1d263d9532c01c459fdf9c2cbd73826, type: 3}
+  _logo: {fileID: 21300000, guid: 87e72fafb5a73474e8949763ff7985a6, type: 3}
+  _cursor: {fileID: 21300000, guid: ae7962c64198aea4b8f5d98df607bdba, type: 3}
+  _gameScene: Bootstrap
+  _atlas: {fileID: 11400000, guid: 386543015063e064183fbe053b7346ed, type: 2}
+  _words:
+    Play:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.play
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    Settings:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.settings
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    Quit:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.quit
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    Back:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.back
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    SlotsTitle:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.slots
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    Slot:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.slot
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    EmptySlot:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.slot.empty
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    NewGame:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.newgame
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    Continue:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.continue
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    Delete:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.delete
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    DeleteQuestion:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.delete.question
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    Yes:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.yes
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    No:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.no
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    PlayTime:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.playtime
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    Decrees:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.decrees
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    Finds:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.finds
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    UnknownPlace:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.place.unknown
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    SettingsTitle:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.settings.title
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    Language:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.language
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    LanguageSystem:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.language.system
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    Screen:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.screen
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    FullScreen:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.fullscreen
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    Windowed:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.windowed
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    WindowScale:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.windowscale
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    VSync:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.vsync
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    MasterVolume:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.volume.master
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    MusicVolume:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.volume.music
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    EffectsVolume:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.volume.effects
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    ScreenShake:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.shake
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    On:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.on
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    Off:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.off
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    Hints:
+      m_TableReference:
+        m_TableCollectionName: UI
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: menu.hints
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []

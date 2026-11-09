@@ -18,6 +18,12 @@ namespace Alice.World
         public const char Catwalk = '-';
         public const char Hazard = '~';
 
+        /// <summary>
+        /// Icons of things standing on the floor are baked this far above it, in tiles, so the cell they name is the
+        /// open one above the floor; the map screen stands the drawn icon on the floor line from there.
+        /// </summary>
+        public const float FloorIconLift = 0.25f;
+
         [Serializable]
         public sealed class ZoneEntry
         {
@@ -61,8 +67,8 @@ namespace Alice.World
             public string RoomId;
             [Tooltip("World position in tiles.")]
             public Vector2 Position;
-            [Tooltip("World flag that switches the icon to its done state, if any.")]
-            public string Flag;
+            [Tooltip("For a bundle: the ability or trinket inside; the icon goes once Alice has it.")]
+            public string ItemId;
         }
 
         [SerializeField] private ZoneEntry[] _zones = new ZoneEntry[0];
@@ -118,6 +124,12 @@ namespace Alice.World
 
                 return new RectInt(xMin, yMin, xMax - xMin, yMax - yMin);
             }
+        }
+
+        /// <summary>The cell of a room that holds a point on the world map, in the room's map rectangle.</summary>
+        public static Vector2Int CellOf(RoomEntry room, Vector2 world)
+        {
+            return new Vector2Int(Mathf.FloorToInt(world.x) - room.Rect.xMin, Mathf.FloorToInt(world.y) - room.Rect.yMin);
         }
 
         /// <summary>A point in a room's own coordinates as a point on the world map.</summary>

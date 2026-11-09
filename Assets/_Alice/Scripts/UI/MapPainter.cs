@@ -4,9 +4,9 @@ using UnityEngine;
 namespace Alice.UI
 {
     /// <summary>
-    /// Draws the revealed rooms as a tailor's pattern sheet (GDD 0.33): dark paper with a faint grid, room interiors
-    /// filled with their zone's tint, walls traced in chalk, catwalks as a dashed line, hazards as red dots. Passages
-    /// stay open in the chalk line, also towards rooms not yet revealed, so the player sees where a way continues.
+    /// Draws what Alice has explored as a tailor's pattern sheet (GDD 0.33, 0.34): dark paper with a faint grid, open
+    /// cells filled with their zone's tint, walls traced in chalk, catwalks as a dashed line. Hazards are not marked.
+    /// Passages stay open in the chalk line, also towards rooms not yet explored, so the player sees where a way goes.
     /// The texture covers the atlas bounds plus a margin; one texel row per <paramref name="scale"/> pixels per tile.
     /// </summary>
     public static class MapPainter
@@ -20,7 +20,6 @@ namespace Alice.UI
         private static readonly Color32 Grid = new Color32(30, 32, 44, 255);
         private static readonly Color32 Chalk = new Color32(217, 210, 192, 255);
         private static readonly Color32 Dash = new Color32(190, 160, 110, 255);
-        private static readonly Color32 Blood = new Color32(170, 50, 50, 255);
         private const int GridStep = 4;
 
         /// <summary>The world tile at the texture's bottom-left corner.</summary>
@@ -80,7 +79,7 @@ namespace Alice.UI
             {
                 if (state.IsRevealed(room.Id))
                 {
-                    PaintRoom(atlas, room, room.Id == currentRoomId, origin, scale, pixels, width);
+                    PaintRoom(atlas, state, room, room.Id == currentRoomId, origin, scale, pixels, width);
                 }
             }
 
@@ -89,19 +88,21 @@ namespace Alice.UI
             return texture;
         }
 
-        private static void PaintRoom(MapAtlas atlas, MapAtlas.RoomEntry room, bool current, Vector2Int origin, int scale,
+        private static void PaintRoom(MapAtlas atlas, MapState state, MapAtlas.RoomEntry room, bool current, Vector2Int origin, int scale,
             Color32[] pixels, int width)
         {
             MapAtlas.ZoneEntry zone = atlas.FindZone(room.ZoneId);
             Color tint = zone != null ? zone.Tint : new Color(0.22f, 0.3f, 0.36f);
             Color32 fill = (Color)tint * (current ? 1f : 0.7f);
             fill.a = 255;
+            // Chalk and catwalk lines thicken with the zoom so the room scale reads as clearly as the overview.
+            int thickness = LineThickness(scale);
             for (int wy = room.Rect.yMin; wy < room.Rect.yMax; wy++)
             {
                 for (int wx = room.Rect.xMin; wx < room.Rect.xMax; wx++)
                 {
                     char cell = room.CellAt(wx, wy);
-                    if (cell == MapAtlas.Rock)
+                    if (cell == MapAtlas.Rock || !state.IsExplored(room, wx - room.Rect.xMin, wy - room.Rect.yMin))
                     {
                         continue;
                     }
@@ -113,13 +114,9 @@ namespace Alice.UI
                         for (int px = 0; px < scale; px++)
                         {
                             Color32 color = fill;
-                            if (cell == MapAtlas.Catwalk && py == scale - 1 && (px + px0 / scale) % 2 == 0)
+                            if (cell == MapAtlas.Catwalk && py >= scale - thickness && (px / thickness) % 2 == 0)
                             {
                                 color = Dash;
-                            }
-                            else if (cell == MapAtlas.Hazard && (px + py) % 2 == 0)
-                            {
-                                color = Blood;
                             }
 
                             pixels[(py0 + py) * width + px0 + px] = color;
@@ -129,25 +126,31 @@ namespace Alice.UI
                     // Chalk on every side that faces rock, in this room or in the neighbour beyond its edge.
                     if (IsRockAt(atlas, room, wx - 1, wy))
                     {
-                        Line(pixels, width, px0, py0, 1, scale);
+                        Line(pixels, width, px0, py0, thickness, scale);
                     }
 
                     if (IsRockAt(atlas, room, wx + 1, wy))
                     {
-                        Line(pixels, width, px0 + scale - 1, py0, 1, scale);
+                        Line(pixels, width, px0 + scale - thickness, py0, thickness, scale);
                     }
 
                     if (IsRockAt(atlas, room, wx, wy - 1))
                     {
-                        Line(pixels, width, px0, py0, scale, 1);
+                        Line(pixels, width, px0, py0, scale, thickness);
                     }
 
                     if (IsRockAt(atlas, room, wx, wy + 1))
                     {
-                        Line(pixels, width, px0, py0 + scale - 1, scale, 1);
+                        Line(pixels, width, px0, py0 + scale - thickness, scale, thickness);
                     }
                 }
             }
+        }
+
+        /// <summary>Width of chalk and catwalk lines, in texture pixels, at a zoom of <paramref name="scale"/> pixels per tile.</summary>
+        public static int LineThickness(int scale)
+        {
+            return Mathf.Max(1, scale / 4);
         }
 
         private static bool IsRockAt(MapAtlas atlas, MapAtlas.RoomEntry room, int wx, int wy)

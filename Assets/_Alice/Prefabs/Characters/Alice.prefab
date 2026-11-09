@@ -471,6 +471,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Alice::Alice.World.MapProgress
   _atlas: {fileID: 11400000, guid: 386543015063e064183fbe053b7346ed, type: 2}
+  _exploreRadius: 9
 --- !u!114 &1527286862064582603
 MonoBehaviour:
   m_ObjectHideFlags: 0

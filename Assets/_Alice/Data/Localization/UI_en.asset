@@ -31,7 +31,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2581698992742401
-    m_Localized: "Stick \u2014 cursor \xB7 Interact \u2014 mark \xB7 Shoulders \u2014 mark type \xB7 Jump \u2014 zoom \xB7 Map \u2014 close"
+    m_Localized: "Stick \u2014 cursor \xB7 Interact \u2014 mark \xB7 Shoulders \u2014 mark type \xB7 Jump \u2014 whole map \xB7 Map \u2014 close"
     m_Metadata:
       m_Items: []
   - m_Id: 2581698992742402
@@ -40,34 +40,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 2581698992742403
     m_Localized: Resting chair
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2581698992742404
-    m_Localized: Shortcut door
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2581698992742405
-    m_Localized: Lift
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2581698992742406
-    m_Localized: Needs the fan
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2581698992742407
-    m_Localized: Needs the mushroom
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2581698992742408
-    m_Localized: Needs the Cheshire Step
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2581698992742409
-    m_Localized: Needs the watch
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2581698992742410
-    m_Localized: Lost decrees
     m_Metadata:
       m_Items: []
   - m_Id: 2581698992742411
@@ -84,6 +56,138 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 2581698992742414
     m_Localized: Knot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2630438763962368
+    m_Localized: Bundle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954914123776
+    m_Localized: Play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844032
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844033
+    m_Localized: Quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844034
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844035
+    m_Localized: Choose a save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844036
+    m_Localized: Slot {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844037
+    m_Localized: "Empty \u2014 new game"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844038
+    m_Localized: New game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844039
+    m_Localized: Continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844040
+    m_Localized: Erase
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844041
+    m_Localized: Erase slot {0}? This cannot be undone.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844042
+    m_Localized: Yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844043
+    m_Localized: No
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954972844044
+    m_Localized: '{0} h {1:00} min'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232640
+    m_Localized: 'Decrees: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232641
+    m_Localized: 'Finds: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232642
+    m_Localized: Uncharted parts
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232643
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232644
+    m_Localized: Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232645
+    m_Localized: As the system
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232646
+    m_Localized: Display
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232647
+    m_Localized: Full screen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232648
+    m_Localized: Window
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232649
+    m_Localized: Window size
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232650
+    m_Localized: V-Sync
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232651
+    m_Localized: Master volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232652
+    m_Localized: Music
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232653
+    m_Localized: Sound effects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232654
+    m_Localized: Camera shake
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232655
+    m_Localized: On
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232656
+    m_Localized: Off
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2639954981232657
+    m_Localized: "Submit \u2014 choose \xB7 Cancel \u2014 back \xB7 Left and right \u2014 change"
     m_Metadata:
       m_Items: []
   references:

@@ -10,10 +10,12 @@ using UnityEngine.UI;
 namespace Alice.UI
 {
     /// <summary>
-    /// The map screen (GDD 0.33). The Map button opens and closes it; Evade closes it too. A cursor in the middle
-    /// moves over the map with the stick; Interact leaves the chosen mark there or takes away the mark under it,
-    /// the shoulder buttons (Heal, UseAbility) choose the kind of mark, Jump switches the zoom. On the right the
-    /// legend lists what the visible map shows. The world keeps running — the global time is never touched — but
+    /// The map screen (GDD 0.33, 0.34). The Map button opens and closes it; Evade closes it too. It opens at room
+    /// scale, centred on Alice, so part of the room around her fills the window; Jump switches to the overview and
+    /// back. A cursor in the middle moves over the map with the stick; Interact leaves the chosen mark there or takes
+    /// away the mark under it, the shoulder buttons (Heal, UseAbility) choose the kind of mark. It shows only what
+    /// Alice has explored: walls, passages, resting chairs and the bundles still lying where she saw them. On the
+    /// right the legend lists what the visible map shows. The world keeps running — the global time is never touched — but
     /// Alice stands still while the map is open, so it is no refuge in a fight.
     /// </summary>
     public sealed class MapScreen : MonoBehaviour
@@ -24,11 +26,13 @@ namespace Alice.UI
         private const int ViewportHeight = 260;
         private const int LegendWidth = 170;
         private const int LegendRow = 14;
-        private const float CursorSpeed = 18f;
+        // Screen pixels per second, so the cursor crosses the window in the same time at either zoom.
+        private const float CursorPixelsPerSecond = 150f;
         private const float MarkRemoveRadius = 2f;
         private const float BlinkPeriod = 0.8f;
         private const float AfterCloseLock = 0.2f;
-        private static readonly int[] Zooms = { 2, 4 };
+        // Room scale first (8 px per tile: about 52 × 32 tiles in the window), then the overview.
+        private static readonly int[] Zooms = { 8, 2 };
 
         [SerializeField] private MapSkin _skin;
 
@@ -36,7 +40,6 @@ namespace Alice.UI
         private PlayerMotor _motor;
         private PlayerRest _rest;
         private IPlayerCommandSource _commands;
-        private IDecreeLoss _loss;
         private InputAction _mapAction;
 
         private CanvasScaler _scaler;
@@ -86,7 +89,6 @@ namespace Alice.UI
             _motor = GetComponent<PlayerMotor>();
             _rest = GetComponent<PlayerRest>();
             _commands = GetComponent<IPlayerCommandSource>();
-            _loss = GetComponent<IDecreeLoss>();
             if (_skin == null || _progress == null || _motor == null || _commands == null)
             {
                 enabled = false;
@@ -158,7 +160,9 @@ namespace Alice.UI
             _screen.gameObject.SetActive(true);
             _openedAt = Time.time;
             _seenInteract = _seenJump = _seenEvade = _seenHeal = _seenAbility = Time.time;
-            _cursor = AliceOnMap(out _);
+            _zoomIndex = 0;
+            // The cursor starts on Alice's icon, which stands above her feet.
+            _cursor = AliceOnMap(out _) + new Vector2(0f, (MapPainter.LineThickness(Zoom) + (MapGlyphs.Size + 2) * 0.5f) / Zoom);
             _drawnVersion = -1;
             Redraw();
             Place();
@@ -190,7 +194,7 @@ namespace Alice.UI
                 return;
             }
 
-            _cursor += move * (CursorSpeed * Time.unscaledDeltaTime);
+            _cursor += move * (CursorPixelsPerSecond / Zoom * Time.unscaledDeltaTime);
             RectInt bounds = Atlas.Bounds;
             _cursor.x = Mathf.Clamp(_cursor.x, bounds.xMin, bounds.xMax);
             _cursor.y = Mathf.Clamp(_cursor.y, bounds.yMin, bounds.yMax);
@@ -255,18 +259,13 @@ namespace Alice.UI
             var shown = new HashSet<MapIconKind> { MapIconKind.Alice };
             foreach (MapAtlas.IconEntry icon in Atlas.Icons)
             {
-                if (_progress.State.IsRevealed(icon.RoomId))
+                if (!IsSeen(icon) || (icon.Kind == MapIconKind.Item && BundleItems.AliceHas(icon.ItemId)))
                 {
-                    bool done = !string.IsNullOrEmpty(icon.Flag) && WorldFlags.Has(icon.Flag);
-                    AddIcon(icon.Kind, icon.Position, done ? 0.45f : 1f);
-                    shown.Add(icon.Kind);
+                    continue;
                 }
-            }
 
-            if (_loss != null && _loss.HasLoss && Atlas.TryToWorld(_loss.LossRoomId, _loss.LossPosition, out Vector2 loss))
-            {
-                AddIcon(MapIconKind.LostDecrees, loss, 1f);
-                shown.Add(MapIconKind.LostDecrees);
+                StandIcon(Icon(icon.Kind, _icons), icon.Position - new Vector2(0f, MapAtlas.FloorIconLift));
+                shown.Add(icon.Kind);
             }
 
             foreach (MapMark mark in _progress.State.Marks)
@@ -277,6 +276,27 @@ namespace Alice.UI
 
             _alice.transform.SetAsLastSibling();
             BuildLegend(shown);
+        }
+
+        // A chair or a bundle is on the map once the cell it stands in has been explored.
+        private bool IsSeen(MapAtlas.IconEntry icon)
+        {
+            MapAtlas.RoomEntry room = Atlas.FindRoom(icon.RoomId);
+            if (room == null)
+            {
+                return false;
+            }
+
+            Vector2Int cell = MapAtlas.CellOf(room, icon.Position);
+            return _progress.State.IsExplored(room, cell.x, cell.y);
+        }
+
+        // Something standing on the floor: the icon's bottom sits on the chalk floor line, not across it, so Alice
+        // and the chairs read as standing on the floor rather than inside it.
+        private void StandIcon(RawImage image, Vector2 floorPoint)
+        {
+            image.rectTransform.pivot = new Vector2(0.5f, 0f);
+            image.rectTransform.anchoredPosition = ToMapPixels(floorPoint) + new Vector2(0f, MapPainter.LineThickness(Zoom));
         }
 
         private void AddIcon(MapIconKind kind, Vector2 world, float alpha)
@@ -324,7 +344,7 @@ namespace Alice.UI
             _map.rectTransform.anchoredPosition = -ToMapPixels(_cursor);
             Vector2 alice = AliceOnMap(out bool known);
             _alice.gameObject.SetActive(known);
-            _alice.rectTransform.anchoredPosition = ToMapPixels(alice);
+            StandIcon(_alice, alice);
             bool lit = Mathf.Repeat(Time.unscaledTime, BlinkPeriod) < BlinkPeriod * 0.65f;
             _alice.color = new Color(1f, 1f, 1f, lit ? 1f : 0.35f);
         }

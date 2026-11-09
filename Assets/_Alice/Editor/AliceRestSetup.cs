@@ -65,7 +65,7 @@ namespace Alice.Editor
             GameObject cachePrefab = EnsureCachePrefab();
             string suffix = SuffixFor(scene.name);
 
-            Room room = UnityEngine.Object.FindFirstObjectByType<Room>();
+            Room room = UnityEngine.Object.FindAnyObjectByType<Room>();
             if (room == null)
             {
                 GameObject roomObject = new GameObject("Room");
@@ -74,21 +74,21 @@ namespace Alice.Editor
                 room.RoomId = "P_" + suffix;
             }
 
-            if (UnityEngine.Object.FindFirstObjectByType<SaveGame>() == null)
+            if (UnityEngine.Object.FindAnyObjectByType<SaveGame>() == null)
             {
                 GameObject save = new GameObject("SaveGame");
                 SceneManager.MoveGameObjectToScene(save, scene);
                 save.AddComponent<SaveGame>();
             }
 
-            if (UnityEngine.Object.FindFirstObjectByType<DecreeCache>() == null && cachePrefab != null)
+            if (UnityEngine.Object.FindAnyObjectByType<DecreeCache>() == null && cachePrefab != null)
             {
                 PrefabUtility.InstantiatePrefab(cachePrefab, scene);
             }
 
-            if (UnityEngine.Object.FindFirstObjectByType<RestPoint>() == null && chairPrefab != null)
+            if (UnityEngine.Object.FindAnyObjectByType<RestPoint>() == null && chairPrefab != null)
             {
-                PlayerMotor alice = UnityEngine.Object.FindFirstObjectByType<PlayerMotor>();
+                PlayerMotor alice = UnityEngine.Object.FindAnyObjectByType<PlayerMotor>();
                 Vector3 start = alice != null ? alice.transform.position : Vector3.zero;
                 GameObject chair = (GameObject)PrefabUtility.InstantiatePrefab(chairPrefab, scene);
                 // Feet on the floor Alice starts on, whole pixels apart from her.

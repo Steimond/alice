@@ -79,6 +79,12 @@ namespace Alice.World
 
         public void Shake(float pixels)
         {
+            // The player may turn camera shake off in the settings (GDD 0.35).
+            if (!GameSettings.Current.ScreenShake)
+            {
+                return;
+            }
+
             bool running = Time.time - _shakeStartedAt < _shakeTime;
             _shakePixels = Mathf.Min(_maxShakePixels, running ? Mathf.Max(_shakePixels, pixels) : pixels);
             _shakeStartedAt = Time.time;

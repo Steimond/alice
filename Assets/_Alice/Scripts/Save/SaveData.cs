@@ -20,6 +20,15 @@ namespace Alice.Save
         /// <summary>The room that chair stands in, so a loaded game starts there.</summary>
         public string RestRoomId = string.Empty;
 
+        /// <summary>The room Alice was in when the game was saved; the slot screen names its zone.</summary>
+        public string RoomId = string.Empty;
+
+        /// <summary>Time played in this slot, in seconds.</summary>
+        public float PlayTime;
+
+        /// <summary>When the slot was last written, UTC, round-trip format ("o").</summary>
+        public string SavedAtUtc = string.Empty;
+
         /// <summary>Permanent changes to the world: opened doors, pulled levers.</summary>
         public List<string> Flags = new List<string>();
 
@@ -34,11 +43,25 @@ namespace Alice.Save
         // 0 in saves written before pockets existed: read as the starting count.
         public int Pockets;
 
-        /// <summary>Rooms revealed on the map, by stable room ID.</summary>
-        public List<string> MapRooms = new List<string>();
+        // Saves from GDD 0.33 kept whole visited rooms in "MapRooms"; that field is no longer read, so such a map
+        // starts over and opens as Alice walks (GDD 0.34).
+
+        /// <summary>The cells explored in each room, as Alice walked them.</summary>
+        public List<MapRoomCellsData> MapCells = new List<MapRoomCellsData>();
+
+        /// <summary>Rooms revealed whole by a map, by stable room ID.</summary>
+        public List<string> MapWholeRooms = new List<string>();
 
         /// <summary>Marks the player left on the map.</summary>
         public List<MapMarkData> MapMarks = new List<MapMarkData>();
+    }
+
+    /// <summary>One room's explored cells: a bit per cell of its map rectangle, row by row, in Base64.</summary>
+    [Serializable]
+    public sealed class MapRoomCellsData
+    {
+        public string Room = string.Empty;
+        public string Bits = string.Empty;
     }
 
     /// <summary>One player mark: its kind (MapIconKind as a number) and where it lies, in world tiles.</summary>

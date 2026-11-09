@@ -303,7 +303,8 @@ namespace Alice.Editor
         [MenuItem("Alice/Automation/Delete Save")]
         public static void DeleteSave()
         {
-            Alice.Save.SaveStore store = new Alice.Save.SaveStore(Alice.Save.SaveGame.PathFor("alice-save.json"));
+            // The slot the game plays in: slot 1 unless the main menu chose another this session.
+            Alice.Save.SaveStore store = Alice.Save.SaveSlots.Store(Alice.Save.SaveSlots.Current);
             store.Delete();
             Debug.Log("ALICE_AUTOMATION deleted the save at " + store.FilePath);
         }
