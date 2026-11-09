@@ -1,0 +1,11 @@
+{ "prefix": "sheet", "palette": "sheet/look-b.png", "outDir": "../../../../Assets/_Alice/Art/Characters/Enemies/Sheet",
+  "width": 64, "height": 80,
+  "clips": [
+    { "id": "hang", "dir": "sheet/sway-raw", "frames": [0,1,2,3,4,5,6,7] },
+    { "id": "tremble", "dir": "sheet/tremble2-raw", "frames": [1,2,3,4,5,6,7,8] },
+    { "id": "drop", "dir": "sheet/drop-raw", "frames": [1,2,3,4,5,6,7,8], "clearLast": true },
+    { "id": "heap", "dir": "sheet/drop-raw", "frames": [8], "clearLast": true },
+    { "id": "rise", "dir": "sheet/drop-raw", "frames": [7,6,5,4,3,2,1,0] },
+    { "id": "wrap", "dir": "sheet/wrap-raw", "frames": [0,1,2,3,4,5,6,7] },
+    { "id": "death", "dir": "sheet/death-raw", "frames": [1,2,3,4,5,6,7,8], "clearLast": true }
+  ] }

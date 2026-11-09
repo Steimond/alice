@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94cb4f11fec818a4aa7b908583123030, type: 3}
+  m_Name: Racer
+  m_EditorClassIdentifier: Alice::Alice.Combat.ChargerSettings
+  _archetypeId: EN02
+  _bodySize: {x: 3.2, y: 2.2}
+  _maxHealth: 5
+  _hitInvulnerability: 0.12
+  _hitStop: 0.08
+  _sightRange: 10
+  _sightHeight: 2
+  _leashDistance: 9
+  _contactDamage: 10
+  _contactMargin: 0.1
+  _contactInterval: 0.5
+  _contactKnockback:
+    _velocity: {x: 6, y: 5}
+    _duration: 0.22
+  _decreeReward: 20
+  _confidenceReward: 6
+  _walkSpeed: 2.2
+  _runFrameDistance: 0.45
+  _chargeStartRange: 8
+  _minChargeRange: 2.5
+  _windup: 0.8
+  _chargeSpeed: 11
+  _chargeDistance: 12
+  _overshoot: 2.5
+  _chargeDamage: 25
+  _chargeParryWindow: 0
+  _chargeKnockback:
+    _velocity: {x: 10, y: 7}
+    _duration: 0.3
+  _skidTime: 0.55
+  _skidDistance: 1.2
+  _dazedTime: 1.8
+  _cooldown: 0.9
+  _staggerTime: 0.3
+  _chargeFrameTime: 0.055

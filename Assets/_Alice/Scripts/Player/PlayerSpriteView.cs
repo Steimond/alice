@@ -39,6 +39,7 @@ namespace Alice.Player
         private float _riseUntil;
         private IShrinkable _size;
         private PlayerPickup _pickup;
+        private IRestrainable _restraint;
         private bool _wasSmall;
         private float _shrinkElapsed = float.PositiveInfinity;
 
@@ -61,6 +62,7 @@ namespace Alice.Player
             _rest = GetComponent<PlayerRest>();
             _size = GetComponent<IShrinkable>();
             _pickup = GetComponent<PlayerPickup>();
+            _restraint = GetComponent<IRestrainable>();
         }
 
         private void LateUpdate()
@@ -72,7 +74,8 @@ namespace Alice.Player
 
             // The grey-box body stands in only while a slide has no frames yet.
             bool drawn = !_motor.IsSliding || _sprites.HasSlide;
-            _renderer.enabled = drawn;
+            // Held inside a sheet: the holder draws the struggling bundle in her place.
+            _renderer.enabled = drawn && (_restraint == null || !_restraint.IsRestrained);
             if (_placeholderBody != null)
             {
                 _placeholderBody.enabled = !drawn;

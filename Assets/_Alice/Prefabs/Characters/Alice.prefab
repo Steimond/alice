@@ -36,6 +36,7 @@ GameObject:
   - component: {fileID: 2340139078258007084}
   - component: {fileID: 7697900048892413496}
   - component: {fileID: 1527286862064582603}
+  - component: {fileID: 2156172013159834403}
   m_Layer: 0
   m_Name: Alice
   m_TagString: Untagged
@@ -485,6 +486,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Alice::Alice.UI.MapScreen
   _skin: {fileID: 11400000, guid: 2a8a0ad7cb590314380aac89cbdedf1d, type: 2}
+--- !u!114 &2156172013159834403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3149202531935547728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef2e0d13575e7b34eb112807c14ed401, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Alice::Alice.Player.PlayerRestraint
+  _escapeHop: {x: 4, y: 7}
+  _escapeHopTime: 0.2
 --- !u!1 &4379791829432753759
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,0 +1,57 @@
+using Alice.Core;
+using UnityEngine;
+
+namespace Alice.Combat
+{
+    /// <summary>
+    /// What every enemy type has whatever its archetype: body, health, how its touch hurts and what beating it is
+    /// worth. Each archetype adds its own behaviour numbers in a subclass. Distances in tiles, times in seconds.
+    /// </summary>
+    public abstract class EnemySettings : ScriptableObject
+    {
+        [Tooltip("Stable archetype ID from GDD section 9, e.g. EN11.")]
+        [SerializeField] private string _archetypeId = "EN00";
+
+        [Header("Body")]
+        [Tooltip("Hit and touch box; its bottom is the object's pivot.")]
+        [SerializeField] private Vector2 _bodySize = new Vector2(1.2f, 1.6f);
+        [SerializeField, Min(1)] private int _maxHealth = 3;
+        [SerializeField, Min(0f)] private float _hitInvulnerability = 0.12f;
+        [Tooltip("A blow that lands freezes the enemy for this long, together with the attacker's strike.")]
+        [SerializeField, Min(0f)] private float _hitStop = 0.08f;
+
+        [Header("Sight")]
+        [SerializeField, Min(0f)] private float _sightRange = 9f;
+        [SerializeField, Min(0f)] private float _sightHeight = 3f;
+        [Tooltip("How far from its post it follows Alice before giving up.")]
+        [SerializeField, Min(0f)] private float _leashDistance = 7f;
+
+        [Header("Body contact")]
+        [Tooltip("Pressing against the living body hurts (GDD section 4); 0 = the body is harmless.")]
+        [SerializeField, Min(0)] private int _contactDamage = 10;
+        [SerializeField, Min(0f)] private float _contactMargin = 0.1f;
+        [SerializeField, Min(0.05f)] private float _contactInterval = 0.5f;
+        [SerializeField] private Knockback _contactKnockback = new Knockback(new Vector2(6f, 5f), 0.22f);
+
+        [Header("Reward")]
+        [Tooltip("Queen's decrees, the currency, dropped on defeat.")]
+        [SerializeField, Min(0)] private int _decreeReward = 15;
+        [Tooltip("Confidence Alice gains for beating it.")]
+        [SerializeField, Min(0f)] private float _confidenceReward = 5f;
+
+        public string ArchetypeId => _archetypeId;
+        public Vector2 BodySize => _bodySize;
+        public int MaxHealth => _maxHealth;
+        public float HitInvulnerability => _hitInvulnerability;
+        public float HitStop => _hitStop;
+        public float SightRange => _sightRange;
+        public float SightHeight => _sightHeight;
+        public float LeashDistance => _leashDistance;
+        public int ContactDamage => _contactDamage;
+        public float ContactMargin => _contactMargin;
+        public float ContactInterval => _contactInterval;
+        public Knockback ContactKnockback => _contactKnockback;
+        public int DecreeReward => _decreeReward;
+        public float ConfidenceReward => _confidenceReward;
+    }
+}

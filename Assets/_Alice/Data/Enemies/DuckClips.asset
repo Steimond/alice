@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8d8e80ad979b1b439b3f82d6a99472c, type: 3}
+  m_Name: DuckClips
+  m_EditorClassIdentifier: Alice::Alice.Combat.EnemyClipSet
+  _clips:
+  - _id: idle
+    _frames:
+    - {fileID: 21300000, guid: 40258fa7ada69ac409316e5f45e366a4, type: 3}
+    _frameTime: 0.1
+    _loop: 0
+  - _id: walk
+    _frames:
+    - {fileID: 21300000, guid: 4295b4c044a4f98458bd99e5496d5e24, type: 3}
+    - {fileID: 21300000, guid: 31e5459ef5d03aa4bbf764c857341956, type: 3}
+    - {fileID: 21300000, guid: c39aceda976dcba439ef9f24899a5263, type: 3}
+    - {fileID: 21300000, guid: a17c703232dd54a409188912d055853d, type: 3}
+    - {fileID: 21300000, guid: ad7a7eb10d10d15459d3efed7730416c, type: 3}
+    - {fileID: 21300000, guid: bf76814e8cb29d14999cdd2f5097bb56, type: 3}
+    - {fileID: 21300000, guid: 52984642c201b54469b00fe29caab90d, type: 3}
+    - {fileID: 21300000, guid: ba57c3d790381cc4ebb2ec47e5778503, type: 3}
+    _frameTime: 0.1
+    _loop: 1
+  - _id: throw
+    _frames:
+    - {fileID: 21300000, guid: 970e08b669e2c3a44af3c9b22d0e9f87, type: 3}
+    - {fileID: 21300000, guid: 91db247ed0338eb429a35d6f397c7777, type: 3}
+    - {fileID: 21300000, guid: 782cb94a1d1710f438fb0ead78a2a30c, type: 3}
+    - {fileID: 21300000, guid: 2d891b6243c39fc458150fd46d7d9617, type: 3}
+    - {fileID: 21300000, guid: db0586923cf891c489a9b255c5a6c637, type: 3}
+    - {fileID: 21300000, guid: aef1d7904897a324592d91b478a29a98, type: 3}
+    - {fileID: 21300000, guid: a6bea29b08a4d5140b1eea10531e7755, type: 3}
+    - {fileID: 21300000, guid: 4f82d531b725c794a83992ca112e408d, type: 3}
+    - {fileID: 21300000, guid: 3ea6377d43553c241a87ba41ce172726, type: 3}
+    - {fileID: 21300000, guid: ceff1b343164108499cede6c14479777, type: 3}
+    - {fileID: 21300000, guid: 2e8be5f5488796343b169446f6faefa2, type: 3}
+    - {fileID: 21300000, guid: e435b0bf87e386446b35d097e41b5979, type: 3}
+    _frameTime: 0.1
+    _loop: 0
+  - _id: hurt
+    _frames:
+    - {fileID: 21300000, guid: 428761b0419a4c648804514c3313954b, type: 3}
+    - {fileID: 21300000, guid: 8e3bc343e1b856a44848d295c0b49b6a, type: 3}
+    - {fileID: 21300000, guid: a0d29f93e4e7ce04aafeee349717ce6d, type: 3}
+    - {fileID: 21300000, guid: aa2dcb64774ac554c8c309808dd3be77, type: 3}
+    _frameTime: 0.1
+    _loop: 0
+  - _id: death
+    _frames:
+    - {fileID: 21300000, guid: 81002a43cd6c35c40b4986ac410beebb, type: 3}
+    - {fileID: 21300000, guid: bd2c562de7058e8469f060d580ac542b, type: 3}
+    - {fileID: 21300000, guid: d0ae8636c748ff843a3add94129ebba2, type: 3}
+    - {fileID: 21300000, guid: ca0fea591f2496946bc5e0cd750e118d, type: 3}
+    - {fileID: 21300000, guid: 4d38f00870dca364582f474e44ea5a85, type: 3}
+    - {fileID: 21300000, guid: 53a5a137d66469a4eac599a472d41514, type: 3}
+    - {fileID: 21300000, guid: ba89202c3d2ec724ea40565a5e6f0ae0, type: 3}
+    - {fileID: 21300000, guid: 411e0f48c99fc924ea30c0397a08d4e8, type: 3}
+    - {fileID: 21300000, guid: ad74e31aa2fe0ec42b803ccb3ae666b5, type: 3}
+    - {fileID: 21300000, guid: e5248117005714f499dfc91ced644728, type: 3}
+    - {fileID: 21300000, guid: 2005e101362611047a4932b9a3f5ee7f, type: 3}
+    - {fileID: 21300000, guid: 59769edf19c301543b1766fa0887722c, type: 3}
+    _frameTime: 0.09
+    _loop: 0

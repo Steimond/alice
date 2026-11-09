@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da4771bfd096c0342a7b6d42b537839a, type: 3}
+  m_Name: Duck
+  m_EditorClassIdentifier: Alice::Alice.Combat.ThrowerSettings
+  _archetypeId: EN12
+  _bodySize: {x: 1.4, y: 3.4}
+  _maxHealth: 3
+  _hitInvulnerability: 0.12
+  _hitStop: 0.08
+  _sightRange: 11
+  _sightHeight: 3
+  _leashDistance: 6
+  _contactDamage: 10
+  _contactMargin: 0.1
+  _contactInterval: 0.5
+  _contactKnockback:
+    _velocity: {x: 6, y: 5}
+    _duration: 0.22
+  _decreeReward: 15
+  _confidenceReward: 5
+  _walkSpeed: 1.4
+  _walkFrameDistance: 0.18
+  _throwRange: 9
+  _keepAway: 3
+  _windup: 1
+  _recovery: 0.35
+  _cooldown: 1.1
+  _releasePoint: {x: 0.6, y: 2.4}
+  _flightTimePerTile: 0.085
+  _minFlightTime: 0.45
+  _projectileGravity: 30
+  _projectile: {fileID: 5504469155915888869, guid: 60509f7bbfc36dd47a260ec8aa7cd001, type: 3}
+  _staggerTime: 0.3

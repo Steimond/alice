@@ -344,7 +344,13 @@ namespace Alice.Editor
                 enemy.ResetToHome();
             }
 
-            Debug.Log($"ALICE_AUTOMATION reset {enemies.Length} enemies.");
+            EnemyBase[] others = Object.FindObjectsByType<EnemyBase>();
+            foreach (EnemyBase enemy in others)
+            {
+                enemy.ResetToHome();
+            }
+
+            Debug.Log($"ALICE_AUTOMATION reset {enemies.Length + others.Length} enemies.");
         }
 
         /// <summary>Throws the nearest enemy open as a parry would; the narrow windows are hard to hit through menu calls.</summary>
@@ -433,7 +439,9 @@ namespace Alice.Editor
                 return;
             }
 
-            MeleeEnemy nearest = null;
+            Transform nearest = null;
+            int facing = 1;
+            float floorY = 0f;
             float best = float.MaxValue;
             foreach (MeleeEnemy enemy in Object.FindObjectsByType<MeleeEnemy>())
             {
@@ -441,7 +449,22 @@ namespace Alice.Editor
                 if (enemy.CurrentState != MeleeEnemy.State.Dead && distance < best)
                 {
                     best = distance;
-                    nearest = enemy;
+                    nearest = enemy.transform;
+                    facing = enemy.Facing;
+                    floorY = enemy.transform.position.y;
+                }
+            }
+
+            // The biome 1 archetypes; a flyer puts her on the floor under it, not in the air beside it.
+            foreach (EnemyBase enemy in Object.FindObjectsByType<EnemyBase>())
+            {
+                float distance = Mathf.Abs(enemy.transform.position.x - alice.Position.x);
+                if (!enemy.IsDead && distance < best)
+                {
+                    best = distance;
+                    nearest = enemy.transform;
+                    facing = enemy.Facing;
+                    floorY = enemy is FlyingDiver flyer ? flyer.FloorY : enemy.transform.position.y;
                 }
             }
 
@@ -452,19 +475,19 @@ namespace Alice.Editor
             }
 
             // On the side the enemy faces, so it notices her at once and she faces it after one step.
-            Vector2 target = (Vector2)nearest.transform.position + new Vector2(nearest.Facing * BesideEnemyDistance, 0.02f);
+            Vector2 target = new Vector2(nearest.position.x + facing * BesideEnemyDistance, floorY + 0.02f);
             alice.Teleport(target);
-            alice.Face(-nearest.Facing);
+            alice.Face(-facing);
 
             // The follow camera eases over seconds, longer still under a slowed time scale; jump it there.
             Camera camera = Camera.main;
             if (camera != null && camera.TryGetComponent(out CameraFollow2D _))
             {
-                camera.transform.position = new Vector3(target.x + 0.5f * nearest.Facing * -BesideEnemyDistance,
+                camera.transform.position = new Vector3(target.x + 0.5f * facing * -BesideEnemyDistance,
                     target.y + CameraHeight, camera.transform.position.z);
             }
 
-            Debug.Log($"ALICE_AUTOMATION Alice placed at {target.x:0.##} facing {alice.Facing} beside {nearest.name} facing {nearest.Facing}.");
+            Debug.Log($"ALICE_AUTOMATION Alice placed at {target.x:0.##} facing {alice.Facing} beside {nearest.name} facing {facing}.");
         }
     }
 }
