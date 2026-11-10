@@ -26,19 +26,23 @@ namespace Alice.Editor
         private const string FallPrefix = "alice_trial_fall_";
         private const string LandPrefix = "alice_trial_land_";
         private const string StepOffPrefix = "alice_trial_stepoff_";
-        private const string ThrustPrefix = "alice_trial_thrust_";
         private const string SlashPrefix = "alice_trial_slash_";
+        private const string CutPrefix = "alice_trial_cut_";
+        private const string FinisherPrefix = "alice_trial_finisher_";
         private const string AirSlashPrefix = "alice_trial_airslash_";
         private const string CounterPrefix = "alice_trial_counter_";
         private const string ParryPrefix = "alice_trial_parry_";
 
         // The combat moves are 12-frame animations with anticipation and follow-through (owner, 4 Nov 2026).
         // Frames per phase: wind-up, the blow, recovery.
-        private static readonly int[] ThrustSplit = { 3, 3, 6 };
         private static readonly int[] SlashSplit = { 4, 3, 5 };
+        // Sword combo (GDD 0.44): the rising cut, then the finisher with its long drawn-back hold over the head,
+        // the chop into the floor and a slow rise.
+        private static readonly int[] CutSplit = { 4, 3, 4 };
+        private static readonly int[] FinisherSplit = { 5, 3, 8 };
         private static readonly int[] AirSlashSplit = { 5, 3, 4 };
-        // The counter's long recovery holds the buried needle before wrenching it out.
-        private static readonly int[] CounterSplit = { 1, 3, 8 };
+        // Coil, the flat sweep and the held extension, the return.
+        private static readonly int[] CounterSplit = { 3, 3, 6 };
         // Matches the soldier's tear: the stab lands as its card is pierced, the rip as it splits.
         private static readonly int[] CardExecutionSplit = { 3, 3, 8 };
         // Guard, deflect, hold, lower.
@@ -143,14 +147,11 @@ namespace Alice.Editor
             }
 
             // Reassigned whenever the frames on disk no longer match what the set holds.
-            Sprite[] thrust = LoadFrames(ThrustPrefix);
-            if (NeedsStrike(thrust, ThrustSplit, sprites.StrikePhase(PlayerStrike.Thrust, AttackPhase.Windup),
-                    sprites.StrikePhase(PlayerStrike.Thrust, AttackPhase.Active),
-                    sprites.StrikePhase(PlayerStrike.Thrust, AttackPhase.Recovery)))
+            Sprite[] cut = LoadFrames(CutPrefix);
+            Sprite[] finisher = LoadFrames(FinisherPrefix);
+            if (NeedsStrike(cut, CutSplit, sprites.Cut) || NeedsStrike(finisher, FinisherSplit, sprites.Finisher))
             {
-                StrikeFrames split = Split(thrust, ThrustSplit);
-                sprites.AssignThrust(split.Phase(AttackPhase.Windup), split.Phase(AttackPhase.Active),
-                    split.Phase(AttackPhase.Recovery));
+                sprites.AssignCombo(Split(cut, CutSplit), Split(finisher, FinisherSplit));
                 EditorUtility.SetDirty(sprites);
             }
 

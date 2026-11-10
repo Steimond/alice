@@ -12,7 +12,7 @@ using UnityEngine.SceneManagement;
 namespace Alice.Editor
 {
     /// <summary>
-    /// M2 combat on the prototype: Alice's health, thrust and hit reaction on her prefab, and the card
+    /// M2 combat on the prototype: Alice's health, attack and hit reaction on her prefab, and the card
     /// soldier as data, sprite set and prefab. Adds only what is missing and never replaces values someone
     /// tuned. Called by <see cref="AlicePrototypeBuilder"/>, which also places the soldier in the room.
     /// </summary>
@@ -223,7 +223,7 @@ namespace Alice.Editor
                     changed = true;
                 }
 
-                // Leftover grey-box needle from before Alice had attack frames.
+                // Leftover grey-box weapon from before Alice had attack frames.
                 Transform marker = root.transform.Find(ThrustMarkerName);
                 if (marker != null)
                 {

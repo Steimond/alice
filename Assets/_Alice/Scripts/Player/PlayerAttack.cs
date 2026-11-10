@@ -8,8 +8,9 @@ namespace Alice.Player
     public enum PlayerStrike
     {
         None,
-        Thrust,
         Slash,
+        Cut,
+        Finisher,
         AirSlash,
         Counter,
         Execution,
@@ -17,12 +18,14 @@ namespace Alice.Player
     }
 
     /// <summary>
-    /// Needle attacks (GDD section 4): on the ground a short combo — thrust, then a slash if Attack is
-    /// pressed again before the thrust has recovered; in the air a slash. Right after a parry the attack is a deep
-    /// counter thrust. Interact next to a stunned enemy executes it, in sync with the enemy and safe from
-    /// other blows; the execution is a choice, so Attack never starts one. UseAbility performs the special
-    /// technique chosen at a rest if Alice has the confidence to pay for it. Movement input is locked for the
-    /// whole strike, so recovery is a real commitment; only the combo cuts it short.
+    /// Sword attacks (GDD 0.44: the mirror-shard sword cuts, it never thrusts). On the ground a three-blow combo:
+    /// a downward slash, a rising cut if Attack is pressed again before the slash has recovered, then the finisher —
+    /// a drawn-back two-handed chop one point stronger. A started finisher cannot be broken off, not even by a blow,
+    /// so the player chooses when to commit to it. In the air a slash. Right after a parry the attack is a flat
+    /// counter sweep. Interact next to a stunned enemy executes it, in sync with the enemy and safe from other
+    /// blows; the execution is a choice, so Attack never starts one. UseAbility performs the special technique
+    /// chosen at a rest if Alice has the confidence to pay for it. Movement input is locked for the whole strike,
+    /// so recovery is a real commitment; only the combo cuts it short.
     /// </summary>
     [RequireComponent(typeof(PlayerMotor))]
     public sealed class PlayerAttack : MonoBehaviour, IHitImmunity
@@ -68,13 +71,14 @@ namespace Alice.Player
 
         bool IHitImmunity.IsImmune => Strike == PlayerStrike.Execution;
 
-        private MeleeMove CurrentMove => Strike switch
+        private MeleeMove CurrentMove => Strike == PlayerStrike.Technique ? _techniqueMove : MoveOf(Strike);
+
+        /// <summary>The blow a fresh press during this one chains into, or None at the end of the combo.</summary>
+        private static PlayerStrike NextInCombo(PlayerStrike strike) => strike switch
         {
-            PlayerStrike.Slash => _settings.Slash,
-            PlayerStrike.AirSlash => _settings.AirSlash,
-            PlayerStrike.Counter => _settings.Counter,
-            PlayerStrike.Technique => _techniqueMove,
-            _ => _settings.Thrust
+            PlayerStrike.Slash => PlayerStrike.Cut,
+            PlayerStrike.Cut => PlayerStrike.Finisher,
+            _ => PlayerStrike.None
         };
 
         public void Bind(PlayerCombatSettings settings)
@@ -98,10 +102,13 @@ namespace Alice.Player
             }
         }
 
-        /// <summary>Drops the attack, e.g. when Alice is hit out of it. An execution cannot be interrupted.</summary>
+        /// <summary>
+        /// Drops the attack, e.g. when Alice is hit out of it. An execution and a started finisher cannot be
+        /// interrupted: the finisher's risk is that she takes the blow and still finishes the swing.
+        /// </summary>
         public void Cancel()
         {
-            if (Strike == PlayerStrike.Execution && Phase != AttackPhase.None)
+            if ((Strike == PlayerStrike.Execution || Strike == PlayerStrike.Finisher) && Phase != AttackPhase.None)
             {
                 return;
             }
@@ -129,15 +136,16 @@ namespace Alice.Player
             }
 
             AttackPhase phase = Phase;
-            if (Strike == PlayerStrike.Thrust && phase != AttackPhase.Windup && HasFreshPress(now))
+            PlayerStrike next = NextInCombo(Strike);
+            if (next != PlayerStrike.None && phase != AttackPhase.Windup && HasFreshPress(now))
             {
                 _consumedAttackAt = _commands.AttackPressedAt;
                 _comboQueued = true;
             }
 
-            if (_comboQueued && phase == AttackPhase.Recovery && _motor.IsGrounded)
+            if (_comboQueued && next != PlayerStrike.None && phase == AttackPhase.Recovery && _motor.IsGrounded)
             {
-                Begin(PlayerStrike.Slash, now, _settings.Slash.Timeline);
+                Begin(next, now, MoveOf(next).Timeline);
                 return;
             }
 
@@ -154,7 +162,7 @@ namespace Alice.Player
                 MeleeMove move = CurrentMove;
                 if (StrikeWith(move) > 0)
                 {
-                    _settings.ImpactOf(move.Kind, out float hitStop, out float shake);
+                    _settings.ImpactOf(move.Kind, Strike == PlayerStrike.Finisher, out float hitStop, out float shake);
                     _hitStopUntil = now + hitStop;
                     Impacts.Raise(shake);
                 }
@@ -230,9 +238,18 @@ namespace Alice.Player
             }
 
             _facing = _motor.Facing;
-            PlayerStrike strike = _motor.IsGrounded ? PlayerStrike.Thrust : PlayerStrike.AirSlash;
-            Begin(strike, now, strike == PlayerStrike.Thrust ? _settings.Thrust.Timeline : _settings.AirSlash.Timeline);
+            PlayerStrike strike = _motor.IsGrounded ? PlayerStrike.Slash : PlayerStrike.AirSlash;
+            Begin(strike, now, MoveOf(strike).Timeline);
         }
+
+        private MeleeMove MoveOf(PlayerStrike strike) => strike switch
+        {
+            PlayerStrike.Cut => _settings.Cut,
+            PlayerStrike.Finisher => _settings.Finisher,
+            PlayerStrike.AirSlash => _settings.AirSlash,
+            PlayerStrike.Counter => _settings.Counter,
+            _ => _settings.Slash
+        };
 
         /// <summary>The chosen technique, paid in full from confidence; without enough, nothing happens.</summary>
         private bool TryTechnique(float now)

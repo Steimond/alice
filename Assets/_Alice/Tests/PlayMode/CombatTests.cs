@@ -63,7 +63,7 @@ namespace Alice.Tests
         }
 
         [UnityTest]
-        public IEnumerator RepeatedThrusts_StaggerAndKillSoldier()
+        public IEnumerator RepeatedSlashes_StaggerAndKillSoldier()
         {
             MeleeEnemy soldier = CreateSoldier(2f, -1);
             Health soldierHealth = soldier.GetComponent<Health>();
@@ -75,7 +75,7 @@ namespace Alice.Tests
                 yield return new WaitForFixedUpdate();
             }
 
-            Assert.That(soldierHealth.IsDead, Is.True, "Thrusts in range should kill the soldier.");
+            Assert.That(soldierHealth.IsDead, Is.True, "Slashes in range should kill the soldier.");
             Assert.That(soldier.CurrentState, Is.EqualTo(MeleeEnemy.State.Dead));
             Assert.That(_aliceHealth.Current, Is.EqualTo(_aliceHealth.Max), "A staggered soldier must not land its blow.");
         }
@@ -200,7 +200,7 @@ namespace Alice.Tests
         }
 
         [UnityTest]
-        public IEnumerator Thrust_DrawsFramesOfEachPhase()
+        public IEnumerator Slash_DrawsFramesOfEachPhase()
         {
             Texture2D texture = Track(new Texture2D(4, 4));
             Sprite Frame(string name)
@@ -216,7 +216,7 @@ namespace Alice.Tests
             Sprite recovery = Frame("recovery");
             PlayerSpriteSet sprites = Track(ScriptableObject.CreateInstance<PlayerSpriteSet>());
             sprites.Assign(idle, new[] { idle });
-            sprites.AssignThrust(new[] { windup }, new[] { active }, new[] { recovery });
+            sprites.AssignSlashes(new StrikeFrames(new[] { windup }, new[] { active }, new[] { recovery }), default);
 
             SpriteRenderer renderer = Track(new GameObject("TestAliceSprite")).AddComponent<SpriteRenderer>();
             _motor.gameObject.AddComponent<PlayerSpriteView>().Bind(_motor, sprites, renderer, null, null);
@@ -234,28 +234,60 @@ namespace Alice.Tests
             // The strike ends in a physics step; the view catches up in the next drawn frame.
             yield return null;
             Assert.That(seen, Is.SupersetOf(new[] { windup, active, recovery }));
-            Assert.That(renderer.sprite, Is.EqualTo(idle), "Alice returns to standing after the thrust.");
+            Assert.That(renderer.sprite, Is.EqualTo(idle), "Alice returns to standing after the slash.");
         }
 
         [UnityTest]
-        public IEnumerator SecondPress_ChainsThrustIntoSlash()
+        public IEnumerator Presses_ChainSlashCutFinisher_AndFinisherCannotBeBrokenOff()
+        {
+            PlayerAttack attack = _motor.GetComponent<PlayerAttack>();
+            float timeout = Time.time + 3f;
+            _commands.AttackPressedAt = Time.time;
+            yield return new WaitForFixedUpdate();
+            Assert.That(attack.Strike, Is.EqualTo(PlayerStrike.Slash), "The combo opens with the slash.");
+
+            foreach (PlayerStrike next in new[] { PlayerStrike.Cut, PlayerStrike.Finisher })
+            {
+                PlayerStrike current = attack.Strike;
+                while (attack.Phase != Alice.Combat.AttackPhase.Active && Time.time < timeout)
+                {
+                    yield return new WaitForFixedUpdate();
+                }
+
+                _commands.AttackPressedAt = Time.time;
+                while (attack.Strike == current && Time.time < timeout)
+                {
+                    yield return new WaitForFixedUpdate();
+                }
+
+                Assert.That(attack.Strike, Is.EqualTo(next), $"A press during the {current} chains the {next}.");
+            }
+
+            attack.Cancel();
+            Assert.That(attack.Strike, Is.EqualTo(PlayerStrike.Finisher), "A started finisher cannot be broken off.");
+
+            // No fourth blow: a press during the finisher starts nothing until it ends.
+            _commands.AttackPressedAt = Time.time;
+            while (attack.IsAttacking && attack.Strike == PlayerStrike.Finisher && Time.time < timeout)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+
+            Assert.That(attack.Strike, Is.Not.EqualTo(PlayerStrike.Cut).And.Not.EqualTo(PlayerStrike.Finisher));
+            PlayerCombatSettings settings = ScriptableObject.CreateInstance<PlayerCombatSettings>();
+            Assert.That(settings.Finisher.Damage, Is.EqualTo(settings.Slash.Damage + 1), "The finisher hits one point harder.");
+            Object.Destroy(settings);
+        }
+
+        [UnityTest]
+        public IEnumerator Cancel_StopsOrdinarySlash()
         {
             PlayerAttack attack = _motor.GetComponent<PlayerAttack>();
             _commands.AttackPressedAt = Time.time;
-            float timeout = Time.time + 1f;
-            while (attack.Phase != Alice.Combat.AttackPhase.Active && Time.time < timeout)
-            {
-                yield return new WaitForFixedUpdate();
-            }
-
-            Assert.That(attack.Strike, Is.EqualTo(PlayerStrike.Thrust));
-            _commands.AttackPressedAt = Time.time;
-            while (attack.Strike == PlayerStrike.Thrust && Time.time < timeout)
-            {
-                yield return new WaitForFixedUpdate();
-            }
-
-            Assert.That(attack.Strike, Is.EqualTo(PlayerStrike.Slash), "A press during the thrust chains the slash.");
+            yield return new WaitForFixedUpdate();
+            Assert.That(attack.Strike, Is.EqualTo(PlayerStrike.Slash));
+            attack.Cancel();
+            Assert.That(attack.IsAttacking, Is.False, "A blow knocks Alice out of an ordinary slash.");
         }
 
         [UnityTest]
@@ -330,7 +362,7 @@ namespace Alice.Tests
             }
 
             Assert.That(soldier.CurrentState, Is.EqualTo(MeleeEnemy.State.Dead), "Any blow still finishes a stunned enemy.");
-            Assert.That(soldier.KillingBlow, Is.EqualTo(Alice.Core.HitKind.Thrust), "Attack never starts an execution.");
+            Assert.That(soldier.KillingBlow, Is.EqualTo(Alice.Core.HitKind.Slash), "Attack never starts an execution.");
         }
 
         [UnityTest]

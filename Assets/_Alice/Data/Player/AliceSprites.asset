@@ -82,21 +82,6 @@ MonoBehaviour:
   _stepOffFrameTime: 0.08
   _stepOffDelay: 0.06
   _landMinAirTime: 0.2
-  _thrustWindup:
-  - {fileID: 21300000, guid: 2c623dd7deacbef4bb31cca322fff4ad, type: 3}
-  - {fileID: 21300000, guid: 12bdac0953ebb8c4888b062a2bc3165d, type: 3}
-  - {fileID: 21300000, guid: 8f601cbc86212d3478ec8bf53a23060d, type: 3}
-  _thrustActive:
-  - {fileID: 21300000, guid: 706a4d80bc611094bb9423b07aa4ff8a, type: 3}
-  - {fileID: 21300000, guid: 212259becca080049b68cc3a69f2a93b, type: 3}
-  - {fileID: 21300000, guid: 20febed601761394d979cd4e956ab782, type: 3}
-  _thrustRecovery:
-  - {fileID: 21300000, guid: 62da608c8696b404bb79014ba7619cd1, type: 3}
-  - {fileID: 21300000, guid: 716df6e6918b3364da867bdc9cf65d80, type: 3}
-  - {fileID: 21300000, guid: babbcebbc270f814c91f8c25a496b105, type: 3}
-  - {fileID: 21300000, guid: f2adf684521b1be4fa68a1ba62bef524, type: 3}
-  - {fileID: 21300000, guid: 4a6440bb87603e94aaa3bbd66b5b4e8a, type: 3}
-  - {fileID: 21300000, guid: 8c6dc91a2afad0e41860563b03065274, type: 3}
   _slash:
     _windup:
     - {fileID: 21300000, guid: afc1a5d595fb257499fa33d65ae70cba, type: 3}
@@ -113,6 +98,41 @@ MonoBehaviour:
     - {fileID: 21300000, guid: fd5b87d02fb95384aa4623692b45341b, type: 3}
     - {fileID: 21300000, guid: 12537f889d6432149b0b25018423ad82, type: 3}
     - {fileID: 21300000, guid: 2d286b76de6cfbf4c862c97bb60a95ac, type: 3}
+  _cut:
+    _windup:
+    - {fileID: 21300000, guid: e26c4e8cfb775fe4c828cc61d8a0f0d8, type: 3}
+    - {fileID: 21300000, guid: ede5625841857ea40bea75bba71dc753, type: 3}
+    - {fileID: 21300000, guid: 373b68380c3448e4dba4c4acf3f9eb2a, type: 3}
+    - {fileID: 21300000, guid: bfb55f85db477a34db6f42708a5d464c, type: 3}
+    _active:
+    - {fileID: 21300000, guid: 336dc3f078555c9478b0a0f80c5ada9e, type: 3}
+    - {fileID: 21300000, guid: fd2f5cb2bed258440ab14fddf9eef9f7, type: 3}
+    - {fileID: 21300000, guid: afc4dcbdb4bedff4db154050546b8f99, type: 3}
+    _recovery:
+    - {fileID: 21300000, guid: ec5958b75e3ce3f4086a6b6c9bae50ca, type: 3}
+    - {fileID: 21300000, guid: 704f8681cb35374429fdbb9f7b8f1a73, type: 3}
+    - {fileID: 21300000, guid: 3429cc81ed9132046995be092bac3b5b, type: 3}
+    - {fileID: 21300000, guid: febdad9c851781d4a9da6b5d6bad6f79, type: 3}
+  _finisher:
+    _windup:
+    - {fileID: 21300000, guid: cc6d0a87c2ce79a4ab4c015ce6815eb7, type: 3}
+    - {fileID: 21300000, guid: 061413c894c81f94e8ee369df65e2cb3, type: 3}
+    - {fileID: 21300000, guid: f53cb531b595a2c4588d3585fc33c7d1, type: 3}
+    - {fileID: 21300000, guid: 622e92593e3234e46a5a783e188a085e, type: 3}
+    - {fileID: 21300000, guid: 8d091f5c4477d364fad533c99e830786, type: 3}
+    _active:
+    - {fileID: 21300000, guid: c98d2b55061e6e24a92e3b49e37f10f2, type: 3}
+    - {fileID: 21300000, guid: 228306b110b812646887fe723dac57d7, type: 3}
+    - {fileID: 21300000, guid: 8be1810e48ea6f7459ba02466a5544e0, type: 3}
+    _recovery:
+    - {fileID: 21300000, guid: 11f872eac7e3f1346b174360d9701c9d, type: 3}
+    - {fileID: 21300000, guid: e0f763288fa3bcc4a9a521ad877a328e, type: 3}
+    - {fileID: 21300000, guid: a96cef16f1114a04fad8eb4549656f6c, type: 3}
+    - {fileID: 21300000, guid: f52a524aa39b420408aa0795179291c6, type: 3}
+    - {fileID: 21300000, guid: b02061bde18dce949a2975b4de2ead74, type: 3}
+    - {fileID: 21300000, guid: 04965f317f4cf504fbc9a3ecabe0182e, type: 3}
+    - {fileID: 21300000, guid: 98a7146155b89be49ba004f859c61b74, type: 3}
+    - {fileID: 21300000, guid: fa288ecd0a0ec92468ba9c8581db456d, type: 3}
   _airSlash:
     _windup:
     - {fileID: 21300000, guid: 6153257d8a6b1ba458ccd16452003deb, type: 3}
@@ -132,13 +152,13 @@ MonoBehaviour:
   _counter:
     _windup:
     - {fileID: 21300000, guid: bdf47a9b58b1eba4899d58f9576f7c35, type: 3}
-    _active:
     - {fileID: 21300000, guid: bae8c0715af8ace47b809e9c4f2bdd5b, type: 3}
     - {fileID: 21300000, guid: d05dab2963cf5204d86a83ff7ee8a975, type: 3}
+    _active:
     - {fileID: 21300000, guid: e8249d12845a2344d8994910dac01ca9, type: 3}
-    _recovery:
     - {fileID: 21300000, guid: 77e2954191e75ab4790999c1737dd187, type: 3}
     - {fileID: 21300000, guid: cc46207a5bf902844a5135ea92fff3c4, type: 3}
+    _recovery:
     - {fileID: 21300000, guid: 9eb82b509abc814498e78e76b4d35c2b, type: 3}
     - {fileID: 21300000, guid: ab1d477e74d635547904dc3fc6110f9d, type: 3}
     - {fileID: 21300000, guid: 9e061426824758343b650416414236f9, type: 3}

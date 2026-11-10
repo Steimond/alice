@@ -1,0 +1,63 @@
+{
+    "_comment": "The turning combo (owner, 10 Nov 2026). Frames per clip in game order; fields are described in render-combo.ps1. Sword hand: Alice's right hand in every frame - the near one in profile, on the left of the picture when her chest faces the viewer, on the right when her back does.",
+
+    "_s1": "Strike 1, flat forehand sweep. Wind-up 4 (step into a wide stance, chest to the viewer, blade swung back and held behind), blow 3 (lunge, back a quarter to the viewer; the crescent is the swing itself, the frame the generator smeared is dropped), recovery 5. After the blow the blade stays rigid with the arm (owner, 10 Nov 2026: tilting it down and up again read as a jelly sword); it turns only once, up to the stance angle, while the arm comes back.",
+    "s1": {
+        "prefix": "alice_trial_slash_",
+        "frames": [
+            { "src": "s1in-clean/run-00.png", "hx": 55, "hy": 54, "deg": -146 },
+            { "src": "s1in-clean/run-01.png", "hx": 45, "hy": 45, "deg": 180 },
+            { "src": "s1D-clean/run-02.png", "hx": 45, "hy": 45, "deg": 157 },
+            { "src": "s1D-clean/run-04.png", "hx": 45, "hy": 45, "deg": 146 },
+            { "src": "s1D-clean/run-06.png", "hx": 88, "hy": 48, "deg": 0, "slash": { "cx": 74, "cy": 48, "r": 47, "ry": 14, "from": 185, "to": 360, "width": 8 } },
+            { "src": "s1D-clean/run-07.png", "hx": 88, "hy": 48, "deg": 0, "slash": { "cx": 74, "cy": 48, "r": 47, "ry": 14, "from": 185, "to": 360, "width": 8, "fade": true } },
+            { "src": "s1D-clean/run-08.png", "hx": 88, "hy": 48, "deg": 0 },
+            { "src": "s1D-clean/run-10.png", "hx": 88, "hy": 48, "deg": 0 },
+            { "src": "s1D-clean/run-12.png", "hx": 88, "hy": 48, "deg": 0 },
+            { "src": "s1D-clean/run-13.png", "hx": 84, "hy": 50, "deg": 0 },
+            { "src": "s1D-clean/run-14.png", "hx": 78, "hy": 53, "deg": 0 },
+            { "src": "s1D-clean/run-15.png", "hx": 70, "hy": 57, "deg": 15 }
+        ]
+    },
+
+    "_s2": "Strike 2, flat backhand sweep, starts from the lunge of strike 1 (the game chains at the start of its recovery). Wind-up 4: she winds up with her back to the viewer, the sword hand is in front of her body, so the sword shows only past her far hip, low and well below the raised left fist (drawn over the shoulder it sat next to that fist and read as a sword in the left hand). Blow 3: the blade comes round the far side to the front (arc behind her head), sweeps on across the near side (crescent over her body) and ends drawn back - the same open pose strike 1 winds up in. Recovery 4: back to the stance.",
+    "s2": {
+        "prefix": "alice_trial_cut_",
+        "frames": [
+            { "src": "s2A-clean/run-00.png", "hx": 54, "hy": 55, "deg": 191, "behind": true },
+            { "src": "s2A-clean/run-02.png", "hx": 54, "hy": 55, "deg": 191, "behind": true },
+            { "src": "s2A-clean/run-04.png", "hx": 54, "hy": 55, "deg": 191, "behind": true },
+            { "src": "s2A-clean/run-05.png", "hx": 60, "hy": 53, "deg": 11, "behind": true },
+            { "src": "s2A-clean/run-06.png", "hx": 92, "hy": 48, "deg": 0, "slash": { "cx": 78, "cy": 50, "r": 47, "ry": 8, "from": 150, "to": 0, "width": 5 } },
+            { "src": "s2A-clean/run-07.png", "hx": 45, "hy": 50, "deg": 191, "slash": { "cx": 66, "cy": 50, "r": 52, "ry": 13, "from": 360, "to": 195, "width": 8 } },
+            { "src": "s2A-clean/run-08.png", "hx": 45, "hy": 44, "deg": 180, "slash": { "cx": 66, "cy": 50, "r": 52, "ry": 13, "from": 360, "to": 195, "width": 8, "fade": true } },
+            { "src": "s2A-clean/run-10.png", "hx": 45, "hy": 45, "deg": 169 },
+            { "src": "s2out-clean/run-00.png", "hx": 45, "hy": 52, "deg": 191 },
+            { "src": "s2out-clean/run-01.png", "hx": 54, "hy": 57, "deg": -146 },
+            { "src": "s2out-clean/run-03.png", "hx": 70, "hy": 57, "deg": 15 }
+        ]
+    },
+
+    "_s3": "Strike 3, the finisher out of a full turn, starts from the open pose strike 2 ends in. Wind-up 5: the turn (toward the viewer, left, back to the viewer, round to the right), the sword arm carried round and up, held high. Blow 3: a chop from above the right shoulder down to the floor in front (the frame the generator smeared is dropped, the crescent is the swing). Recovery 8: she stays bent low, then straightens.",
+    "s3": {
+        "prefix": "alice_trial_finisher_",
+        "frames": [
+            { "src": "s3A-clean/run-00.png", "hx": 54, "hy": 42, "deg": 135 },
+            { "src": "s3A-clean/run-01.png", "hx": 84, "hy": 41, "deg": 22 },
+            { "src": "s3A-clean/run-02.png", "hx": 77, "hy": 36, "deg": 79 },
+            { "src": "s3A-clean/run-03.png", "hx": 58, "hy": 28, "deg": 135 },
+            { "src": "s3A-clean/run-05.png", "hx": 48, "hy": 27, "deg": 146 },
+            { "src": "s3A-clean/run-07.png", "hx": 85, "hy": 75, "deg": 0, "slash": { "cx": 68, "cy": 75, "r": 50, "ry": 72, "from": 120, "to": 0, "width": 9, "front": true } },
+            { "src": "s3A-clean/run-08.png", "hx": 86, "hy": 75, "deg": 0, "slash": { "cx": 68, "cy": 75, "r": 50, "ry": 72, "from": 120, "to": 0, "width": 9, "front": true, "fade": true } },
+            { "src": "s3A-clean/run-09.png", "hx": 86, "hy": 74, "deg": 0 },
+            { "src": "s3A-clean/run-10.png", "hx": 86, "hy": 74, "deg": 0 },
+            { "src": "s3A-clean/run-11.png", "hx": 86, "hy": 74, "deg": 0 },
+            { "src": "s3A-clean/run-11.png", "hx": 86, "hy": 74, "deg": 0 },
+            { "src": "s3A-clean/run-12.png", "hx": 87, "hy": 71, "deg": 0 },
+            { "src": "s3A-clean/run-13.png", "hx": 84, "hy": 68, "deg": 0 },
+            { "src": "s3A-clean/run-14.png", "hx": 77, "hy": 63, "deg": 0 },
+            { "src": "s3A-clean/run-15.png", "hx": 70, "hy": 57, "deg": 15 },
+            { "src": "s3A-clean/run-15.png", "hx": 70, "hy": 57, "deg": 15 }
+        ]
+    }
+}

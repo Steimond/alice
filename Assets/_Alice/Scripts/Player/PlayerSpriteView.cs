@@ -6,7 +6,7 @@ namespace Alice.Player
 {
     /// <summary>
     /// Draws Alice from <see cref="PlayerSpriteSet"/>: standing, running, the jump by vertical speed, the
-    /// step off a ledge, the fall loop, the landing crouch and the needle thrust by attack phase, which
+    /// step off a ledge, the fall loop, the landing crouch and the sword strikes by attack phase, which
     /// overrides the rest while it lasts. Sliding has no frames yet, so the grey-box
     /// body takes over for it.
     /// </summary>

@@ -106,4 +106,10 @@ Blasphemous и Nine Sols — ориентиры жанра и требовате
 
 9 ноября 2026: `Art/Reviews/Alice/Revision21/` — айдлы утки и крысы, шаг крысы, новая казнь крысы (анимация Алисы и смерть крысы, `animate_image_pixminimax`); созданы PixelLab на подписке по просьбе владельца. Иглу, чистку, склейку айдлов и перенос делают скрипты, ручной дорисовки не было. Файлы — `Assets/_Alice/Art/Characters/Enemies/{Racer,Duck}`, `Art/Characters/Alice/Trial/alice_trial_exec_racer_*`.
 
+9 ноября 2026: `Art/Reviews/Alice/Revision22/` — эскизы кандидатов на замену иглы (золотой ключик, каминная кочерга, школьный циркуль, распарыватель швов, `create_image_pro_flash`); созданы PixelLab на подписке по просьбе владельца. В игру не переносились.
+
+10 ноября 2026: `Art/Reviews/Alice/Revision23/` — меч из зеркального осколка (эталон, `create_image_pro_flash`) и три новых удара Алисы и парирование (подъём, завершающий, контратака, парирование, `animate_image_pixminimax`); созданы PixelLab на подписке по просьбе владельца. Повороты меча, его вклейку во все кадры Алисы вместо иглы, чистку и перенос делают скрипты проекта; в игре — `alice_trial_*` (меч во всех анимациях), `alice_trial_cut_*`, `alice_trial_finisher_*`, `alice_trial_counter_*`, `alice_trial_parry_*`. Четвёртый круг (тот же день, по правкам владельца): удары «в глубину» и казнь утки без разворота — `animate_image_pixminimax`, 20 вариантов (`alice/slashA…D`, `cutA…F`, `finA…D`, `airA/B`, `counterA/B`, `duckA/B`), в игре `alice_trial_slash_*`, `_cut_*`, `_finisher_*`, `_airslash_*`, `_counter_*`, `_exec_duck_*`; ракурсы клинка — скриптом `sword-foreshorten.ps1`.
+
+10 ноября 2026: `Art/Reviews/Alice/Revision24/` — новое комбо Алисы с поворотом корпуса, три удара (`animate_image_pixminimax`, наборы `alice/s1A…D`, `s1in`, `s2A/B`, `s2out`, `s3A/B`); созданы PixelLab на подписке по просьбе владельца. Меч, кисть поверх рукояти и серп следа рисует скрипт проекта `render-combo.ps1`; в игре — `alice_trial_slash_*`, `alice_trial_cut_*`, `alice_trial_finisher_*`.
+
 Перед коммерческим релизом: проверка названия и логотипа, выбранных территорий, всех переводов и лицензий, затем юридическая оценка конкретных материалов.

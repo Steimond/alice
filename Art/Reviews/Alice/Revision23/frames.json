@@ -1,0 +1,2300 @@
+﻿[
+    {
+        "name":  "alice_trial_airslash_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\airB-clean\\run-00.png",
+        "hx":  52,
+        "hy":  51,
+        "deg":  120,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_airslash_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\airB-clean\\run-01.png",
+        "hx":  46,
+        "hy":  49,
+        "deg":  170,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_airslash_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\airB-clean\\run-02.png",
+        "hx":  45,
+        "hy":  48,
+        "deg":  175,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_airslash_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\airB-clean\\run-03.png",
+        "hx":  45,
+        "hy":  47,
+        "deg":  175,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_airslash_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\airB-clean\\run-04.png",
+        "hx":  44,
+        "hy":  47,
+        "deg":  175,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_airslash_05.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\airB-clean\\run-06.png",
+        "hx":  91,
+        "hy":  49,
+        "deg":  -70,
+        "len":  0.25,
+        "lock":  true,
+        "ell":  [
+                    64,
+                    48,
+                    34,
+                    8,
+                    0,
+                    180,
+                    275
+                ]
+    },
+    {
+        "name":  "alice_trial_airslash_06.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\airB-clean\\run-07.png",
+        "hx":  91,
+        "hy":  49,
+        "deg":  0,
+        "lock":  true,
+        "ell":  [
+                    64,
+                    48,
+                    34,
+                    8,
+                    0,
+                    180,
+                    360
+                ]
+    },
+    {
+        "name":  "alice_trial_airslash_07.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\airB-clean\\run-07.png",
+        "hx":  91,
+        "hy":  49,
+        "deg":  0,
+        "lock":  true,
+        "ell":  [
+                    64,
+                    48,
+                    34,
+                    8,
+                    0,
+                    180,
+                    360
+                ]
+    },
+    {
+        "name":  "alice_trial_airslash_08.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\airB-clean\\run-08.png",
+        "hx":  85,
+        "hy":  46,
+        "deg":  35,
+        "len":  0.45,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_airslash_09.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\airB-clean\\run-09.png",
+        "hx":  79,
+        "hy":  44,
+        "deg":  30,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_airslash_10.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\airB-clean\\run-10.png",
+        "hx":  77,
+        "hy":  47,
+        "deg":  15,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_airslash_11.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\airB-clean\\run-11.png",
+        "hx":  69,
+        "hy":  57,
+        "deg":  15,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_counter_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\counterA-clean\\run-00.png",
+        "hx":  64,
+        "hy":  57,
+        "deg":  15,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_counter_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\counterA-clean\\run-02.png",
+        "hx":  45,
+        "hy":  42,
+        "deg":  160,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_counter_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\counterA-clean\\run-03.png",
+        "hx":  44,
+        "hy":  42,
+        "deg":  165,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_counter_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\counterA-clean\\run-04.png",
+        "hx":  48,
+        "hy":  44,
+        "deg":  170,
+        "len":  0.45,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_counter_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\counterA-clean\\run-06.png",
+        "hx":  92,
+        "hy":  48,
+        "deg":  0,
+        "lock":  true,
+        "ell":  [
+                    66,
+                    46,
+                    32,
+                    8,
+                    0,
+                    180,
+                    360
+                ]
+    },
+    {
+        "name":  "alice_trial_counter_05.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\counterA-clean\\run-07.png",
+        "hx":  92,
+        "hy":  48,
+        "deg":  20,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_counter_06.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\counterA-clean\\run-08.png",
+        "hx":  92,
+        "hy":  48,
+        "deg":  30,
+        "len":  0.45,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_counter_07.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\counterA-clean\\run-09.png",
+        "hx":  92,
+        "hy":  48,
+        "deg":  25,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_counter_08.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\counterA-clean\\run-09.png",
+        "hx":  92,
+        "hy":  48,
+        "deg":  25,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_counter_09.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\counterA-clean\\run-10.png",
+        "hx":  83,
+        "hy":  51,
+        "deg":  15,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_counter_10.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\counterA-clean\\run-11.png",
+        "hx":  69,
+        "hy":  57,
+        "deg":  15,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_counter_11.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\counterA-clean\\run-11.png",
+        "hx":  69,
+        "hy":  57,
+        "deg":  15,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_cut_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\cutF-clean\\run-00.png",
+        "hx":  70,
+        "hy":  57,
+        "deg":  15,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_cut_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\cutF-clean\\run-01.png",
+        "hx":  46,
+        "hy":  55,
+        "deg":  190,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_cut_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\cutF-clean\\run-02.png",
+        "hx":  45,
+        "hy":  55,
+        "deg":  195,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_cut_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\cutF-clean\\run-03.png",
+        "hx":  48,
+        "hy":  54,
+        "deg":  195,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_cut_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\cutF-clean\\run-05.png",
+        "hx":  80,
+        "hy":  26,
+        "deg":  100,
+        "len":  0.7,
+        "lock":  true,
+        "ell":  [
+                    64,
+                    42,
+                    32,
+                    12,
+                    45,
+                    180,
+                    360
+                ]
+    },
+    {
+        "name":  "alice_trial_cut_05.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\cutF-clean\\run-06.png",
+        "hx":  79,
+        "hy":  26,
+        "deg":  120,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_cut_06.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\cutF-clean\\run-07.png",
+        "hx":  79,
+        "hy":  26,
+        "deg":  135,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_cut_07.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\cutF-clean\\run-08.png",
+        "hx":  80,
+        "hy":  28,
+        "deg":  135,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_cut_08.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\cutF-clean\\run-09.png",
+        "hx":  81,
+        "hy":  33,
+        "deg":  110,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_cut_09.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\cutF-clean\\run-10.png",
+        "hx":  82,
+        "hy":  44,
+        "deg":  40,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_cut_10.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\cutF-clean\\run-11.png",
+        "hx":  70,
+        "hy":  57,
+        "deg":  15,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_defeat_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_defeat_00.png",
+        "hx":  67.3,
+        "hy":  33.9,
+        "deg":  119.2
+    },
+    {
+        "name":  "alice_trial_defeat_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_defeat_01.png",
+        "hx":  72.9,
+        "hy":  56.1,
+        "deg":  -37.8
+    },
+    {
+        "name":  "alice_trial_defeat_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_defeat_02.png",
+        "hx":  71.4,
+        "hy":  64.5,
+        "deg":  -21.7
+    },
+    {
+        "name":  "alice_trial_defeat_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_defeat_03.png",
+        "hx":  80.4,
+        "hy":  65.5,
+        "deg":  -19.8
+    },
+    {
+        "name":  "alice_trial_defeat_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_defeat_04.png",
+        "hx":  89.4,
+        "hy":  64.5,
+        "deg":  -21.7
+    },
+    {
+        "name":  "alice_trial_defeat_05.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_defeat_05.png",
+        "hx":  89,
+        "hy":  73.1,
+        "deg":  2.5
+    },
+    {
+        "name":  "alice_trial_exec_card_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\execA-clean-fixed\\run-00.png",
+        "hx":  61,
+        "hy":  52,
+        "deg":  200
+    },
+    {
+        "name":  "alice_trial_exec_card_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\execA-clean-fixed\\run-01.png",
+        "hx":  56,
+        "hy":  49,
+        "deg":  195
+    },
+    {
+        "name":  "alice_trial_exec_card_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\execA-clean-fixed\\run-02.png",
+        "hx":  56,
+        "hy":  49,
+        "deg":  190
+    },
+    {
+        "name":  "alice_trial_exec_card_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\execA-clean-fixed\\run-03.png",
+        "hx":  85,
+        "hy":  46,
+        "deg":  0,
+        "streak":  20
+    },
+    {
+        "name":  "alice_trial_exec_card_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\execA-clean-fixed\\run-04.png",
+        "hx":  87,
+        "hy":  47,
+        "deg":  0,
+        "streak":  8
+    },
+    {
+        "name":  "alice_trial_exec_card_05.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\execA-clean-fixed\\run-05.png",
+        "hx":  88,
+        "hy":  46,
+        "deg":  0
+    },
+    {
+        "name":  "alice_trial_exec_card_06.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\execA-clean-fixed\\run-06.png",
+        "hx":  84,
+        "hy":  48,
+        "deg":  0
+    },
+    {
+        "name":  "alice_trial_exec_card_07.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\execA-clean-fixed\\run-07.png",
+        "hx":  82,
+        "hy":  48,
+        "deg":  2
+    },
+    {
+        "name":  "alice_trial_exec_card_08.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\execA-clean-fixed\\run-08.png",
+        "hx":  84,
+        "hy":  46,
+        "deg":  70,
+        "arc":  [
+                    70,
+                    48,
+                    18,
+                    5,
+                    65,
+                    1
+                ]
+    },
+    {
+        "name":  "alice_trial_exec_card_09.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\execA-clean-fixed\\run-09.png",
+        "hx":  55,
+        "hy":  56,
+        "deg":  220
+    },
+    {
+        "name":  "alice_trial_exec_card_10.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\execA-clean-fixed\\run-10.png",
+        "hx":  55,
+        "hy":  60,
+        "deg":  212
+    },
+    {
+        "name":  "alice_trial_exec_card_11.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\execA-clean-fixed\\run-11.png",
+        "hx":  53,
+        "hy":  59,
+        "deg":  210
+    },
+    {
+        "name":  "alice_trial_exec_card_12.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\execA-clean-fixed\\run-12.png",
+        "hx":  58,
+        "hy":  56,
+        "deg":  212
+    },
+    {
+        "name":  "alice_trial_exec_card_13.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\execA-clean-fixed\\run-13.png",
+        "hx":  68,
+        "hy":  58,
+        "deg":  214
+    },
+    {
+        "name":  "alice_trial_exec_duck_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\duckA-clean\\run-00.png",
+        "hx":  69,
+        "hy":  38,
+        "deg":  100,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_exec_duck_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\duckA-clean\\run-01.png",
+        "hx":  66,
+        "hy":  37,
+        "deg":  110,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_exec_duck_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\duckA-clean\\run-02.png",
+        "hx":  66,
+        "hy":  37,
+        "deg":  115,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_exec_duck_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\duckA-clean\\run-03.png",
+        "hx":  94,
+        "hy":  43,
+        "deg":  0,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_exec_duck_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\duckA-clean\\run-04.png",
+        "hx":  93,
+        "hy":  43,
+        "deg":  0,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_exec_duck_05.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\duckA-clean\\run-05.png",
+        "hx":  93,
+        "hy":  43,
+        "deg":  0,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_exec_duck_06.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\duckA-clean\\run-06.png",
+        "hx":  93,
+        "hy":  43,
+        "deg":  0,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_exec_duck_07.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\duckA-clean\\run-11.png",
+        "hx":  42,
+        "hy":  29,
+        "deg":  150,
+        "lock":  true,
+        "ell":  [
+                    64,
+                    36,
+                    32,
+                    10,
+                    10,
+                    0,
+                    170,
+                    -1
+                ]
+    },
+    {
+        "name":  "alice_trial_exec_duck_08.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\duckA-clean\\run-11.png",
+        "hx":  42,
+        "hy":  29,
+        "deg":  150,
+        "lock":  true,
+        "ell":  [
+                    64,
+                    36,
+                    32,
+                    10,
+                    10,
+                    0,
+                    170,
+                    -1
+                ]
+    },
+    {
+        "name":  "alice_trial_exec_duck_09.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\duckA-clean\\run-12.png",
+        "hx":  42,
+        "hy":  29,
+        "deg":  160,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_exec_duck_10.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\duckA-clean\\run-12.png",
+        "hx":  42,
+        "hy":  29,
+        "deg":  160,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_exec_duck_11.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\duckA-clean\\run-12.png",
+        "hx":  42,
+        "hy":  29,
+        "deg":  160,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_exec_duck_12.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\duckA-clean\\run-13.png",
+        "hx":  47,
+        "hy":  30,
+        "deg":  130,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_exec_duck_13.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\duckA-clean\\run-14.png",
+        "hx":  68,
+        "hy":  42,
+        "deg":  40,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_exec_duck_14.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\duckA-clean\\run-15.png",
+        "hx":  69,
+        "hy":  57,
+        "deg":  15,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_exec_duck_15.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\duckA-clean\\run-15.png",
+        "hx":  69,
+        "hy":  57,
+        "deg":  15,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_exec_moth_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\moth2-clean\\run-00.png",
+        "hx":  73,
+        "hy":  45,
+        "deg":  300
+    },
+    {
+        "name":  "alice_trial_exec_moth_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\moth2-clean\\run-01.png",
+        "hx":  73,
+        "hy":  30,
+        "deg":  300
+    },
+    {
+        "name":  "alice_trial_exec_moth_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\moth2-clean\\run-02.png",
+        "hx":  73,
+        "hy":  28,
+        "deg":  300
+    },
+    {
+        "name":  "alice_trial_exec_moth_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\moth2-clean\\run-03.png",
+        "hx":  80,
+        "hy":  67,
+        "deg":  290,
+        "streak":  14
+    },
+    {
+        "name":  "alice_trial_exec_moth_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\moth2-clean\\run-04.png",
+        "hx":  80,
+        "hy":  68,
+        "deg":  290
+    },
+    {
+        "name":  "alice_trial_exec_moth_05.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\moth2-clean\\run-05.png",
+        "hx":  80,
+        "hy":  68,
+        "deg":  290
+    },
+    {
+        "name":  "alice_trial_exec_moth_06.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\moth2-clean\\run-06.png",
+        "hx":  80,
+        "hy":  68,
+        "deg":  290
+    },
+    {
+        "name":  "alice_trial_exec_moth_07.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\moth2-clean\\run-07.png",
+        "hx":  80,
+        "hy":  68,
+        "deg":  290
+    },
+    {
+        "name":  "alice_trial_exec_moth_08.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\moth2-clean\\run-08.png",
+        "hx":  80,
+        "hy":  68,
+        "deg":  290
+    },
+    {
+        "name":  "alice_trial_exec_moth_09.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\moth2-clean\\run-09.png",
+        "hx":  80,
+        "hy":  68,
+        "deg":  290
+    },
+    {
+        "name":  "alice_trial_exec_moth_10.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\moth2-clean\\run-10.png",
+        "hx":  80,
+        "hy":  68,
+        "deg":  290
+    },
+    {
+        "name":  "alice_trial_exec_moth_11.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\moth2-clean\\run-11.png",
+        "hx":  80,
+        "hy":  67,
+        "deg":  290
+    },
+    {
+        "name":  "alice_trial_exec_moth_12.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\moth2-clean\\run-12.png",
+        "hx":  80,
+        "hy":  64,
+        "deg":  280
+    },
+    {
+        "name":  "alice_trial_exec_moth_13.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\moth2-clean\\run-13.png",
+        "hx":  78,
+        "hy":  57,
+        "deg":  255
+    },
+    {
+        "name":  "alice_trial_exec_moth_14.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\moth2-clean\\run-14.png",
+        "hx":  74,
+        "hy":  55,
+        "deg":  235
+    },
+    {
+        "name":  "alice_trial_exec_moth_15.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\moth2-clean\\run-15.png",
+        "hx":  68,
+        "hy":  57,
+        "deg":  216
+    },
+    {
+        "name":  "alice_trial_exec_racer_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision21\\alice\\rat2-cut\\f00.png",
+        "hx":  82,
+        "hy":  44,
+        "deg":  320
+    },
+    {
+        "name":  "alice_trial_exec_racer_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision21\\alice\\rat2-cut\\f01.png",
+        "hx":  80,
+        "hy":  26,
+        "deg":  300
+    },
+    {
+        "name":  "alice_trial_exec_racer_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision21\\alice\\rat2-cut\\f02.png",
+        "hx":  86,
+        "hy":  76,
+        "deg":  340
+    },
+    {
+        "name":  "alice_trial_exec_racer_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision21\\alice\\rat2-cut\\f03.png",
+        "hx":  85,
+        "hy":  72,
+        "deg":  340
+    },
+    {
+        "name":  "alice_trial_exec_racer_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision21\\alice\\rat2-cut\\f04.png",
+        "hx":  83,
+        "hy":  57,
+        "deg":  315
+    },
+    {
+        "name":  "alice_trial_exec_racer_05.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision21\\alice\\rat2-cut\\f05.png",
+        "hx":  80,
+        "hy":  41,
+        "deg":  300
+    },
+    {
+        "name":  "alice_trial_exec_racer_06.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision21\\alice\\rat2-cut\\f06.png",
+        "hx":  86,
+        "hy":  76,
+        "deg":  340
+    },
+    {
+        "name":  "alice_trial_exec_racer_07.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision21\\alice\\rat2-cut\\f07.png",
+        "hx":  86,
+        "hy":  76,
+        "deg":  340
+    },
+    {
+        "name":  "alice_trial_exec_racer_08.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision21\\alice\\rat2-cut\\f08.png",
+        "hx":  85,
+        "hy":  72,
+        "deg":  340
+    },
+    {
+        "name":  "alice_trial_exec_racer_09.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision21\\alice\\rat2-cut\\f09.png",
+        "hx":  72,
+        "hy":  40,
+        "deg":  300
+    },
+    {
+        "name":  "alice_trial_exec_racer_10.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision21\\alice\\rat2-cut\\f10.png",
+        "hx":  44,
+        "hy":  43,
+        "deg":  10
+    },
+    {
+        "name":  "alice_trial_exec_racer_11.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision21\\alice\\rat2-cut\\f11.png",
+        "hx":  45,
+        "hy":  48,
+        "deg":  5
+    },
+    {
+        "name":  "alice_trial_exec_racer_12.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision21\\alice\\rat2-cut\\f12.png",
+        "hx":  43,
+        "hy":  50,
+        "deg":  0
+    },
+    {
+        "name":  "alice_trial_exec_racer_13.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision21\\alice\\rat2-cut\\f13.png",
+        "hx":  54,
+        "hy":  47,
+        "deg":  330
+    },
+    {
+        "name":  "alice_trial_exec_racer_14.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision21\\alice\\rat2-cut\\f14.png",
+        "hx":  67,
+        "hy":  56,
+        "deg":  330
+    },
+    {
+        "name":  "alice_trial_exec_sheet_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision18\\sheet-c-clean\\00.png",
+        "hx":  64,
+        "hy":  58,
+        "deg":  216
+    },
+    {
+        "name":  "alice_trial_exec_sheet_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision18\\sheet-c-clean\\01.png",
+        "hx":  79,
+        "hy":  54,
+        "deg":  225
+    },
+    {
+        "name":  "alice_trial_exec_sheet_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision18\\sheet-c-clean\\02.png",
+        "hx":  72,
+        "hy":  39,
+        "deg":  345
+    },
+    {
+        "name":  "alice_trial_exec_sheet_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision18\\sheet-c-clean\\03.png",
+        "hx":  72,
+        "hy":  38,
+        "deg":  345
+    },
+    {
+        "name":  "alice_trial_exec_sheet_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision18\\sheet-c-clean\\04.png",
+        "hx":  72,
+        "hy":  38,
+        "deg":  345
+    },
+    {
+        "name":  "alice_trial_exec_sheet_05.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision18\\sheet-c-clean\\05.png",
+        "hx":  72,
+        "hy":  38,
+        "deg":  345
+    },
+    {
+        "name":  "alice_trial_exec_sheet_06.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision18\\sheet-c-clean\\06.png",
+        "hx":  73,
+        "hy":  36,
+        "deg":  345
+    },
+    {
+        "name":  "alice_trial_exec_sheet_07.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision18\\sheet-c-clean\\07.png",
+        "hx":  75,
+        "hy":  74,
+        "deg":  270,
+        "streak":  14
+    },
+    {
+        "name":  "alice_trial_exec_sheet_08.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision18\\sheet-c-clean\\08.png",
+        "hx":  75,
+        "hy":  74,
+        "deg":  270
+    },
+    {
+        "name":  "alice_trial_exec_sheet_09.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision18\\sheet-c-clean\\09.png",
+        "hx":  75,
+        "hy":  74,
+        "deg":  270
+    },
+    {
+        "name":  "alice_trial_exec_sheet_10.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision18\\sheet-c-clean\\10.png",
+        "hx":  75,
+        "hy":  74,
+        "deg":  272
+    },
+    {
+        "name":  "alice_trial_exec_sheet_11.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision18\\sheet-c-clean\\11.png",
+        "hx":  78,
+        "hy":  72,
+        "deg":  270
+    },
+    {
+        "name":  "alice_trial_exec_sheet_12.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision18\\sheet-c-clean\\12.png",
+        "hx":  84,
+        "hy":  60,
+        "deg":  300
+    },
+    {
+        "name":  "alice_trial_exec_sheet_13.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision18\\sheet-c-clean\\13.png",
+        "hx":  80,
+        "hy":  40,
+        "deg":  20
+    },
+    {
+        "name":  "alice_trial_exec_sheet_14.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision18\\sheet-c-clean\\14.png",
+        "hx":  75,
+        "hy":  42,
+        "deg":  10
+    },
+    {
+        "name":  "alice_trial_exec_sheet_15.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision18\\sheet-c-clean\\15.png",
+        "hx":  64,
+        "hy":  57,
+        "deg":  216
+    },
+    {
+        "name":  "alice_trial_fall_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_fall_00.png",
+        "hx":  61.2,
+        "hy":  53.6,
+        "deg":  -145.4,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_fall_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_fall_01.png",
+        "hx":  62.2,
+        "hy":  53.6,
+        "deg":  -145.4,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_fall_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_fall_02.png",
+        "hx":  61.2,
+        "hy":  53.6,
+        "deg":  -145.4,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_fall_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_fall_03.png",
+        "hx":  60.2,
+        "hy":  50.6,
+        "deg":  -145.4,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_fall_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_fall_04.png",
+        "hx":  59.2,
+        "hy":  49.6,
+        "deg":  -145.4,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_fall_05.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_fall_05.png",
+        "hx":  60.2,
+        "hy":  49.6,
+        "deg":  -145.4,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_fall_06.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_fall_06.png",
+        "hx":  61.2,
+        "hy":  50.6,
+        "deg":  -145.4,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_fall_07.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_fall_07.png",
+        "hx":  60.2,
+        "hy":  52.6,
+        "deg":  -145.4,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_fidget_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-fidget4\\run-00.png",
+        "hx":  70,
+        "hy":  57,
+        "deg":  216
+    },
+    {
+        "name":  "alice_trial_fidget_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-fidget4\\run-01.png",
+        "hx":  67,
+        "hy":  58,
+        "deg":  216
+    },
+    {
+        "name":  "alice_trial_fidget_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-fidget4\\run-02.png",
+        "hx":  64,
+        "hy":  58,
+        "deg":  216
+    },
+    {
+        "name":  "alice_trial_fidget_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-fidget4\\run-03.png",
+        "hx":  63,
+        "hy":  58,
+        "deg":  216
+    },
+    {
+        "name":  "alice_trial_fidget_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-fidget4\\run-04.png",
+        "hx":  63,
+        "hy":  58,
+        "deg":  217
+    },
+    {
+        "name":  "alice_trial_fidget_05.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-fidget4\\run-05.png",
+        "hx":  63,
+        "hy":  58,
+        "deg":  216
+    },
+    {
+        "name":  "alice_trial_fidget_06.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-fidget4\\run-06.png",
+        "hx":  62,
+        "hy":  58,
+        "deg":  216
+    },
+    {
+        "name":  "alice_trial_fidget_07.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-fidget4\\run-07.png",
+        "hx":  58,
+        "hy":  58,
+        "deg":  225
+    },
+    {
+        "name":  "alice_trial_fidget_08.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-fidget4\\run-08.png",
+        "hx":  54,
+        "hy":  58,
+        "deg":  235
+    },
+    {
+        "name":  "alice_trial_fidget_09.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-fidget4\\run-09.png",
+        "hx":  53,
+        "hy":  58,
+        "deg":  240
+    },
+    {
+        "name":  "alice_trial_fidget_10.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-fidget4\\run-10.png",
+        "hx":  53,
+        "hy":  58,
+        "deg":  241
+    },
+    {
+        "name":  "alice_trial_fidget_11.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-fidget4\\run-11.png",
+        "hx":  53,
+        "hy":  58,
+        "deg":  240
+    },
+    {
+        "name":  "alice_trial_fidget_12.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-fidget4\\run-12.png",
+        "hx":  53,
+        "hy":  58,
+        "deg":  239
+    },
+    {
+        "name":  "alice_trial_fidget_13.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-fidget4\\run-13.png",
+        "hx":  54,
+        "hy":  57,
+        "deg":  235
+    },
+    {
+        "name":  "alice_trial_fidget_14.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-fidget4\\run-14.png",
+        "hx":  58,
+        "hy":  59,
+        "deg":  225
+    },
+    {
+        "name":  "alice_trial_fidget_15.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-fidget4\\run-15.png",
+        "hx":  63,
+        "hy":  58,
+        "deg":  218
+    },
+    {
+        "name":  "alice_trial_finisher_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\finC-clean\\run-00.png",
+        "hx":  59,
+        "hy":  54,
+        "deg":  15,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_finisher_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\finC-clean\\run-01.png",
+        "hx":  45,
+        "hy":  48,
+        "deg":  180,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_finisher_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\finC-clean\\run-02.png",
+        "hx":  44,
+        "hy":  48,
+        "deg":  175,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_finisher_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\finC-clean\\run-04.png",
+        "hx":  44,
+        "hy":  48,
+        "deg":  175,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_finisher_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\finC-clean\\run-06.png",
+        "hx":  45,
+        "hy":  47,
+        "deg":  175,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_finisher_05.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\finC-clean\\run-07.png",
+        "hx":  55,
+        "hy":  46,
+        "deg":  185,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_finisher_06.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\finC-clean\\run-09.png",
+        "hx":  90,
+        "hy":  50,
+        "deg":  0,
+        "lock":  true,
+        "ell":  [
+                    64,
+                    50,
+                    36,
+                    8,
+                    0,
+                    180,
+                    360
+                ]
+    },
+    {
+        "name":  "alice_trial_finisher_07.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\finC-clean\\run-09.png",
+        "hx":  90,
+        "hy":  50,
+        "deg":  0,
+        "lock":  true,
+        "ell":  [
+                    64,
+                    50,
+                    36,
+                    8,
+                    0,
+                    180,
+                    360
+                ]
+    },
+    {
+        "name":  "alice_trial_finisher_08.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\finC-clean\\run-10.png",
+        "hx":  83,
+        "hy":  50,
+        "deg":  25,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_finisher_09.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\finC-clean\\run-11.png",
+        "hx":  82,
+        "hy":  50,
+        "deg":  40,
+        "len":  0.45,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_finisher_10.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\finC-clean\\run-12.png",
+        "hx":  82,
+        "hy":  50,
+        "deg":  40,
+        "len":  0.45,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_finisher_11.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\finC-clean\\run-13.png",
+        "hx":  79,
+        "hy":  51,
+        "deg":  25,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_finisher_12.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\finC-clean\\run-14.png",
+        "hx":  74,
+        "hy":  52,
+        "deg":  15,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_finisher_13.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\finC-clean\\run-14.png",
+        "hx":  74,
+        "hy":  52,
+        "deg":  15,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_finisher_14.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\finC-clean\\run-15.png",
+        "hx":  69,
+        "hy":  57,
+        "deg":  15,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_finisher_15.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\finC-clean\\run-15.png",
+        "hx":  69,
+        "hy":  57,
+        "deg":  15,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_hurt_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_hurt_00.png",
+        "hx":  55.9,
+        "hy":  50.2,
+        "deg":  -45.7
+    },
+    {
+        "name":  "alice_trial_hurt_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_hurt_01.png",
+        "hx":  69.9,
+        "hy":  56.1,
+        "deg":  -37.8
+    },
+    {
+        "name":  "alice_trial_hurt_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_hurt_02.png",
+        "hx":  68.9,
+        "hy":  56.1,
+        "deg":  -38.9
+    },
+    {
+        "name":  "alice_trial_idle_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-fidget4\\run-00.png",
+        "hx":  70,
+        "hy":  57,
+        "deg":  216
+    },
+    {
+        "name":  "alice_trial_idle_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_idle_01.png",
+        "hx":  69,
+        "hy":  57.1,
+        "deg":  -36.5
+    },
+    {
+        "name":  "alice_trial_idle_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_idle_02.png",
+        "hx":  68,
+        "hy":  57,
+        "deg":  -35.9
+    },
+    {
+        "name":  "alice_trial_idle_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_idle_03.png",
+        "hx":  69.1,
+        "hy":  57.1,
+        "deg":  -36.4
+    },
+    {
+        "name":  "alice_trial_jump_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_jump_00.png",
+        "hx":  67.2,
+        "hy":  28.9,
+        "deg":  -15,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_jump_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_jump_01.png",
+        "hx":  67.2,
+        "hy":  29.9,
+        "deg":  -15,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_jump_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_jump_02.png",
+        "hx":  68.2,
+        "hy":  30.9,
+        "deg":  -15,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_jump_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_jump_03.png",
+        "hx":  68.4,
+        "hy":  31.2,
+        "deg":  -20,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_jump_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_jump_04.png",
+        "hx":  78.8,
+        "hy":  41.2,
+        "deg":  -30.6
+    },
+    {
+        "name":  "alice_trial_jump_05.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_jump_05.png",
+        "hx":  77.6,
+        "hy":  37.5,
+        "deg":  -35.3
+    },
+    {
+        "name":  "alice_trial_jump_06.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_jump_06.png",
+        "hx":  74,
+        "hy":  33.6,
+        "deg":  -20
+    },
+    {
+        "name":  "alice_trial_land_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_land_00.png",
+        "hx":  79.1,
+        "hy":  61.1,
+        "deg":  -28.2
+    },
+    {
+        "name":  "alice_trial_land_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_land_01.png",
+        "hx":  72.5,
+        "hy":  57.6,
+        "deg":  -34.5
+    },
+    {
+        "name":  "alice_trial_parry_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\parryC-clean\\run-00.png",
+        "hx":  85,
+        "hy":  42,
+        "deg":  90
+    },
+    {
+        "name":  "alice_trial_parry_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\parryC-clean\\run-01.png",
+        "hx":  85,
+        "hy":  42,
+        "deg":  90
+    },
+    {
+        "name":  "alice_trial_parry_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\parryC-clean\\run-02.png",
+        "hx":  85,
+        "hy":  42,
+        "deg":  90
+    },
+    {
+        "name":  "alice_trial_parry_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\parryC-clean\\run-03.png",
+        "hx":  85,
+        "hy":  42,
+        "deg":  90
+    },
+    {
+        "name":  "alice_trial_parry_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\parryC-clean\\run-04.png",
+        "hx":  76,
+        "hy":  37,
+        "deg":  105
+    },
+    {
+        "name":  "alice_trial_parry_05.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\parryC-clean\\run-05.png",
+        "hx":  58,
+        "hy":  28,
+        "deg":  150
+    },
+    {
+        "name":  "alice_trial_parry_06.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\parryC-clean\\run-06.png",
+        "hx":  58,
+        "hy":  28,
+        "deg":  152
+    },
+    {
+        "name":  "alice_trial_parry_07.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\parryC-clean\\run-07.png",
+        "hx":  58,
+        "hy":  28,
+        "deg":  152
+    },
+    {
+        "name":  "alice_trial_parry_08.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\parryC-clean\\run-08.png",
+        "hx":  58,
+        "hy":  28,
+        "deg":  150
+    },
+    {
+        "name":  "alice_trial_parry_09.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\parryC-clean\\run-09.png",
+        "hx":  58,
+        "hy":  27,
+        "deg":  145
+    },
+    {
+        "name":  "alice_trial_parry_10.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\parryC-clean\\run-10.png",
+        "hx":  74,
+        "hy":  44,
+        "deg":  60
+    },
+    {
+        "name":  "alice_trial_parry_11.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\parryC-clean\\run-11.png",
+        "hx":  68,
+        "hy":  57,
+        "deg":  330
+    },
+    {
+        "name":  "alice_trial_pickup_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_pickup_00.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_pickup_01.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_pickup_02.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_pickup_03.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_pickup_04.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_05.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_pickup_05.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_06.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_pickup_06.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_07.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_pickup_07.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_08.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_pickup_08.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_09.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_pickup_09.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_10.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_pickup_10.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_11.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_pickup_11.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_12.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_pickup_12.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_13.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_pickup_13.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_14.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_pickup_14.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_rest_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-fidget4\\run-00.png",
+        "hx":  70,
+        "hy":  57,
+        "deg":  216
+    },
+    {
+        "name":  "alice_trial_rest_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_01.png",
+        "hx":  72.9,
+        "hy":  44,
+        "deg":  -87.7
+    },
+    {
+        "name":  "alice_trial_rest_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_02.png",
+        "hx":  73,
+        "hy":  44,
+        "deg":  -89.7
+    },
+    {
+        "name":  "alice_trial_rest_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_03.png",
+        "hx":  73,
+        "hy":  44,
+        "deg":  -89.7
+    },
+    {
+        "name":  "alice_trial_rest_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_04.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_05.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_05.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_06.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_06.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_07.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_07.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_08.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_08.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_09.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_09.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_10.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_10.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_11.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_11.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_12.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_12.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_13.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_13.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_14.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_14.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_15.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_15.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_16.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_16.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_17.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_17.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_18.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_18.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_19.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_19.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_20.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_20.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_21.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_21.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_22.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_22.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_23.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_23.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_24.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_24.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_25.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_25.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_26.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_rest_26.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_run_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision15\\run\\clean-a\\run-00.png",
+        "hx":  65,
+        "hy":  58,
+        "deg":  182,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_run_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision15\\run\\clean-a\\run-01.png",
+        "hx":  67,
+        "hy":  59,
+        "deg":  189,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_run_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision15\\run\\clean-a\\run-02.png",
+        "hx":  72,
+        "hy":  56,
+        "deg":  205,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_run_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision15\\run\\clean-a\\run-03.png",
+        "hx":  75,
+        "hy":  51,
+        "deg":  221,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_run_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision15\\run\\clean-a\\run-04.png",
+        "hx":  76,
+        "hy":  51,
+        "deg":  228,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_run_05.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision15\\run\\clean-a\\run-05.png",
+        "hx":  75,
+        "hy":  54,
+        "deg":  221,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_run_06.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision15\\run\\clean-a\\run-06.png",
+        "hx":  72,
+        "hy":  56,
+        "deg":  205,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_run_07.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision15\\run\\clean-a\\run-07.png",
+        "hx":  67,
+        "hy":  56,
+        "deg":  189,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_salts_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_salts_00.png",
+        "hx":  69.4,
+        "hy":  56.5,
+        "deg":  -34.6
+    },
+    {
+        "name":  "alice_trial_salts_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_salts_01.png",
+        "hx":  69.4,
+        "hy":  56.5,
+        "deg":  -34.6
+    },
+    {
+        "name":  "alice_trial_salts_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_salts_02.png",
+        "hx":  70.4,
+        "hy":  56.5,
+        "deg":  -34.6
+    },
+    {
+        "name":  "alice_trial_salts_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_salts_03.png",
+        "hx":  66.2,
+        "hy":  57.2,
+        "deg":  -31.1
+    },
+    {
+        "name":  "alice_trial_salts_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_salts_04.png",
+        "hx":  68.4,
+        "hy":  56.5,
+        "deg":  -34.6
+    },
+    {
+        "name":  "alice_trial_slash_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\slashD-clean\\run-00.png",
+        "hx":  51,
+        "hy":  37,
+        "deg":  100,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_slash_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\slashD-clean\\run-01.png",
+        "hx":  47,
+        "hy":  29,
+        "deg":  135,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_slash_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\slashD-clean\\run-02.png",
+        "hx":  47,
+        "hy":  27,
+        "deg":  160,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_slash_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\slashD-clean\\run-03.png",
+        "hx":  50,
+        "hy":  26,
+        "deg":  175,
+        "len":  0.7,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_slash_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\slashD-clean\\run-04.png",
+        "hx":  87,
+        "hy":  63,
+        "deg":  -45,
+        "lock":  true,
+        "ell":  [
+                    66,
+                    46,
+                    30,
+                    12,
+                    -35,
+                    0,
+                    180,
+                    -1
+                ]
+    },
+    {
+        "name":  "alice_trial_slash_05.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\slashD-clean\\run-05.png",
+        "hx":  85,
+        "hy":  60,
+        "deg":  -75,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_slash_06.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\slashD-clean\\run-06.png",
+        "hx":  85,
+        "hy":  59,
+        "deg":  -90,
+        "len":  0.45,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_slash_07.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\slashD-clean\\run-07.png",
+        "hx":  85,
+        "hy":  59,
+        "deg":  -95,
+        "len":  0.45,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_slash_08.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\slashD-clean\\run-08.png",
+        "hx":  85,
+        "hy":  59,
+        "deg":  -75,
+        "len":  0.45,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_slash_09.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\slashD-clean\\run-09.png",
+        "hx":  83,
+        "hy":  58,
+        "deg":  -60,
+        "len":  0.7,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_slash_10.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\slashD-clean\\run-10.png",
+        "hx":  76,
+        "hy":  57,
+        "deg":  -10,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_slash_11.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\alice\\slashD-clean\\run-11.png",
+        "hx":  69,
+        "hy":  57,
+        "deg":  15,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_slide_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_slide_00.png",
+        "hx":  52,
+        "hy":  62,
+        "deg":  180
+    },
+    {
+        "name":  "alice_trial_slide_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_slide_01.png",
+        "hx":  41.1,
+        "hy":  67.3,
+        "deg":  168.8
+    },
+    {
+        "name":  "alice_trial_slide_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_slide_02.png",
+        "hx":  39.1,
+        "hy":  68.3,
+        "deg":  168.8
+    },
+    {
+        "name":  "alice_trial_slide_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_slide_03.png",
+        "hx":  72.4,
+        "hy":  58.5,
+        "deg":  -33.4
+    },
+    {
+        "name":  "alice_trial_spin_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-spinC\\run-00.png",
+        "hx":  66,
+        "hy":  48,
+        "deg":  200
+    },
+    {
+        "name":  "alice_trial_spin_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-spinC\\run-01.png",
+        "hx":  47,
+        "hy":  44,
+        "deg":  160
+    },
+    {
+        "name":  "alice_trial_spin_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-spinC\\run-02.png",
+        "hx":  46,
+        "hy":  43,
+        "deg":  165
+    },
+    {
+        "name":  "alice_trial_spin_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-spinC\\run-03.png",
+        "hx":  62,
+        "hy":  52,
+        "deg":  178
+    },
+    {
+        "name":  "alice_trial_spin_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-spinC\\run-04.png",
+        "hx":  91,
+        "hy":  38,
+        "theta":  345,
+        "cx":  68,
+        "smear":  178
+    },
+    {
+        "name":  "alice_trial_spin_05.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-spinC\\run-05.png",
+        "hx":  72,
+        "hy":  40,
+        "theta":  270,
+        "cx":  70,
+        "smear":  345
+    },
+    {
+        "name":  "alice_trial_spin_06.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-spinC\\run-06.png",
+        "hx":  46,
+        "hy":  36,
+        "theta":  195,
+        "cx":  70,
+        "smear":  270
+    },
+    {
+        "name":  "alice_trial_spin_07.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-spinC\\run-07.png",
+        "hx":  46,
+        "hy":  37,
+        "theta":  180,
+        "cx":  68,
+        "smear":  195
+    },
+    {
+        "name":  "alice_trial_spin_08.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-spinC\\run-08.png",
+        "hx":  51,
+        "hy":  42,
+        "theta":  150,
+        "cx":  66,
+        "smear":  180
+    },
+    {
+        "name":  "alice_trial_spin_09.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-spinC\\run-09.png",
+        "hx":  89,
+        "hy":  51,
+        "theta":  15,
+        "cx":  70,
+        "smear":  150
+    },
+    {
+        "name":  "alice_trial_spin_10.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-spinC\\run-10.png",
+        "hx":  87,
+        "hy":  49,
+        "theta":  5,
+        "cx":  70
+    },
+    {
+        "name":  "alice_trial_spin_11.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-spinC\\run-11.png",
+        "hx":  86,
+        "hy":  50,
+        "theta":  0,
+        "cx":  70
+    },
+    {
+        "name":  "alice_trial_spin_12.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-spinC\\run-12.png",
+        "hx":  85,
+        "hy":  51,
+        "deg":  350
+    },
+    {
+        "name":  "alice_trial_spin_13.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-spinC\\run-13.png",
+        "hx":  83,
+        "hy":  51,
+        "deg":  338
+    },
+    {
+        "name":  "alice_trial_spin_14.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-spinC\\run-14.png",
+        "hx":  79,
+        "hy":  53,
+        "deg":  318
+    },
+    {
+        "name":  "alice_trial_spin_15.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision03\\pipeline\\clean-spinC\\run-15.png",
+        "hx":  69,
+        "hy":  57,
+        "deg":  214
+    },
+    {
+        "name":  "alice_trial_stepoff_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_stepoff_00.png",
+        "hx":  77,
+        "hy":  47.6,
+        "deg":  -20
+    },
+    {
+        "name":  "alice_trial_stepoff_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_stepoff_01.png",
+        "hx":  76,
+        "hy":  43.6,
+        "deg":  -20
+    },
+    {
+        "name":  "alice_trial_tearfree_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\tear-clean\\f00.png",
+        "hx":  73,
+        "hy":  50,
+        "deg":  70
+    },
+    {
+        "name":  "alice_trial_tearfree_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\tear-clean\\f01.png",
+        "hx":  73,
+        "hy":  51,
+        "deg":  70
+    },
+    {
+        "name":  "alice_trial_tearfree_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\tear-clean\\f02.png",
+        "hx":  89,
+        "hy":  44,
+        "deg":  25
+    },
+    {
+        "name":  "alice_trial_tearfree_03.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\tear-clean\\f03.png",
+        "hx":  89,
+        "hy":  44,
+        "deg":  25
+    },
+    {
+        "name":  "alice_trial_tearfree_04.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\tear-clean\\f04.png",
+        "hx":  89,
+        "hy":  44,
+        "deg":  25
+    },
+    {
+        "name":  "alice_trial_tearfree_05.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\tear-clean\\f05.png",
+        "hx":  85,
+        "hy":  46,
+        "deg":  30
+    },
+    {
+        "name":  "alice_trial_tearfree_06.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision19\\alice\\tear-clean\\f06.png",
+        "hx":  70,
+        "hy":  54,
+        "deg":  216
+    },
+    {
+        "name":  "alice_trial_wake_00.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_wake_00.png",
+        "hx":  67.2,
+        "hy":  63.2,
+        "deg":  -24.3
+    },
+    {
+        "name":  "alice_trial_wake_01.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_wake_01.png",
+        "hx":  75.9,
+        "hy":  58.1,
+        "deg":  -34.2
+    },
+    {
+        "name":  "alice_trial_wake_02.png",
+        "src":  "C:\\Projects\\alice\\Art\\Reviews\\Alice\\Revision23\\frames\\clean\\alice_trial_wake_02.png",
+        "hx":  69.9,
+        "hy":  56.1,
+        "deg":  -38.9
+    }
+]

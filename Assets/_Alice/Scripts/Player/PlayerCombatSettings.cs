@@ -79,9 +79,9 @@ namespace Alice.Player
         [SerializeField, Min(0.01f)] private float _wakeFadeTime = 0.35f;
 
         [Header("Rest in the armchair (GDD section 4)")]
-        [Tooltip("Stabbing the needle into the pincushion and sitting down; a hit before it ends cancels the rest.")]
+        [Tooltip("Stabbing the sword into the pincushion and sitting down; a hit before it ends cancels the rest.")]
         [SerializeField, Min(0.05f)] private float _restSitTime = 2.4f;
-        [Tooltip("Getting up and pulling the needle out: the same frames backwards.")]
+        [Tooltip("Getting up and pulling the sword out: the same frames backwards.")]
         [SerializeField, Min(0.05f)] private float _restRiseTime = 1.6f;
 
         [Header("Impact: a landed blow freezes Alice's strike for a moment and shakes the camera")]
@@ -113,18 +113,20 @@ namespace Alice.Player
         [SerializeField, Min(1f)] private float _executionConfidenceFactor = 3f;
 
         [Header("Special techniques: chosen at a rest, used with UseAbility, paid in confidence")]
-        [Tooltip("Spin strike: the needle sweeps all round, behind and in front; a killing spin beheads. A visible coil, a whip round long enough for the turn to read, then the overbalance.")]
+        [Tooltip("Spin strike: the sword sweeps all round, behind and in front; a killing spin beheads. A visible coil, a whip round long enough for the turn to read, then the overbalance.")]
         [SerializeField] private TechniqueSpec[] _techniques =
         {
             new TechniqueSpec(TechniqueIds.SpinStrike,
                 new MeleeMove(HitKind.Spin, 0.18f, 0.32f, 0.26f, -2.2f, 2.2f, 1.6f, 2f, 3), 30f)
         };
 
-        [Header("Needle")]
-        [Tooltip("First hit on the ground: far and narrow.")]
-        [SerializeField] private MeleeMove _thrust = new MeleeMove(HitKind.Thrust, 0.1f, 0.1f, 0.3f, 0.2f, 2.75f, 0.5f, 1.6f, 1);
-        [Tooltip("Second hit of the combo: a wide arc in front, as far as the thrust, so a thrust that lands is never followed by a slash that falls short (owner, 9 November 2026).")]
+        [Header("Mirror-shard sword: cuts only, a combo of three (GDD 0.44)")]
+        [Tooltip("First blow on the ground: a downward slash, a wide arc in front.")]
         [SerializeField] private MeleeMove _slash = new MeleeMove(HitKind.Slash, 0.14f, 0.1f, 0.3f, 0f, 2.75f, 2.6f, 1.5f, 1);
+        [Tooltip("Second blow: a rising cut from low behind to high in front, as far as the slash, so a landed blow is never followed by one that falls short (owner, 9 November 2026).")]
+        [SerializeField] private MeleeMove _cut = new MeleeMove(HitKind.Slash, 0.14f, 0.1f, 0.28f, 0f, 2.75f, 3f, 1.8f, 1);
+        [Tooltip("Third blow: the sword drawn far back behind the body, held, then swept flat round her at chest height (owner, 10 November 2026: swings in depth, not only up and down), one point stronger. Its long wind-up is the price: once started it cannot be broken off, not even by a blow.")]
+        [SerializeField] private MeleeMove _finisher = new MeleeMove(HitKind.Slash, 0.4f, 0.12f, 0.5f, 0f, 3f, 2.6f, 1.6f, 2);
         [Tooltip("Attack in the air: the same arc, reaching below the feet.")]
         [SerializeField] private MeleeMove _airSlash = new MeleeMove(HitKind.Slash, 0.12f, 0.1f, 0.2f, 0f, 2f, 2.6f, 1.2f, 1);
         [SerializeField, Range(0f, 0.2f)] private float _attackBufferTime = 0.12f;
@@ -137,7 +139,7 @@ namespace Alice.Player
         [Tooltip("After a successful parry the next attack within this time is the counter.")]
         [SerializeField, Min(0f)] private float _counterWindow = 0.9f;
         [SerializeField, Range(0f, 0.2f)] private float _parryBufferTime = 0.08f;
-        [Tooltip("Deep thrust into the opened enemy; strong enough to kill an ordinary soldier.")]
+        [Tooltip("Flat sweep through the opened enemy; strong enough to kill an ordinary soldier.")]
         [SerializeField] private MeleeMove _counter = new MeleeMove(HitKind.Counter, 0.05f, 0.1f, 0.45f, 0.2f, 2.75f, 1f, 1.6f, 2);
 
         [Header("Executions")]
@@ -153,9 +155,9 @@ namespace Alice.Player
         public float RestRiseTime => _restRiseTime;
 
         /// <summary>How long a landed blow of this kind freezes the strike, and how hard it shakes the camera.</summary>
-        public void ImpactOf(HitKind kind, out float hitStop, out float shakePixels)
+        public void ImpactOf(HitKind kind, bool finisher, out float hitStop, out float shakePixels)
         {
-            bool heavy = kind == HitKind.Spin || kind == HitKind.Counter;
+            bool heavy = finisher || kind == HitKind.Spin || kind == HitKind.Counter;
             hitStop = heavy ? _heavyHitStop : _hitStop;
             shakePixels = heavy ? _heavyHitShakePixels : _hitShakePixels;
         }
@@ -174,8 +176,9 @@ namespace Alice.Player
         public float DefeatDarkTime => _defeatDarkTime;
         public float WakeTime => _wakeTime;
         public float WakeFadeTime => Mathf.Min(_wakeFadeTime, _wakeTime);
-        public MeleeMove Thrust => _thrust;
         public MeleeMove Slash => _slash;
+        public MeleeMove Cut => _cut;
+        public MeleeMove Finisher => _finisher;
         public MeleeMove AirSlash => _airSlash;
         public float AttackBufferTime => _attackBufferTime;
         public float ParryDuration => _parryDuration;

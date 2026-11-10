@@ -22,7 +22,7 @@ namespace Alice.Player
         public StrikeFrames Frames => _frames;
     }
 
-    /// <summary>Frames of one needle strike, each group spread over its attack phase.</summary>
+    /// <summary>Frames of one sword strike, each group spread over its attack phase.</summary>
     [Serializable]
     public struct StrikeFrames
     {
@@ -106,16 +106,15 @@ namespace Alice.Player
         [Tooltip("Shorter air time lands without the crouch.")]
         [SerializeField, Min(0f)] private float _landMinAirTime = 0.2f;
 
-        [Header("Needle thrust, spread over each attack phase")]
-        [SerializeField] private Sprite[] _thrustWindup = new Sprite[0];
-        [SerializeField] private Sprite[] _thrustActive = new Sprite[0];
-        [SerializeField] private Sprite[] _thrustRecovery = new Sprite[0];
-
-        [Header("Slash (second hit of the combo) and the air attack")]
+        [Header("Sword combo: slash, rising cut, finisher; and the air attack")]
         [SerializeField] private StrikeFrames _slash;
+        [Tooltip("While empty, the slash stands in.")]
+        [SerializeField] private StrikeFrames _cut;
+        [Tooltip("While empty, the slash stands in.")]
+        [SerializeField] private StrikeFrames _finisher;
         [SerializeField] private StrikeFrames _airSlash;
 
-        [Header("Counter after a parry; the thrust stands in while it has no frames")]
+        [Header("Counter after a parry; the slash stands in while it has no frames")]
         [SerializeField] private StrikeFrames _counter;
 
         [Header("Executions, by the enemy type's execution ID")]
@@ -286,7 +285,7 @@ namespace Alice.Player
             _salts = salts;
         }
 
-        [Tooltip("Stabbing the needle into the pincushion and sitting down in the armchair, spread over the sit; the chair, spools and cushion are drawn into every frame. Played backwards to get up.")]
+        [Tooltip("Stabbing the sword into the pincushion and sitting down in the armchair, spread over the sit; the chair, spools and cushion are drawn into every frame. Played backwards to get up.")]
         [SerializeField] private Sprite[] _restSit = new Sprite[0];
         [Tooltip("Dozing in the chair, looped while she rests: the head nods.")]
         [SerializeField] private Sprite[] _restDoze = new Sprite[0];
@@ -372,11 +371,6 @@ namespace Alice.Player
         public float StepOffFrameTime => _stepOffFrameTime;
         public float StepOffDelay => _stepOffDelay;
         public float LandMinAirTime => _landMinAirTime;
-        public Sprite[] ThrustWindup => _thrustWindup;
-        public Sprite[] ThrustActive => _thrustActive;
-        public Sprite[] ThrustRecovery => _thrustRecovery;
-
-        public bool HasThrust => _thrustActive != null && _thrustActive.Length > 0;
         public Sprite[] Parry => _parry;
         public float ParryDeflectTime => _parryDeflectTime;
         public float ParryGuardTime => _parryGuardTime;
@@ -395,30 +389,28 @@ namespace Alice.Player
             return _parry.Skip(start).Take(_parryPhaseCounts[phase]).ToArray();
         }
         public StrikeFrames Slash => _slash;
+        public StrikeFrames Cut => _cut;
+        public StrikeFrames Finisher => _finisher;
         public StrikeFrames AirSlash => _airSlash;
 
         /// <summary>Frames for a phase of a strike; empty when that strike has no frames yet.</summary>
         public Sprite[] StrikePhase(PlayerStrike strike, AttackPhase phase)
         {
-            if (strike == PlayerStrike.Counter && !_counter.IsEmpty)
+            if (strike == PlayerStrike.None)
             {
-                return _counter.Phase(phase);
+                return null;
             }
 
-            // Without its own frames the counter is a deeper thrust: the same frames, held longer.
-            if (strike == PlayerStrike.Thrust || strike == PlayerStrike.Counter)
+            // A blow without frames of its own borrows the slash, so a new move is playable before it is drawn.
+            StrikeFrames own = strike switch
             {
-                return phase switch
-                {
-                    AttackPhase.Windup => _thrustWindup,
-                    AttackPhase.Active => _thrustActive,
-                    AttackPhase.Recovery => _thrustRecovery,
-                    _ => null
-                };
-            }
-
-            StrikeFrames frames = strike == PlayerStrike.AirSlash ? _airSlash : _slash;
-            return strike == PlayerStrike.None ? null : frames.Phase(phase);
+                PlayerStrike.Cut => _cut,
+                PlayerStrike.Finisher => _finisher,
+                PlayerStrike.Counter => _counter,
+                PlayerStrike.AirSlash => _airSlash,
+                _ => _slash
+            };
+            return (own.IsEmpty ? _slash : own).Phase(phase);
         }
 
         public bool HasJump => _jumpRise != null && _jumpRise.Length > 0
@@ -442,11 +434,10 @@ namespace Alice.Player
             _stepOff = stepOff;
         }
 
-        public void AssignThrust(Sprite[] windup, Sprite[] active, Sprite[] recovery)
+        public void AssignCombo(StrikeFrames cut, StrikeFrames finisher)
         {
-            _thrustWindup = windup;
-            _thrustActive = active;
-            _thrustRecovery = recovery;
+            _cut = cut;
+            _finisher = finisher;
         }
 
         public StrikeFrames Counter => _counter;

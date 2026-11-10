@@ -1,0 +1,13 @@
+[
+{"hx":52,"hy":51,"deg":120,"lock":true},
+{"hx":46,"hy":49,"deg":170,"lock":true},
+{"hx":45,"hy":48,"deg":175,"len":0.7,"lock":true},
+{"hx":45,"hy":47,"deg":175,"len":0.7,"lock":true},
+{"hx":44,"hy":47,"deg":175,"len":0.7,"lock":true},
+{"hx":91,"hy":49,"deg":-70,"len":0.25,"lock":true,"ell":[64,48,34,8,0,180,275]},
+{"hx":91,"hy":49,"deg":0,"lock":true,"ell":[64,48,34,8,0,180,360]},
+{"hx":85,"hy":46,"deg":35,"len":0.45,"lock":true},
+{"hx":79,"hy":44,"deg":30,"len":0.7,"lock":true},
+{"hx":77,"hy":47,"deg":15,"lock":true},
+{"hx":69,"hy":57,"deg":15,"lock":true}
+]

@@ -103,6 +103,7 @@ namespace Alice.Editor
         private void Reload()
         {
             _sources = new List<Source>();
+            Dictionary<string, string> executionOwners = ExecutionOwners();
             foreach (string guid in AssetDatabase.FindAssets("t:ScriptableObject", new[] { DataFolder }))
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
@@ -112,7 +113,7 @@ namespace Alice.Editor
                     continue;
                 }
 
-                var source = new Source { Name = asset.name };
+                var source = new Source { Name = SubjectOf(asset.name) };
                 if (asset is EnemyClipSet clips)
                 {
                     foreach (EnemyClipSet.Clip clip in clips.Clips.OrderBy(clip => clip.Id))
@@ -131,6 +132,12 @@ namespace Alice.Editor
                     CollectSpriteLists(asset, source.Clips);
                 }
 
+                foreach (Entry clip in source.Clips)
+                {
+                    clip.Name = source.Name + "_" + ActionOf(source.Name, clip.Name, executionOwners);
+                }
+
+                source.Clips.Sort((a, b) => string.CompareOrdinal(a.Name, b.Name));
                 if (source.Clips.Count > 0)
                 {
                     _sources.Add(source);
@@ -138,6 +145,120 @@ namespace Alice.Editor
             }
 
             _sources = _sources.OrderBy(source => source.Name).ToList();
+        }
+
+        // Names read "<who>_<what>" everywhere (owner, 10 November 2026: the names were all different and did not say
+        // what belongs to what). An execution is "<enemy>_execution" in the enemy's list and
+        // "alice_execution_<enemy>" in Alice's, so the two halves of one execution find each other by name.
+        private static readonly Dictionary<string, string> AliceActions = new Dictionary<string, string>
+        {
+            { "idleBreath", "idle" }, { "idleFidget", "idle_fidget" }, { "run", "run" },
+            { "jumpRise", "jump_rise" }, { "jumpApex", "jump_apex" }, { "fallLoop", "jump_fall" },
+            { "landing", "jump_land" }, { "stepOff", "jump_step_off" }, { "slideLoop", "slide" },
+            { "slash", "attack_1_slash" }, { "cut", "attack_2_cut" }, { "finisher", "attack_3_finisher" },
+            { "airSlash", "attack_air" }, { "parry", "parry" }, { "counter", "parry_counter" },
+            { "spin_strike", "technique_spin" }, { "hurt", "hurt" }, { "defeat", "defeat" }, { "wake", "defeat_wake" },
+            { "salts", "heal_salts" }, { "restSit", "rest_sit" }, { "restDoze", "rest_doze" }, { "pickup", "pickup" },
+            { "tearFree", "sheet_tear_free" }, { "bite", "item_bite" }, { "shrink", "item_shrink" },
+        };
+
+        private static readonly Dictionary<string, string> EnemyActions = new Dictionary<string, string>
+        {
+            { "death_execution", "execution" }, { "deathair", "death_air" }, { "deathfloor", "death_floor" },
+            { "opened", "stunned_by_parry" },
+        };
+
+        private static readonly Dictionary<string, Dictionary<string, string>> SubjectActions =
+            new Dictionary<string, Dictionary<string, string>>
+            {
+                // The sheet's cut and torn clips are its deaths by those blows.
+                { "sheet", new Dictionary<string, string> { { "cut", "death_cut" }, { "torn", "death_torn" } } },
+            };
+
+        /// <summary>"AliceSprites" -> "alice", "CardSoldierSprites" -> "card_soldier", "DuckClips" -> "duck".</summary>
+        private static string SubjectOf(string assetName)
+        {
+            string bare = assetName;
+            foreach (string suffix in new[] { "Sprites", "Clips" })
+            {
+                if (bare.Length > suffix.Length && bare.EndsWith(suffix, System.StringComparison.Ordinal))
+                {
+                    bare = bare.Substring(0, bare.Length - suffix.Length);
+                }
+            }
+
+            return Snake(bare);
+        }
+
+        private static string ActionOf(string subject, string raw, Dictionary<string, string> executionOwners)
+        {
+            if (subject == "alice")
+            {
+                if (AliceActions.TryGetValue(raw, out string action))
+                {
+                    return action;
+                }
+
+                if (raw.StartsWith("small", System.StringComparison.Ordinal) && raw.Length > 5)
+                {
+                    return "small_" + Snake(raw.Substring(5)).Replace("landing", "land");
+                }
+
+                // Alice's half of an execution: named by the enemy whose settings carry this execution ID.
+                if (executionOwners.TryGetValue(raw, out string owner))
+                {
+                    return "execution_" + owner;
+                }
+
+                int cut = raw.IndexOf('_');
+                return cut > 0 ? "execution_" + raw.Substring(0, cut) : Snake(raw);
+            }
+
+            if (SubjectActions.TryGetValue(subject, out Dictionary<string, string> own) && own.TryGetValue(raw, out string mine))
+            {
+                return mine;
+            }
+
+            return EnemyActions.TryGetValue(raw, out string mapped) ? mapped : Snake(raw);
+        }
+
+        /// <summary>Execution ID -> enemy subject, from every enemy settings asset that names one.</summary>
+        private static Dictionary<string, string> ExecutionOwners()
+        {
+            var owners = new Dictionary<string, string>();
+            foreach (string guid in AssetDatabase.FindAssets("t:ScriptableObject", new[] { DataFolder }))
+            {
+                var asset = AssetDatabase.LoadAssetAtPath<ScriptableObject>(AssetDatabase.GUIDToAssetPath(guid));
+                if (asset == null)
+                {
+                    continue;
+                }
+
+                SerializedProperty id = new SerializedObject(asset).FindProperty("_executionId");
+                if (id != null && id.propertyType == SerializedPropertyType.String && !string.IsNullOrEmpty(id.stringValue))
+                {
+                    owners[id.stringValue] = SubjectOf(asset.name);
+                }
+            }
+
+            return owners;
+        }
+
+        private static string Snake(string camel)
+        {
+            var text = new System.Text.StringBuilder();
+            for (int i = 0; i < camel.Length; i++)
+            {
+                char c = camel[i];
+                if (char.IsUpper(c) && i > 0 && camel[i - 1] != '_')
+                {
+                    text.Append('_');
+                }
+
+                text.Append(char.ToLowerInvariant(c));
+            }
+
+            return text.ToString();
         }
 
         /// <summary>
@@ -193,11 +314,23 @@ namespace Alice.Editor
 
         private static readonly string[] PhaseSuffixes = { "Windup", "Active", "Recovery" };
 
-        // "_thrustWindup" and "_thrustActive" are both "thrust"; "_executions.Array.data[2]._frames._windup" is the
+        // "_fooWindup" and "_fooActive" are both "foo"; "_executions.Array.data[2]._frames._windup" is the
         // execution's own ID ("moth_pin"); any other list is its field name ("run", "jumpRise").
         private static string NameOf(SerializedProperty property)
         {
             string leaf = property.name.TrimStart('_');
+            // A death variant ("_deathVariants.Array.data[1]._frames") is named by its blow: "death_slash".
+            int element = property.propertyPath.LastIndexOf(']');
+            if (leaf == "frames" && element > 0)
+            {
+                SerializedProperty kind = property.serializedObject.FindProperty(
+                    property.propertyPath.Substring(0, element + 1) + "._kind");
+                if (kind != null && kind.propertyType == SerializedPropertyType.Enum)
+                {
+                    return "death_" + kind.enumNames[kind.enumValueIndex].ToLowerInvariant();
+                }
+            }
+
             if (leaf == "windup" || leaf == "active" || leaf == "recovery")
             {
                 return LastIdOnPath(property) ?? ParentField(property);

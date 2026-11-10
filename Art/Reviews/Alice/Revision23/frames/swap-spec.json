@@ -1,0 +1,569 @@
+﻿[
+    {
+        "name":  "alice_trial_defeat_00.png",
+        "hx":  67.3,
+        "hy":  33.9,
+        "deg":  119.2
+    },
+    {
+        "name":  "alice_trial_defeat_01.png",
+        "hx":  72.9,
+        "hy":  56.1,
+        "deg":  -37.8
+    },
+    {
+        "name":  "alice_trial_defeat_02.png",
+        "hx":  71.4,
+        "hy":  64.5,
+        "deg":  -21.7
+    },
+    {
+        "name":  "alice_trial_defeat_03.png",
+        "hx":  80.4,
+        "hy":  65.5,
+        "deg":  -19.8
+    },
+    {
+        "name":  "alice_trial_defeat_04.png",
+        "hx":  89.4,
+        "hy":  64.5,
+        "deg":  -21.7
+    },
+    {
+        "name":  "alice_trial_defeat_05.png",
+        "hx":  89,
+        "hy":  73.1,
+        "deg":  2.5
+    },
+    {
+        "name":  "alice_trial_fall_00.png",
+        "hx":  61.2,
+        "hy":  53.6,
+        "deg":  -145.4,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_fall_01.png",
+        "hx":  62.2,
+        "hy":  53.6,
+        "deg":  -145.4,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_fall_02.png",
+        "hx":  61.2,
+        "hy":  53.6,
+        "deg":  -145.4,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_fall_03.png",
+        "hx":  60.2,
+        "hy":  50.6,
+        "deg":  -145.4,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_fall_04.png",
+        "hx":  59.2,
+        "hy":  49.6,
+        "deg":  -145.4,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_fall_05.png",
+        "hx":  60.2,
+        "hy":  49.6,
+        "deg":  -145.4,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_fall_06.png",
+        "hx":  61.2,
+        "hy":  50.6,
+        "deg":  -145.4,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_fall_07.png",
+        "hx":  60.2,
+        "hy":  52.6,
+        "deg":  -145.4,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_hurt_00.png",
+        "hx":  55.9,
+        "hy":  50.2,
+        "deg":  -45.7
+    },
+    {
+        "name":  "alice_trial_hurt_01.png",
+        "hx":  69.9,
+        "hy":  56.1,
+        "deg":  -37.8
+    },
+    {
+        "name":  "alice_trial_hurt_02.png",
+        "hx":  68.9,
+        "hy":  56.1,
+        "deg":  -38.9
+    },
+    {
+        "name":  "alice_trial_idle_01.png",
+        "hx":  69,
+        "hy":  57.1,
+        "deg":  -36.5
+    },
+    {
+        "name":  "alice_trial_idle_02.png",
+        "hx":  68,
+        "hy":  57,
+        "deg":  -35.9
+    },
+    {
+        "name":  "alice_trial_idle_03.png",
+        "hx":  69.1,
+        "hy":  57.1,
+        "deg":  -36.4
+    },
+    {
+        "name":  "alice_trial_jump_00.png",
+        "hx":  67.2,
+        "hy":  28.9,
+        "deg":  -15,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_jump_01.png",
+        "hx":  67.2,
+        "hy":  29.9,
+        "deg":  -15,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_jump_02.png",
+        "hx":  68.2,
+        "hy":  30.9,
+        "deg":  -15,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_jump_03.png",
+        "hx":  68.4,
+        "hy":  31.2,
+        "deg":  -20,
+        "behind":  true,
+        "lock":  true
+    },
+    {
+        "name":  "alice_trial_jump_04.png",
+        "hx":  78.8,
+        "hy":  41.2,
+        "deg":  -30.6
+    },
+    {
+        "name":  "alice_trial_jump_05.png",
+        "hx":  77.6,
+        "hy":  37.5,
+        "deg":  -35.3
+    },
+    {
+        "name":  "alice_trial_jump_06.png",
+        "hx":  74,
+        "hy":  33.6,
+        "deg":  -20
+    },
+    {
+        "name":  "alice_trial_land_00.png",
+        "hx":  79.1,
+        "hy":  61.1,
+        "deg":  -28.2
+    },
+    {
+        "name":  "alice_trial_land_01.png",
+        "hx":  72.5,
+        "hy":  57.6,
+        "deg":  -34.5
+    },
+    {
+        "name":  "alice_trial_pickup_00.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_01.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_02.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_03.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_04.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_05.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_06.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_07.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_08.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_09.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_10.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_11.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_12.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_13.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_pickup_14.png",
+        "none":  true
+    },
+    {
+        "name":  "alice_trial_rest_01.png",
+        "hx":  72.9,
+        "hy":  44,
+        "deg":  -87.7
+    },
+    {
+        "name":  "alice_trial_rest_02.png",
+        "hx":  73,
+        "hy":  44,
+        "deg":  -89.7
+    },
+    {
+        "name":  "alice_trial_rest_03.png",
+        "hx":  73,
+        "hy":  44,
+        "deg":  -89.7
+    },
+    {
+        "name":  "alice_trial_rest_04.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_05.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_06.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_07.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_08.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_09.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_10.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_11.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_12.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_13.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_14.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_15.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_16.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_17.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_18.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_19.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_20.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_21.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_22.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_23.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_24.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_25.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_rest_26.png",
+        "hx":  77,
+        "hy":  49,
+        "deg":  -90,
+        "behind":  true,
+        "lock":  true,
+        "cut":  31
+    },
+    {
+        "name":  "alice_trial_salts_00.png",
+        "hx":  69.4,
+        "hy":  56.5,
+        "deg":  -34.6
+    },
+    {
+        "name":  "alice_trial_salts_01.png",
+        "hx":  69.4,
+        "hy":  56.5,
+        "deg":  -34.6
+    },
+    {
+        "name":  "alice_trial_salts_02.png",
+        "hx":  70.4,
+        "hy":  56.5,
+        "deg":  -34.6
+    },
+    {
+        "name":  "alice_trial_salts_03.png",
+        "hx":  66.2,
+        "hy":  57.2,
+        "deg":  -31.1
+    },
+    {
+        "name":  "alice_trial_salts_04.png",
+        "hx":  68.4,
+        "hy":  56.5,
+        "deg":  -34.6
+    },
+    {
+        "name":  "alice_trial_slide_00.png",
+        "hx":  52,
+        "hy":  62,
+        "deg":  180
+    },
+    {
+        "name":  "alice_trial_slide_01.png",
+        "hx":  41.1,
+        "hy":  67.3,
+        "deg":  168.8
+    },
+    {
+        "name":  "alice_trial_slide_02.png",
+        "hx":  39.1,
+        "hy":  68.3,
+        "deg":  168.8
+    },
+    {
+        "name":  "alice_trial_slide_03.png",
+        "hx":  72.4,
+        "hy":  58.5,
+        "deg":  -33.4
+    },
+    {
+        "name":  "alice_trial_stepoff_00.png",
+        "hx":  77,
+        "hy":  47.6,
+        "deg":  -20
+    },
+    {
+        "name":  "alice_trial_stepoff_01.png",
+        "hx":  76,
+        "hy":  43.6,
+        "deg":  -20
+    },
+    {
+        "name":  "alice_trial_wake_00.png",
+        "hx":  67.2,
+        "hy":  63.2,
+        "deg":  -24.3
+    },
+    {
+        "name":  "alice_trial_wake_01.png",
+        "hx":  75.9,
+        "hy":  58.1,
+        "deg":  -34.2
+    },
+    {
+        "name":  "alice_trial_wake_02.png",
+        "hx":  69.9,
+        "hy":  56.1,
+        "deg":  -38.9
+    }
+]

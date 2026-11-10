@@ -1,0 +1,58 @@
+﻿{
+    "_comment": "Hand corrections per game frame for render-sword.ps1: fields replace those in frames.json. Owner, 10 Nov 2026: no reverse grip anywhere - a raised fist holds the blade up and back over the head before a blow, never point-down like a dagger; a calm fist holds it forward and a little up (about 15 degrees, render-sword.ps1 -CalmMatch).",
+
+    "_run": "The blade follows the swinging fist forward and down instead of trailing back from a forward fist.",
+    "alice_trial_run_00.png": { "deg": -33, "lock": false },
+    "alice_trial_run_01.png": { "deg": -27, "lock": false },
+    "alice_trial_run_02.png": { "deg": -13, "lock": false },
+    "alice_trial_run_03.png": { "deg": -1, "lock": false },
+    "alice_trial_run_04.png": { "deg": 3, "lock": false },
+    "alice_trial_run_05.png": { "deg": -9, "lock": false },
+    "alice_trial_run_06.png": { "deg": -13, "lock": false },
+    "alice_trial_run_07.png": { "deg": -25, "lock": false },
+
+    "_jump": "Fist out in front at the top of the jump: the blade forward, as in the frames around it.",
+    "alice_trial_jump_04.png": { "deg": 10 },
+    "alice_trial_jump_05.png": { "deg": 10 },
+    "alice_trial_stepoff_01.png": { "deg": 0 },
+
+    "_spin": "Coil before the spin: the blade upright before the chest, not back and down across the body.",
+    "alice_trial_spin_00.png": { "deg": 110 },
+
+    "_exec_moth": "Standing with the blade forward and down; the raise holds it up and back, then the blows go forward.",
+    "alice_trial_exec_moth_00.png": { "deg": -30 },
+    "alice_trial_exec_moth_01.png": { "deg": 100 },
+    "alice_trial_exec_moth_02.png": { "deg": 120 },
+    "alice_trial_exec_moth_12.png": { "deg": -30 },
+    "alice_trial_exec_moth_13.png": { "deg": -30 },
+
+    "_exec_racer": "Both raises hold the blade up and back; after the second blow she wrenches it out and lifts it back over her head.",
+    "alice_trial_exec_racer_00.png": { "deg": -30 },
+    "alice_trial_exec_racer_01.png": { "deg": 100 },
+    "alice_trial_exec_racer_04.png": { "deg": 45 },
+    "alice_trial_exec_racer_05.png": { "deg": 100 },
+    "alice_trial_exec_racer_09.png": { "deg": 100 },
+    "alice_trial_exec_racer_10.png": { "deg": 110 },
+    "alice_trial_exec_racer_11.png": { "deg": 130 },
+    "alice_trial_exec_racer_12.png": { "deg": 150 },
+    "alice_trial_exec_racer_13.png": { "deg": 60 },
+
+    "_exec_sheet": "The raised fist holds the blade up and back before cutting the sheet along the floor.",
+    "alice_trial_exec_sheet_02.png": { "deg": 120 },
+    "alice_trial_exec_sheet_03.png": { "deg": 140 },
+    "alice_trial_exec_sheet_04.png": { "deg": 150 },
+    "alice_trial_exec_sheet_05.png": { "deg": 150 },
+    "alice_trial_exec_sheet_06.png": { "deg": 150 },
+    "alice_trial_exec_sheet_12.png": { "deg": -30 },
+
+    "_exec_card": "Stance forward and down; the wind-up up and back over the shoulder, then the blow into the card.",
+    "alice_trial_exec_card_00.png": { "deg": -30 },
+    "alice_trial_exec_card_01.png": { "deg": 130 },
+    "alice_trial_exec_card_02.png": { "deg": 150 },
+
+    "_finisher": "The whip between the coiled back swing and the full extension: the blade still lags behind the fist, pointing at the viewer, shortened, the trail just starting under the body.",
+    "alice_trial_finisher_06.png": { "deg": -70, "len": 0.25, "lock": true, "ell": [64, 50, 36, 8, 0, 180, 275] },
+
+    "_airslash": "The extension frame is used twice; the second carries the blade on round to the far side.",
+    "alice_trial_airslash_07.png": { "deg": 25, "len": 0.7, "lock": true }
+}
