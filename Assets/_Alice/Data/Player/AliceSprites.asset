@@ -18,7 +18,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: e60a25ab02bd94b42af9617bc67faa7c, type: 3}
   - {fileID: 21300000, guid: 0560ad89e1e2e60468dddde3535b0bda, type: 3}
   - {fileID: 21300000, guid: 3daa7df83957abc4390f82ac34db19cb, type: 3}
-  _idleFrameTime: 0.3
+  - {fileID: 21300000, guid: 6f31e8c660f149c4e9b5418b5a14fe77, type: 3}
+  - {fileID: 21300000, guid: 2ce8404b166d6154d99e2c11d9f6d157, type: 3}
+  - {fileID: 21300000, guid: dbb305e688d38a84fa000fa60a0a0fcc, type: 3}
+  - {fileID: 21300000, guid: 39c855d0b23e121418173d883047225a, type: 3}
+  _idleFrameTime: 0.2
   _idleFidget:
   - {fileID: 21300000, guid: fbf4b5e8aeeee9c47ac2ea2dba1b17f4, type: 3}
   - {fileID: 21300000, guid: 74fc61e46f3885147836b9bc88b6d77a, type: 3}

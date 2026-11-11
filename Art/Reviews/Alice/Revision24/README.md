@@ -113,8 +113,98 @@
 - Компиляция: код не менялся; в консоли Unity после запуска ошибок нет.
 - Play: сцена `Prototype_Enemies` через `Alice → Play This Scene`, время 0,05, три нажатия атаки, 79 снимков камеры. Три удара идут связкой, серпы видны, крыса получает урон и гибнет от завершающего.
 
+## Второй заход: удар в воздухе, контратака, стойка, парирование
+
+Владелец принял комбо («Отлично выглядит») и попросил привести зону второго удара и оживить ещё 3–4 анимации.
+
+- **Зона второго удара** — как у первого: высота 2,6, центр 1,5 (было 3 и 1,8 от «подъёма»). Изменено через `SerializedObject` в редакторе (`script eval_file`), `AliceCombat.asset`.
+- **Время кадра стойки** — 0,2 с вместо 0,3 (`AliceSprites.asset`, тем же способом): 8 кадров дыхания идут 1,6 с.
+
+| Набор | Seed | Job | Кадров | Цена | Итог |
+| --- | --- | --- | --- | --- | --- |
+| `airA` | 2611 | `e2ad6bca-5b00-4159-b13a-9766139b28ee` | 16 | 2 | Годен, запасной: в двух кадрах белые штрихи, кадр рывка — полоса через тело |
+| `airB` | 2612 | `3d5b4e29-c6f9-43d6-8c26-dc58969009ad` | 16 | 2 | **Взят** |
+| `ctrA` | 2621 | `e1503713-77bc-489f-8e1f-7fb34362744f` | 16 | 2 | Отброшен: в замахе стоит спиной в полный рост, удар — один тонкий кадр |
+| `ctrB` | 2622 | `0a87d86b-9d0b-42d4-b6d4-f9fb42752575` | 16 | 2 | **Взят** |
+| `idleA` | 2631 | `6dca8ffe-e10f-4718-b0e8-fcfc2ddb3f42` | 8 | 1 | Годен, запасной: движение слабее |
+| `idleB` | 2632 | `d7f6e538-2c65-4d2b-8e43-bbf89a183c2d` | 8 | 1 | **Взят** |
+
+Все — от стойки до стойки, поля те же, что у первого удара. Баланс после — 744.
+
+`airA`, `airB`:
+
+> a flat slash in mid-air during a jump, her body turning. She springs up off the ground, knees drawn up, skirt flaring. Anticipation: in the air she twists her chest toward the viewer, her right arm (nearest the viewer) drawn far back behind her at shoulder height, fist clenched; a short hold. Drive: hips turn first, then shoulders, the right arm whips flat at chest height round toward the viewer and forward to full reach to the right, her back a quarter toward the viewer, legs tucked, skirt and hair swinging after. She holds the reach for a moment, head looking right in profile. Recovery: she drops, lands softly on both feet and straightens into her standing pose facing right. She never shows her full back to the viewer. Empty hands, no weapon.
+
+`ctrA`, `ctrB`:
+
+> a fast, sharp backhand counter-slash with a lunge, right after blocking a blow. Anticipation: she snaps her right arm (nearest the viewer) across in front of her chest, fist by her left shoulder, her right shoulder forward and her back a quarter toward the viewer, knees bent; a very short tense hold. Drive: she lunges forward with a long step and unwinds, hips first, then shoulders, the back of the right hand leading, the arm whips flat at chest height out to the right at full reach. Follow-through: the arm carries on round toward the viewer, her chest opens toward the viewer, the right arm ends swept out behind her, low wide stance; she holds. Her head keeps looking right the whole time, she stays low. Recovery: she straightens into her standing pose facing right. Empty hands, no weapon.
+
+`idleA`, `idleB`:
+
+> she stands still and breathes: her chest and shoulders rise slowly and sink again, the hair and the hem of the skirt sway gently as in a light draught, the fingers of her right hand tighten and loosen. Feet stay planted in place, no step, she keeps facing right in strict profile, arms stay by her sides. Subtle, calm, smooth motion only. Empty hands, no weapon.
+
+Клипы в игре:
+
+| Клип | Кадры и фазы | Источник | Что изменилось |
+| --- | --- | --- | --- |
+| `alice_trial_airslash_00..11` | 5 / 3 / 4 | `airB` 1–5; 7, 8, 9; 11, 13, 14, 15 | Замах в воздухе грудью к камере, выпад со спиной на четверть, серп поверх тела |
+| `alice_trial_counter_00..11` | 3 / 3 / 6 | `ctrB` 2, 4, 5; 7, 9, 10; 11–16 | Кулак у дальнего плеча, выпад, дуга по дальней стороне и серп по ближней, открытая поза |
+| `alice_trial_idle_00..07` | цикл, 8 кадров (было 4) | `idleB` 1–8 | Качаются волосы и подол, рука чуть ходит; клинок под прежним углом идёт за кулаком (острие по x: 101 → 96 → 102, без зигзага) |
+| `alice_trial_parry_00..11` | 4 / 3 / 2 / 3 | кадры и точки `Revision23` (`parryC`) | Только кисть поверх рукояти вместо «молотка»; позы прежние |
+
+`Revision23/render-sword.ps1` эти клипы больше не трогает (`-Skip`).
+
+## Проверено (второй заход)
+
+- Файлы: все кадры четырёх клипов отсмотрены в увеличении 5–6×; листы `airslash-x5.png`, `counter-x5.png`, `idle-x6.png`, `parry-x5.png` и одноимённые `.gif`.
+- Компиляция: код не менялся; после обновления ассетов и `Alice → Prototype → Attach Alice Sprites` в консоли ошибок нет, в наборе 8 кадров дыхания.
+- Play: `Prototype_Enemies`, 53 снимка камеры. Удар в воздухе, парирование и контратака (после `Open Nearest Enemy`) проигрываются, серпы видны. Стойку в движении в Play отдельно не разглядывал: на снимках сцена слишком тесная.
+
+## Третий заход: кисть и синяя лента (11 ноября 2026)
+
+Владелец: «в кадрах айдл дыхания кулак опять молотком, там опять рукоятка меча поверх?» — да. Кисть возвращалась поверх рукояти только в радиусе 3 px, а у висящей руки с горизонтальным клинком контур рукояти ложился на предплечье. Затем: «пусть Алиса найдёт синюю ленту и ею сделает рукоятку, синий точно будет видно, а бинт сливается с рукой» (GDD 0.48).
+
+Что сделано, без генераций:
+
+1. Эталон меча перекрашен: 21 пиксель обмотки — в четыре синих тона, контур прежний (`Revision23/shard/sword-final.png`, прежний сохранён как `sword-rag.png`); повороты и ракурсы перестроены (`sword-rotate.ps1`, `sword-foreshorten.ps1`).
+2. `render-combo.ps1`: часть рукояти внутри кулака не рисуется; точка хвата переезжает на ближайшую кожу, край кисти ищется вдоль клинка, меч придвигается вплотную — видны три пикселя синей ленты, гарда и клинок; кисть целиком поверх. Кадры, где меч не касается кисти, скрипт называет (`DETACHED`).
+3. `Revision23/render-sword.ps1`: та же логика для остальных 206 кадров (бег, прыжок, урон, жест, казни и прочие), иначе кулак там выходил синим квадратом.
+
+Ошибка по ходу: убрав рукоять без привязки, получил зазоры между кулаком и клинком (первый удар 6–9, завершающий 5–13, парирование 5–9) — поймано на листах до показа.
+
+Проверено: семь клипов этой ревизии — каждый кадр в 5–9×, кисть стойки отдельно в 10×, строк `DETACHED` нет; остальные клипы — листами в 3× (поломок нет, кисть по кадрам крупно не разглядывалась). Ассеты обновлены в редакторе, ошибок в консоли нет. В Play после этой правки не запускал.
+
+В прыжке 0–3 и в падении меч был за телом без видимой кисти — исправлено в четвёртом заходе.
+
+## Четвёртый заход: зазор в стойке, прыжок, падение (11 ноября 2026)
+
+Владелец: лента «просто белая меняется на синюю» — подтверждено; в дыхании между рукоятью и кистью местами зазор; дефект прыжка и падения чинить.
+
+- **Зазор в стойке.** Рука в стойке наклонная, конец рукояти прямоугольный: в углах просвечивал передник. Теперь лента продолжается ещё на три пикселя назад без контура, кисть возвращается поверх, центр кисти — передний край кулака. То же в `Revision23/render-sword.ps1`.
+- **Прыжок, кадры 0–3.** Поднятая рука нарисована в тени коричневым и не распознавалась как кожа, поэтому меч рисовался «за телом» и торчал из-за головы. Это рука с мечом: в кадре 4 она же опускается вперёд. Правки в `Revision23/overrides.json` (`shade`, меч в кулак перед телом, клинок вверх-вперёд вдоль руки: 34°, 34°, 34°, 22°, дальше прежние 10°).
+- **Падение.** Рук в кадрах не было. Перегенерировано в два шага от прежнего кадра падения (`upload:51af0ea5-9a77-4a98-b754-3bc0c9d1cf60`, окно 64 × 64 игрового холста):
+
+| Набор | Seed | Job | Кадров | Цена | Итог |
+| --- | --- | --- | --- | --- | --- |
+| `fallA` | 2711 | `1e8e4f35-9d63-4b4b-85fe-afae8866bf2a` | 4 | 1 | Годен, запасной |
+| `fallB` | 2712 | `312fb38f-a7d7-4063-b7f1-ada485f97940` | 4 | 1 | **Взят кадр 4** как новая поза: правая рука отведена назад-вниз, кулак виден |
+| `fallLoopA` | 2721 | `53b8ce2f-a69e-493d-acd7-937ac8e9a9ff` | 8 | 1 | **Взят**: цикл от новой позы, волосы и подол полощутся сильнее |
+| `fallLoopB` | 2722 | `9a4ad93f-057d-42d4-b51c-f4c8e574f3bf` | 8 | 1 | Годен, запасной |
+
+`fallA`, `fallB` (конец не закреплён):
+
+> while falling, she brings her right arm (the one nearest the viewer) out and holds it low behind her, away from her body, elbow slightly bent, the bare forearm and clenched fist clearly visible against the empty background to the left of her skirt; then she holds that pose. She keeps falling in the same place facing right in profile, skirt and hair streaming upward. Her body, head and legs do not change. Empty hands, no weapon, nothing else is drawn, no motion lines.
+
+`fallLoopA`, `fallLoopB` (первый и последний кадр — кадр 4 набора `fallB`):
+
+> she keeps falling through the air: the skirt, the apron and the hair flutter and ripple upward in the rush of air. Her body, head and legs stay in the same pose and the same place; her right arm stays held out low behind her with the clenched fist clearly visible, it only trembles a little. A smooth seamless loop, subtle motion, no motion lines. Empty hands, no weapon, nothing else is drawn.
+
+`alice_trial_fall_00..07` — кадры 1–8 набора `fallLoopA`, меч в кулаке, клинок назад-вниз вдоль руки. Окно для генерации было вырезано с x = 32, а `cleanup.ps1` кладёт кадры на x + 36: чистые кадры набора один раз сдвинуты на 4 px влево, чтобы Алиса стояла там же, где в прежнем падении (габарит по высоте совпал сам). Баланс после — 748.
+
+Проверено: стойка — кисть в 11× во всех восьми кадрах; прыжок и падение — каждый кадр в 6×; выборка из остальных клипов после новой привязки — в 4×, поломок нет; строк `DETACHED` нет. Play (`Prototype_Enemies`, 28 снимков): стойка и прыжок видны, меч в кулаке. Падение в Play не попало в снимки: прыжок на месте короткий, клип падения в нём не включается.
 ## Что осталось
 
-- Данные боя не менялись: зона второго удара осталась от «подъёма» (высота 3, центр 1,8) — для плоского взмаха её стоит привести к зоне первого удара; у третьего прежние оттяжка 0,4 с, непрерываемость и урон 2.
-- Если атаку дожать поздно, когда Алиса уже почти вернулась в стойку, следующий удар начнётся с позы выпада — будет небольшой скачок.
-- Остальные клипы (стойка, бег, прыжок, удар в воздухе, контратака, казни) — со старым кулаком поверх рукояти.
+- Первые четыре кадра парирования одинаковые (удержание блока) — поза не оживлялась.
+- Удержания после удара в контратаке (4 кадра) и в завершающем почти статичны.
+- Если атаку дожать поздно, когда Алиса уже почти вернулась в стойку, следующий удар комбо начнётся с позы выпада — небольшой скачок.
+- Со старым кулаком остались: бег, прыжок, падение, приземление, жест, урон, подкат, отдых, подбор, казни, приём «удар с разворота» (его владелец хочет заменить другим).

@@ -59,5 +59,92 @@
             { "src": "s3A-clean/run-15.png", "hx": 70, "hy": 57, "deg": 15 },
             { "src": "s3A-clean/run-15.png", "hx": 70, "hy": 57, "deg": 15 }
         ]
+    },
+
+    "_air": "Air slash, flat forehand sweep in the air. Wind-up 5 (springs up, chest to the viewer, blade drawn back), blow 3 (reach with her back a quarter to the viewer, crescent across the body; the smeared frame is dropped), recovery 4 (starts to come down; the jump frames take over).",
+    "air": {
+        "prefix": "alice_trial_airslash_",
+        "frames": [
+            { "src": "airB-clean/run-00.png", "hx": 47, "hy": 49, "deg": 191 },
+            { "src": "airB-clean/run-01.png", "hx": 44, "hy": 47, "deg": 180 },
+            { "src": "airB-clean/run-02.png", "hx": 44, "hy": 47, "deg": 169 },
+            { "src": "airB-clean/run-03.png", "hx": 44, "hy": 47, "deg": 169 },
+            { "src": "airB-clean/run-04.png", "hx": 44, "hy": 47, "deg": 157 },
+            { "src": "airB-clean/run-06.png", "hx": 91, "hy": 50, "deg": 0, "slash": { "cx": 77, "cy": 50, "r": 47, "ry": 14, "from": 185, "to": 360, "width": 8 } },
+            { "src": "airB-clean/run-07.png", "hx": 91, "hy": 50, "deg": 0, "slash": { "cx": 77, "cy": 50, "r": 47, "ry": 14, "from": 185, "to": 360, "width": 8, "fade": true } },
+            { "src": "airB-clean/run-08.png", "hx": 91, "hy": 50, "deg": 0 },
+            { "src": "airB-clean/run-10.png", "hx": 91, "hy": 50, "deg": 0 },
+            { "src": "airB-clean/run-12.png", "hx": 88, "hy": 50, "deg": 0 },
+            { "src": "airB-clean/run-13.png", "hx": 83, "hy": 50, "deg": 0 },
+            { "src": "airB-clean/run-14.png", "hx": 77, "hy": 55, "deg": 0 }
+        ]
+    },
+
+    "_counter": "Counter, flat backhand sweep with a lunge (GDD 0.45: the counter is a flat sweep). Wind-up 3 (right fist tucked by the far shoulder, blade back over it), blow 3 (lunge and reach, arc round the far side; then the chest opens to the viewer and the crescent crosses the near side), recovery 6.",
+    "counter": {
+        "prefix": "alice_trial_counter_",
+        "frames": [
+            { "src": "ctrB-clean/run-01.png", "hx": 50, "hy": 43, "deg": 135 },
+            { "src": "ctrB-clean/run-03.png", "hx": 52, "hy": 43, "deg": 135 },
+            { "src": "ctrB-clean/run-04.png", "hx": 53, "hy": 44, "deg": 135 },
+            { "src": "ctrB-clean/run-06.png", "hx": 92, "hy": 48, "deg": 0, "slash": { "cx": 78, "cy": 50, "r": 47, "ry": 8, "from": 150, "to": 0, "width": 5 } },
+            { "src": "ctrB-clean/run-08.png", "hx": 44, "hy": 52, "deg": 191, "slash": { "cx": 66, "cy": 51, "r": 52, "ry": 13, "from": 360, "to": 195, "width": 8 } },
+            { "src": "ctrB-clean/run-09.png", "hx": 44, "hy": 51, "deg": 191, "slash": { "cx": 66, "cy": 51, "r": 52, "ry": 13, "from": 360, "to": 195, "width": 8, "fade": true } },
+            { "src": "ctrB-clean/run-10.png", "hx": 44, "hy": 51, "deg": 191 },
+            { "src": "ctrB-clean/run-11.png", "hx": 44, "hy": 51, "deg": 191 },
+            { "src": "ctrB-clean/run-12.png", "hx": 44, "hy": 51, "deg": 191 },
+            { "src": "ctrB-clean/run-13.png", "hx": 45, "hy": 53, "deg": 191 },
+            { "src": "ctrB-clean/run-14.png", "hx": 54, "hy": 57, "deg": -146 },
+            { "src": "ctrB-clean/run-15.png", "hx": 70, "hy": 57, "deg": 15 }
+        ]
+    },
+
+    "_idle": "Stance: eight frames of breathing (hair and hem sway, the arm moves a little); the blade keeps the calm angle and follows the fist.",
+    "idle": {
+        "prefix": "alice_trial_idle_",
+        "frames": [
+            { "src": "idleB-clean/run-00.png", "hx": 68, "hy": 57, "deg": 15 },
+            { "src": "idleB-clean/run-01.png", "hx": 67, "hy": 58, "deg": 15 },
+            { "src": "idleB-clean/run-02.png", "hx": 65, "hy": 58, "deg": 15 },
+            { "src": "idleB-clean/run-03.png", "hx": 63, "hy": 58, "deg": 15 },
+            { "src": "idleB-clean/run-04.png", "hx": 64, "hy": 58, "deg": 15 },
+            { "src": "idleB-clean/run-05.png", "hx": 66, "hy": 58, "deg": 15 },
+            { "src": "idleB-clean/run-06.png", "hx": 68, "hy": 58, "deg": 15 },
+            { "src": "idleB-clean/run-07.png", "hx": 69, "hy": 57, "deg": 15 }
+        ]
+    },
+
+    "_parry": "Parry: the frames and hand points of Revision23 (parryC), redrawn only for the hand over the hilt.",
+    "parry": {
+        "prefix": "alice_trial_parry_",
+        "frames": [
+            { "src": "C:/Projects/alice/Art/Reviews/Alice/Revision23/alice/parryC-clean/run-00.png", "hx": 85, "hy": 42, "deg": 90 },
+            { "src": "C:/Projects/alice/Art/Reviews/Alice/Revision23/alice/parryC-clean/run-01.png", "hx": 85, "hy": 42, "deg": 90 },
+            { "src": "C:/Projects/alice/Art/Reviews/Alice/Revision23/alice/parryC-clean/run-02.png", "hx": 85, "hy": 42, "deg": 90 },
+            { "src": "C:/Projects/alice/Art/Reviews/Alice/Revision23/alice/parryC-clean/run-03.png", "hx": 85, "hy": 42, "deg": 90 },
+            { "src": "C:/Projects/alice/Art/Reviews/Alice/Revision23/alice/parryC-clean/run-04.png", "hx": 76, "hy": 37, "deg": 105 },
+            { "src": "C:/Projects/alice/Art/Reviews/Alice/Revision23/alice/parryC-clean/run-05.png", "hx": 58, "hy": 28, "deg": 150 },
+            { "src": "C:/Projects/alice/Art/Reviews/Alice/Revision23/alice/parryC-clean/run-06.png", "hx": 58, "hy": 28, "deg": 152 },
+            { "src": "C:/Projects/alice/Art/Reviews/Alice/Revision23/alice/parryC-clean/run-07.png", "hx": 58, "hy": 28, "deg": 152 },
+            { "src": "C:/Projects/alice/Art/Reviews/Alice/Revision23/alice/parryC-clean/run-08.png", "hx": 58, "hy": 28, "deg": 150 },
+            { "src": "C:/Projects/alice/Art/Reviews/Alice/Revision23/alice/parryC-clean/run-09.png", "hx": 58, "hy": 27, "deg": 145 },
+            { "src": "C:/Projects/alice/Art/Reviews/Alice/Revision23/alice/parryC-clean/run-10.png", "hx": 74, "hy": 44, "deg": 60 },
+            { "src": "C:/Projects/alice/Art/Reviews/Alice/Revision23/alice/parryC-clean/run-11.png", "hx": 68, "hy": 57, "deg": -30 }
+        ]
+    },
+
+    "_fall": "Fall: an 8-frame loop redrawn with the sword arm in sight (owner, 11 Nov 2026: the sword stuck out from behind the body with no hand). The right arm is held out low behind her, the blade goes on along it, back and down; skirt and hair flutter.",
+    "fall": {
+        "prefix": "alice_trial_fall_",
+        "frames": [
+            { "src": "fallLoopA-clean/run-00.png", "hx": 51, "hy": 55, "deg": 214 },
+            { "src": "fallLoopA-clean/run-01.png", "hx": 51, "hy": 55, "deg": 214 },
+            { "src": "fallLoopA-clean/run-02.png", "hx": 51, "hy": 55, "deg": 214 },
+            { "src": "fallLoopA-clean/run-03.png", "hx": 51, "hy": 55, "deg": 214 },
+            { "src": "fallLoopA-clean/run-04.png", "hx": 51, "hy": 55, "deg": 214 },
+            { "src": "fallLoopA-clean/run-05.png", "hx": 51, "hy": 55, "deg": 214 },
+            { "src": "fallLoopA-clean/run-06.png", "hx": 51, "hy": 55, "deg": 214 },
+            { "src": "fallLoopA-clean/run-07.png", "hx": 51, "hy": 55, "deg": 214 }
+        ]
     }
 }

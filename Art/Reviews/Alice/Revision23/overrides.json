@@ -1,4 +1,4 @@
-﻿{
+{
     "_comment": "Hand corrections per game frame for render-sword.ps1: fields replace those in frames.json. Owner, 10 Nov 2026: no reverse grip anywhere - a raised fist holds the blade up and back over the head before a blow, never point-down like a dagger; a calm fist holds it forward and a little up (about 15 degrees, render-sword.ps1 -CalmMatch).",
 
     "_run": "The blade follows the swinging fist forward and down instead of trailing back from a forward fist.",
@@ -12,6 +12,11 @@
     "alice_trial_run_07.png": { "deg": -25, "lock": false },
 
     "_jump": "Fist out in front at the top of the jump: the blade forward, as in the frames around it.",
+    "_jump_rise": "Owner, 11 Nov 2026: the sword stuck out from behind the head with no hand. The raised arm (drawn in shadow, brown) is the sword arm - it comes down forward in frame 4 - so the sword goes into its fist, in front, blade up and forward along the arm.",
+    "alice_trial_jump_00.png": { "hx": 76, "hy": 30, "deg": 34, "behind": false, "shade": true, "lock": true },
+    "alice_trial_jump_01.png": { "hx": 76, "hy": 31, "deg": 34, "behind": false, "shade": true, "lock": true },
+    "alice_trial_jump_02.png": { "hx": 76, "hy": 32, "deg": 34, "behind": false, "shade": true, "lock": true },
+    "alice_trial_jump_03.png": { "hx": 77, "hy": 33, "deg": 22, "behind": false, "shade": true, "lock": true },
     "alice_trial_jump_04.png": { "deg": 10 },
     "alice_trial_jump_05.png": { "deg": 10 },
     "alice_trial_stepoff_01.png": { "deg": 0 },

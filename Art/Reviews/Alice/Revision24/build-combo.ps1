@@ -2,6 +2,9 @@
 # sweeps to and fro and a finisher out of a full turn; Alice may turn any way she likes, the sword only never changes
 # hands) up to clean frames on the game canvas: strip-smears.ps1 -> cleanup.ps1 -SkipNeedle -> specks.ps1.
 # The sword is drawn afterwards by render-combo.ps1 from combo.json.
+# fallLoopA was generated from a 64 x 64 window cut at x = 32 of the game canvas, while cleanup.ps1 puts frames at
+# x + 36: after this script its clean frames were moved 4 px left once, by hand (README, fourth round). Do not
+# rebuild that set without moving it again.
 param([string[]]$Sets = @('s1D', 's1in'))
 $ErrorActionPreference = 'Stop'
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path

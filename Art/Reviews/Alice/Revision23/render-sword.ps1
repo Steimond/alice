@@ -24,7 +24,7 @@ param(
     [string]$Only = '',          # regex: render only these frame names (for trying a correction)
     [string]$OutDir = '',        # write here instead of the game folder
     # Clips that are no longer drawn here: the turning combo is rendered by Revision24/render-combo.ps1.
-    [string]$Skip = '^alice_trial_(slash|cut|finisher)_\d+\.png$',
+    [string]$Skip = '^alice_trial_(slash|cut|finisher|airslash|counter|idle|parry|fall)_\d+\.png$',
     [int]$Steps = 32,
     [double]$Reach = 33,
     [double]$Radius = 55,
@@ -74,6 +74,13 @@ function Rad($deg) { $deg * [math]::PI / 180 }
 function Norm($deg) { while ($deg -gt 180) { $deg -= 360 }; while ($deg -le -180) { $deg += 360 }; $deg }
 function IsSkin([System.Drawing.Color]$c) { $c.A -ge 128 -and ($c.R - $c.B) -gt 55 -and $c.R -gt 170 -and $c.G -gt 120 }
 function IsSkinLoose([System.Drawing.Color]$c) { $c.A -ge 128 -and ($c.R - $c.B) -gt 50 -and $c.R -gt 140 -and $c.G -gt 95 }
+# The hand for the sword. "shade": true in a frame also takes the brown of an arm drawn in shadow (the raised arm of
+# the jump): without it that hand is not found and the sword sits on nothing.
+$script:shadeNow = $false
+function IsHand([System.Drawing.Color]$c) {
+    if (IsSkinLoose $c) { return $true }
+    $script:shadeNow -and $c.A -ge 128 -and $c.R -gt $c.G -and $c.G -gt $c.B -and ($c.R - $c.B) -ge 25 -and $c.R -ge 70 -and ($c.R + $c.G + $c.B) -ge 150
+}
 function Fit-Canvas([double]$deg, [double]$gy, [double]$reach) {
     for ($guard = 0; $guard -lt 45; $guard++) {
         $deg = Norm $deg
@@ -231,18 +238,59 @@ foreach ($entry in $list) {
     $rots = $rotSets[$setKey]
     $reachNow = $reachNow * [double]$setKey / 100
     $step = [int][math]::Round((($deg % 360) + 360) % 360 / (360.0 / $Steps)) % $Steps
+    # The hand over the hilt, as in Revision24/render-combo.ps1 (owner, 11 Nov 2026: a blue ribbon hilt, seen between
+    # the fist and the blade; the part of the hilt inside the fist is not drawn - its outline boxed the hand in, the
+    # "hammer"). The grip point moves onto the nearest skin, the skin is followed along the blade to the end of the
+    # hand, and the sword starts right after it; then the whole hand - skin and its dark outline - goes back on top.
+    $stepDeg = $step * 360.0 / $Steps
+    $ux = [math]::Cos((Rad $stepDeg)); $uy = -[math]::Sin((Rad $stepDeg))
+    $shiftX = 0; $shiftY = 0; $gx = [int]$hx; $gy = [int]$hy; $onHand = $false; $edge = 0
+    $script:shadeNow = [bool]$s.shade
+    if (-not $behind -and $null -eq $s.cut) {
+        $best = 99
+        for ($y = [int]$hy - 4; $y -le [int]$hy + 4; $y++) { for ($x = [int]$hx - 4; $x -le [int]$hx + 4; $x++) {
+            if ($x -lt 0 -or $y -lt 0 -or $x -ge 128 -or $y -ge 80 -or -not (IsHand $clean.GetPixel($x, $y))) { continue }
+            $d = [math]::Sqrt(($x - $hx) * ($x - $hx) + ($y - $hy) * ($y - $hy))
+            if ($d -lt $best) { $best = $d; $gx = $x; $gy = $y } } }
+        if ($best -lt 99) {
+            $onHand = $true
+            $edge = 0; $miss = 0
+            for ($a = 0; $a -le 8 -and $miss -lt 2; $a += 0.5) {
+                $hit = $false
+                foreach ($side in 0, -1, 1) {
+                    $sx = [int][math]::Round($gx + $ux * $a - $uy * $side); $sy = [int][math]::Round($gy + $uy * $a + $ux * $side)
+                    if ($sx -ge 0 -and $sy -ge 0 -and $sx -lt 128 -and $sy -lt 80 -and (IsHand $clean.GetPixel($sx, $sy))) { $hit = $true }
+                }
+                if ($hit) { $edge = $a; $miss = 0 } else { $miss += 0.5 }
+            }
+            $shiftX = [int][math]::Round($ux * ($edge + 1)) + ($gx - [int]$hx); $shiftY = [int][math]::Round($uy * ($edge + 1)) + ($gy - [int]$hy)
+        }
+    }
     foreach ($p in $rots[$step]) {
         $along = $p[0] * [math]::Cos((Rad $deg)) - $p[1] * [math]::Sin((Rad $deg))
         if ($along -gt [math]::Min($reachNow + 1, $cut)) { continue }
-        Put ($hx + $p[0]) ($hy + $p[1]) $p[2] $behind
+        if ($onHand -and $along -lt -3.5) { continue }
+        if ($onHand -and $along -lt -0.5 -and ($p[2].R + $p[2].G + $p[2].B) -lt 150) { continue }
+        Put ($hx + $p[0] + $shiftX) ($hy + $p[1] + $shiftY) $p[2] $behind
     }
     $skin = 0
-    for ($y = [int]($hy - 3); $y -le [int]($hy + 3); $y++) { for ($x = [int]($hx - 3); $x -le [int]($hx + 3); $x++) {
-        if ($x -lt 0 -or $y -lt 0 -or $x -ge 128 -or $y -ge 80) { continue }
-        $d = [math]::Sqrt(($x - $hx) * ($x - $hx) + ($y - $hy) * ($y - $hy))
+    $fx = [int][math]::Round($gx + $ux * $edge); $fy = [int][math]::Round($gy + $uy * $edge)
+    for ($y = $fy - 6; $y -le $fy + 6; $y++) { for ($x = $fx - 6; $x -le $fx + 6; $x++) {
+        if ($x -lt 1 -or $y -lt 1 -or $x -ge 127 -or $y -ge 79) { continue }
+        $d = [math]::Sqrt(($x - $fx) * ($x - $fx) + ($y - $fy) * ($y - $fy))
         $c = $clean.GetPixel($x, $y)
-        if ((IsSkin $c) -and $d -le 2.01) { $skin++ }
-        if ($d -le $FistRadius -and (IsSkin $c) -and -not $behind) { $img.SetPixel($x, $y, $c) } } }
+        if ((IsSkinLoose $c) -and $d -le 2.01) { $skin++ }
+        if ($behind -or -not $onHand -or $d -gt $FistRadius + 3) { continue }
+        if ((IsHand $c) -and $d -le $FistRadius + 2) { $img.SetPixel($x, $y, $c); continue }
+        if ($c.A -ge 128 -and ($c.R + $c.G + $c.B) -lt 150) {
+            $near = $false
+            foreach ($o in @(@(1, 0), @(-1, 0), @(0, 1), @(0, -1))) {
+                $n = $clean.GetPixel($x + $o[0], $y + $o[1])
+                if (IsHand $n) { $near = $true }
+            }
+            if ($near) { $img.SetPixel($x, $y, $c) }
+        }
+    } }
     $state = if ($behind) { 'behind' } elseif ($skin -eq 0) { 'DETACHED' } else { '' }
     [void]$rows.Add(('{0},{1},{2},{3:N0},{4},{5},{6:N0},{7},{8}' -f $s.name, $hx, $hy, $degIn,
         $(if ($null -ne $arm) { [math]::Round($arm) } else { '' }), $(if ($null -ne $rel) { [math]::Round($rel) } else { '' }), $deg, $state, $fixedBy))

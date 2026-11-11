@@ -66,8 +66,8 @@ MonoBehaviour:
     _recovery: 0.28
     _reachStart: 0
     _reach: 2.75
-    _hitHeight: 3
-    _hitCenterHeight: 1.8
+    _hitHeight: 2.6
+    _hitCenterHeight: 1.5
     _damage: 1
   _finisher:
     _kind: 2

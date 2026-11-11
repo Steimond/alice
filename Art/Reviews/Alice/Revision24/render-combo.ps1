@@ -17,14 +17,20 @@
 #
 # What differs from Revision23/render-sword.ps1 (owner, 10 Nov 2026: "the fist is huge and merged with the hilt"):
 # the whole hand - the skin and its dark outline - is put back over the sword, so the hilt sits inside the fist and
-# only the pommel and the blade show; nothing is foreshortened, the blade always keeps its full length.
+# only the guard and the blade show (the hilt is not drawn at all, see -HiltCut); nothing is foreshortened, the blade
+# always keeps its full length.
 param(
     [string]$Spec = '',
     [string]$Only = '',          # regex on clip names
     [string]$OutDir = '',        # default: out/ next to the script
     [string]$GameDir = '',       # when given, frames are also written there under prefix + NN.png
     [int]$Steps = 32,
-    [double]$FistRadius = 3.2
+    [double]$FistRadius = 3.2,
+    # The sword is drawn from this many pixels ahead of the grip: the last three pixels of the blue ribbon hilt, the
+    # guard and the blade (owner, 11 Nov 2026: a blue ribbon on the hilt, always seen between the fist and the blade;
+    # the old rag had the colour of her hand). The part of the hilt inside the fist is never drawn - with the arm
+    # across it (a hanging arm, a horizontal blade) its outline boxed the hand in: the "hammer".
+    [double]$HiltCut = -0.5
 )
 Add-Type -AssemblyName System.Drawing
 $ErrorActionPreference = 'Stop'
@@ -63,7 +69,8 @@ foreach ($clip in $all.PSObject.Properties) {
     New-Item -ItemType Directory -Force $target | Out-Null
     $index = 0
     foreach ($s in $clip.Value.frames) {
-        $file = [System.Drawing.Bitmap]::FromFile((Join-Path $here ("alice\" + $s.src)))
+        $srcPath = if ([IO.Path]::IsPathRooted([string]$s.src)) { [string]$s.src } else { Join-Path $here ("alice\" + $s.src) }
+        $file = [System.Drawing.Bitmap]::FromFile($srcPath)
         $img = [System.Drawing.Bitmap]::new($file); $file.Dispose()
         if ($null -ne $s.erase) {
             foreach ($box in $s.erase) {
@@ -118,31 +125,77 @@ foreach ($clip in $all.PSObject.Properties) {
 
             $deg = [double]$s.deg
             $step = [int][math]::Round((($deg % 360) + 360) % 360 / (360.0 / $Steps)) % $Steps
+            $stepDeg = $step * 360.0 / $Steps
+            $ux = [math]::Cos((Rad $stepDeg)); $uy = -[math]::Sin((Rad $stepDeg))
+            # The guard sits against the front edge of the fist. The grip point is moved onto the nearest skin, then
+            # the skin is followed along the blade direction to where the hand ends; the sword is shifted so that
+            # its first drawn pixel comes right after it. Without this a grip point a little off left a gap.
+            $shiftX = 0; $shiftY = 0; $edge = 0
+            if (-not $behind) {
+                $best = 99; $gx = $hx; $gy = $hy
+                for ($y = $hy - 5; $y -le $hy + 5; $y++) { for ($x = $hx - 5; $x -le $hx + 5; $x++) {
+                    if ($x -lt 0 -or $y -lt 0 -or $x -ge 128 -or $y -ge 80 -or -not (IsSkin $clean.GetPixel($x, $y))) { continue }
+                    $d = [math]::Sqrt(($x - $hx) * ($x - $hx) + ($y - $hy) * ($y - $hy))
+                    if ($d -lt $best) { $best = $d; $gx = $x; $gy = $y } } }
+                if ($best -lt 99) {
+                    $hx = $gx; $hy = $gy
+                    $edge = 0; $miss = 0
+                    for ($a = 0; $a -le 8 -and $miss -lt 2; $a += 0.5) {
+                        $hit = $false
+                        foreach ($side in 0, -1, 1) {
+                            $sx = [int][math]::Round($hx + $ux * $a - $uy * $side); $sy = [int][math]::Round($hy + $uy * $a + $ux * $side)
+                            if ($sx -ge 0 -and $sy -ge 0 -and $sx -lt 128 -and $sy -lt 80 -and (IsSkin $clean.GetPixel($sx, $sy))) { $hit = $true }
+                        }
+                        if ($hit) { $edge = $a; $miss = 0 } else { $miss += 0.5 }
+                    }
+                    $move = $edge + 1 - [math]::Ceiling($HiltCut)
+                    $shiftX = [int][math]::Round($ux * $move); $shiftY = [int][math]::Round($uy * $move)
+                }
+            }
+            $drawn = New-Object System.Collections.ArrayList
             foreach ($p in $rots[$step]) {
-                $px = $hx + $p[0]; $py = $hy + $p[1]
+                $along = $p[0] * [math]::Cos((Rad $stepDeg)) - $p[1] * [math]::Sin((Rad $stepDeg))
+                # Behind the drawn part only the ribbon itself goes on for three more pixels, without its outline: it
+                # fills the corners between a slanted arm and the square end of the hilt (owner, 11 Nov 2026: a gap
+                # between the hilt and the hand in the breathing frames); the hand is put back over the rest of it.
+                if ($along -lt -3.5) { continue }
+                if ($along -lt $HiltCut -and (IsDark $p[2])) { continue }
+                $px = $hx + $p[0] + $shiftX; $py = $hy + $p[1] + $shiftY
+                [void]$drawn.Add(@($px, $py))
                 if ($px -lt 0 -or $py -lt 0 -or $px -ge 128 -or $py -ge 80) { continue }
                 if ($behind -and $clean.GetPixel($px, $py).A -ge 128) { continue }
                 $img.SetPixel($px, $py, $p[2])
             }
             if (-not $behind) {
                 # The hand goes back over the hilt whole: skin near the grip and the dark outline that touches it.
-                for ($y = $hy - 4; $y -le $hy + 4; $y++) { for ($x = $hx - 4; $x -le $hx + 4; $x++) {
+                # It is centred on the front of the fist, where the sword starts.
+                $fx = [int][math]::Round($hx + $ux * $edge); $fy = [int][math]::Round($hy + $uy * $edge)
+                for ($y = $fy - 6; $y -le $fy + 6; $y++) { for ($x = $fx - 6; $x -le $fx + 6; $x++) {
                     if ($x -lt 1 -or $y -lt 1 -or $x -ge 127 -or $y -ge 79) { continue }
-                    $d = [math]::Sqrt(($x - $hx) * ($x - $hx) + ($y - $hy) * ($y - $hy))
-                    if ($d -gt $FistRadius + 1) { continue }
+                    $d = [math]::Sqrt(($x - $fx) * ($x - $fx) + ($y - $fy) * ($y - $fy))
+                    if ($d -gt $FistRadius + 2.5) { continue }
                     $c = $clean.GetPixel($x, $y)
-                    if ((IsSkin $c) -and $d -le $FistRadius) { $img.SetPixel($x, $y, $c); continue }
+                    if ((IsSkin $c) -and $d -le $FistRadius + 1.5) { $img.SetPixel($x, $y, $c); continue }
                     if (IsDark $c) {
                         $touch = $false
                         foreach ($o in @(@(1, 0), @(-1, 0), @(0, 1), @(0, -1))) {
                             $nx = $x + $o[0]; $ny = $y + $o[1]
-                            $dn = [math]::Sqrt(($nx - $hx) * ($nx - $hx) + ($ny - $hy) * ($ny - $hy))
-                            if ($dn -le $FistRadius -and (IsSkin $clean.GetPixel($nx, $ny))) { $touch = $true }
+                            $dn = [math]::Sqrt(($nx - $fx) * ($nx - $fx) + ($ny - $fy) * ($ny - $fy))
+                            if ($dn -le $FistRadius + 1.5 -and (IsSkin $clean.GetPixel($nx, $ny))) { $touch = $true }
                         }
                         if ($touch) { $img.SetPixel($x, $y, $c) }
                     }
                 } }
             }
+        }
+        if (-not $s.none -and -not [bool]$s.behind) {
+            $touch = $false
+            foreach ($q in $drawn) {
+                if ($touch) { break }
+                for ($y = $q[1] - 2; $y -le $q[1] + 2 -and -not $touch; $y++) { for ($x = $q[0] - 2; $x -le $q[0] + 2; $x++) {
+                    if ($x -ge 0 -and $y -ge 0 -and $x -lt 128 -and $y -lt 80 -and (IsSkin $clean.GetPixel($x, $y))) { $touch = $true; break } } }
+            }
+            if (-not $touch) { "  DETACHED {0}: the sword does not touch the hand" -f $name }
         }
         $img.Save((Join-Path $target $name), [System.Drawing.Imaging.ImageFormat]::Png)
         if ($GameDir) { $img.Save((Join-Path $GameDir $name), [System.Drawing.Imaging.ImageFormat]::Png) }
